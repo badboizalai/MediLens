@@ -41,7 +41,10 @@ def validate(ctx: JobContext) -> None:
 
 @job("document.preprocess", DocStatus.VALIDATED, DocStatus.PREPROCESSED)
 def preprocess(ctx: JobContext) -> None:
-    """TODO(S5-T43): deskew/crop/quality."""
+    """Quality gate + crop + deskew; a failing page raises RetakeRequired(reason code)."""
+    from medilens_worker.ocr import service
+
+    service.run_preprocess(ctx.document_id, service.get_store())
 
 
 @job("document.classify", DocStatus.PREPROCESSED, DocStatus.CLASSIFIED)
@@ -51,12 +54,27 @@ def classify(ctx: JobContext) -> None:
 
 @job("document.ocr", DocStatus.CLASSIFIED, DocStatus.OCR_DONE)
 def ocr(ctx: JobContext) -> None:
-    """TODO(S5-T43): OCR body (long step: call ctx.extend_visibility)."""
+    """OCR: page text + boxes + quality (long step: extends visibility per page)."""
+    from medilens_worker.ocr import service
+
+    service.run_ocr(
+        ctx.document_id, service.get_store(), service.get_engine(), ctx.extend_visibility
+    )
 
 
 @job("document.extract", DocStatus.OCR_DONE, DocStatus.EXTRACTED)
 def extract(ctx: JobContext) -> None:
-    """TODO(S5-T45): LLM structured extraction."""
+    """LLM structured extraction via the AI Gateway (S5-T45)."""
+    from medilens_worker.extraction.deps import get_deps
+    from medilens_worker.extraction.service import run_extraction
+
+    d = get_deps()
+    ctx.extend_visibility(300)
+    d.save_run(
+        run_extraction(
+            ctx.document_id, d.load_pages(ctx.document_id), d.client, d.unit_for(ctx.document_id)
+        )
+    )
 
 
 @job("document.finalize", DocStatus.EXTRACTED, DocStatus.NEEDS_REVIEW)

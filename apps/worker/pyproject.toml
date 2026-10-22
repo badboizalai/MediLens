@@ -3,7 +3,20 @@ name = "medilens-worker"
 version = "0.1.0"
 description = "MediLens AI document-processing worker"
 requires-python = ">=3.10"
-dependencies = ["dramatiq[redis]>=1.17", "pydantic>=2.9", "boto3>=1.35", "structlog>=24.4"]
+dependencies = ["dramatiq[redis]>=1.17", "pydantic>=2.9", "boto3>=1.35", "structlog>=24.4", "jsonschema>=4.21"]
+
+[project.optional-dependencies]
+# Heavy OCR stack (mirrors ml/eval/ocr_bakeoff pins); base installs and CI stay light.
+ocr = [
+  "opencv-python-headless>=4.9",
+  "numpy>=1.26,<2",
+  "pillow>=10",
+  "setuptools<81",
+  "paddlepaddle==2.6.2",
+  "paddleocr==2.8.1",
+  "vietocr==0.3.13",
+  "torch>=2.2",
+]
 
 [dependency-groups]
 dev = ["pytest>=8"]

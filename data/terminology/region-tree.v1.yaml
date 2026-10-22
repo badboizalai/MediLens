@@ -1,0 +1,1277 @@
+# region_code tree v1 (S5-T48). Contract between data, API, GLB/SVG assets and viewer.
+# Units: dental, cardiology, oncology. Owner: clinical-informaticist.
+# laterality: left | right | bilateral | midline | unknown (patient's own side).
+# std_code: SNOMED CT left empty on purpose (not licensed). svg_id/mesh_id: null until
+# the 3D artist binds assets (names must equal region_code). Teeth are generated from fdi.csv.
+- region_code: body
+  parent: null
+  name_vi: Cơ thể
+  name_en: Whole body
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: all
+- region_code: sys_dental
+  parent: body
+  name_vi: Răng hàm mặt
+  name_en: Dental system
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: jaw_upper
+  parent: sys_dental
+  name_vi: Hàm trên
+  name_en: Upper jaw
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: jaw_lower
+  parent: sys_dental
+  name_vi: Hàm dưới
+  name_en: Lower jaw
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: quadrant_1
+  parent: jaw_upper
+  name_vi: Góc phần tư 1 (răng vĩnh viễn, hàm trên phải)
+  name_en: Quadrant 1 (permanent, upper right)
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: quadrant_2
+  parent: jaw_upper
+  name_vi: Góc phần tư 2 (răng vĩnh viễn, hàm trên trái)
+  name_en: Quadrant 2 (permanent, upper left)
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: quadrant_3
+  parent: jaw_lower
+  name_vi: Góc phần tư 3 (răng vĩnh viễn, hàm dưới trái)
+  name_en: Quadrant 3 (permanent, lower left)
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: quadrant_4
+  parent: jaw_lower
+  name_vi: Góc phần tư 4 (răng vĩnh viễn, hàm dưới phải)
+  name_en: Quadrant 4 (permanent, lower right)
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: quadrant_5
+  parent: jaw_upper
+  name_vi: Góc phần tư 5 (răng sữa, hàm trên phải)
+  name_en: Quadrant 5 (deciduous, upper right)
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: quadrant_6
+  parent: jaw_upper
+  name_vi: Góc phần tư 6 (răng sữa, hàm trên trái)
+  name_en: Quadrant 6 (deciduous, upper left)
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: quadrant_7
+  parent: jaw_lower
+  name_vi: Góc phần tư 7 (răng sữa, hàm dưới trái)
+  name_en: Quadrant 7 (deciduous, lower left)
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: quadrant_8
+  parent: jaw_lower
+  name_vi: Góc phần tư 8 (răng sữa, hàm dưới phải)
+  name_en: Quadrant 8 (deciduous, lower right)
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+- region_code: tooth_11
+  parent: quadrant_1
+  name_vi: Răng cửa giữa hàm trên bên phải
+  name_en: Upper right central incisor
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '11'
+- region_code: tooth_12
+  parent: quadrant_1
+  name_vi: Răng cửa bên hàm trên bên phải
+  name_en: Upper right lateral incisor
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '12'
+- region_code: tooth_13
+  parent: quadrant_1
+  name_vi: Răng nanh hàm trên bên phải
+  name_en: Upper right canine
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '13'
+- region_code: tooth_14
+  parent: quadrant_1
+  name_vi: Răng cối nhỏ thứ nhất hàm trên bên phải
+  name_en: Upper right first premolar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '14'
+- region_code: tooth_15
+  parent: quadrant_1
+  name_vi: Răng cối nhỏ thứ hai hàm trên bên phải
+  name_en: Upper right second premolar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '15'
+- region_code: tooth_16
+  parent: quadrant_1
+  name_vi: Răng cối lớn thứ nhất hàm trên bên phải
+  name_en: Upper right first molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '16'
+- region_code: tooth_17
+  parent: quadrant_1
+  name_vi: Răng cối lớn thứ hai hàm trên bên phải
+  name_en: Upper right second molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '17'
+- region_code: tooth_18
+  parent: quadrant_1
+  name_vi: Răng cối lớn thứ ba hàm trên bên phải
+  name_en: Upper right third molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '18'
+- region_code: tooth_21
+  parent: quadrant_2
+  name_vi: Răng cửa giữa hàm trên bên trái
+  name_en: Upper left central incisor
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '21'
+- region_code: tooth_22
+  parent: quadrant_2
+  name_vi: Răng cửa bên hàm trên bên trái
+  name_en: Upper left lateral incisor
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '22'
+- region_code: tooth_23
+  parent: quadrant_2
+  name_vi: Răng nanh hàm trên bên trái
+  name_en: Upper left canine
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '23'
+- region_code: tooth_24
+  parent: quadrant_2
+  name_vi: Răng cối nhỏ thứ nhất hàm trên bên trái
+  name_en: Upper left first premolar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '24'
+- region_code: tooth_25
+  parent: quadrant_2
+  name_vi: Răng cối nhỏ thứ hai hàm trên bên trái
+  name_en: Upper left second premolar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '25'
+- region_code: tooth_26
+  parent: quadrant_2
+  name_vi: Răng cối lớn thứ nhất hàm trên bên trái
+  name_en: Upper left first molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '26'
+- region_code: tooth_27
+  parent: quadrant_2
+  name_vi: Răng cối lớn thứ hai hàm trên bên trái
+  name_en: Upper left second molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '27'
+- region_code: tooth_28
+  parent: quadrant_2
+  name_vi: Răng cối lớn thứ ba hàm trên bên trái
+  name_en: Upper left third molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '28'
+- region_code: tooth_31
+  parent: quadrant_3
+  name_vi: Răng cửa giữa hàm dưới bên trái
+  name_en: Lower left central incisor
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '31'
+- region_code: tooth_32
+  parent: quadrant_3
+  name_vi: Răng cửa bên hàm dưới bên trái
+  name_en: Lower left lateral incisor
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '32'
+- region_code: tooth_33
+  parent: quadrant_3
+  name_vi: Răng nanh hàm dưới bên trái
+  name_en: Lower left canine
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '33'
+- region_code: tooth_34
+  parent: quadrant_3
+  name_vi: Răng cối nhỏ thứ nhất hàm dưới bên trái
+  name_en: Lower left first premolar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '34'
+- region_code: tooth_35
+  parent: quadrant_3
+  name_vi: Răng cối nhỏ thứ hai hàm dưới bên trái
+  name_en: Lower left second premolar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '35'
+- region_code: tooth_36
+  parent: quadrant_3
+  name_vi: Răng cối lớn thứ nhất hàm dưới bên trái
+  name_en: Lower left first molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '36'
+- region_code: tooth_37
+  parent: quadrant_3
+  name_vi: Răng cối lớn thứ hai hàm dưới bên trái
+  name_en: Lower left second molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '37'
+- region_code: tooth_38
+  parent: quadrant_3
+  name_vi: Răng cối lớn thứ ba hàm dưới bên trái
+  name_en: Lower left third molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '38'
+- region_code: tooth_41
+  parent: quadrant_4
+  name_vi: Răng cửa giữa hàm dưới bên phải
+  name_en: Lower right central incisor
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '41'
+- region_code: tooth_42
+  parent: quadrant_4
+  name_vi: Răng cửa bên hàm dưới bên phải
+  name_en: Lower right lateral incisor
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '42'
+- region_code: tooth_43
+  parent: quadrant_4
+  name_vi: Răng nanh hàm dưới bên phải
+  name_en: Lower right canine
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '43'
+- region_code: tooth_44
+  parent: quadrant_4
+  name_vi: Răng cối nhỏ thứ nhất hàm dưới bên phải
+  name_en: Lower right first premolar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '44'
+- region_code: tooth_45
+  parent: quadrant_4
+  name_vi: Răng cối nhỏ thứ hai hàm dưới bên phải
+  name_en: Lower right second premolar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '45'
+- region_code: tooth_46
+  parent: quadrant_4
+  name_vi: Răng cối lớn thứ nhất hàm dưới bên phải
+  name_en: Lower right first molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '46'
+- region_code: tooth_47
+  parent: quadrant_4
+  name_vi: Răng cối lớn thứ hai hàm dưới bên phải
+  name_en: Lower right second molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '47'
+- region_code: tooth_48
+  parent: quadrant_4
+  name_vi: Răng cối lớn thứ ba hàm dưới bên phải
+  name_en: Lower right third molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '48'
+- region_code: tooth_51
+  parent: quadrant_5
+  name_vi: Răng cửa giữa hàm trên bên phải
+  name_en: Deciduous upper right central incisor
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '51'
+- region_code: tooth_52
+  parent: quadrant_5
+  name_vi: Răng cửa bên hàm trên bên phải
+  name_en: Deciduous upper right lateral incisor
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '52'
+- region_code: tooth_53
+  parent: quadrant_5
+  name_vi: Răng nanh hàm trên bên phải
+  name_en: Deciduous upper right canine
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '53'
+- region_code: tooth_54
+  parent: quadrant_5
+  name_vi: Răng cối sữa thứ nhất hàm trên bên phải
+  name_en: Deciduous upper right first molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '54'
+- region_code: tooth_55
+  parent: quadrant_5
+  name_vi: Răng cối sữa thứ hai hàm trên bên phải
+  name_en: Deciduous upper right second molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '55'
+- region_code: tooth_61
+  parent: quadrant_6
+  name_vi: Răng cửa giữa hàm trên bên trái
+  name_en: Deciduous upper left central incisor
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '61'
+- region_code: tooth_62
+  parent: quadrant_6
+  name_vi: Răng cửa bên hàm trên bên trái
+  name_en: Deciduous upper left lateral incisor
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '62'
+- region_code: tooth_63
+  parent: quadrant_6
+  name_vi: Răng nanh hàm trên bên trái
+  name_en: Deciduous upper left canine
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '63'
+- region_code: tooth_64
+  parent: quadrant_6
+  name_vi: Răng cối sữa thứ nhất hàm trên bên trái
+  name_en: Deciduous upper left first molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '64'
+- region_code: tooth_65
+  parent: quadrant_6
+  name_vi: Răng cối sữa thứ hai hàm trên bên trái
+  name_en: Deciduous upper left second molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '65'
+- region_code: tooth_71
+  parent: quadrant_7
+  name_vi: Răng cửa giữa hàm dưới bên trái
+  name_en: Deciduous lower left central incisor
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '71'
+- region_code: tooth_72
+  parent: quadrant_7
+  name_vi: Răng cửa bên hàm dưới bên trái
+  name_en: Deciduous lower left lateral incisor
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '72'
+- region_code: tooth_73
+  parent: quadrant_7
+  name_vi: Răng nanh hàm dưới bên trái
+  name_en: Deciduous lower left canine
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '73'
+- region_code: tooth_74
+  parent: quadrant_7
+  name_vi: Răng cối sữa thứ nhất hàm dưới bên trái
+  name_en: Deciduous lower left first molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '74'
+- region_code: tooth_75
+  parent: quadrant_7
+  name_vi: Răng cối sữa thứ hai hàm dưới bên trái
+  name_en: Deciduous lower left second molar
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '75'
+- region_code: tooth_81
+  parent: quadrant_8
+  name_vi: Răng cửa giữa hàm dưới bên phải
+  name_en: Deciduous lower right central incisor
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '81'
+- region_code: tooth_82
+  parent: quadrant_8
+  name_vi: Răng cửa bên hàm dưới bên phải
+  name_en: Deciduous lower right lateral incisor
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '82'
+- region_code: tooth_83
+  parent: quadrant_8
+  name_vi: Răng nanh hàm dưới bên phải
+  name_en: Deciduous lower right canine
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '83'
+- region_code: tooth_84
+  parent: quadrant_8
+  name_vi: Răng cối sữa thứ nhất hàm dưới bên phải
+  name_en: Deciduous lower right first molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '84'
+- region_code: tooth_85
+  parent: quadrant_8
+  name_vi: Răng cối sữa thứ hai hàm dưới bên phải
+  name_en: Deciduous lower right second molar
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: dental
+  fdi: '85'
+- region_code: sys_cardiovascular
+  parent: body
+  name_vi: Hệ tim mạch
+  name_en: Cardiovascular system
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: heart
+  parent: sys_cardiovascular
+  name_vi: Tim
+  name_en: Heart
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: heart_ra
+  parent: heart
+  name_vi: Tâm nhĩ phải
+  name_en: Right atrium
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: heart_la
+  parent: heart
+  name_vi: Tâm nhĩ trái
+  name_en: Left atrium
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: heart_rv
+  parent: heart
+  name_vi: Tâm thất phải
+  name_en: Right ventricle
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: heart_lv
+  parent: heart
+  name_vi: Tâm thất trái
+  name_en: Left ventricle
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: heart_septum_ias
+  parent: heart
+  name_vi: Vách liên nhĩ
+  name_en: Interatrial septum
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: heart_septum_ivs
+  parent: heart
+  name_vi: Vách liên thất
+  name_en: Interventricular septum
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: valve_aortic
+  parent: heart
+  name_vi: Van động mạch chủ
+  name_en: Aortic valve
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: valve_mitral
+  parent: heart
+  name_vi: Van hai lá
+  name_en: Mitral valve
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: valve_tricuspid
+  parent: heart
+  name_vi: Van ba lá
+  name_en: Tricuspid valve
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: valve_pulmonary
+  parent: heart
+  name_vi: Van động mạch phổi
+  name_en: Pulmonary valve
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: coronary_arteries
+  parent: sys_cardiovascular
+  name_vi: Động mạch vành
+  name_en: Coronary arteries
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: cor_rca
+  parent: coronary_arteries
+  name_vi: Động mạch vành phải
+  name_en: Right coronary artery
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: cor_lmca
+  parent: coronary_arteries
+  name_vi: Thân chung động mạch vành trái
+  name_en: Left main coronary artery
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: cor_lad
+  parent: coronary_arteries
+  name_vi: Nhánh liên thất trước
+  name_en: Left anterior descending artery
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: cor_lcx
+  parent: coronary_arteries
+  name_vi: Nhánh mũ
+  name_en: Left circumflex artery
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: great_vessels
+  parent: sys_cardiovascular
+  name_vi: Các mạch máu lớn
+  name_en: Great vessels
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: aorta
+  parent: great_vessels
+  name_vi: Động mạch chủ
+  name_en: Aorta
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: pulmonary_trunk
+  parent: great_vessels
+  name_vi: Thân động mạch phổi
+  name_en: Pulmonary trunk
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: pulmonary_artery_r
+  parent: great_vessels
+  name_vi: Động mạch phổi phải
+  name_en: Right pulmonary artery
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: pulmonary_artery_l
+  parent: great_vessels
+  name_vi: Động mạch phổi trái
+  name_en: Left pulmonary artery
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: pulmonary_veins_r
+  parent: great_vessels
+  name_vi: Các tĩnh mạch phổi phải
+  name_en: Right pulmonary veins
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: pulmonary_veins_l
+  parent: great_vessels
+  name_vi: Các tĩnh mạch phổi trái
+  name_en: Left pulmonary veins
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: vena_cava_superior
+  parent: great_vessels
+  name_vi: Tĩnh mạch chủ trên
+  name_en: Superior vena cava
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: vena_cava_inferior
+  parent: great_vessels
+  name_vi: Tĩnh mạch chủ dưới
+  name_en: Inferior vena cava
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: cardiology
+- region_code: sys_oncology
+  parent: body
+  name_vi: Vị trí/cơ quan ung bướu
+  name_en: Oncology sites
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: organs
+  parent: sys_oncology
+  name_vi: Cơ quan chính
+  name_en: Major organs
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: lung_r
+  parent: organs
+  name_vi: Phổi phải
+  name_en: Right lung
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: lung_l
+  parent: organs
+  name_vi: Phổi trái
+  name_en: Left lung
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: liver
+  parent: organs
+  name_vi: Gan
+  name_en: Liver
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: brain
+  parent: organs
+  name_vi: Não
+  name_en: Brain
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: adrenal_r
+  parent: organs
+  name_vi: Tuyến thượng thận phải
+  name_en: Right adrenal gland
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: adrenal_l
+  parent: organs
+  name_vi: Tuyến thượng thận trái
+  name_en: Left adrenal gland
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: kidney_r
+  parent: organs
+  name_vi: Thận phải
+  name_en: Right kidney
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: kidney_l
+  parent: organs
+  name_vi: Thận trái
+  name_en: Left kidney
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: breast_r
+  parent: organs
+  name_vi: Vú phải
+  name_en: Right breast
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: breast_l
+  parent: organs
+  name_vi: Vú trái
+  name_en: Left breast
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: stomach
+  parent: organs
+  name_vi: Dạ dày
+  name_en: Stomach
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: pancreas
+  parent: organs
+  name_vi: Tụy
+  name_en: Pancreas
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: colon
+  parent: organs
+  name_vi: Đại tràng
+  name_en: Colon
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: thyroid
+  parent: organs
+  name_vi: Tuyến giáp
+  name_en: Thyroid gland
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: prostate
+  parent: organs
+  name_vi: Tuyến tiền liệt
+  name_en: Prostate
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: bladder
+  parent: organs
+  name_vi: Bàng quang
+  name_en: Urinary bladder
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ovary_r
+  parent: organs
+  name_vi: Buồng trứng phải
+  name_en: Right ovary
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ovary_l
+  parent: organs
+  name_vi: Buồng trứng trái
+  name_en: Left ovary
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: spleen
+  parent: organs
+  name_vi: Lách
+  name_en: Spleen
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: bone_sites
+  parent: sys_oncology
+  name_vi: Xương (vị trí di căn thường gặp)
+  name_en: Bone (common metastatic sites)
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: bone_spine
+  parent: bone_sites
+  name_vi: Cột sống
+  name_en: Spine
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: bone_pelvis
+  parent: bone_sites
+  name_vi: Xương chậu
+  name_en: Pelvis
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: bone_ribs_r
+  parent: bone_sites
+  name_vi: Xương sườn phải
+  name_en: Right ribs
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: bone_ribs_l
+  parent: bone_sites
+  name_vi: Xương sườn trái
+  name_en: Left ribs
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: bone_femur_r
+  parent: bone_sites
+  name_vi: Xương đùi phải
+  name_en: Right femur
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: bone_femur_l
+  parent: bone_sites
+  name_vi: Xương đùi trái
+  name_en: Left femur
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: bone_skull
+  parent: bone_sites
+  name_vi: Xương sọ
+  name_en: Skull
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+  metastatic_site: true
+- region_code: lymph_nodes
+  parent: sys_oncology
+  name_vi: Các trạm hạch bạch huyết
+  name_en: Lymph node stations
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_cervical_r
+  parent: lymph_nodes
+  name_vi: Hạch cổ phải
+  name_en: Right cervical nodes
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_cervical_l
+  parent: lymph_nodes
+  name_vi: Hạch cổ trái
+  name_en: Left cervical nodes
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_supraclavicular_r
+  parent: lymph_nodes
+  name_vi: Hạch thượng đòn phải
+  name_en: Right supraclavicular nodes
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_supraclavicular_l
+  parent: lymph_nodes
+  name_vi: Hạch thượng đòn trái
+  name_en: Left supraclavicular nodes
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_axillary_r
+  parent: lymph_nodes
+  name_vi: Hạch nách phải
+  name_en: Right axillary nodes
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_axillary_l
+  parent: lymph_nodes
+  name_vi: Hạch nách trái
+  name_en: Left axillary nodes
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_mediastinal
+  parent: lymph_nodes
+  name_vi: Hạch trung thất
+  name_en: Mediastinal nodes
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_hilar_r
+  parent: lymph_nodes
+  name_vi: Hạch rốn phổi phải
+  name_en: Right hilar nodes
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_hilar_l
+  parent: lymph_nodes
+  name_vi: Hạch rốn phổi trái
+  name_en: Left hilar nodes
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_paraaortic
+  parent: lymph_nodes
+  name_vi: Hạch cạnh động mạch chủ
+  name_en: Para-aortic nodes
+  laterality: midline
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_iliac_r
+  parent: lymph_nodes
+  name_vi: Hạch chậu phải
+  name_en: Right iliac nodes
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_iliac_l
+  parent: lymph_nodes
+  name_vi: Hạch chậu trái
+  name_en: Left iliac nodes
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_inguinal_r
+  parent: lymph_nodes
+  name_vi: Hạch bẹn phải
+  name_en: Right inguinal nodes
+  laterality: right
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology
+- region_code: ln_inguinal_l
+  parent: lymph_nodes
+  name_vi: Hạch bẹn trái
+  name_en: Left inguinal nodes
+  laterality: left
+  svg_id: null
+  mesh_id: null
+  std_code: ''
+  unit: oncology

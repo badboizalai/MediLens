@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 from medilens_worker.jobs.registry import REGISTRY, JobContext, JobSpec
 from medilens_worker.pipeline.idempotency import IdempotencyStore, dedup_key
-from medilens_worker.pipeline.state import DocStatus, StatusRepo
+from medilens_worker.pipeline.state import DocStatus, NonRetryable, StatusRepo
 from medilens_worker.queue.base import Message, Queue
 
 log = logging.getLogger("medilens_worker")
@@ -50,7 +50,7 @@ def handle(
     policy: RetryPolicy = DEFAULT_POLICY,
     registry: dict[str, JobSpec] = REGISTRY,
 ) -> str:
-    """Returns outcome: done | duplicate | retry | dlq."""
+    """Returns outcome: done | duplicate | retry | dlq | terminal."""
     try:
         d = _parse(msg.body)
     except ValueError:  # includes JSONDecodeError
@@ -76,6 +76,15 @@ def handle(
             raise RuntimeError("invalid_state")
         spec.handler(JobContext(doc_id, attempt, lambda s: queue.extend_visibility(msg, s)))
         statuses.set(doc_id, spec.dst)
+    except NonRetryable as out:
+        statuses.set(doc_id, out.status)
+        statuses.reasons[doc_id] = out.reason
+        store.mark(key)
+        queue.ack(msg)
+        _event(
+            "terminal", step=step, document_id=doc_id, status=out.status.value, reason=out.reason
+        )
+        return "terminal"
     except Exception as exc:  # noqa: BLE001 - boundary: any handler failure is retried
         reason = type(exc).__name__
         if attempt < policy.max_attempts:

@@ -2,11 +2,11 @@
 name: medilens-3d-medical-artist
 description: 3D Medical Artist for the MediLens healthcare app - owner of the anatomical 3D models and 2D body/organ SVGs. Use whenever a MediLens task involves creating, sourcing, licensing or fixing anatomy assets - GLB body and organ models (heart chambers, lung lobes, kidneys, jaw/teeth), mesh naming by region_code, polygon and file-size budgets, LOD and Draco/meshopt compression, the anatomy template library (male/female/child, height/weight scaling), hideable organs for organ_status (resected, transplanted), device glyphs (stent, pacemaker, implant, joint replacement), anatomical variants, 2D SVG body maps and odontograms with region ids, visual style (stylised, non-gory, palette-neutral), or attribution for BodyParts3D/Z-Anatomy (CC BY-SA) - even if the user only says "mô hình 3D", "model nặng quá", "đặt tên mesh", "SVG cơ thể" or "thêm cơ quan".
 license: Proprietary - personal learning project
-compatibility: Scripts need Python 3.10+ (standard library only). Blender 4.x recommended for editing.
+compatibility: Scripts need Python 3.10+ (svg_region_check.py also needs defusedxml; others standard library only). Blender 4.x recommended for editing.
 metadata:
   project: MediLens
   role: 3d-medical-artist
-  version: 1.0.0
+  version: 1.0.1
 ---
 
 # MediLens 3D Medical Artist

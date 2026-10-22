@@ -1,0 +1,191 @@
+table,column,class,category,retention,owner,source,export
+identity.users,external_sub,C3,pii,account lifetime; hard delete 30d after account deletion,backend-engineer,Cognito,hash
+identity.users,status,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,Cognito,keep
+identity.users,id,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system (uuid_v7),hash
+identity.users,created_at,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system,keep
+identity.users,updated_at,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system,keep
+identity.users,deleted_at,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system,keep
+identity.patient_profiles,owner_user_id,C3,pseudonymised,account lifetime; hard delete 30d after account deletion,backend-engineer,user input,hash
+identity.patient_profiles,birth_year,C4,phi,account lifetime; hard delete 30d after account deletion,backend-engineer,user input,band
+identity.patient_profiles,sex_at_birth,C4,phi,account lifetime; hard delete 30d after account deletion,backend-engineer,user input,keep
+identity.patient_profiles,is_minor,C4,phi,account lifetime; hard delete 30d after account deletion,backend-engineer,user input,keep
+identity.patient_profiles,id,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system (uuid_v7),hash
+identity.patient_profiles,created_at,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system,keep
+identity.patient_profiles,updated_at,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system,keep
+identity.patient_profiles,deleted_at,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system,keep
+identity.consents,user_id,C3,pseudonymised,account lifetime + 3y (proof of consent),backend-engineer,user action,hash
+identity.consents,type,C2,internal,account lifetime + 3y (proof of consent),backend-engineer,user action,keep
+identity.consents,terms_version,C2,internal,account lifetime + 3y (proof of consent),backend-engineer,user action,keep
+identity.consents,given_at,C3,pii,account lifetime + 3y (proof of consent),backend-engineer,user action,keep
+identity.consents,withdrawn_at,C3,pii,account lifetime + 3y (proof of consent),backend-engineer,user action,keep
+identity.consents,id,C2,internal,account lifetime + 3y (proof of consent),backend-engineer,system (uuid_v7),hash
+identity.consents,created_at,C2,internal,account lifetime + 3y (proof of consent),backend-engineer,system,keep
+identity.consents,updated_at,C2,internal,account lifetime + 3y (proof of consent),backend-engineer,system,keep
+identity.consents,deleted_at,C2,internal,account lifetime + 3y (proof of consent),backend-engineer,system,keep
+clinical.documents,profile_id,C3,pseudonymised,account lifetime; hard delete 30d after account deletion,backend-engineer,upload,hash
+clinical.documents,storage_key,C4,phi,account lifetime; hard delete 30d after account deletion,backend-engineer,upload,drop
+clinical.documents,sha256,C4,phi,account lifetime; hard delete 30d after account deletion,backend-engineer,upload,drop
+clinical.documents,mime,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,upload,keep
+clinical.documents,pages,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,upload,keep
+clinical.documents,status,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,upload,keep
+clinical.documents,doc_type,C4,phi,account lifetime; hard delete 30d after account deletion,backend-engineer,upload,keep
+clinical.documents,uploaded_at,C4,phi,account lifetime; hard delete 30d after account deletion,backend-engineer,upload,keep
+clinical.documents,id,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system (uuid_v7),hash
+clinical.documents,created_at,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system,keep
+clinical.documents,updated_at,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system,keep
+clinical.documents,deleted_at,C2,internal,account lifetime; hard delete 30d after account deletion,backend-engineer,system,keep
+clinical.document_pages,profile_id,C3,pseudonymised,while document exists,backend-engineer,OCR pipeline,hash
+clinical.document_pages,document_id,C2,internal,while document exists,backend-engineer,OCR pipeline,hash
+clinical.document_pages,page_no,C2,internal,while document exists,backend-engineer,OCR pipeline,keep
+clinical.document_pages,ocr_text,C4,phi,while document exists,backend-engineer,OCR pipeline,drop
+clinical.document_pages,ocr_boxes,C4,phi,while document exists,backend-engineer,OCR pipeline,drop
+clinical.document_pages,quality_score,C2,internal,while document exists,backend-engineer,OCR pipeline,keep
+clinical.document_pages,id,C2,internal,while document exists,backend-engineer,system (uuid_v7),hash
+clinical.document_pages,created_at,C2,internal,while document exists,backend-engineer,system,keep
+clinical.document_pages,updated_at,C2,internal,while document exists,backend-engineer,system,keep
+clinical.document_pages,deleted_at,C2,internal,while document exists,backend-engineer,system,keep
+clinical.extraction_runs,profile_id,C3,pseudonymised,while document exists,backend-engineer,AI pipeline,hash
+clinical.extraction_runs,document_id,C2,internal,while document exists,backend-engineer,AI pipeline,hash
+clinical.extraction_runs,pipeline_version,C2,internal,while document exists,backend-engineer,AI pipeline,keep
+clinical.extraction_runs,model,C2,internal,while document exists,backend-engineer,AI pipeline,keep
+clinical.extraction_runs,prompt_version,C2,internal,while document exists,backend-engineer,AI pipeline,keep
+clinical.extraction_runs,raw_output,C4,phi,while document exists,backend-engineer,AI pipeline,drop
+clinical.extraction_runs,confidence,C2,internal,while document exists,backend-engineer,AI pipeline,keep
+clinical.extraction_runs,cost_usd,C2,internal,while document exists,backend-engineer,AI pipeline,keep
+clinical.extraction_runs,status,C2,internal,while document exists,backend-engineer,AI pipeline,keep
+clinical.extraction_runs,id,C2,internal,while document exists,backend-engineer,system (uuid_v7),hash
+clinical.extraction_runs,created_at,C2,internal,while document exists,backend-engineer,system,keep
+clinical.extraction_runs,updated_at,C2,internal,while document exists,backend-engineer,system,keep
+clinical.extraction_runs,deleted_at,C2,internal,while document exists,backend-engineer,system,keep
+clinical.extraction_fields,profile_id,C3,pseudonymised,while document exists,backend-engineer,AI pipeline / user review,hash
+clinical.extraction_fields,run_id,C2,internal,while document exists,backend-engineer,AI pipeline / user review,hash
+clinical.extraction_fields,field_path,C2,internal,while document exists,backend-engineer,AI pipeline / user review,keep
+clinical.extraction_fields,value,C4,phi,while document exists,backend-engineer,AI pipeline / user review,drop
+clinical.extraction_fields,confidence,C2,internal,while document exists,backend-engineer,AI pipeline / user review,keep
+clinical.extraction_fields,source_page,C2,internal,while document exists,backend-engineer,AI pipeline / user review,keep
+clinical.extraction_fields,source_box,C4,phi,while document exists,backend-engineer,AI pipeline / user review,drop
+clinical.extraction_fields,user_value,C4,phi,while document exists,backend-engineer,AI pipeline / user review,drop
+clinical.extraction_fields,confirmed_at,C4,phi,while document exists,backend-engineer,AI pipeline / user review,keep
+clinical.extraction_fields,id,C2,internal,while document exists,backend-engineer,system (uuid_v7),hash
+clinical.extraction_fields,created_at,C2,internal,while document exists,backend-engineer,system,keep
+clinical.extraction_fields,updated_at,C2,internal,while document exists,backend-engineer,system,keep
+clinical.extraction_fields,deleted_at,C2,internal,while document exists,backend-engineer,system,keep
+clinical.encounters,profile_id,C3,pseudonymised,account lifetime,backend-engineer,confirmed extraction,hash
+clinical.encounters,date,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.encounters,facility,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.encounters,department_code,C4,phi,account lifetime,backend-engineer,confirmed extraction,keep
+clinical.encounters,id,C2,internal,account lifetime,backend-engineer,system (uuid_v7),hash
+clinical.encounters,created_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.encounters,updated_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.encounters,deleted_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.conditions,profile_id,C3,pseudonymised,account lifetime,backend-engineer,confirmed extraction,hash
+clinical.conditions,encounter_id,C2,internal,account lifetime,backend-engineer,confirmed extraction,hash
+clinical.conditions,icd10_code,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.conditions,unit_code,C4,phi,account lifetime,backend-engineer,confirmed extraction,keep
+clinical.conditions,status,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.conditions,severity,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.conditions,stage,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.conditions,onset_date,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.conditions,id,C2,internal,account lifetime,backend-engineer,system (uuid_v7),hash
+clinical.conditions,created_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.conditions,updated_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.conditions,deleted_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.body_findings,profile_id,C3,pseudonymised,account lifetime,backend-engineer,confirmed extraction,hash
+clinical.body_findings,condition_id,C2,internal,account lifetime,backend-engineer,confirmed extraction,hash
+clinical.body_findings,region_code,C4,phi,account lifetime,backend-engineer,confirmed extraction,keep
+clinical.body_findings,laterality,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.body_findings,size_mm,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.body_findings,severity,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.body_findings,is_metastasis,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.body_findings,observed_at,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.body_findings,id,C2,internal,account lifetime,backend-engineer,system (uuid_v7),hash
+clinical.body_findings,created_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.body_findings,updated_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.body_findings,deleted_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.observations,profile_id,C3,pseudonymised,account lifetime,backend-engineer,confirmed extraction,hash
+clinical.observations,loinc_code,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.observations,name,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.observations,value,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.observations,unit,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.observations,ref_low,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.observations,ref_high,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.observations,observed_at,C4,phi,account lifetime,backend-engineer,confirmed extraction,drop
+clinical.observations,id,C2,internal,account lifetime,backend-engineer,system (uuid_v7),hash
+clinical.observations,created_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.observations,updated_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.observations,deleted_at,C2,internal,account lifetime,backend-engineer,system,keep
+clinical.share_grants,profile_id,C3,pseudonymised,grant lifetime + 1y; deleted with account,backend-engineer,user action,hash
+clinical.share_grants,grantee_user_id,C3,pseudonymised,grant lifetime + 1y; deleted with account,backend-engineer,user action,hash
+clinical.share_grants,scope,C2,internal,grant lifetime + 1y; deleted with account,backend-engineer,user action,keep
+clinical.share_grants,expires_at,C3,pii,grant lifetime + 1y; deleted with account,backend-engineer,user action,keep
+clinical.share_grants,revoked_at,C3,pii,grant lifetime + 1y; deleted with account,backend-engineer,user action,keep
+clinical.share_grants,id,C2,internal,grant lifetime + 1y; deleted with account,backend-engineer,system (uuid_v7),hash
+clinical.share_grants,created_at,C2,internal,grant lifetime + 1y; deleted with account,backend-engineer,system,keep
+clinical.share_grants,updated_at,C2,internal,grant lifetime + 1y; deleted with account,backend-engineer,system,keep
+clinical.share_grants,deleted_at,C2,internal,grant lifetime + 1y; deleted with account,backend-engineer,system,keep
+clinical.units,code,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.units,name_vi,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.units,name_en,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.units,parent_code,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.units,mesh_id,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.units,svg_id,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.units,std_code,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.units,id,C2,internal,until superseded (versioned reference data),clinical-informaticist,system (uuid_v7),hash
+clinical.units,created_at,C2,internal,until superseded (versioned reference data),clinical-informaticist,system,keep
+clinical.units,updated_at,C2,internal,until superseded (versioned reference data),clinical-informaticist,system,keep
+clinical.units,deleted_at,C2,internal,until superseded (versioned reference data),clinical-informaticist,system,keep
+clinical.regions,code,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.regions,name_vi,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.regions,name_en,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.regions,parent_code,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.regions,mesh_id,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.regions,svg_id,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.regions,std_code,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data (data/catalog),keep
+clinical.regions,id,C2,internal,until superseded (versioned reference data),clinical-informaticist,system (uuid_v7),hash
+clinical.regions,created_at,C2,internal,until superseded (versioned reference data),clinical-informaticist,system,keep
+clinical.regions,updated_at,C2,internal,until superseded (versioned reference data),clinical-informaticist,system,keep
+clinical.regions,deleted_at,C2,internal,until superseded (versioned reference data),clinical-informaticist,system,keep
+clinical.unit_configs,unit_code,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data,keep
+clinical.unit_configs,version,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data,keep
+clinical.unit_configs,config,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data,keep
+clinical.unit_configs,published_at,C1,public,until superseded (versioned reference data),clinical-informaticist,reference data,keep
+clinical.unit_configs,id,C2,internal,until superseded (versioned reference data),clinical-informaticist,system (uuid_v7),hash
+clinical.unit_configs,created_at,C2,internal,until superseded (versioned reference data),clinical-informaticist,system,keep
+clinical.unit_configs,updated_at,C2,internal,until superseded (versioned reference data),clinical-informaticist,system,keep
+clinical.unit_configs,deleted_at,C2,internal,until superseded (versioned reference data),clinical-informaticist,system,keep
+clinical.outbox,event_type,C2,internal,7d after published_at (proposed),backend-engineer,domain events,keep
+clinical.outbox,payload,C2,internal,7d after published_at (proposed),backend-engineer,domain events,drop
+clinical.outbox,published_at,C2,internal,7d after published_at (proposed),backend-engineer,domain events,keep
+clinical.outbox,id,C2,internal,7d after published_at (proposed),backend-engineer,system (uuid_v7),hash
+clinical.outbox,created_at,C2,internal,7d after published_at (proposed),backend-engineer,system,keep
+clinical.outbox,updated_at,C2,internal,7d after published_at (proposed),backend-engineer,system,keep
+clinical.outbox,deleted_at,C2,internal,7d after published_at (proposed),backend-engineer,system,keep
+audit.audit_events,actor_id,C3,pseudonymised,90d hot; 3y archive (Object Lock),security-engineer,application,hash
+audit.audit_events,action,C2,internal,90d hot; 3y archive (Object Lock),security-engineer,application,keep
+audit.audit_events,resource_type,C2,internal,90d hot; 3y archive (Object Lock),security-engineer,application,keep
+audit.audit_events,resource_id,C3,pseudonymised,90d hot; 3y archive (Object Lock),security-engineer,application,hash
+audit.audit_events,ip,C3,pii,90d hot; 3y archive (Object Lock),security-engineer,application,drop
+audit.audit_events,user_agent,C3,pii,90d hot; 3y archive (Object Lock),security-engineer,application,drop
+audit.audit_events,at,C2,internal,90d hot; 3y archive (Object Lock),security-engineer,application,keep
+audit.audit_events,id,C2,internal,90d hot; 3y archive (Object Lock),security-engineer,system (uuid_v7),hash
+audit.audit_events,created_at,C2,internal,90d hot; 3y archive (Object Lock),security-engineer,system,keep
+audit.audit_events,updated_at,C2,internal,90d hot; 3y archive (Object Lock),security-engineer,system,keep
+audit.audit_events,deleted_at,C2,internal,90d hot; 3y archive (Object Lock),security-engineer,system,keep
+phi.identifiers,profile_id,C3,pseudonymised,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,user input (PHI service only; planned),hash
+phi.identifiers,full_name,C4,phi,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,user input (PHI service only; planned),drop
+phi.identifiers,date_of_birth,C4,phi,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,user input (PHI service only; planned),drop
+phi.identifiers,phone,C3,pii,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,user input (PHI service only; planned),drop
+phi.identifiers,email,C3,pii,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,user input (PHI service only; planned),drop
+phi.identifiers,address,C3,pii,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,user input (PHI service only; planned),drop
+phi.identifiers,national_id,C4,phi,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,user input (PHI service only; planned),drop
+phi.identifiers,id,C2,internal,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,system (uuid_v7),hash
+phi.identifiers,created_at,C2,internal,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,system,keep
+phi.identifiers,updated_at,C2,internal,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,system,keep
+phi.identifiers,deleted_at,C2,internal,account lifetime; hard delete 30d after account deletion; crypto-shred user key,security-engineer,system,keep
+phi.objects,profile_id,C3,pseudonymised,originals until user deletes (retention matrix),security-engineer,S3 phi bucket metadata (planned),hash
+phi.objects,object_key,C4,phi,originals until user deletes (retention matrix),security-engineer,S3 phi bucket metadata (planned),drop
+phi.objects,kms_key_id,C2,internal,originals until user deletes (retention matrix),security-engineer,S3 phi bucket metadata (planned),drop
+phi.objects,id,C2,internal,originals until user deletes (retention matrix),security-engineer,system (uuid_v7),hash
+phi.objects,created_at,C2,internal,originals until user deletes (retention matrix),security-engineer,system,keep
+phi.objects,updated_at,C2,internal,originals until user deletes (retention matrix),security-engineer,system,keep
+phi.objects,deleted_at,C2,internal,originals until user deletes (retention matrix),security-engineer,system,keep

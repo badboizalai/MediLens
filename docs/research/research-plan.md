@@ -48,3 +48,10 @@ If fewer than 5 patient interviews are done by the end of S01, flag it in the we
 - Notes: written in [note-template.md](note-template.md) form, de-identified, and checked with the [checklist](anonymisation-checklist.md) before storage. Only de-identified notes may be committed.
 - Retention and deletion: recordings and raw/working notes deleted within 7 days of note completion (no later than the end of S01 synthesis); the key deleted when synthesis is done; de-identified notes kept for the product lifetime. On withdrawal, that participant's recording, raw notes and key are deleted at once, and their de-identified notes are removed from further synthesis where feasible.
 - Legal basis: explicit consent per Law 91/2025/QH15 and Decree 356/2025/NĐ-CP; REG confirms before the first interview.
+
+## 7. Validation threshold (PROPOSAL, BA/UX to confirm)
+Personas and pain points are hypotheses until the interviews support them. Proposed rule:
+- A persona pain point or need is **validated** when at least 3 of 5 patient/caregiver interviews raise it unprompted or confirm it when probed neutrally; with 6-8 interviews, at least 50%.
+- For the receiving-clinician persona (P3, [clinician guide](clinician-interview-guide.md)), validated when 2 of 2 clinicians show it; with only 1 clinician it stays "indicative".
+- Below the threshold it is "unvalidated" and goes to the backlog as a question, not a requirement; do not drop contradicting evidence.
+- Count de-identified notes only; record the count per item in the synthesis. With a sample this small this is a prioritisation aid, not statistical proof.

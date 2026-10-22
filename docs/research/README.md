@@ -6,6 +6,7 @@ Kit for the 5-8 patient/caregiver and 1-2 clinician interviews (plan §2.5). The
 | --- | --- |
 | [research-plan.md](research-plan.md) | Goals, questions, participants, schedule, data handling |
 | [interview-guide.md](interview-guide.md) | 45-min semi-structured guide (VI + EN gloss) |
+| [clinician-interview-guide.md](clinician-interview-guide.md) | 30-min guide for C01-C02 (receiving clinician) |
 | [consent-form.md](consent-form.md) | Consent VI + EN (DRAFT, needs REG review) |
 | [note-template.md](note-template.md) | De-identified note structure (one per participant) |
 | [anonymisation-checklist.md](anonymisation-checklist.md) | Checks before any note is stored |

@@ -56,7 +56,17 @@ def ocr(ctx: JobContext) -> None:
 
 @job("document.extract", DocStatus.OCR_DONE, DocStatus.EXTRACTED)
 def extract(ctx: JobContext) -> None:
-    """TODO(S5-T45): LLM structured extraction."""
+    """LLM structured extraction via the AI Gateway (S5-T45)."""
+    from medilens_worker.extraction.deps import get_deps
+    from medilens_worker.extraction.service import run_extraction
+
+    d = get_deps()
+    ctx.extend_visibility(300)
+    d.save_run(
+        run_extraction(
+            ctx.document_id, d.load_pages(ctx.document_id), d.client, d.unit_for(ctx.document_id)
+        )
+    )
 
 
 @job("document.finalize", DocStatus.EXTRACTED, DocStatus.NEEDS_REVIEW)

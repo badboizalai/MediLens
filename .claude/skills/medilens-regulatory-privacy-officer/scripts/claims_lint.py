@@ -74,6 +74,63 @@ RULES = [
         r"\b(fda|ce|ministry of health)[- ](approved|cleared|certified)\b",
         "Only if true and documented",
     ),
+    # --- BR-042 boundary phrases (regulatory/forbidden-claims.md) ---
+    (
+        "BLOCK",
+        r"\b(ai|may|tu dong)\s+(doc|phan tich|dien giai)\s+(phim|anh|x ?-?quang|ct|mri|sieu am)\b",
+        "Use 'dựng hình minh họa giải phẫu từ CT'",
+    ),
+    (
+        "BLOCK",
+        r"\b(reads|interprets|analy[sz]es)\s+(your |the |a )?(scans?|x-?rays?|ct|mri|ultrasound)\b",
+        "Use 'builds an illustrative anatomy model from CT'",
+    ),
+    (
+        "BLOCK",
+        r"\bdo kich thuoc (khoi u|ton thuong) tu dong\b|\bautomatic(ally)? (tumou?r |lesion )?measure",
+        "Remove automatic measurement (BR-042)",
+    ),
+    (
+        "BLOCK",
+        r"\bphat hien som\b|\bphat hien (khoi u|ton thuong)\b",
+        "Use 'hiển thị các phát hiện đã ghi trong hồ sơ'",
+    ),
+    (
+        "BLOCK",
+        r"\bfinds? (early )?(disease|cancer|tumou?rs?|lesions?)\b",
+        "Use 'shows findings written in your records'",
+    ),
+    ("BLOCK", r"(?<!khong cham )\bdiem nguy co\b|\brisk scores?\b", "Remove risk scoring"),
+    (
+        "BLOCK",
+        r"\bnguy co (mac )?(benh )?[^.,;]{0,30}\d+\s?%|\b(your )?risk of [^.,;]{0,30} is \d+\s?%",
+        "Remove risk percentage",
+    ),
+    (
+        "BLOCK",
+        r"\btrieu chung (nay )?co the la\b|\bsymptom checker\b|\byour symptoms (may|might|could) (mean|indicate|be)\b",
+        "Use 'nên trao đổi với bác sĩ' / 'discuss with your doctor'",
+    ),
+    (
+        "BLOCK",
+        r"\bcanh bao (chi so xau di|xu huong nguy hiem|benh nang (them|hon))\b",
+        "Show recorded values and the lab's printed reference range",
+    ),
+    (
+        "BLOCK",
+        r"\balerts? (you )?(when|if) (your )?(results?|values?) (get|are|become) worse\b|\btrend alerts?\b|\bworsening (results?|alerts?)\b",
+        "Show recorded values and the lab's printed reference range",
+    ),
+    (
+        "BLOCK",
+        r"\bmau do (nghia la|co nghia) (nguy hiem|nghiem trong)\b|\bred means (dangerous|danger|severe|serious)\b",
+        "Colour only by the level recorded in the record, with a legend",
+    ),
+    (
+        "REVIEW",
+        r"\b(an toan cho benh nhan|dat chuan y te|dat iso (13485|14971))\b|\b(patient-safe|medical-grade|iso-certified)\b",
+        "Say nothing without certification; or 'follows ISO 14971 principles'",
+    ),
     ("REVIEW", r"\bchan doan\b", "OK only when quoting the record field (mark claims-ok)"),
     ("REVIEW", r"\bdiagnosis\b", "OK only when quoting the record field (mark claims-ok)"),
     ("REVIEW", r"\b(an toan|bao mat) tuyet doi\b", "Use 'được mã hóa và kiểm soát truy cập'"),

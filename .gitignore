@@ -57,3 +57,29 @@ imaging/dicom-real/
 # Claude Code local
 .claude/settings.local.json
 .claude/worktrees/
+
+# Extra hardening (autopilot R4)
+.git-credentials
+*.p12
+*.pfx
+*.crt
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+*.env
+*.tfplan
+.terraform.lock.hcl.bak
+*.log
+logs/
+*.csv.real
+*.parquet
+*.nii
+*.nii.gz
+*.dcm
+dicom/
+exports/
+memory-export*/
+.claude-mem/
+.mcp.local.json
+*.local.md

@@ -20,7 +20,7 @@ Installed plugins/tools — use them in every session and tell sub-agents to use
 - **claude-mem** — cross-session memory (local, Anthropic plan; cloud sync off). Wrap sensitive text in `<private>`.
 - **laya** (MCP, if enabled) — fast typed routing/classification decisions.
 - **WebMCP** — web app exposes page tools via `navigator.modelContext` (`apps/web/src/lib/webmcp/`).
-Autonomous delivery: `medilens-opus-orchestrator` (Opus) delegates to parallel `medilens-sonnet-worker` (Sonnet) agents; state in `docs/operations/autopilot-state.md`.
+Autonomous delivery: `medilens-opus-orchestrator` (Opus) delegates to parallel `medilens-sonnet-worker` (Sonnet) agents; **binding rules in `docs/operations/autopilot-rules.md`** (branch + PR per task, real GitHub review comments, human merges, no secrets/real data); state in `docs/operations/autopilot-state.md`.
 
 ## Layout (monorepo)
 `apps/{web,api,worker,phi-service,ai-gateway}` · `packages/{anatomy-assets,api-client,design-system}` · `ml/` · `imaging/` · `data/` · `infra/` · `regulatory/` · `safety/` · `docs/` · `tests/` · `tools/`

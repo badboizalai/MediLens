@@ -1,0 +1,189 @@
+{
+  "doc_id": "gv1-015-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-01-19"
+        },
+        "value": "2025-01-19"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "periodontal": [
+      {
+        "condition": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "gingivitis (Q1)"
+          },
+          "value": "gingivitis"
+        },
+        "quadrant": 1
+      }
+    ],
+    "teeth": [
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 11"
+          },
+          "value": "11"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_11"
+        }
+      },
+      {
+        "condition": "caries",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 25"
+          },
+          "value": "25"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_25"
+        },
+        "severity": "mild",
+        "surfaces": [
+          "D",
+          "M"
+        ]
+      },
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 31"
+          },
+          "value": "31"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_31"
+        },
+        "severity": "moderate"
+      },
+      {
+        "condition": "caries",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 43"
+          },
+          "value": "43"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_43"
+        },
+        "severity": "moderate",
+        "surfaces": [
+          "B"
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-015-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.38,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 6.9,
+            "type": "skew"
+          },
+          {
+            "strength": 0.47,
+            "type": "shadow"
+          },
+          {
+            "type": "fold",
+            "y": 463
+          }
+        ],
+        "file": "images/gv1-015-dental-en_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                54,
+                82
+              ],
+              [
+                949,
+                17
+              ],
+              [
+                928,
+                1283
+              ],
+              [
+                70,
+                1192
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv1-015-dental-en_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1931,
+      "name": "Phạm Thị Thử Nghiệm",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "poor",
+  "unit": "dental"
+}

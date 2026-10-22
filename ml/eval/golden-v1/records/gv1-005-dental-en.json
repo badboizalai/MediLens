@@ -1,0 +1,120 @@
+{
+  "doc_id": "gv1-005-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-02-14"
+        },
+        "value": "2025-02-14"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 27"
+          },
+          "value": "27"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_27"
+        }
+      },
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 34"
+          },
+          "value": "34"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_34"
+        }
+      },
+      {
+        "condition": "caries",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 37"
+          },
+          "value": "37"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_37"
+        },
+        "severity": "severe",
+        "surfaces": [
+          "B",
+          "O"
+        ]
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-005-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.63,
+            "type": "blur"
+          },
+          {
+            "angle_deg": -3.06,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-005-dental-en_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1928,
+      "name": "Phạm Văn Thử Nghiệm",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "dental"
+}

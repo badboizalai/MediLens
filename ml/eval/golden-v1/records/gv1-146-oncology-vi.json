@@ -1,0 +1,169 @@
+{
+  "doc_id": "gv1-146-oncology-vi",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-07-24"
+        },
+        "value": "2024-07-24"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Ung bướu"
+        },
+        "value": "Khoa Ung bướu"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "metastases": [],
+    "nodes": [
+      {
+        "involved": true,
+        "station": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Hạch nách"
+          },
+          "value": "Hạch nách"
+        }
+      }
+    ],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G1"
+        },
+        "value": "G1"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Ung thư biểu mô ống xâm nhập"
+        },
+        "value": "Ung thư biểu mô ống xâm nhập"
+      },
+      "laterality": "right",
+      "region": {
+        "confidence": 0.0,
+        "region_code": null
+      },
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Vú"
+        },
+        "value": "Vú"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "20 mm"
+        },
+        "unit": "mm",
+        "value": 20
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M0"
+        },
+        "value": "M0"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N1"
+        },
+        "value": "N1"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IIIA"
+        },
+        "value": "IIIA"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T3"
+        },
+        "value": "T3"
+      }
+    },
+    "treatments": [
+      {
+        "date": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "2024-01-25"
+          },
+          "value": "2024-01-25"
+        },
+        "type": "radiotherapy"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-146-oncology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.0,
+            "type": "blur"
+          },
+          {
+            "angle_deg": -3.85,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-146-oncology-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1900,
+      "name": "Hoàng Văn Demo",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "oncology"
+}

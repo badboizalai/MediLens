@@ -1,0 +1,173 @@
+{
+  "doc_id": "gv1-117-oncology-vi",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-02-24"
+        },
+        "value": "2025-02-24"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Ung bướu"
+        },
+        "value": "Khoa Ung bướu"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "metastases": [
+      {
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Não"
+          },
+          "value": "Não"
+        },
+        "stated_as": "confirmed"
+      },
+      {
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Xương"
+          },
+          "value": "Xương"
+        },
+        "stated_as": "suspected"
+      }
+    ],
+    "nodes": [],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G1"
+        },
+        "value": "G1"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Ung thư biểu mô tuyến"
+        },
+        "value": "Ung thư biểu mô tuyến"
+      },
+      "laterality": "midline",
+      "region": {
+        "confidence": 0.0,
+        "region_code": null
+      },
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Tiền liệt tuyến"
+        },
+        "value": "Tiền liệt tuyến"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "47 mm"
+        },
+        "unit": "mm",
+        "value": 47
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M1"
+        },
+        "value": "M1"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N0"
+        },
+        "value": "N0"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IV"
+        },
+        "value": "IV"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T2"
+        },
+        "value": "T2"
+      }
+    },
+    "treatments": [
+      {
+        "date": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "2023-12-17"
+          },
+          "value": "2023-12-17"
+        },
+        "type": "radiotherapy"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-117-oncology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1929,
+      "name": "Trần Thị Demo",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "oncology"
+}

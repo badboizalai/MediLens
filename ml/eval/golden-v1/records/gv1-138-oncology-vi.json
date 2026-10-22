@@ -1,0 +1,188 @@
+{
+  "doc_id": "gv1-138-oncology-vi",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-05-26"
+        },
+        "value": "2024-05-26"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Ung bướu"
+        },
+        "value": "Khoa Ung bướu"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "metastases": [
+      {
+        "region": {
+          "confidence": 1.0,
+          "region_code": "liver"
+        },
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Gan"
+          },
+          "value": "Gan"
+        },
+        "stated_as": "suspected"
+      },
+      {
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Xương"
+          },
+          "value": "Xương"
+        },
+        "stated_as": "confirmed"
+      }
+    ],
+    "nodes": [],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G3"
+        },
+        "value": "G3"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Ung thư biểu mô tuyến"
+        },
+        "value": "Ung thư biểu mô tuyến"
+      },
+      "laterality": "left",
+      "region": {
+        "confidence": 0.0,
+        "region_code": null
+      },
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Phổi (thùy trên)"
+        },
+        "value": "Phổi (thùy trên)"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "16 mm"
+        },
+        "unit": "mm",
+        "value": 16
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M1"
+        },
+        "value": "M1"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N0"
+        },
+        "value": "N0"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IV"
+        },
+        "value": "IV"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T2"
+        },
+        "value": "T2"
+      }
+    },
+    "treatments": [
+      {
+        "date": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "2025-03-17"
+          },
+          "value": "2025-03-17"
+        },
+        "type": "surgery"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-138-oncology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.81,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 5.1,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-138-oncology-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1941,
+      "name": "Nguyễn Văn Demo",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "oncology"
+}

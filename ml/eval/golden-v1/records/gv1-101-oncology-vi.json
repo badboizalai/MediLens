@@ -1,0 +1,181 @@
+{
+  "doc_id": "gv1-101-oncology-vi",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-04-23"
+        },
+        "value": "2024-04-23"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Ung bướu"
+        },
+        "value": "Khoa Ung bướu"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "metastases": [],
+    "nodes": [],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G1"
+        },
+        "value": "G1"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Ung thư biểu mô tuyến"
+        },
+        "value": "Ung thư biểu mô tuyến"
+      },
+      "laterality": "midline",
+      "region": {
+        "confidence": 0.0,
+        "region_code": null
+      },
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Đại tràng"
+        },
+        "value": "Đại tràng"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "57 mm"
+        },
+        "unit": "mm",
+        "value": 57
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M0"
+        },
+        "value": "M0"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N0"
+        },
+        "value": "N0"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IA"
+        },
+        "value": "IA"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T1"
+        },
+        "value": "T1"
+      }
+    },
+    "treatments": []
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-101-oncology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.25,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 0.44,
+            "type": "skew"
+          },
+          {
+            "strength": 0.51,
+            "type": "shadow"
+          },
+          {
+            "type": "fold",
+            "y": 811
+          }
+        ],
+        "file": "images/gv1-101-oncology-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                80,
+                41
+              ],
+              [
+                923,
+                99
+              ],
+              [
+                955,
+                1235
+              ],
+              [
+                22,
+                1269
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv1-101-oncology-vi_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1905,
+      "name": "Nguyễn Thị Giả",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "poor",
+  "unit": "oncology"
+}

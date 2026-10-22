@@ -1,0 +1,114 @@
+{
+  "doc_id": "gv1-045-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-02-04"
+        },
+        "value": "2024-02-04"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "periodontal": [
+      {
+        "condition": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "periodontal pocket (Q2)"
+          },
+          "value": "periodontal pocket"
+        },
+        "quadrant": 2
+      }
+    ],
+    "teeth": [
+      {
+        "condition": "impacted",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 16"
+          },
+          "value": "16"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_16"
+        }
+      },
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 27"
+          },
+          "value": "27"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_27"
+        },
+        "severity": "severe"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-045-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.77,
+            "type": "blur"
+          },
+          {
+            "angle_deg": -0.74,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-045-dental-en_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1929,
+      "name": "Hoàng Văn Thử Nghiệm",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "dental"
+}

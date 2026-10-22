@@ -1,0 +1,153 @@
+{
+  "doc_id": "gv1-116-oncology-vi",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-02-28"
+        },
+        "value": "2025-02-28"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Ung bướu"
+        },
+        "value": "Khoa Ung bướu"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "metastases": [],
+    "nodes": [],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G3"
+        },
+        "value": "G3"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Ung thư biểu mô nhú"
+        },
+        "value": "Ung thư biểu mô nhú"
+      },
+      "laterality": "midline",
+      "region": {
+        "confidence": 0.0,
+        "region_code": null
+      },
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Tuyến giáp"
+        },
+        "value": "Tuyến giáp"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "59 mm"
+        },
+        "unit": "mm",
+        "value": 59
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M0"
+        },
+        "value": "M0"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N0"
+        },
+        "value": "N0"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IIA"
+        },
+        "value": "IIA"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T2"
+        },
+        "value": "T2"
+      }
+    },
+    "treatments": []
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-116-oncology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.67,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 6.6,
+            "type": "skew"
+          },
+          {
+            "strength": 0.47,
+            "type": "shadow"
+          },
+          {
+            "type": "fold",
+            "y": 680
+          }
+        ],
+        "file": "images/gv1-116-oncology-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1921,
+      "name": "Hoàng Văn Demo",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "poor",
+  "unit": "oncology"
+}

@@ -1,0 +1,289 @@
+{
+  "doc_id": "gv1-095-cardiology-en",
+  "fields": {
+    "diagnoses": [
+      {
+        "icd10_candidates": [
+          {
+            "code": "I48.9",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Atrium"
+          },
+          "value": "Atrium"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Atrial fibrillation"
+          },
+          "value": "Atrial fibrillation"
+        }
+      },
+      {
+        "icd10_candidates": [
+          {
+            "code": "I25.1",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Coronary artery"
+          },
+          "value": "Coronary artery"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Atherosclerotic heart disease"
+          },
+          "value": "Atherosclerotic heart disease"
+        }
+      }
+    ],
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-07-16"
+        },
+        "value": "2024-07-16"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Cardiology Department"
+        },
+        "value": "Cardiology Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "observations": [
+      {
+        "loinc_hint": "13457-7",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "LDL cholesterol"
+          },
+          "value": "LDL cholesterol"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<100"
+          },
+          "value": "<100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "117 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 117.0
+        }
+      },
+      {
+        "loinc_hint": "10230-1",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Ejection fraction"
+          },
+          "value": "Ejection fraction"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "55-70"
+          },
+          "value": "55-70"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "55.6 %"
+          },
+          "unit": "%",
+          "value": 55.6
+        }
+      },
+      {
+        "loinc_hint": "8462-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Diastolic blood pressure"
+          },
+          "value": "Diastolic blood pressure"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-80"
+          },
+          "value": "60-80"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "63 mmHg"
+          },
+          "unit": "mmHg",
+          "value": 63.0
+        }
+      },
+      {
+        "loinc_hint": "8867-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Heart rate"
+          },
+          "value": "Heart rate"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-100"
+          },
+          "value": "60-100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "101 /min"
+          },
+          "unit": "/min",
+          "value": 101.0
+        }
+      },
+      {
+        "loinc_hint": "10839-9",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Troponin I"
+          },
+          "value": "Troponin I"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<0.04"
+          },
+          "value": "<0.04"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "0.03 ng/mL"
+          },
+          "unit": "ng/mL",
+          "value": 0.03
+        }
+      }
+    ],
+    "procedures": [
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Echocardiography"
+        },
+        "value": "Echocardiography"
+      },
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Electrocardiogram"
+        },
+        "value": "Electrocardiogram"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-095-cardiology-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.86,
+            "type": "blur"
+          },
+          {
+            "angle_deg": -5.85,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-095-cardiology-en_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1910,
+      "name": "Nguyễn Thị Thử Nghiệm",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "cardiology"
+}

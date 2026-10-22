@@ -1,6 +1,6 @@
 """Deterministic generator for golden-v0.
 
-uv run --with pillow python -m synth_gen.generate --out ml/eval/golden-v0 [--seed 20260101] [--no-images]
+uv run --with pillow python -m synth_gen.generate --out ml/eval/golden-v0 [--profile v0|v1] [--seed N] [--no-images]
 """
 
 from __future__ import annotations
@@ -12,17 +12,37 @@ from pathlib import Path
 
 from . import content, render
 
-GENERATOR_VERSION = "0.2.0"
 DEFAULT_SEED = 20260101
-UNIT_COUNTS = [("dental", 17), ("cardiology", 17), ("oncology", 16)]
-QUALITY_COUNTS = [("good", 25), ("medium", 18), ("poor", 7)]  # 50/35/15 %
+# Profiles: v0 = golden-v0 (50 docs, output unchanged); v1 = golden-v1 (150 docs, `region` added).
+PROFILES = {
+    "v0": {
+        "prefix": "gv0",
+        "version": "0.2.0",
+        "units": [("dental", 17), ("cardiology", 17), ("oncology", 16)],
+        "quality": [("good", 25), ("medium", 18), ("poor", 7)],  # 50/35/15 %
+        "variants": 10,  # 20 %
+        "regions": False,
+    },
+    "v1": {
+        "prefix": "gv1",
+        "version": "0.3.0",
+        "units": [("dental", 50), ("cardiology", 50), ("oncology", 50)],
+        "quality": [("good", 75), ("medium", 53), ("poor", 22)],  # 50/35/15 %
+        "variants": 30,  # 20 %
+        "regions": True,
+    },
+}
+V1_SEED = 20261001
+# Only region codes that exist in the repo's region tree / assets; everything else stays null.
+MET_REGIONS = {"Gan": "liver", "Liver": "liver"}
 
 
-def plan(seed: int) -> list[dict]:
+def plan(seed: int, profile: str = "v0") -> list[dict]:
     """Per-record (unit, lang, quality) assignment; every 5th record is English."""
     rng = random.Random(seed)  # noqa: S311 - deterministic synthetic data
-    units = [u for u, n in UNIT_COUNTS for _ in range(n)]
-    qualities = [q for q, n in QUALITY_COUNTS for _ in range(n)]
+    cfg = PROFILES[profile]
+    units = [u for u, n in cfg["units"] for _ in range(n)]
+    qualities = [q for q, n in cfg["quality"] for _ in range(n)]
     rng.shuffle(qualities)
     return [
         {"unit": u, "lang": "en" if i % 5 == 4 else "vi", "quality": q}
@@ -30,17 +50,37 @@ def plan(seed: int) -> list[dict]:
     ]
 
 
-def variant_subset(seed: int, n: int = 10) -> dict[int, str]:
+def variant_subset(seed: int, n: int = 10, total: int = 50) -> dict[int, str]:
     """Seeded ~20 % of records get an extra variant: half handwriting, half perspective.
 
     Uses its own RNG so existing plan/records are unchanged.
     """
     rng = random.Random(f"{seed}:variants")  # noqa: S311 - deterministic synthetic data
-    picked = rng.sample(range(sum(c for _, c in UNIT_COUNTS)), n)
+    picked = rng.sample(range(total), n)
     return {i: ("handwriting" if k % 2 == 0 else "perspective") for k, i in enumerate(picked)}
 
 
-def generate_record(index: int, spec: dict, seed: int) -> tuple[dict, list[str], list[str]]:
+def _region(code: str | None) -> dict:
+    return {"region_code": code, "confidence": 1.0 if code else 0.0}
+
+
+def add_regions(unit: str, fields: dict) -> None:
+    """Attach `region` (schemas v1) to region-bearing items; null when no code is known."""
+    if unit == "dental":
+        for t in fields["teeth"]:
+            t["region"] = _region(f"tooth_{t['fdi']['value']}")
+    elif unit == "cardiology":
+        for d in fields["diagnoses"]:
+            d["region"] = _region(None)
+    else:
+        fields["primary"]["region"] = _region(None)
+        for m in fields["metastases"]:
+            m["region"] = _region(MET_REGIONS.get(m["site"]["value"]))
+
+
+def generate_record(
+    index: int, spec: dict, seed: int, profile: str = "v0"
+) -> tuple[dict, list[str], list[str]]:
     """Returns (record dict without images, header lines, body lines)."""
     rng = random.Random(f"{seed}:{index}")  # noqa: S311 - deterministic synthetic data
     lang, unit = spec["lang"], spec["unit"]
@@ -54,7 +94,10 @@ def generate_record(index: int, spec: dict, seed: int) -> tuple[dict, list[str],
     ]
     lines: list[str] = []
     fields = content.BUILDERS[unit](rng, lang, lines)
-    doc_id = f"gv0-{index + 1:03d}-{unit}-{lang}"
+    cfg = PROFILES[profile]
+    if cfg["regions"]:
+        add_regions(unit, fields)
+    doc_id = f"{cfg['prefix']}-{index + 1:03d}-{unit}-{lang}"
     record = {
         "doc_id": doc_id,
         "unit": unit,
@@ -65,21 +108,24 @@ def generate_record(index: int, spec: dict, seed: int) -> tuple[dict, list[str],
             "lang": lang,
             "patient": patient,
             "seed": seed,
-            "generator_version": GENERATOR_VERSION,
+            "generator_version": cfg["version"],
             "images": [],
         },
     }
     return record, header, lines
 
 
-def generate(out: Path, seed: int = DEFAULT_SEED, images: bool = True) -> list[dict]:
+def generate(
+    out: Path, seed: int = DEFAULT_SEED, images: bool = True, profile: str = "v0"
+) -> list[dict]:
     (out / "records").mkdir(parents=True, exist_ok=True)
     if images:
         (out / "images").mkdir(exist_ok=True)
     records = []
-    extra = variant_subset(seed)
-    for i, spec in enumerate(plan(seed)):
-        rec, header, lines = generate_record(i, spec, seed)
+    cfg = PROFILES[profile]
+    extra = variant_subset(seed, cfg["variants"], sum(c for _, c in cfg["units"]))
+    for i, spec in enumerate(plan(seed, profile)):
+        rec, header, lines = generate_record(i, spec, seed, profile)
         if images:
             rng = random.Random(f"{seed}:{i}:img")  # noqa: S311 - deterministic synthetic data
             clean = render.render_clean(header, lines)
@@ -117,10 +163,12 @@ def generate(out: Path, seed: int = DEFAULT_SEED, images: bool = True) -> list[d
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=Path, required=True)
-    ap.add_argument("--seed", type=int, default=DEFAULT_SEED)
+    ap.add_argument("--profile", choices=sorted(PROFILES), default="v0")
+    ap.add_argument("--seed", type=int, default=None, help="default 20260101 (v0) / 20261001 (v1)")
     ap.add_argument("--no-images", action="store_true")
     a = ap.parse_args()
-    recs = generate(a.out, a.seed, not a.no_images)
+    seed = a.seed if a.seed is not None else (V1_SEED if a.profile == "v1" else DEFAULT_SEED)
+    recs = generate(a.out, seed, not a.no_images, a.profile)
     print(f"wrote {len(recs)} records to {a.out}")
 
 

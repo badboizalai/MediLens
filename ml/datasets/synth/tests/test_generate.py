@@ -7,7 +7,7 @@ from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 from synth_gen import generate, render
 
-SCHEMAS = Path(__file__).resolve().parents[3] / "eval" / "golden-v0" / "schemas"
+SCHEMAS = Path(__file__).resolve().parents[3] / "schemas"
 FDI = {f"{q}{n}" for q in (1, 2, 3, 4) for n in range(1, 9)}
 
 
@@ -103,3 +103,50 @@ def test_perspective_coeffs_identity():
     pts = [(0, 0), (10, 0), (10, 10), (0, 10)]
     c = render._perspective_coeffs(pts, pts)
     assert [round(v, 6) for v in c] == [1, 0, 0, 0, 1, 0, 0, 0]
+
+
+@pytest.fixture(scope="module")
+def records_v1(tmp_path_factory):
+    return generate.generate(
+        tmp_path_factory.mktemp("g1"), generate.V1_SEED, images=False, profile="v1"
+    )
+
+
+def test_v1_150_docs_schema_valid_with_regions(records_v1):
+    validators = _validators()
+    assert len(records_v1) == 150
+    assert Counter(r["unit"] for r in records_v1) == {
+        "dental": 50,
+        "cardiology": 50,
+        "oncology": 50,
+    }
+    assert Counter(r["quality"] for r in records_v1) == {"good": 75, "medium": 53, "poor": 22}
+    assert len({r["doc_id"] for r in records_v1}) == 150
+    for r in records_v1:
+        assert r["doc_id"].startswith("gv1-")
+        errs = list(validators[r["unit"]].iter_errors(r["fields"]))
+        assert not errs, (r["doc_id"], errs[:1])
+        if r["unit"] == "dental":
+            for t in r["fields"]["teeth"]:
+                assert t["region"]["region_code"] == f"tooth_{t['fdi']['value']}"
+
+
+def test_schema_rejects_missing_source():
+    bad = {
+        "encounter": {},
+        "teeth": [{"fdi": {"value": "11", "confidence": 1}, "condition": "caries"}],
+    }
+    assert list(_validators()["dental"].iter_errors(bad))
+
+
+def test_v1_variants_20_percent_and_size(tmp_path):
+    recs = generate.generate(tmp_path, generate.V1_SEED, profile="v1")
+    kinds = Counter(
+        im["variant"]
+        for r in recs
+        for im in r["metadata"]["images"]
+        if im["variant"] in ("handwriting", "perspective")
+    )
+    assert kinds == {"handwriting": 15, "perspective": 15}
+    size = sum(f.stat().st_size for f in (tmp_path / "images").glob("*.jpg"))
+    assert size < 30 * 1024 * 1024

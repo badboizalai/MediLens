@@ -95,13 +95,34 @@ AI merge of #26 was then blocked by the permission classifier → owner merges #
 
 | ID | Day | Task | Owner skill | Paths | Status | Branch | PR |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| S3-T21 | D21 | C4 + arc42 SAD | solution-architect | `docs/architecture/SAD.md`, `c4/` | in-progress | docs/S3-T21-sad-c4 | |
-| S3-T23 | D23 | Security CI: Semgrep, SCA, Trivy, SBOM | security-engineer | `.github/workflows/security.yml` | in-progress | ci/S3-T23-security-pipeline | |
-| S3-T24 | D24 | Terraform org, SCPs, org CloudTrail | cloud-devops | `infra/terraform/org/` | in-progress | feat/S3-T24-tf-org | |
-| S3-T25 | D25 | Terraform nonprod VPC + endpoints | cloud-devops | `infra/terraform/modules/network/`, `envs/dev/network.tf` | in-progress | feat/S3-T25-tf-network | |
-| S3-T26 | D26 | API foundation: settings, problem details, request id, logging | backend | `apps/api/src/medilens/core/`, `main.py`, tests | in-progress | feat/S3-T26-api-foundation | |
-| S3-T27 | D27 | OIDC JWT validation, identity module | backend | `apps/api/.../modules/identity/` | in-progress | feat/S3-T27-api-auth | |
-| S3-T28 | D28 | Web app shell, i18n, OIDC sign-in | frontend | `apps/web/` | in-progress | feat/S3-T28-web-shell-auth | |
-| S3-T29 | D29 | STRIDE threat model v1 | security-engineer | `docs/security/` | in-progress | docs/S3-T29-threat-model | |
-| S4-T31 | D31–33 | ERD, schemas/roles, initial migration, RLS | backend | `apps/api/migrations/`, `core/db.py`, `docs/architecture/erd.md` | in-progress | feat/S4-T31-db-foundation | |
-| S4-T38 | D37–38 | Design system tokens, components, Storybook | frontend | `packages/design-system/` | in-progress | feat/S4-T38-design-system | |
+| S3-T21 | D21 | C4 + arc42 SAD | solution-architect | `docs/architecture/SAD.md`, `c4/` | **merged** | docs/S3-T21-sad-c4 | #34 |
+| S3-T23 | D23 | Security CI: Semgrep, SCA, Trivy, SBOM | security-engineer | `.github/workflows/security.yml` | **merged** | ci/S3-T23-security-pipeline | #30 |
+| S3-T24 | D24 | Terraform org, SCPs, org CloudTrail | cloud-devops | `infra/terraform/org/` | **merged** | feat/S3-T24-tf-org | #35 |
+| S3-T25 | D25 | Terraform nonprod VPC + endpoints | cloud-devops | `infra/terraform/modules/network/`, `envs/dev/network.tf` | **merged** | feat/S3-T25-tf-network | #31 |
+| S3-T26 | D26 | API foundation: settings, problem details, request id, logging | backend | `apps/api/src/medilens/core/`, `main.py`, tests | **merged** | feat/S3-T26-api-foundation | #36 |
+| S3-T27 | D27 | OIDC JWT validation, identity module | backend | `apps/api/.../modules/identity/` | **merged** | feat/S3-T27-api-auth | #33 |
+| S3-T28 | D28 | Web app shell, i18n, OIDC sign-in | frontend | `apps/web/` | **merged** | feat/S3-T28-web-shell-auth | #32 |
+| S3-T29 | D29 | STRIDE threat model v1 | security-engineer | `docs/security/` | **merged** | docs/S3-T29-threat-model | #37 |
+| S4-T31 | D31–33 | ERD, schemas/roles, initial migration, RLS | backend | `apps/api/migrations/`, `core/db.py`, `docs/architecture/erd.md` | **merged** | feat/S4-T31-db-foundation | #39 |
+| S4-T38 | D37–38 | Design system tokens, components, Storybook | frontend | `packages/design-system/` | **merged** | feat/S4-T38-design-system | #38 |
+| S4-T34 | D34 | PHI service level A (envelope encryption, crypto-shred) | security + backend | `apps/phi-service/` | **merged** | feat/S4-T34-phi-service | #42 |
+| S4-T36 | D36 | Terraform storage (S3 + CMKs + malware scan) | cloud-devops | `infra/terraform/modules/storage/` | **merged** | feat/S4-T36-tf-storage | #44 |
+| S4-T39 | D39 | Data dictionary + column catalog check | data-engineer | `data/`, `tools/check_data_catalog.py` | **merged** | docs/S4-T39-data-dictionary | #45 |
+| S4-T40 | D40 | Test strategy, plan v1, E2E skeleton | qa-engineer | `docs/qa/`, `tests/e2e/` | **merged** | docs/S4-T40-test-strategy | #41 |
+| S5-T41 | D41 | Schemas v1 + golden set v1 (150) | ai-ml-engineer | `ml/schemas/`, `ml/eval/golden-v1/` | **merged** | feat/S5-T41-schemas-golden-v1 | #48 |
+| S5-T42 | D42 | Worker runtime: queue, state machine, idempotency, DLQ | backend | `apps/worker/` | **merged** | feat/S5-T42-worker-runtime | #46 |
+| S5-T44 | D44 | AI Gateway v0 | mlops | `apps/ai-gateway/` | **merged** | feat/S5-T44-ai-gateway-v0 | #43 |
+| S5-T47 | D47 | Staging IaC + OIDC CD | cloud-devops | `infra/terraform/modules/*`, `envs/staging`, deploy workflow | **merged** (round 2) | feat/S5-T47-staging-iac | #47 |
+| S6-T59 | D51,D59 | Capture guide VI/EN + upload stories | tech-writer + BA | `docs/user-guide/`, `docs/requirements/` | **merged** | docs/S6-T59-capture-guide-stories | #40 |
+| S3-F14 | — | Fix security findings (XXE, workflow injection, image CVEs) | security | skill script, workflows, api Dockerfile | in-progress | fix/S3-F14-security-findings | |
+| S4-T35 | D35,D53 | Secure upload API + outbox | backend | `apps/api/.../document/` | in-progress | feat/S4-T35-upload-api | |
+| S5-T43 | D43 | Worker preprocessing + OCR | ai-ml | `apps/worker/.../ocr/` | in-progress | feat/S5-T43-worker-ocr | |
+| S5-T45 | D45 | LLM extraction via gateway | ai-ml | `apps/worker/.../extraction/`, `ml/prompts/` | in-progress | feat/S5-T45-llm-extraction | |
+| S5-T46 | D46 | Extraction eval harness + CI gate | ai-ml | `ml/eval/extraction/`, eval workflow | in-progress | feat/S5-T46-eval-ci | |
+| S5-T48 | D48 | Region tree v1, FDI, licence-gated loaders | clinical-informaticist | `data/terminology/` | in-progress | feat/S5-T48-terminology | |
+| S5-T49 | D49 | G1-D dataset manifests + evidence | data-curator | `ml/eval/manifests/`, `docs/gates/G1-D.md` | in-progress | docs/S5-T49-g1d-datasets | |
+| S5-F15 | — | Signed service tokens (gateway, PHI) | security | `apps/ai-gateway`, `apps/phi-service` | in-progress | feat/S5-F15-service-auth | |
+| S6-T52 | D52,D56 | Web upload + progress screens, DS integration, e2e wiring | frontend | `apps/web/` | in-progress | feat/S6-T52-web-upload | |
+| S3-F16 | — | Security requirements catalog | security | `docs/security/` | in-progress | docs/S3-F16-sec-catalog | |
+
+Open for owner: `apps/web/.env.example` writes are denied by the session file rules (variables listed in PR #32).

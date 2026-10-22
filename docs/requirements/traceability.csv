@@ -31,3 +31,6 @@ BR-042,US-029,CT shows illustrative anatomy only,TC-029,manual,Pipeline emits an
 BR-043,US-030,CT de-identified on upload,TC-030,api,Synthetic DICOM with PHI tags → none remain downstream; other user cannot fetch original,planned
 BR-044,US-031,See which source wins on conflict,TC-031,unit,"Record says right kidney, patient text says left → record wins, mismatch warning shown",planned
 BR-045,US-032,Import digital records without OCR,TC-032,api,Text-layer PDF → no OCR job; valid FHIR Bundle → zero LLM calls,planned
+BR-010,US-033,Be told when the file type or size is not accepted,TC-033,api,`.docx` → rejected with accepted formats listed; 21 MB file → 413 `/errors/file-too-large` with the limit shown,planned
+BR-011,US-034,Retake a photo that is too dark or too small,TC-034,api,Underexposed synthetic photo → 422 `/errors/low-quality-image` with lighting tip; 500 px image → rejected with retake tip,planned
+BR-013,US-035,See processing progress until the draft is ready,TC-035,e2e,Upload → progress steps shown → result stays draft until the user confirms,planned

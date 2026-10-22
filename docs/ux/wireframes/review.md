@@ -16,7 +16,7 @@ Let the user check what the AI extracted against the original, fix or remove wro
 | < Documents   lab_2026.pdf   Extracted by AI - please check  |
 +------------------------------+-------------------------------+
 | ORIGINAL (zoom +/-, page 1/2)| EXTRACTED FIELDS   3 to check |
-|  +------------------------+  | Diagnosis text                |
+|  +------------------------+  | Finding text                  |
 |  |  (scanned page; the    |  | {Sâu răng        }  [ok]      |
 |  |   matching text is     |  | Location: tooth 36 (FDI)      |
 |  |   outlined)            |  | ! We're not sure. Check it.   |

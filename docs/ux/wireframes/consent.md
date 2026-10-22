@@ -18,7 +18,8 @@ Obtain explicit, informed consent to process health data before any upload. Re-s
 | Before you start               |
 |  - we show and explain your    |
 |    record                      |
-|  - we never diagnose           |
+|  - we explain what your record |
+|    says                        |
 |  - no training on your data    |
 |    unless you opt in           |
 | [Read full privacy notice >]   |

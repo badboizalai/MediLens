@@ -3,13 +3,13 @@
 | Field | Value |
 | --- | --- |
 | Route | Panel on /app/viewer (side panel desktop, bottom sheet mobile) |
-| Rules | BR-022/023 (approved knowledge + own data only; no doses, no medication changes, no survival prognosis), BR-041 (115 first), BR-042 |
+| Rules | BR-022/023 (approved knowledge + own data only; refusal scope per BR-022/023), BR-041 (115 first), BR-042 |
 | Primary action | Send question |
 | Personas | Patient, caregiver |
 | Reviewers | clinical-safety-officer (all copy), business-analyst |
 
 ## Purpose
-Explain a selected finding in plain language, citing the user's own record and reviewed sources, and help the user prepare questions for their doctor. It explains; it does not diagnose, advise treatment or doses, or predict outcomes.
+Explain a selected finding in plain language, citing the user's own record and reviewed sources, and help the user prepare questions for their doctor. It explains what the record says and points treatment, dose and outlook questions to the user's doctor.
 
 ## Wireframe (desktop side panel)
 ```
@@ -32,8 +32,8 @@ Explain a selected finding in plain language, citing the user's own record and r
 |  MediLens: ... [source 1]            |
 |  (streaming ...)                     |
 | {Type a question           } [Send]   |
-| This is an illustration, not a       |
-| diagnosis.                           |
+| This illustration helps you          |
+| understand your records.             |
 +--------------------------------------+
 ```
 
@@ -44,7 +44,7 @@ Explain a selected finding in plain language, citing the user's own record and r
 | Finding card | Record quote, meaning, questions for doctor, SourceBadge with review date |
 | Chat list | Streaming answer, citations per answer; "Extracted by AI" label |
 | Message input | Max length hint; Send via button and Enter |
-| Guardrail messages | Refusal for dose/medication/prognosis; emergency banner |
+| Guardrail messages | Refusal for dose/medication/prognosis; emergency banner <!-- claims-ok --> |
 | Fallback card | When no reviewed article exists |
 
 ## States
@@ -53,9 +53,9 @@ Explain a selected finding in plain language, citing the user's own record and r
 | Empty | No question yet | Finding card plus suggested questions | explain.suggest |
 | Loading | Answer streaming | Typing indicator, Stop button | explain.loading |
 | No source | No reviewed article (BR-022) | Fallback message, suggest asking doctor | explain.noSource |
-| Dosing/medication | User asks about dose or stopping | Polite refusal, ask prescribing doctor | explain.noDosing |
-| Prognosis | User asks about survival or outlook | Refusal, ask treating doctor | explain.noPrognosis |
-| Diagnosis | User asks "do I have X" | Restate what the record says, no new diagnosis | explain.noDiagnosis |
+| Dosing/medication | User asks about dose or stopping | Polite refusal, ask prescribing doctor | explain.noDosing <!-- claims-ok --> |
+| Prognosis | User asks about survival or outlook | Refusal, ask treating doctor | explain.noPrognosis <!-- claims-ok --> |
+| Diagnosis | User asks "do I have X" | Restate what the record says, no new diagnosis | explain.noDiagnosis <!-- claims-ok --> |
 | Emergency | Text mentions emergency signs (BR-041) | 115 banner above all content | explain.emergency |
 | Error | Service failure or rate limit | Retry, finding card still readable | explain.error |
 | Permission denied | Not the owner | Not-found | common.notFound |
@@ -69,11 +69,11 @@ Explain a selected finding in plain language, citing the user's own record and r
 | explain.noSource | Hiện chưa có thông tin đã được kiểm duyệt cho câu hỏi này. Bạn nên hỏi bác sĩ. | We don't have reviewed information for this yet. Please ask your doctor. |
 | explain.noDosing | Mình không thể tư vấn về liều hay ngừng thuốc. Hãy trao đổi với bác sĩ kê đơn. | I can't advise on doses or stopping medicine. Please talk to the prescribing doctor. |
 | explain.noPrognosis | Mình không thể dự đoán diễn tiến. Bác sĩ điều trị của bạn là người phù hợp để trao đổi. | I can't predict how things will go. Your treating doctor is the right person to ask. |
-| explain.noDiagnosis | Mình chỉ giải thích những gì hồ sơ của bạn ghi, không chẩn đoán. | I can only explain what your record says; I don't diagnose. |
+| explain.noDiagnosis | Mình giúp bạn hiểu những gì hồ sơ ghi; kết luận y khoa hãy hỏi bác sĩ của bạn. | I help you understand what your record says; for medical conclusions please ask your doctor. |
 | explain.emergency | Nếu bạn đang đau ngực, khó thở hoặc có nguy hiểm tức thời, hãy gọi 115 ngay. | If you have chest pain, trouble breathing or are in immediate danger, call 115 now. |
 | explain.error | Chưa trả lời được lúc này. Hãy thử lại sau ít phút. | I can't answer right now. Please try again in a few minutes. |
 | explain.suggest | Gợi ý: "Hồ sơ này ghi gì?", "Mình nên hỏi bác sĩ điều gì?" | Try: "What does this record say?", "What should I ask my doctor?" |
-| viewer.illustration | Đây là hình minh họa, không phải chẩn đoán. | This is an illustration, not a diagnosis. |
+| viewer.illustration | Đây là hình minh họa giúp bạn hiểu hồ sơ của mình. | This is an illustration that helps you understand your records. |
 
 Wording guard: no "bạn bị / you have", no drug names with amounts, no "sẽ khỏi / thời gian sống / survival". Any new string needs clinical-safety-officer review before build.
 

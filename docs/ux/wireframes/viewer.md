@@ -9,12 +9,12 @@
 | Reviewers | clinical-safety-officer (wording, severity labels) |
 
 ## Purpose
-Illustrate where confirmed findings are on the body. It is an illustration to help understanding, not a diagnosis.
+Illustrate where confirmed findings are on the body. It is an illustration that helps the user understand their records.
 
 ## Wireframe (desktop 1280 px)
 ```
 +---------------------------------------------------------------+
-| Hình minh họa giúp bạn hiểu hồ sơ, không thay thế ý kiến bác sĩ|  <- DisclaimerBar (always visible)
+| Hình minh họa giúp bạn hiểu hồ sơ của mình; hãy dùng cùng lời khuyên của bác sĩ|  <- DisclaimerBar (always visible)
 +---------------------------------------------------------------+
 | [2D|3D] [Front Back Left Right] Layers v  X-ray --o--  [Reset]|
 +-------------------------------------+-------------------------+
@@ -58,8 +58,8 @@ Mobile: 2D default, canvas full width, detail as bottom sheet, findings list as 
 ## Copy (VI / EN)
 | Key | VI | EN |
 | --- | --- | --- |
-| disclaimer.short | Hình minh họa giúp bạn hiểu hồ sơ, không thay thế ý kiến bác sĩ. | This illustration helps you understand your record; it does not replace your doctor. |
-| viewer.illustration | Đây là hình minh họa, không phải chẩn đoán. | This is an illustration, not a diagnosis. |
+| disclaimer.short | Hình minh họa giúp bạn hiểu hồ sơ của mình; hãy dùng cùng lời khuyên của bác sĩ. | This illustration helps you understand your records; use alongside your doctor's advice. |
+| viewer.illustration | Đây là hình minh họa giúp bạn hiểu hồ sơ của mình. | This is an illustration that helps you understand your records. |
 | viewer.empty | Chưa có thông tin nào được xác nhận. Hãy tải hồ sơ lên để bắt đầu. | Nothing confirmed yet. Upload a record to begin. |
 | viewer.noWebgl | Thiết bị của bạn không hiển thị được 3D. Đang dùng hình 2D. | Your device can't show 3D. Using the 2D view. |
 | viewer.error | Chưa tải được hình cơ thể. Danh sách bên dưới vẫn dùng được. | We couldn't load the body view. The list below still works. |
@@ -69,7 +69,7 @@ Mobile: 2D default, canvas full width, detail as bottom sheet, findings list as 
 | viewer.patientReported | bạn mô tả | you described |
 | onco.spreadLayer | Thông tin tham khảo, không phải tình trạng của bạn | Reference information, not your condition |
 
-Severity chips always show a text label next to the colour; exact labels pending clinical-safety-officer. Wording rule: describe what the record says; never "you have", never advice on treatment, dose or outlook.
+Severity chips always show a text label next to the colour; exact labels pending clinical-safety-officer. Wording rule: describe what the record says; never "you have", point treatment questions to the doctor.
 
 ## Accessibility
 - Keyboard: arrows rotate, +/- zoom, R reset, Tab through the findings list; focus ring at least 2 px, contrast 3:1.

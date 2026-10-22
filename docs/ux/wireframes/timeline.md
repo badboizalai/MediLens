@@ -13,7 +13,7 @@ Show encounters and findings over time and let the user compare two dates side b
 ## Wireframe (desktop 1280 px)
 ```
 +---------------------------------------------------------------+
-| Hình minh họa giúp bạn hiểu hồ sơ, không thay thế ý kiến bác sĩ|
+| Hình minh họa giúp bạn hiểu hồ sơ của mình; hãy dùng cùng lời khuyên của bác sĩ|
 +---------------------------------------------------------------+
 | Timeline   Filter: [All units v]                              |
 | o----------o----------o----------o                            |

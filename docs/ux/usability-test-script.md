@@ -24,7 +24,7 @@ Warm-up: "Bạn đã bao giờ xem hồ sơ bệnh án của mình hoặc ngư�
 | # | Task prompt (VI / EN) | Screens | Success criteria | Max time |
 | --- | --- | --- | --- | --- |
 | T1 (main) | "Hãy tải hồ sơ nha khoa này lên và xác nhận kết quả." / "Upload this dental record and confirm the results." | Consent, Upload, Review, Viewer | Agrees to consent, uploads, confirms all flagged fields, reaches Viewer with confirmed findings | 5 min |
-| T2 | "Tìm xem răng nào có vấn đề và điều đó có nghĩa là gì." / "Find which tooth has a problem and what it means." | Viewer, Explain | Names tooth 36 and "sâu răng" (per record) and finds the "this is an illustration, not a diagnosis" notice | 2 min |
+| T2 | "Tìm xem răng nào có vấn đề và điều đó có nghĩa là gì." / "Find which tooth has a problem and what it means." | Viewer, Explain | Names tooth 36 and "sâu răng" (per record) and finds the "illustration that helps you understand your records" notice | 2 min |
 | T3 | "Chia sẻ hồ sơ nha khoa với bác sĩ trong 7 ngày." / "Share the dental record with a doctor for 7 days." | Share | Share created with Dental scope and 7-day expiry | 3 min |
 
 Facilitator rules: do not lead or explain the UI; if stuck for 1 minute ask "Bạn đang nghĩ gì?"; after 2 more minutes give a neutral hint and mark "assisted"; stop at max time and mark "fail".
@@ -33,9 +33,9 @@ Facilitator rules: do not lead or explain the UI; if stuck for 1 minute ask "B�
 1. Vị trí này ở đâu trên cơ thể? / Where in the body is this?
 2. Hồ sơ ghi mức độ như thế nào? Bạn biết điều đó từ đâu? / What does the record say about it, and how do you know?
 3. Bạn sẽ hỏi bác sĩ điều gì? / What would you ask your doctor?
-4. Hình này có phải là chẩn đoán không? / Is this picture a diagnosis? (Expected: no, an illustration.)
+4. Hình này cho bạn biết điều gì? / What does this picture tell you? (Expected: an illustration that helps understand the record.)
 
-Safety probe (note, do not coach): Did any participant read the screen as a diagnosis, a treatment instruction, or an outlook? Record verbatim; report to clinical-safety-officer.
+Safety probe (note, do not coach): Did any participant read the screen as a medical conclusion, a treatment instruction, or a forecast? Record verbatim; report to clinical-safety-officer.
 
 ## 5. Post-task
 - Emotional response, 1 (calm) to 5 (anxious), after T2.
@@ -50,11 +50,11 @@ Safety probe (note, do not coach): Did any participant read the screen as a diag
 | T2 and T3 completion | As above | at least 2 of 3 each (target, not gate) |
 | Time on task | Stopwatch | within max time |
 | Errors / hints | Count | recorded |
-| Comprehension | Questions 1-4 correct | at least 2 of 3 participants, all 4 answered, Q4 "illustration" correct |
+| Comprehension | Questions 1-4 correct | at least 2 of 3 participants, all 4 answered, Q4 answer calls it an illustration |
 | SUS | Mean | 68 or higher (reference) |
 | Anxiety | Mean 1-5 | at most 3 |
 
-Round passes if T1 is completed unassisted by at least 2 of 3 participants and no participant reads the Viewer or Explain as a diagnosis.
+Round passes if T1 is completed unassisted by at least 2 of 3 participants and no participant reads the Viewer or Explain as a medical conclusion.
 
 ## 7. Recording sheet (one per participant)
 
@@ -77,7 +77,7 @@ SUS score: ___  Anxiety: ___  Comprehension Q1-Q4: ___
 | Issue | Task | Severity (1-4) | Evidence | Recommendation |
 | --- | --- | --- | --- | --- |
 
-Severity: 1 cosmetic, 2 minor, 3 major (task slowed or failed), 4 blocker (safety or misreading as diagnosis). Severity 4 items go to clinical-safety-officer and block build of that screen.
+Severity: 1 cosmetic, 2 minor, 3 major (task slowed or failed), 4 blocker (safety or misread as a medical conclusion). Severity 4 items go to clinical-safety-officer and block build of that screen.
 
 ## 9. Privacy and ethics
 - Synthetic data only; no real records brought by participants.

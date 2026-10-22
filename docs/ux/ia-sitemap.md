@@ -1,7 +1,7 @@
 # MediLens IA and Sitemap (MVP) [S2-T10]
 
 Status: draft v0.1 for review. Owner: medilens-ux-ui-designer. Reviewers: business-analyst, frontend-engineer, clinical-safety-officer (Viewer/Explain wording).
-Sources: plan 2.3, 2.4, 3, 4.3; skill references `screen-inventory.md`, `unit-viewer-patterns.md`. MediLens illustrates and explains; it never diagnoses, doses or gives prognosis (BR-042).
+Sources: plan 2.3, 2.4, 3, 4.3; skill references `screen-inventory.md`, `unit-viewer-patterns.md`. MediLens illustrates and explains what the user's own records say (BR-042).
 
 ## 1. Sitemap
 
@@ -49,7 +49,7 @@ flowchart LR
 | 2 | Upload | BR-010/011: JPG/PNG/HEIC/PDF, max 20 MB, max 30 pages, blur rejected |
 | 3 | Review | BR-012: confidence under 0.7 must be confirmed by user |
 | 4 | Viewer | BR-013: only confirmed data; BR-015: unmapped stays in list; BR-020 severity colour plus text |
-| 5 | Explain | BR-022/023: approved sources only, no dose/prognosis; BR-041 emergency shows 115 first |
+| 5 | Explain | BR-022/023: approved sources only, scope limited per BR-022/023; BR-041 emergency shows 115 first |
 
 ## 3. Navigation model
 - Primary nav (desktop top bar / mobile bottom bar): Home (Dashboard), Upload, Body viewer, Timeline, Sharing; Settings under the profile menu.

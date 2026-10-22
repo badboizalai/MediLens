@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "laya": {
+      "command": "laya-mcp-server",
+      "args": [],
+      "env": { "LAYA_DEFAULT_MODEL": "multilingual" }
+    }
+  }
+}

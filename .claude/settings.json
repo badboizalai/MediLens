@@ -3,6 +3,7 @@
   "env": {
     "ENV": "local"
   },
+  "enabledMcpjsonServers": ["laya"],
   "permissions": {
     "allow": [
       "Bash(make:*)",

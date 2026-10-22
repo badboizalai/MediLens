@@ -1,0 +1,143 @@
+{
+  "doc_id": "gv1-027-dental-vi",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-08-03"
+        },
+        "value": "2024-08-03"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Răng Hàm Mặt"
+        },
+        "value": "Khoa Răng Hàm Mặt"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "missing",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 11"
+          },
+          "value": "11"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_11"
+        }
+      },
+      {
+        "condition": "fracture",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 24"
+          },
+          "value": "24"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_24"
+        }
+      },
+      {
+        "condition": "root_canal",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 38"
+          },
+          "value": "38"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_38"
+        }
+      },
+      {
+        "condition": "missing",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 44"
+          },
+          "value": "44"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_44"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-027-dental-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                66,
+                77
+              ],
+              [
+                932,
+                17
+              ],
+              [
+                946,
+                1213
+              ],
+              [
+                76,
+                1226
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv1-027-dental-vi_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1927,
+      "name": "Trần Thị Thử Nghiệm",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "dental"
+}

@@ -1,0 +1,246 @@
+{
+  "doc_id": "gv1-071-cardiology-vi",
+  "fields": {
+    "diagnoses": [
+      {
+        "icd10_candidates": [
+          {
+            "code": "I10",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Hệ tuần hoàn"
+          },
+          "value": "Hệ tuần hoàn"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tăng huyết áp vô căn"
+          },
+          "value": "Tăng huyết áp vô căn"
+        }
+      },
+      {
+        "icd10_candidates": [
+          {
+            "code": "I35.0",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Van động mạch chủ"
+          },
+          "value": "Van động mạch chủ"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Hẹp van động mạch chủ"
+          },
+          "value": "Hẹp van động mạch chủ"
+        }
+      }
+    ],
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-01-17"
+        },
+        "value": "2024-01-17"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Tim mạch"
+        },
+        "value": "Khoa Tim mạch"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "observations": [
+      {
+        "loinc_hint": "8867-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Nhịp tim"
+          },
+          "value": "Nhịp tim"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-100"
+          },
+          "value": "60-100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "83 /min"
+          },
+          "unit": "/min",
+          "value": 83.0
+        }
+      },
+      {
+        "loinc_hint": "13457-7",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "LDL-C"
+          },
+          "value": "LDL-C"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<100"
+          },
+          "value": "<100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "189 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 189.0
+        }
+      },
+      {
+        "loinc_hint": "8480-6",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Huyết áp tâm thu"
+          },
+          "value": "Huyết áp tâm thu"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "90-120"
+          },
+          "value": "90-120"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "126 mmHg"
+          },
+          "unit": "mmHg",
+          "value": 126.0
+        }
+      },
+      {
+        "loinc_hint": "10230-1",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Phân suất tống máu (EF)"
+          },
+          "value": "Phân suất tống máu (EF)"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "55-70"
+          },
+          "value": "55-70"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "42.4 %"
+          },
+          "unit": "%",
+          "value": 42.4
+        }
+      }
+    ],
+    "procedures": [
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Siêu âm tim"
+        },
+        "value": "Siêu âm tim"
+      },
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Chụp động mạch vành"
+        },
+        "value": "Chụp động mạch vành"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-071-cardiology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1909,
+      "name": "Trần Văn Giả",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "cardiology"
+}

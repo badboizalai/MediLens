@@ -1,0 +1,198 @@
+{
+  "doc_id": "gv1-060-cardiology-en",
+  "fields": {
+    "diagnoses": [
+      {
+        "icd10_candidates": [
+          {
+            "code": "I50.9",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Heart"
+          },
+          "value": "Heart"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Heart failure"
+          },
+          "value": "Heart failure"
+        }
+      }
+    ],
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-11-24"
+        },
+        "value": "2024-11-24"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Cardiology Department"
+        },
+        "value": "Cardiology Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "observations": [
+      {
+        "loinc_hint": "10230-1",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Ejection fraction"
+          },
+          "value": "Ejection fraction"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "55-70"
+          },
+          "value": "55-70"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "36.4 %"
+          },
+          "unit": "%",
+          "value": 36.4
+        }
+      },
+      {
+        "loinc_hint": "2093-3",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Total cholesterol"
+          },
+          "value": "Total cholesterol"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<200"
+          },
+          "value": "<200"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "247 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 247.0
+        }
+      },
+      {
+        "loinc_hint": "8480-6",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Systolic blood pressure"
+          },
+          "value": "Systolic blood pressure"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "90-120"
+          },
+          "value": "90-120"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "162 mmHg"
+          },
+          "unit": "mmHg",
+          "value": 162.0
+        }
+      },
+      {
+        "loinc_hint": "13457-7",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "LDL cholesterol"
+          },
+          "value": "LDL cholesterol"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<100"
+          },
+          "value": "<100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "94 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 94.0
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-060-cardiology-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1942,
+      "name": "Trần Văn Thử Nghiệm",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "cardiology"
+}

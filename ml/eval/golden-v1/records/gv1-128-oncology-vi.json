@@ -1,0 +1,154 @@
+{
+  "doc_id": "gv1-128-oncology-vi",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-02-09"
+        },
+        "value": "2025-02-09"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Ung bướu"
+        },
+        "value": "Khoa Ung bướu"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "metastases": [],
+    "nodes": [
+      {
+        "involved": true,
+        "station": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Hạch chậu"
+          },
+          "value": "Hạch chậu"
+        }
+      }
+    ],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G2"
+        },
+        "value": "G2"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Ung thư biểu mô ống xâm nhập"
+        },
+        "value": "Ung thư biểu mô ống xâm nhập"
+      },
+      "laterality": "right",
+      "region": {
+        "confidence": 0.0,
+        "region_code": null
+      },
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Vú"
+        },
+        "value": "Vú"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "39 mm"
+        },
+        "unit": "mm",
+        "value": 39
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M0"
+        },
+        "value": "M0"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N1"
+        },
+        "value": "N1"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IIB"
+        },
+        "value": "IIB"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T2"
+        },
+        "value": "T2"
+      }
+    },
+    "treatments": [
+      {
+        "date": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "2025-01-13"
+          },
+          "value": "2025-01-13"
+        },
+        "type": "surgery"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-128-oncology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1902,
+      "name": "Nguyễn Văn Mẫu",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "oncology"
+}

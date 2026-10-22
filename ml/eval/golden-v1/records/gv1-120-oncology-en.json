@@ -1,0 +1,185 @@
+{
+  "doc_id": "gv1-120-oncology-en",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-09-13"
+        },
+        "value": "2025-09-13"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Oncology Department"
+        },
+        "value": "Oncology Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "metastases": [
+      {
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Brain"
+          },
+          "value": "Brain"
+        },
+        "stated_as": "suspected"
+      },
+      {
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Lung"
+          },
+          "value": "Lung"
+        },
+        "stated_as": "suspected"
+      }
+    ],
+    "nodes": [
+      {
+        "involved": true,
+        "station": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Paratracheal"
+          },
+          "value": "Paratracheal"
+        }
+      }
+    ],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G3"
+        },
+        "value": "G3"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Invasive ductal carcinoma"
+        },
+        "value": "Invasive ductal carcinoma"
+      },
+      "laterality": "right",
+      "region": {
+        "confidence": 0.0,
+        "region_code": null
+      },
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Breast"
+        },
+        "value": "Breast"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "54 mm"
+        },
+        "unit": "mm",
+        "value": 54
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M1"
+        },
+        "value": "M1"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N1"
+        },
+        "value": "N1"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IV"
+        },
+        "value": "IV"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T3"
+        },
+        "value": "T3"
+      }
+    },
+    "treatments": [
+      {
+        "date": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "2024-01-24"
+          },
+          "value": "2024-01-24"
+        },
+        "type": "surgery"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-120-oncology-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1937,
+      "name": "Hoàng Văn Giả",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "oncology"
+}

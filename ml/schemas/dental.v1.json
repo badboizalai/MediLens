@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://medilens.local/schemas/dental.v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "encounter",
+    "teeth"
+  ],
+  "properties": {
+    "encounter": {
+      "$ref": "common.v1.json#/$defs/Encounter"
+    },
+    "dentition": {
+      "type": "string",
+      "enum": [
+        "permanent",
+        "deciduous",
+        "mixed",
+        "unknown"
+      ]
+    },
+    "teeth": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fdi",
+          "condition"
+        ],
+        "properties": {
+          "fdi": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          },
+          "surfaces": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "O",
+                "M",
+                "D",
+                "B",
+                "L"
+              ]
+            }
+          },
+          "condition": {
+            "type": "string",
+            "enum": [
+              "caries",
+              "missing",
+              "filling",
+              "crown",
+              "implant",
+              "root_canal",
+              "pulpitis",
+              "periapical_lesion",
+              "impacted",
+              "fracture",
+              "other"
+            ]
+          },
+          "severity": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "monitor",
+              "mild",
+              "moderate",
+              "severe",
+              null
+            ]
+          },
+          "note": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          },
+          "region": {
+            "$ref": "common.v1.json#/$defs/Region"
+          }
+        }
+      }
+    },
+    "periodontal": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "quadrant": {
+            "type": "integer",
+            "enum": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "condition": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          }
+        }
+      }
+    }
+  }
+}

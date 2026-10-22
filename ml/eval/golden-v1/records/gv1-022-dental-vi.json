@@ -1,0 +1,127 @@
+{
+  "doc_id": "gv1-022-dental-vi",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-03-06"
+        },
+        "value": "2025-03-06"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Răng Hàm Mặt"
+        },
+        "value": "Khoa Răng Hàm Mặt"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "periodontal": [
+      {
+        "condition": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "túi nha chu (Q4)"
+          },
+          "value": "túi nha chu"
+        },
+        "quadrant": 4
+      }
+    ],
+    "teeth": [
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 11"
+          },
+          "value": "11"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_11"
+        },
+        "severity": "monitor"
+      },
+      {
+        "condition": "fracture",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 33"
+          },
+          "value": "33"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_33"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-022-dental-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                11,
+                80
+              ],
+              [
+                968,
+                30
+              ],
+              [
+                964,
+                1228
+              ],
+              [
+                80,
+                1234
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv1-022-dental-vi_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1929,
+      "name": "Trần Văn Demo",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "dental"
+}

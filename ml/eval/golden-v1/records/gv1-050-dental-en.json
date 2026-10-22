@@ -1,0 +1,113 @@
+{
+  "doc_id": "gv1-050-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-11-09"
+        },
+        "value": "2025-11-09"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "caries",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 17"
+          },
+          "value": "17"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_17"
+        },
+        "severity": "moderate",
+        "surfaces": [
+          "B",
+          "M"
+        ]
+      },
+      {
+        "condition": "fracture",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 18"
+          },
+          "value": "18"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_18"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-050-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.54,
+            "type": "blur"
+          },
+          {
+            "angle_deg": -4.85,
+            "type": "skew"
+          },
+          {
+            "strength": 0.58,
+            "type": "shadow"
+          },
+          {
+            "type": "fold",
+            "y": 567
+          }
+        ],
+        "file": "images/gv1-050-dental-en_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1906,
+      "name": "Hoàng Thị Mẫu",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "poor",
+  "unit": "dental"
+}

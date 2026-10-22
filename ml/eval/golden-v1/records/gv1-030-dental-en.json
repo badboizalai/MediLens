@@ -1,0 +1,160 @@
+{
+  "doc_id": "gv1-030-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-03-05"
+        },
+        "value": "2024-03-05"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 12"
+          },
+          "value": "12"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_12"
+        },
+        "severity": "mild"
+      },
+      {
+        "condition": "missing",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 21"
+          },
+          "value": "21"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_21"
+        }
+      },
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 28"
+          },
+          "value": "28"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_28"
+        }
+      },
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 47"
+          },
+          "value": "47"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_47"
+        }
+      },
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 48"
+          },
+          "value": "48"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_48"
+        },
+        "severity": "moderate"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-030-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                66,
+                98
+              ],
+              [
+                947,
+                78
+              ],
+              [
+                926,
+                1246
+              ],
+              [
+                24,
+                1187
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv1-030-dental-en_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1944,
+      "name": "Trần Thị Mẫu",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "dental"
+}

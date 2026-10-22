@@ -30,8 +30,16 @@ env:
   TF_VAR_waf_web_acl_arn: ${{ vars.STAGING_WAF_WEB_ACL_ARN }}
 
 jobs:
+  not-configured:
+    # Only runs when unconfigured; plan/deploy are then skipped (never reported as success).
+    if: vars.AWS_STAGING_ROLE_ARN == ''
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "staging not configured - set repo variable AWS_STAGING_ROLE_ARN; plan/deploy skipped" >> "$GITHUB_STEP_SUMMARY"
+
   plan:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && vars.AWS_STAGING_ROLE_ARN != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -51,7 +59,7 @@ jobs:
           terraform plan -input=false -lock-timeout=60s
 
   deploy:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && vars.AWS_STAGING_ROLE_ARN != ''
     runs-on: ubuntu-latest
     environment: staging # required reviewers configured on the environment
     steps:

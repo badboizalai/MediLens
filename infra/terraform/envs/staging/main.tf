@@ -3,7 +3,14 @@ terraform {
   required_providers {
     aws = { source = "hashicorp/aws", version = "~> 5.80" }
   }
-  # backend "s3" {}  # configure remote state per account
+  # Remote state template (placeholders; see README.md). Uncomment once the bucket/table exist.
+  # backend "s3" {
+  #   bucket         = "REPLACE-medilens-staging-tfstate"
+  #   key            = "envs/staging/terraform.tfstate"
+  #   region         = "ap-southeast-1"
+  #   dynamodb_table = "REPLACE-medilens-staging-tflock"
+  #   encrypt        = true
+  # }
 }
 
 provider "aws" {

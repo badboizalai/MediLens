@@ -5,7 +5,7 @@ How the autonomous loop runs. **All project-management, source-control and code-
 ## Roles
 - `medilens-opus-orchestrator` (Opus 5.5, medium): plans, splits, routes, briefs workers, reviews PRs (RULES B4), labels `ready-to-merge`, and updates the state file.
 - `medilens-sonnet-worker` (Sonnet 5.5): implements one task on its own branch and worktree, then opens a PR.
-- The human owner merges PRs (RULES A3).
+- Merging: the Opus orchestrator merges READY PRs under RULES A3 (AI merge conditions); otherwise the human owner merges.
 
 ## Parallelism and resources
 - Default: up to **6 workers in parallel**, only for tasks with disjoint `Paths:`. Spawn the whole batch in one message, each worker with `isolation: "worktree"`.

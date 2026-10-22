@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MediLens - Prototype (low-fi, fake data)</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Bỏ qua đến nội dung</a>
+<header class="top">
+  <strong class="brand">MediLens</strong>
+  <span class="badge" data-i18n="proto">Bản mẫu - dữ liệu giả</span>
+  <div class="lang" role="group" aria-label="Language / Ngôn ngữ">
+    <button type="button" data-lang="vi" aria-pressed="true">VI</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</header>
+<nav class="steps" aria-label="Flow">
+  <ol>
+    <li><a href="#consent" data-i18n="nav.consent">Đồng ý</a></li>
+    <li><a href="#upload" data-i18n="nav.upload">Tải lên</a></li>
+    <li><a href="#review" data-i18n="nav.review">Kiểm tra</a></li>
+    <li><a href="#viewer" data-i18n="nav.viewer">Hình cơ thể</a></li>
+    <li><a href="#explain" data-i18n="nav.explain">Giải thích</a></li>
+    <li><a href="#timeline" data-i18n="nav.timeline">Dòng thời gian</a></li>
+    <li><a href="#share" data-i18n="nav.share">Chia sẻ</a></li>
+    <li><a href="#settings" data-i18n="nav.settings">Cài đặt</a></li>
+  </ol>
+</nav>
+
+<main id="main" tabindex="-1">
+
+<!-- 1 CONSENT -->
+<section id="consent" class="screen" aria-labelledby="h-consent">
+  <h1 id="h-consent" data-i18n="consent.title">Trước khi bắt đầu</h1>
+  <ul>
+    <li data-i18n="consent.b1">Chúng tôi hiển thị hồ sơ của bạn lên hình cơ thể.</li>
+    <li data-i18n="consent.b2">Chúng tôi giải thích hồ sơ của bạn ghi gì.</li>
+    <li data-i18n="consent.b3">Không dùng dữ liệu của bạn để huấn luyện trừ khi bạn đồng ý.</li>
+  </ul>
+  <p><a href="#consent" data-i18n="consent.notice">Đọc thông báo quyền riêng tư đầy đủ (bản mẫu)</a></p>
+  <label class="check"><input type="checkbox" id="c-health"> <span data-i18n="consent.health"></span></label>
+  <label class="check"><input type="checkbox" id="c-research"> <span data-i18n="consent.research"></span></label>
+  <p id="c-hint" class="muted" data-i18n="consent.hint">Hãy đánh dấu ô bắt buộc để tiếp tục.</p>
+  <div class="row">
+    <button type="button" class="primary" id="c-go" disabled aria-describedby="c-hint" data-i18n="consent.cta"></button>
+    <button type="button" id="c-no" data-i18n="consent.no">Để sau</button>
+  </div>
+  <p id="c-declined" class="banner" role="status" hidden data-i18n="consent.declined"></p>
+</section>
+
+<!-- 2 UPLOAD -->
+<section id="upload" class="screen" aria-labelledby="h-upload" hidden>
+  <h1 id="h-upload" data-i18n="upload.title">Tải hồ sơ lên</h1>
+  <p data-i18n="upload.hint"></p>
+  <div class="card">
+    <p><strong data-i18n="upload.sample">Hồ sơ mẫu (giả)</strong>: <span data-i18n="rec.name"></span></p>
+    <p class="muted" data-i18n="rec.desc">Phiếu khám răng - 2 trang</p>
+    <button type="button" class="primary" id="u-pick" data-i18n="upload.pick">Chọn hồ sơ mẫu</button>
+  </div>
+  <div id="u-prog" hidden>
+    <p role="status" data-i18n="upload.processing"></p>
+    <progress max="100" value="0" id="u-bar" aria-label="Progress"></progress>
+    <p class="muted" data-i18n="upload.leave"></p>
+  </div>
+  <p><a href="#review" id="u-next" class="btn primary" hidden data-i18n="upload.next">Xem kết quả đọc được</a></p>
+</section>
+
+<!-- 3 REVIEW -->
+<section id="review" class="screen" aria-labelledby="h-review" hidden>
+  <h1 id="h-review" data-i18n="review.title">Kiểm tra thông tin</h1>
+  <p class="muted"><span class="chip" data-i18n="ai.label"></span></p>
+  <p id="r-remaining" role="status" aria-live="polite"></p>
+  <ul class="fields" id="r-fields"></ul>
+  <p id="r-done" class="banner ok" role="status" hidden data-i18n="review.done"></p>
+  <button type="button" class="primary" id="r-confirm" disabled data-i18n="review.confirmAll"></button>
+</section>
+
+<!-- 4 VIEWER -->
+<section id="viewer" class="screen" aria-labelledby="h-viewer" hidden>
+  <h1 id="h-viewer" data-i18n="viewer.title">Hình cơ thể</h1>
+  <p class="banner" data-i18n="viewer.illustration"></p>
+  <div class="viewer-grid">
+    <div id="odonto-wrap"></div>
+    <div>
+      <h2 data-i18n="viewer.list">Danh sách (theo hồ sơ)</h2>
+      <ul class="findings" id="v-list"></ul>
+      <h2 data-i18n="viewer.legend">Chú giải</h2>
+      <ul class="legend" id="v-legend"></ul>
+    </div>
+  </div>
+  <p id="v-sel" class="sr" aria-live="polite"></p>
+  <div id="v-detail" class="card" hidden></div>
+  <p class="muted" data-i18n="disclaimer.short"></p>
+</section>
+
+<!-- 5 EXPLAIN -->
+<section id="explain" class="screen" aria-labelledby="h-explain" hidden>
+  <h1 id="h-explain" data-i18n="explain.title">Giải thích hồ sơ</h1>
+  <p class="banner emergency" data-i18n="explain.emergency"></p>
+  <div id="x-log" class="log" aria-live="polite"></div>
+  <p class="muted" data-i18n="explain.suggest"></p>
+  <div class="row wrap" role="group" aria-label="Questions">
+    <button type="button" data-q="says" data-i18n="x.q.says">Hồ sơ này ghi gì?</button>
+    <button type="button" data-q="ask" data-i18n="x.q.ask">Mình nên hỏi bác sĩ điều gì?</button>
+    <button type="button" data-q="dose" data-i18n="x.q.dose">Mình dùng thuốc thế nào?</button>
+    <button type="button" data-q="future" data-i18n="x.q.future">Rồi sẽ ra sao?</button>
+  </div>
+  <p class="muted" data-i18n="disclaimer.short"></p>
+</section>
+
+<!-- 6 TIMELINE -->
+<section id="timeline" class="screen" aria-labelledby="h-timeline" hidden>
+  <h1 id="h-timeline" data-i18n="timeline.title">Dòng thời gian</h1>
+  <p id="t-summary" role="status" aria-live="polite"></p>
+  <table>
+    <caption class="sr" data-i18n="timeline.title"></caption>
+    <thead><tr><th scope="col" data-i18n="t.region">Vị trí</th><th scope="col">2026-03-10</th><th scope="col">2026-09-15</th></tr></thead>
+    <tbody id="t-body"></tbody>
+  </table>
+</section>
+
+<!-- 7 SHARE -->
+<section id="share" class="screen" aria-labelledby="h-share" hidden>
+  <h1 id="h-share" data-i18n="share.title">Chia sẻ</h1>
+  <form id="s-form" novalidate>
+    <label for="s-email" data-i18n="share.email">Email người nhận</label>
+    <input id="s-email" type="email" autocomplete="off" value="bacsi.mau@example.test">
+    <fieldset>
+      <legend data-i18n="share.scope">Nội dung chia sẻ</legend>
+      <label class="check"><input type="checkbox" name="scope" value="dental" checked> <span data-i18n="share.dental">Nha khoa</span></label>
+      <label class="check"><input type="checkbox" name="scope" value="cardio"> <span data-i18n="share.cardio">Tim mạch</span></label>
+    </fieldset>
+    <label for="s-days" data-i18n="share.days">Thời hạn (ngày, tối đa 90)</label>
+    <input id="s-days" type="number" min="1" max="90" value="7">
+    <p class="muted" data-i18n="share.needAccount"></p>
+    <p id="s-err" class="banner err" role="alert" tabindex="-1" hidden data-i18n="share.invalid"></p>
+    <button type="submit" class="primary" data-i18n="share.cta">Tiếp tục</button>
+  </form>
+  <div id="s-confirm" class="card" role="alertdialog" aria-labelledby="s-ctext" hidden>
+    <p id="s-ctext"></p>
+    <div class="row"><button type="button" class="primary" id="s-yes" data-i18n="common.yes">Chia sẻ</button><button type="button" id="s-cancel" data-i18n="common.cancel">Hủy</button></div>
+  </div>
+  <p id="s-created" class="banner ok" role="status" hidden data-i18n="share.created"></p>
+  <h2 data-i18n="share.list">Đang chia sẻ</h2>
+  <p id="s-empty" data-i18n="share.empty"></p>
+  <ul id="s-items" class="findings"></ul>
+</section>
+
+<!-- 8 SETTINGS -->
+<section id="settings" class="screen" aria-labelledby="h-settings" hidden>
+  <h1 id="h-settings" data-i18n="settings.title">Cài đặt</h1>
+  <label class="check"><input type="checkbox" id="st-opt"> <span data-i18n="settings.optIn"></span></label>
+  <p class="muted" data-i18n="settings.onlyThis"></p>
+  <div class="card">
+    <h2 data-i18n="settings.exportH">Tải dữ liệu của bạn</h2>
+    <button type="button" id="st-export" data-i18n="settings.export">Yêu cầu bản xuất dữ liệu</button>
+    <p id="st-exp-msg" role="status" aria-live="polite"></p>
+  </div>
+  <div class="card">
+    <h2 data-i18n="settings.deleteH">Xóa tài khoản</h2>
+    <button type="button" class="danger" id="st-del" data-i18n="settings.delete">Xóa tài khoản</button>
+    <div id="st-conf" role="alertdialog" aria-labelledby="st-ctext" hidden>
+      <p id="st-ctext" data-i18n="settings.deleteConfirm"></p>
+      <div class="row"><button type="button" class="danger" id="st-yes" data-i18n="settings.deleteYes">Xóa</button><button type="button" id="st-no" data-i18n="common.cancel">Hủy</button></div>
+    </div>
+    <p id="st-done" class="banner" role="status" hidden data-i18n="settings.deleted"></p>
+  </div>
+  <p><button type="button" id="st-reset" data-i18n="settings.reset">Đặt lại bản mẫu về đầu</button></p>
+</section>
+
+</main>
+<footer class="foot muted" data-i18n="foot">Bản mẫu thử nghiệm. Dữ liệu hoàn toàn giả. Không có kết nối mạng.</footer>
+<script src="app.js"></script>
+</body>
+</html>

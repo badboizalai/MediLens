@@ -9,7 +9,7 @@
 | 3. Store | Keeps paper, gallery photo, chat or email | Neutral, slight unease | Scattered; easy to lose | One private place per profile | B2.2 |
 | 4. Share | Shows or sends to doctor or relative | Hesitant about privacy | No control over who keeps copies | Time-limited sharing with visible scope and expiry | B2.3, B5.3 |
 | 5. Find old record | Searches gallery, chats, drawers | Frustrated | Slow; incomplete history | Timeline of records | B2.4 |
-| 6. Prepare for visit | Tries to remember questions | Anxious, unprepared | Cannot picture where the finding is | Illustrated body view (explains only, never diagnoses) | B3.3, B4.1 |
+| 6. Prepare for visit | Tries to remember questions | Anxious, unprepared | Cannot picture where the finding is | Illustrated body view (explains only, never diagnoses) <!-- claims-ok --> | B3.3, B4.1 |
 | 7. Follow-up | Compares new results to old by memory | Uncertain | No before/after view | Timeline compare; reminders | B3.3, B4.2 |
 
 ## Validation plan
@@ -18,4 +18,4 @@
 - Mark stages `validated`, `refuted` or `revised` with note codes only.
 - Add stages the interviews reveal (for example family decision-making) and drop those nobody recognises.
 - Keep the opportunities column as design ideas only; each becomes a requirement only after validation and BA review.
-- Safety: opportunities never imply diagnosis, dosing or prognosis (BR-042).
+- Safety: opportunities never imply diagnosis, dosing or prognosis (BR-042). <!-- claims-ok -->

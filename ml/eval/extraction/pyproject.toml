@@ -1,0 +1,11 @@
+[project]
+name = "medilens-extraction-eval"
+version = "0.1.0"
+description = "Extraction evaluation harness (field P/R/F1, region accuracy, citation validity) - stdlib only, synthetic data only"
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --import-mode=importlib"
+pythonpath = ["."]

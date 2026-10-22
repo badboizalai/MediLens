@@ -18,7 +18,8 @@
       "Bash(ruff:*)",
       "Bash(pytest:*)",
       "Bash(terraform fmt:*)",
-      "Bash(terraform validate:*)"
+      "Bash(terraform validate:*)",
+      "mcp__laya__*"
     ],
     "deny": [
       "Read(./.env)",

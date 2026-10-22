@@ -1,1 +1,6 @@
-{ "home": { "title": "MediLens", "disclaimer": "MediLens helps you understand your own medical records. Use it alongside your doctor's advice." } }
+{
+  "home": { "title": "MediLens", "disclaimer": "MediLens helps you understand your own medical records. Use it alongside your doctor's advice." },
+  "nav": { "label": "Main", "language": "Language", "signIn": "Sign in", "signOut": "Sign out" },
+  "signIn": { "title": "Sign in", "description": "Sign in to see your records.", "submit": "Continue to sign in" },
+  "dashboard": { "title": "Your records", "empty": "You have not added any records yet." }
+}

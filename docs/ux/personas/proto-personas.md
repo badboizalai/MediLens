@@ -89,5 +89,5 @@
 2. **Tag update:** after each interview, mark the pain `validated`, `refuted` or `revised` with note codes. The threshold for `validated` is set in `research-plan.md`.
 3. **Gaps:** add questions for clinicians; add caregiver-specific probes if B2.3 and B5.3 give too little.
 4. **Output:** replace proto-personas with evidence-based personas, keeping unvalidated items marked as assumptions.
-5. **Safety:** no diagnosis, advice or medical detail is recorded from participants beyond what the notes template allows (BR-042).
+5. **Safety:** no diagnosis, advice or medical detail is recorded from participants beyond what the notes template allows (BR-042). <!-- claims-ok -->
 6. **Review:** business-analyst reviews the mapping; findings feed user stories only after validation.

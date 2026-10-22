@@ -102,6 +102,7 @@ def test_claims_ok_skips(tmp_path, text):
     assert levels(tmp_path, f"{text} <!-- claims-ok -->") == set()
 
 
-def test_negated_risk_scoring_passes(tmp_path):
-    assert levels(tmp_path, "Không chấm điểm nguy cơ") == set()
-    assert levels(tmp_path, "Khong cham diem nguy co") == set()
+def test_negated_risk_scoring_needs_marker(tmp_path):
+    text = "Không chấm điểm nguy cơ"
+    assert "BLOCK" in levels(tmp_path, text)
+    assert levels(tmp_path, f"{text} <!-- claims-ok -->") == set()

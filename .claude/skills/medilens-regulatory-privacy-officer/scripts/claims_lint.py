@@ -100,7 +100,7 @@ RULES = [
         r"\bfinds? (early )?(disease|cancer|tumou?rs?|lesions?)\b",
         "Use 'shows findings written in your records'",
     ),
-    ("BLOCK", r"(?<!khong cham )\bdiem nguy co\b|\brisk scores?\b", "Remove risk scoring"),
+    ("BLOCK", r"\bdiem nguy co\b|\brisk scores?\b", "Remove risk scoring"),
     (
         "BLOCK",
         r"\bnguy co (mac )?(benh )?[^.,;]{0,30}\d+\s?%|\b(your )?risk of [^.,;]{0,30} is \d+\s?%",

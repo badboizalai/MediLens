@@ -1,0 +1,967 @@
+{
+ "meta": {
+  "golden": "../golden-v0",
+  "pages": 50,
+  "python": "3.10.22",
+  "hardware": "x86_64, CPU only, Linux-6.18.54.1-microsoft-standard-WSL2-x86_64-with-glibc2.43"
+ },
+ "results": [
+  {
+   "engine": "paddle",
+   "status": "ok",
+   "pages": 50,
+   "cer": {
+    "overall": 0.17276314386264263,
+    "by_lang": {
+     "en": 0.05538302277432712,
+     "vi": 0.20322364002686366
+    },
+    "by_quality": {
+     "good": 0.11609788214638429,
+     "medium": 0.20662623872208252,
+     "poor": 0.2725694444444444
+    }
+   },
+   "latency_s": {
+    "mean": 0.3366248449200066,
+    "p50": 0.32101021200014657,
+    "p95": 0.4314250469997205
+   },
+   "usd_per_doc": 9.35069013666685e-06,
+   "cost_basis": "cpu time at 0.1 USD/h (assumed)",
+   "rows": [
+    {
+     "doc_id": "gv0-001-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 65,
+     "chars": 264,
+     "seconds": 0.241
+    },
+    {
+     "doc_id": "gv0-002-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 77,
+     "chars": 259,
+     "seconds": 0.431
+    },
+    {
+     "doc_id": "gv0-003-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 71,
+     "chars": 277,
+     "seconds": 0.521
+    },
+    {
+     "doc_id": "gv0-004-dental-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "dental",
+     "edits": 94,
+     "chars": 338,
+     "seconds": 0.29
+    },
+    {
+     "doc_id": "gv0-005-dental-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 9,
+     "chars": 359,
+     "seconds": 0.331
+    },
+    {
+     "doc_id": "gv0-006-dental-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 44,
+     "chars": 269,
+     "seconds": 0.287
+    },
+    {
+     "doc_id": "gv0-007-dental-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 44,
+     "chars": 246,
+     "seconds": 0.271
+    },
+    {
+     "doc_id": "gv0-008-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 70,
+     "chars": 235,
+     "seconds": 0.223
+    },
+    {
+     "doc_id": "gv0-009-dental-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "dental",
+     "edits": 68,
+     "chars": 262,
+     "seconds": 0.26
+    },
+    {
+     "doc_id": "gv0-010-dental-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 9,
+     "chars": 291,
+     "seconds": 0.567
+    },
+    {
+     "doc_id": "gv0-011-dental-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 43,
+     "chars": 277,
+     "seconds": 0.315
+    },
+    {
+     "doc_id": "gv0-012-dental-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 45,
+     "chars": 287,
+     "seconds": 0.284
+    },
+    {
+     "doc_id": "gv0-013-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 75,
+     "chars": 300,
+     "seconds": 0.25
+    },
+    {
+     "doc_id": "gv0-014-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 54,
+     "chars": 319,
+     "seconds": 0.302
+    },
+    {
+     "doc_id": "gv0-015-dental-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 14,
+     "chars": 357,
+     "seconds": 0.316
+    },
+    {
+     "doc_id": "gv0-016-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 73,
+     "chars": 257,
+     "seconds": 0.266
+    },
+    {
+     "doc_id": "gv0-017-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 68,
+     "chars": 307,
+     "seconds": 0.283
+    },
+    {
+     "doc_id": "gv0-018-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 60,
+     "chars": 465,
+     "seconds": 0.371
+    },
+    {
+     "doc_id": "gv0-019-cardiology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "cardiology",
+     "edits": 132,
+     "chars": 529,
+     "seconds": 0.375
+    },
+    {
+     "doc_id": "gv0-020-cardiology-en",
+     "lang": "en",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 48,
+     "chars": 504,
+     "seconds": 0.39
+    },
+    {
+     "doc_id": "gv0-021-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 60,
+     "chars": 428,
+     "seconds": 0.358
+    },
+    {
+     "doc_id": "gv0-022-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 88,
+     "chars": 535,
+     "seconds": 0.386
+    },
+    {
+     "doc_id": "gv0-023-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 66,
+     "chars": 506,
+     "seconds": 0.41
+    },
+    {
+     "doc_id": "gv0-024-cardiology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "cardiology",
+     "edits": 125,
+     "chars": 508,
+     "seconds": 0.384
+    },
+    {
+     "doc_id": "gv0-025-cardiology-en",
+     "lang": "en",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 60,
+     "chars": 432,
+     "seconds": 0.379
+    },
+    {
+     "doc_id": "gv0-026-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 54,
+     "chars": 401,
+     "seconds": 0.357
+    },
+    {
+     "doc_id": "gv0-027-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 130,
+     "chars": 527,
+     "seconds": 0.376
+    },
+    {
+     "doc_id": "gv0-028-cardiology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "cardiology",
+     "edits": 117,
+     "chars": 469,
+     "seconds": 0.364
+    },
+    {
+     "doc_id": "gv0-029-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 86,
+     "chars": 387,
+     "seconds": 0.31
+    },
+    {
+     "doc_id": "gv0-030-cardiology-en",
+     "lang": "en",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 47,
+     "chars": 511,
+     "seconds": 0.37
+    },
+    {
+     "doc_id": "gv0-031-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 107,
+     "chars": 509,
+     "seconds": 0.362
+    },
+    {
+     "doc_id": "gv0-032-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 68,
+     "chars": 520,
+     "seconds": 0.431
+    },
+    {
+     "doc_id": "gv0-033-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 56,
+     "chars": 431,
+     "seconds": 0.373
+    },
+    {
+     "doc_id": "gv0-034-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 89,
+     "chars": 432,
+     "seconds": 0.355
+    },
+    {
+     "doc_id": "gv0-035-oncology-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 7,
+     "chars": 360,
+     "seconds": 0.318
+    },
+    {
+     "doc_id": "gv0-036-oncology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "oncology",
+     "edits": 90,
+     "chars": 318,
+     "seconds": 0.294
+    },
+    {
+     "doc_id": "gv0-037-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 57,
+     "chars": 367,
+     "seconds": 0.316
+    },
+    {
+     "doc_id": "gv0-038-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 53,
+     "chars": 323,
+     "seconds": 0.305
+    },
+    {
+     "doc_id": "gv0-039-oncology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "oncology",
+     "edits": 131,
+     "chars": 388,
+     "seconds": 0.295
+    },
+    {
+     "doc_id": "gv0-040-oncology-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 9,
+     "chars": 330,
+     "seconds": 0.333
+    },
+    {
+     "doc_id": "gv0-041-oncology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "oncology",
+     "edits": 99,
+     "chars": 388,
+     "seconds": 0.299
+    },
+    {
+     "doc_id": "gv0-042-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 64,
+     "chars": 406,
+     "seconds": 0.348
+    },
+    {
+     "doc_id": "gv0-043-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 57,
+     "chars": 360,
+     "seconds": 0.296
+    },
+    {
+     "doc_id": "gv0-044-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 65,
+     "chars": 387,
+     "seconds": 0.341
+    },
+    {
+     "doc_id": "gv0-045-oncology-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 5,
+     "chars": 343,
+     "seconds": 0.331
+    },
+    {
+     "doc_id": "gv0-046-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 54,
+     "chars": 358,
+     "seconds": 0.289
+    },
+    {
+     "doc_id": "gv0-047-oncology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "oncology",
+     "edits": 118,
+     "chars": 386,
+     "seconds": 0.307
+    },
+    {
+     "doc_id": "gv0-048-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 54,
+     "chars": 335,
+     "seconds": 0.321
+    },
+    {
+     "doc_id": "gv0-049-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 55,
+     "chars": 330,
+     "seconds": 0.319
+    },
+    {
+     "doc_id": "gv0-050-oncology-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 6,
+     "chars": 377,
+     "seconds": 0.327
+    }
+   ]
+  },
+  {
+   "engine": "vietocr",
+   "status": "ok",
+   "pages": 50,
+   "cer": {
+    "overall": 0.05129572357896982,
+    "by_lang": {
+     "en": 0.02562111801242236,
+     "vi": 0.05795836131631968
+    },
+    "by_quality": {
+     "good": 0.02501920333589378,
+     "medium": 0.07424937139476409,
+     "poor": 0.08055555555555556
+    }
+   },
+   "latency_s": {
+    "mean": 1.7519449616600469,
+    "p50": 1.7470929160008382,
+    "p95": 2.3788858060006532
+   },
+   "usd_per_doc": 4.8665137823890195e-05,
+   "cost_basis": "cpu time at 0.1 USD/h (assumed)",
+   "rows": [
+    {
+     "doc_id": "gv0-001-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 27,
+     "chars": 264,
+     "seconds": 1.106
+    },
+    {
+     "doc_id": "gv0-002-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 19,
+     "chars": 259,
+     "seconds": 1.159
+    },
+    {
+     "doc_id": "gv0-003-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 19,
+     "chars": 277,
+     "seconds": 1.165
+    },
+    {
+     "doc_id": "gv0-004-dental-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "dental",
+     "edits": 68,
+     "chars": 338,
+     "seconds": 1.906
+    },
+    {
+     "doc_id": "gv0-005-dental-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 6,
+     "chars": 359,
+     "seconds": 1.692
+    },
+    {
+     "doc_id": "gv0-006-dental-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 6,
+     "chars": 269,
+     "seconds": 1.374
+    },
+    {
+     "doc_id": "gv0-007-dental-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 6,
+     "chars": 246,
+     "seconds": 1.262
+    },
+    {
+     "doc_id": "gv0-008-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 21,
+     "chars": 235,
+     "seconds": 1.158
+    },
+    {
+     "doc_id": "gv0-009-dental-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "dental",
+     "edits": 11,
+     "chars": 262,
+     "seconds": 1.258
+    },
+    {
+     "doc_id": "gv0-010-dental-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 3,
+     "chars": 291,
+     "seconds": 1.41
+    },
+    {
+     "doc_id": "gv0-011-dental-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 6,
+     "chars": 277,
+     "seconds": 1.367
+    },
+    {
+     "doc_id": "gv0-012-dental-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 6,
+     "chars": 287,
+     "seconds": 1.44
+    },
+    {
+     "doc_id": "gv0-013-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 16,
+     "chars": 300,
+     "seconds": 1.498
+    },
+    {
+     "doc_id": "gv0-014-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 0,
+     "chars": 319,
+     "seconds": 1.51
+    },
+    {
+     "doc_id": "gv0-015-dental-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "dental",
+     "edits": 10,
+     "chars": 357,
+     "seconds": 1.747
+    },
+    {
+     "doc_id": "gv0-016-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 19,
+     "chars": 257,
+     "seconds": 1.199
+    },
+    {
+     "doc_id": "gv0-017-dental-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "dental",
+     "edits": 23,
+     "chars": 307,
+     "seconds": 1.422
+    },
+    {
+     "doc_id": "gv0-018-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 10,
+     "chars": 465,
+     "seconds": 2.348
+    },
+    {
+     "doc_id": "gv0-019-cardiology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "cardiology",
+     "edits": 9,
+     "chars": 529,
+     "seconds": 2.379
+    },
+    {
+     "doc_id": "gv0-020-cardiology-en",
+     "lang": "en",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 35,
+     "chars": 504,
+     "seconds": 2.081
+    },
+    {
+     "doc_id": "gv0-021-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 8,
+     "chars": 428,
+     "seconds": 2.017
+    },
+    {
+     "doc_id": "gv0-022-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 42,
+     "chars": 535,
+     "seconds": 2.142
+    },
+    {
+     "doc_id": "gv0-023-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 11,
+     "chars": 506,
+     "seconds": 2.394
+    },
+    {
+     "doc_id": "gv0-024-cardiology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "cardiology",
+     "edits": 36,
+     "chars": 508,
+     "seconds": 2.097
+    },
+    {
+     "doc_id": "gv0-025-cardiology-en",
+     "lang": "en",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 4,
+     "chars": 432,
+     "seconds": 1.987
+    },
+    {
+     "doc_id": "gv0-026-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 10,
+     "chars": 401,
+     "seconds": 1.923
+    },
+    {
+     "doc_id": "gv0-027-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 136,
+     "chars": 527,
+     "seconds": 2.2
+    },
+    {
+     "doc_id": "gv0-028-cardiology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "cardiology",
+     "edits": 11,
+     "chars": 469,
+     "seconds": 2.016
+    },
+    {
+     "doc_id": "gv0-029-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 29,
+     "chars": 387,
+     "seconds": 1.909
+    },
+    {
+     "doc_id": "gv0-030-cardiology-en",
+     "lang": "en",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 7,
+     "chars": 511,
+     "seconds": 2.274
+    },
+    {
+     "doc_id": "gv0-031-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 59,
+     "chars": 509,
+     "seconds": 2.087
+    },
+    {
+     "doc_id": "gv0-032-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 16,
+     "chars": 520,
+     "seconds": 2.45
+    },
+    {
+     "doc_id": "gv0-033-cardiology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "cardiology",
+     "edits": 13,
+     "chars": 431,
+     "seconds": 2.045
+    },
+    {
+     "doc_id": "gv0-034-cardiology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "cardiology",
+     "edits": 3,
+     "chars": 432,
+     "seconds": 2.083
+    },
+    {
+     "doc_id": "gv0-035-oncology-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 7,
+     "chars": 360,
+     "seconds": 1.688
+    },
+    {
+     "doc_id": "gv0-036-oncology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "oncology",
+     "edits": 23,
+     "chars": 318,
+     "seconds": 1.447
+    },
+    {
+     "doc_id": "gv0-037-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 11,
+     "chars": 367,
+     "seconds": 1.898
+    },
+    {
+     "doc_id": "gv0-038-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 8,
+     "chars": 323,
+     "seconds": 1.65
+    },
+    {
+     "doc_id": "gv0-039-oncology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "oncology",
+     "edits": 77,
+     "chars": 388,
+     "seconds": 1.625
+    },
+    {
+     "doc_id": "gv0-040-oncology-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 22,
+     "chars": 330,
+     "seconds": 1.531
+    },
+    {
+     "doc_id": "gv0-041-oncology-vi",
+     "lang": "vi",
+     "quality": "medium",
+     "unit": "oncology",
+     "edits": 20,
+     "chars": 388,
+     "seconds": 1.558
+    },
+    {
+     "doc_id": "gv0-042-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 7,
+     "chars": 406,
+     "seconds": 2.003
+    },
+    {
+     "doc_id": "gv0-043-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 10,
+     "chars": 360,
+     "seconds": 1.817
+    },
+    {
+     "doc_id": "gv0-044-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 8,
+     "chars": 387,
+     "seconds": 1.996
+    },
+    {
+     "doc_id": "gv0-045-oncology-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 5,
+     "chars": 343,
+     "seconds": 1.643
+    },
+    {
+     "doc_id": "gv0-046-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 15,
+     "chars": 358,
+     "seconds": 1.757
+    },
+    {
+     "doc_id": "gv0-047-oncology-vi",
+     "lang": "vi",
+     "quality": "poor",
+     "unit": "oncology",
+     "edits": 20,
+     "chars": 386,
+     "seconds": 1.798
+    },
+    {
+     "doc_id": "gv0-048-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 10,
+     "chars": 335,
+     "seconds": 1.719
+    },
+    {
+     "doc_id": "gv0-049-oncology-vi",
+     "lang": "vi",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 14,
+     "chars": 330,
+     "seconds": 1.568
+    },
+    {
+     "doc_id": "gv0-050-oncology-en",
+     "lang": "en",
+     "quality": "good",
+     "unit": "oncology",
+     "edits": 0,
+     "chars": 377,
+     "seconds": 1.794
+    }
+   ]
+  },
+  {
+   "engine": "llm-vision",
+   "status": "not run",
+   "error": "ANTHROPIC_API_KEY not set"
+  }
+ ]
+}

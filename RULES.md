@@ -19,7 +19,8 @@ Binding for every contributor: humans, Claude sessions, sub-agents. When a rule 
 
 ### A3. Roles and ownership
 - Each folder has one owner role (`docs/architecture/repository-structure.md`, `.github/CODEOWNERS`). The routing matrix (`medilens-orchestrator/references/routing-matrix.md`) names the reviewers.
-- Authors never approve or merge their own work. **The human owner merges.** An AI may review and comment, but it never approves its own output.
+- Authors never merge their own work. The reviewer merges.
+- **AI merge (authorised by the owner on 2026-10-23):** the Opus orchestrator may merge a PR written by a Sonnet worker only when all of these hold: its own review verdict is `READY TO MERGE`; all review threads are resolved; local checks or CI are green; the PR touches no `RULES.md`, `.claude/settings*.json` or `.github/workflows/` (those always need the human owner); and no human gate is implied. Otherwise the human owner merges. The owner can revoke this at any time.
 - Human gates (clinical safety G2-CS, regulatory G0-R, data licence G1-D, pentest G3-P, release GO/NO-GO) cannot be signed by an AI; the AI prepares the evidence only.
 
 ### A4. Communication and records
@@ -50,7 +51,7 @@ Binding for every contributor: humans, Claude sessions, sub-agents. When a rule 
 - Keep PRs small: aim for < 400 changed lines excluding generated files. Larger work is split into stacked PRs.
 - Fill in `.github/pull_request_template.md`: task id, requirement codes, owner role, reviewers, `Paths:`, verification evidence (commands + output excerpt), risks, and screenshots for UI.
 - The diff stays within the declared `Paths:`; anything outside is explained or removed.
-- Merge requires: at least one review addressing B4, a green CI (or posted local evidence when CI is unavailable), an up-to-date branch, and resolved conversations. Merge method: squash, then delete the branch.
+- Merge requires: at least one review addressing B4 by someone other than the author (the human owner, or the Opus orchestrator under A3), a green CI (or posted local evidence when CI is unavailable), an up-to-date branch, and resolved conversations. Merge method: squash, then delete the branch.
 
 ### B4. Code review checklist (every review covers all of these)
 1. **Correctness**: logic, edge cases, error paths, and concurrency/idempotency where relevant.

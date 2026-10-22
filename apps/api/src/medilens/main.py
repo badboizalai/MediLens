@@ -11,6 +11,7 @@ from medilens.core.errors import (
 )
 from medilens.core.logging import configure_logging
 from medilens.core.middleware import RequestIdMiddleware
+from medilens.modules.identity.api.router import router as identity_router
 
 API_PREFIX = "/v1"  # every module router mounts under this prefix
 
@@ -56,6 +57,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     v1 = APIRouter(prefix=API_PREFIX)
     # Register module routers here as they are implemented:
+    v1.include_router(identity_router)
     # v1.include_router(patient_router)
     app.include_router(v1)
     return app

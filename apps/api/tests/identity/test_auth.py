@@ -121,3 +121,12 @@ def test_jwks_rotation_and_cache() -> None:
     now[0] = 60
     assert j.get_key("k2") is not None  # rotated key picked up
     assert len(calls) == 2
+
+
+def test_me_is_mounted_and_requires_auth() -> None:
+    from fastapi.testclient import TestClient
+    from medilens.main import create_app
+
+    res = TestClient(create_app()).get("/v1/me")
+    assert res.status_code == 401
+    assert res.headers["content-type"].startswith("application/problem+json")

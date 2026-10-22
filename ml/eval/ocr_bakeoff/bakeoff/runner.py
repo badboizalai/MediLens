@@ -1,4 +1,4 @@
-"""Run engines over pages: CER (overall/lang/quality), latency per page, USD per doc."""
+"""Run engines over pages: CER (overall/lang/quality/variant), latency per page, USD per doc."""
 
 from __future__ import annotations
 
@@ -38,12 +38,15 @@ def run_engine(engine: OcrEngine, pages: list[Page], warmup: bool = True) -> dic
         rows.append(
             {
                 "doc_id": p.doc_id,
+                "unit": p.unit,
                 "lang": p.lang,
                 "quality": p.quality,
-                "unit": p.unit,
+                "variant": p.variant,
+                "engine": engine.name,
+                "cer": edits / chars if chars else None,
+                "latency_s": round(dt, 3),
                 "edits": edits,
                 "chars": chars,
-                "seconds": round(dt, 3),
             }
         )
         lat.append(dt)
@@ -59,7 +62,7 @@ def run_engine(engine: OcrEngine, pages: list[Page], warmup: bool = True) -> dic
             "p50": percentile(lat, 0.5),
             "p95": percentile(lat, 0.95),
         },
-        "usd_per_doc": statistics.fmean(usd),  # golden-v0 docs are single page
+        "usd_per_doc": statistics.fmean(usd),  # golden-v0 docs are single page; mean per image
         "cost_basis": "api usage" if api else f"cpu time at {CPU_USD_PER_HOUR} USD/h (assumed)",
         "rows": rows,
     }

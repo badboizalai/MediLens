@@ -35,14 +35,17 @@ def _rate(rows: list[dict]) -> float | None:
 
 
 def aggregate(rows: list[dict]) -> dict:
-    """rows: {lang, quality, edits, chars}. Micro-averaged CER overall and per group."""
+    """rows: {lang, quality, variant, edits, chars}. Micro-averaged CER overall and per group."""
     by_lang: dict[str, list[dict]] = defaultdict(list)
     by_quality: dict[str, list[dict]] = defaultdict(list)
+    by_variant: dict[str, list[dict]] = defaultdict(list)
     for r in rows:
+        by_variant[r["variant"]].append(r)
         by_lang[r["lang"]].append(r)
         by_quality[r["quality"]].append(r)
     return {
         "overall": _rate(rows),
         "by_lang": {k: _rate(v) for k, v in sorted(by_lang.items())},
         "by_quality": {k: _rate(v) for k, v in sorted(by_quality.items())},
+        "by_variant": {k: _rate(v) for k, v in sorted(by_variant.items())},
     }

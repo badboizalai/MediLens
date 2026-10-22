@@ -29,7 +29,7 @@
 | S2-T08 | D12 | BRD v1: To-Be BPMN, BR-001…BR-045, VI–EN glossary | business-analyst | `docs/brd/` | S2-T07 | in-review: READY | docs/S2-T08-brd-v1 | #13 |
 | S2-T09 | D08 | Proto-personas + As-Is journey (hypotheses to validate) | ux-ui-designer | `docs/ux/personas/` | S1-T03 | in-review: READY (stacked on #6) | docs/S2-T09-proto-personas | #11 |
 | S2-T10 | D13–D14 | IA/sitemap + low-fi wireframes (8 screens) + prototype test script | ux-ui-designer | `docs/ux/wireframes/` | S2-T07 | in-review: READY (round 2, lint PASS) | docs/S2-T10-ia-wireframes | #14 |
-| S2-T12 | D17 | OCR bake-off harness (CER, latency, USD/doc) + report on golden v0 | ai-ml-engineer | `ml/eval/ocr_bakeoff/` | S2-T11 | in-progress | feat/S2-T12-ocr-bakeoff |  |
+| S2-T12 | D17 | OCR bake-off harness (CER, latency, USD/doc) + report on golden v0 | ai-ml-engineer | `ml/eval/ocr_bakeoff/` | S2-T11 | in-review: READY (re-verified by re-run) | feat/S2-T12-ocr-bakeoff | #24 |
 | S2-T13 | D19 | DPIA v0 + data inventory + OTIA decision | regulatory-privacy-officer | `regulatory/privacy/` | S1-T02 | in-review: READY (stacked on #4) | docs/S2-T13-dpia-v0 | #12 |
 | S1-T14 | D10 | Sprint-01 report, risk register (L×I), retro template | product-manager | `docs/project/reports/`, `docs/project/risk-register.md` | S1-T01 | in-review: READY (stacked on #5) | docs/S1-T14-risk-register | #9 |
 | S2-F01 | — | Extend claims_lint for BR-042 phrases (+tests) | regulatory-privacy-officer | `.claude/skills/medilens-regulatory-privacy-officer/scripts/` | — | in-review: READY (round 2) | feat/S2-F01-claims-lint-rules | #19 |
@@ -38,7 +38,7 @@
 | S2-F04 | — | BR traceability matrix | qa-engineer | `docs/requirements/` | S2-T08 | in-review: READY (stacked on #13) | docs/S2-F04-traceability | #18 |
 | S2-F05 | — | Governance CI workflow + hazard-log notes column | cloud-devops-engineer | `.github/workflows/governance.yml`, `safety/hazard-log.csv`, `Makefile` | — | in-review: READY (**human merge**: workflow) | ci/S2-F05-governance-checks | #20 |
 | S2-F06 | — | Handwriting + perspective variants for golden v0 | ai-ml-engineer | `ml/datasets/synth/`, `ml/eval/golden-v0/` | S2-T11 | in-review: READY (re-verified, stacked on #15) | feat/S2-F06-handwriting-variants | #21 |
-| S2-F07 | D14 | Clickable low-fi HTML prototype of 8 screens | ux-ui-designer | `docs/ux/prototype/` | S2-T10 | in-progress | feat/S2-F07-clickable-prototype | |
+| S2-F07 | D14 | Clickable low-fi HTML prototype of 8 screens | ux-ui-designer | `docs/ux/prototype/` | S2-T10 | in-review: READY (re-verified) | feat/S2-F07-clickable-prototype | #23 |
 | S2-T15 | D20 | Gate evidence packs G0 + G0-R (checklists, links, open items) for human sign-off | qc-release-gatekeeper | `docs/gates/` | all above | in-review: READY (G0/G0-R NOT YET READY — human items) | docs/S2-T15-gate-packs | #22 |
 
 ## Batches
@@ -46,9 +46,10 @@
 - **Batch 2** (~00:45): S2-T06, S2-T07, S2-T08, S2-T09, S2-T10, S2-T13, S1-T14 — 7 workers (docs-only, light); owner said "don't care about dates, fill tasks fast" → BRD/wireframes started from plan §2.4 without waiting for T07.
 - **Batch 3** (~01:00): follow-ups from reviews S2-F01…F04.
 - **Batch 4** (~01:10): S2-T12, S2-T15, S2-F05, S2-F06; then S2-F07 (prototype gap found by the G0 pack).
+- **Stop** (~01:50): no unblocked AI tasks left; see Handover.
 
 ## PRs waiting for merge
-Merge order matters (stacked): **#5 → #8, #9** · **#4 → #12, #19** · **#6 → #11, #16** · **#13 → #18** · **#15 → #21** · **#14 → (F07)** · #10, #17, #22 independent. **Human-only merges**: #7 (RULES), #20 (workflow).
+Merge order matters (stacked): **#5 → #8, #9** · **#4 → #12, #19** · **#6 → #11, #16** · **#13 → #18** · **#15 → #21, #24** · **#14 → #23** · #10, #17, #22 independent. **Human-only merges**: #7 (RULES), #20 (workflow).
 Merged: #2 (license register), #3 (CRMP/hazard log).
 
 ## Decisions
@@ -64,5 +65,17 @@ Merged: #2 (license register), #3 (CRMP/hazard log).
 ## Helper tools used
 medilens-* skills via workers; karpathy-guidelines + ponytail in every brief; mattpocock /tdd in code tasks (T11, F01, F02); taste-skill in UX tasks (T09, T10); claims_lint.py, license_register_check.py, hazard_risk_check.py, check_traceability.py; laya not needed yet (routing unambiguous).
 
-## Handover
-_written at stop_
+## Handover (stopped 2026-10-23 ~01:50 +07, ~1h20 into the 12h window)
+**Why stopped**: every AI-doable Sprint 1–2 task has a reviewed PR (22 PRs: #2–#24). Remaining work is either human-only or depends on merges that the Claude Code permission classifier blocks for the AI → owner action needed. Restart with `/loop` after merging.
+
+**Owner actions, in order**
+1. Merge `ready-to-merge` PRs following the stacking order above (resolve inline review threads first; branch protection requires it). Human-only: #7 (RULES — enables AI merge), #20 (workflow).
+2. Check GitHub Actions (runs stay *queued*) → Settings → Actions / billing.
+3. Human Discovery work: recruit + run 5–8 interviews (kit in docs/research), clinician advisor, 3-person prototype test (docs/ux/prototype, open via file://), REG verification of `VERIFY:` items, sign G0 / G0-R (docs/gates).
+
+**Next AI tasks once merged** (unblocked by merges)
+- Bake-off: per-page CER rows, re-run on handwriting/perspective variants (#21), configurable LLM model + priced from config, LLM-vision run when an API key is provided.
+- Make hazard check blocking in governance CI (after #17 + #20); collect `ml/eval` + skill script tests in `make test`/CI.
+- Charter wording: timeline/sharing = Should (align with #8); BA review of US titles in traceability; REG co-sign column in license register.
+
+**Quality notes from review**: 3 real defects caught and fixed in round 2 (gate dates #5, UI copy failing claims lint #14, one-off regex exception #19). Code PRs (#15, #17, #19, #21, #23, #24) re-verified by the orchestrator on clean worktrees / independent re-runs.

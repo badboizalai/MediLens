@@ -3,7 +3,7 @@
 > **Draft — educational, not legal advice; requires human REG sign-off at G0-R.**
 > Nguồn: `claims-control.md` và `scripts/claims_lint.py` của skill medilens-regulatory-privacy-officer; BR-042; `docs/plan/project-plan.vi.md` §22.2 mục 4. Phạm vi áp dụng: UI, i18n, prompt LLM, landing page, store listing, email, tài liệu hỗ trợ.
 
-Nguyên tắc: nói MediLens **làm gì** (hiển thị và giải thích điều đã có trong hồ sơ của chính người dùng), không ngụ ý chẩn đoán, phát hiện, dự đoán, điều trị, chứng nhận hay bằng chứng lâm sàng khi chưa có tài liệu.
+Nguyên tắc: nói MediLens **làm gì** (hiển thị và giải thích điều đã có trong hồ sơ của chính người dùng), không ngụ ý chẩn đoán, phát hiện, dự đoán, điều trị, chứng nhận hay bằng chứng lâm sàng khi chưa có tài liệu. <!-- claims-ok -->
 
 Cách dùng với linter: `python3 .claude/skills/medilens-regulatory-privacy-officer/scripts/claims_lint.py <file|folder>`. Tệp này tự liệt kê cụm cấm nên mỗi dòng đều gắn `claims-ok`; **không** copy các cụm này vào nội dung sản phẩm. Khi trích đúng tên trường của hồ sơ (ví dụ "Chẩn đoán (theo hồ sơ)") hãy gắn `claims-ok` cùng dòng.
 

@@ -1,0 +1,10 @@
+ts_label,region_code,laterality,notes
+liver,liver,midline,
+spleen,spleen,left,
+kidney_left,kidney_l,left,
+kidney_right,kidney_r,right,
+lung_upper_lobe_right,lung_r_upper,right,
+lung_middle_lobe_right,lung_r_middle,right,
+lung_lower_lobe_left,lung_l_lower,left,
+heart,heart,midline,chambers need the separate heart task
+urinary_bladder,bladder,midline,

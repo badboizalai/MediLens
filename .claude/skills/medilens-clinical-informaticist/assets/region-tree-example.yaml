@@ -1,0 +1,18 @@
+# Excerpt of a region tree (Respiratory Unit)
+- region_code: sys_respiratory
+  name_vi: Hệ hô hấp
+  name_en: Respiratory system
+  parent: null
+- region_code: lung_r
+  name_vi: Phổi phải
+  name_en: Right lung
+  parent: sys_respiratory
+  laterality: right
+  standard_code: "FMA:7333"   # verify against the asset source before use
+- region_code: lung_r_upper
+  name_vi: Thùy trên phổi phải
+  name_en: Right upper lobe
+  parent: lung_r
+  laterality: right
+  mesh_id: lung_r_upper
+  svg_id: lung_r_upper

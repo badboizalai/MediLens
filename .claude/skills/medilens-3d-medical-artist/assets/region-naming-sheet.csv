@@ -1,0 +1,7 @@
+region_code,parent,name_vi,name_en,mesh_required,svg_required,template_specific
+sys_cardiovascular,,Hệ tim mạch,Cardiovascular system,no,no,
+heart,sys_cardiovascular,Tim,Heart,yes,yes,
+heart_lv,heart,Thất trái,Left ventricle,yes,yes,
+heart_rv,heart,Thất phải,Right ventricle,yes,yes,
+heart_la,heart,Nhĩ trái,Left atrium,yes,yes,
+heart_ra,heart,Nhĩ phải,Right atrium,yes,yes,

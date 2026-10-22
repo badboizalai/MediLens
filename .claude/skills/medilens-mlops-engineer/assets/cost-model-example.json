@@ -1,0 +1,22 @@
+{
+  "currency": "USD",
+  "note": "Illustrative prices per million tokens (plan 28.4). Replace with current prices for your region.",
+  "prices_per_million": {
+    "S": {"in": 0.15, "out": 0.15, "cache_read_ratio": 0.10},
+    "M": {"in": 1.0, "out": 5.0, "cache_read_ratio": 0.10},
+    "L": {"in": 3.0, "out": 15.0, "cache_read_ratio": 0.10}
+  },
+  "document_steps": [
+    {"name": "page classification", "tier": "S", "share": 1.0, "in_new": 600, "in_cached": 0, "out": 20},
+    {"name": "extraction", "tier": "M", "share": 1.0, "in_new": 2500, "in_cached": 1500, "out": 800},
+    {"name": "mapping 5 findings", "tier": "S", "share": 1.0, "in_new": 1000, "in_cached": 0, "out": 100},
+    {"name": "escalation", "tier": "L", "share": 0.12, "in_new": 4000, "in_cached": 0, "out": 800}
+  ],
+  "question_steps": [
+    {"name": "explanation", "tier": "M", "share": 1.0, "in_new": 1000, "in_cached": 2000, "out": 300}
+  ],
+  "batch_share": 0.0,
+  "batch_discount": 0.5,
+  "gpu_seconds_per_document": 0,
+  "gpu_hourly_usd": 0
+}

@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Stack: up", "type": "shell", "command": "make up", "problemMatcher": [] },
+    { "label": "API: dev", "type": "shell", "command": "make api-dev", "isBackground": true, "problemMatcher": [] },
+    { "label": "Web: dev", "type": "shell", "command": "make web-dev", "isBackground": true, "problemMatcher": [] },
+    { "label": "Lint all", "type": "shell", "command": "make lint", "problemMatcher": [] },
+    { "label": "Test all", "type": "shell", "command": "make test", "group": "test", "problemMatcher": [] },
+    { "label": "Skills: validate", "type": "shell", "command": "make skills-check", "problemMatcher": [] }
+  ]
+}

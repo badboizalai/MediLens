@@ -1,0 +1,63 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  security-events: write
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: apps/api } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -e ".[dev]"
+      - run: ruff check . && ruff format --check .
+      - run: mypy --strict src/medilens/modules
+      - run: lint-imports
+      - run: pytest -q --cov=medilens --cov-fail-under=80   # Testcontainers needs Docker (available on ubuntu-latest)
+      - run: schemathesis run --checks all openapi.yaml --app medilens.main:app || true  # make blocking once stable
+  frontend:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: apps/web } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "22", cache: npm, cache-dependency-path: apps/web/package-lock.json }
+      - run: npm ci
+      - run: npm run lint && npm run typecheck
+      - run: npm test -- --coverage
+      - run: npx size-limit
+      - run: npx playwright install --with-deps chromium && npm run e2e:mock
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: gitleaks/gitleaks-action@v2
+      - uses: returntocorp/semgrep-action@v1
+        with: { config: "p/owasp-top-ten p/python p/typescript .semgrep/medilens.yml" }
+      - uses: aquasecurity/trivy-action@0.28.0
+        with: { scan-type: fs, severity: CRITICAL, exit-code: "1" }
+      - uses: bridgecrewio/checkov-action@v12
+        with: { directory: infra/terraform, soft_fail: false }
+  ai-eval:
+    if: contains(join(github.event.pull_request.labels.*.name, ','), 'ai-change')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python ml/eval/run_golden.py --baseline ml/eval/baseline.json --max-f1-drop 1.0
+  image:
+    needs: [backend, frontend, security]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - run: docker buildx build --platform linux/arm64 -f apps/api/Dockerfile -t api:${{ github.sha }} --load apps/api
+      - uses: aquasecurity/trivy-action@0.28.0
+        with: { image-ref: "api:${{ github.sha }}", severity: CRITICAL, exit-code: "1" }
+      - uses: anchore/sbom-action@v0
+        with: { image: "api:${{ github.sha }}", format: cyclonedx-json }

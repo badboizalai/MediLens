@@ -1,0 +1,59 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+!.vscode/*.code-snippets
+
+# Secrets & env
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+.next/
+.turbo/
+coverage/
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# Terraform
+.terraform/
+*.tfstate*
+*.tfvars
+!*.tfvars.example
+
+# Data: NEVER commit real patient data
+data/raw/
+data/private/
+ml/datasets/real/
+imaging/dicom-real/
+*.dcm
+*.sqlite
+*.dump
+
+# Claude Code local
+.claude/settings.local.json
+.claude/worktrees/

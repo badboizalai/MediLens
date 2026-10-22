@@ -1,0 +1,4 @@
+source_term,language,abbreviation,target_system,code,display,match_type,unit_context,reviewer,review_date,notes
+tăng huyết áp,vi,THA,ICD-10,I10,Essential (primary) hypertension,exact,,CIN,2026-11-20,
+nhồi máu cơ tim cấp,vi,NMCT,ICD-10,I21,Acute myocardial infarction,broader,,CIN,2026-11-20,subtype not stated
+creatinin máu,vi,,LOINC,2160-0,Creatinine [Mass/volume] in Serum or Plasma,exact,mg/dL,CIN,2026-11-20,

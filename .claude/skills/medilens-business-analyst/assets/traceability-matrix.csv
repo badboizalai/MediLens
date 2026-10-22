@@ -1,0 +1,7 @@
+br_id,us_id,tc_id,status
+BR-002,US-003,TC-010,passed
+BR-011,US-012,TC-031,passed
+BR-012,US-021,TC-040,passed
+BR-012,US-021,TC-041,failed
+BR-013,US-021,TC-042,passed
+BR-021,US-034,,not_tested

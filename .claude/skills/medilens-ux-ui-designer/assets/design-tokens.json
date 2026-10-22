@@ -1,0 +1,45 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "color": {
+    "brand": {
+      "primary": { "light": "#1F6FEB", "dark": "#58A6FF" },
+      "surface": { "light": "#FFFFFF", "dark": "#0F1419" },
+      "surfaceMuted": { "light": "#F4F6F8", "dark": "#161B22" },
+      "text": { "light": "#1B1F24", "dark": "#E6EDF3" },
+      "textMuted": { "light": "#57606A", "dark": "#9DA7B3" },
+      "border": { "light": "#D0D7DE", "dark": "#30363D" }
+    },
+    "severity": {
+      "monitor": { "light": "#2E7D32", "dark": "#66BB6A", "icon": "eye", "labelVi": "Theo dõi", "labelEn": "Monitor" },
+      "mild": { "light": "#B7950B", "dark": "#F4D03F", "icon": "circle-small", "labelVi": "Nhẹ", "labelEn": "Mild" },
+      "moderate": { "light": "#D35400", "dark": "#F39C12", "icon": "circle-half", "labelVi": "Trung bình", "labelEn": "Moderate" },
+      "severe": { "light": "#C0392B", "dark": "#E74C3C", "icon": "circle-full", "labelVi": "Nặng", "labelEn": "Severe" },
+      "spread": { "light": "#7D3C98", "dark": "#BB8FCE", "icon": "arrows-out", "labelVi": "Di căn / lan rộng", "labelEn": "Metastasis / spread" },
+      "reference": { "light": "#8C959F", "dark": "#6E7681", "icon": "info", "labelVi": "Tham khảo", "labelEn": "Reference" }
+    },
+    "feedback": {
+      "info": { "light": "#0969DA", "dark": "#4493F8" },
+      "success": { "light": "#1A7F37", "dark": "#3FB950" },
+      "warning": { "light": "#9A6700", "dark": "#D29922" },
+      "danger": { "light": "#CF222E", "dark": "#F85149" },
+      "lowConfidence": { "light": "#FFF8C5", "dark": "#3B2E00" }
+    }
+  },
+  "font": {
+    "family": { "sans": "Inter, 'Be Vietnam Pro', system-ui, sans-serif", "mono": "'JetBrains Mono', monospace" },
+    "size": { "xs": "12px", "sm": "14px", "md": "16px", "lg": "18px", "xl": "22px", "2xl": "28px" },
+    "lineHeight": { "tight": 1.25, "normal": 1.5 },
+    "weight": { "regular": 400, "medium": 500, "semibold": 600 }
+  },
+  "space": { "1": "4px", "2": "8px", "3": "12px", "4": "16px", "6": "24px", "8": "32px", "12": "48px" },
+  "radius": { "sm": "4px", "md": "8px", "lg": "12px", "pill": "999px" },
+  "motion": { "fast": "120ms", "normal": "200ms", "slow": "320ms", "easing": "cubic-bezier(0.2, 0, 0, 1)", "reducedMotion": "0ms" },
+  "viewer": {
+    "severityOpacity": 0.75,
+    "xrayDefaultSkinOpacity": 0.25,
+    "highlightOutlineWidth": 2,
+    "metastasisLineWidth": 3,
+    "spreadReferenceDash": [6, 4]
+  },
+  "a11y": { "minTarget": "24px", "primaryTarget": "44px", "focusRingWidth": "2px" }
+}

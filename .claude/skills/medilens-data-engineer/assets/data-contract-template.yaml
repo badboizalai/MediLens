@@ -1,0 +1,20 @@
+contract: <event_or_table_name>.v1
+owner: backend-engineer
+consumers: [data-engineer, ai-ml-engineer]
+classification: C2          # pseudonymised; no free-text clinical values
+description: >
+  <what one record means>
+schema:
+  event_id:        {type: uuid, required: true}
+  occurred_at:     {type: timestamp_utc, required: true}
+  user_pseudo_id:  {type: string, required: true, note: HMAC-SHA256 of user_id}
+  unit_code:       {type: string, required: true, enum_ref: units}
+  # add fields...
+semantics:
+  - <rule, e.g. fields_corrected <= fields_total>
+quality:
+  freshness: delivered within 15 minutes
+  completeness: required fields 100%
+sla: 99% of events delivered within 15 minutes
+breaking_change_policy: publish v2 alongside v1 for 30 days; consumers migrate; then retire v1
+pii_policy: no C3/C4 fields; any addition requires security-engineer review

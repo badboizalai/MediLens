@@ -1,0 +1,71 @@
+name: deploy
+on:
+  push:
+    branches: [main]
+permissions:
+  id-token: write   # GitHub OIDC → AWS
+  contents: read
+env:
+  AWS_REGION: ap-southeast-1
+  ECR_REPO: medilens-api
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    environment: staging
+    outputs: { image: "${{ steps.img.outputs.image }}" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - id: img
+        run: |
+          IMAGE=${{ steps.ecr.outputs.registry }}/${ECR_REPO}:${GITHUB_SHA}
+          docker buildx build --platform linux/arm64 -f apps/api/Dockerfile -t $IMAGE --push apps/api
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+  deploy-staging:
+    needs: build-push
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with: { role-to-assume: "${{ vars.AWS_DEPLOY_ROLE_ARN }}", aws-region: "${{ env.AWS_REGION }}" }
+      - name: Run migrations (one-off task)
+        run: ./infra/scripts/run-migrations.sh staging ${{ needs.build-push.outputs.image }}
+      - name: Render task definition
+        id: td
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with: { task-definition: infra/ecs/api-staging.json, container-name: api, image: "${{ needs.build-push.outputs.image }}" }
+      - uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.td.outputs.task-definition }}
+          cluster: medilens-staging
+          service: medilens-staging-api
+          wait-for-service-stability: true
+      - name: Smoke + E2E against staging
+        run: npm --prefix apps/web run e2e:staging
+  deploy-prod:
+    needs: [build-push, deploy-staging]
+    runs-on: ubuntu-latest
+    environment: production   # requires manual approval
+    steps:
+      - uses: actions/checkout@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with: { role-to-assume: "${{ vars.AWS_DEPLOY_ROLE_ARN }}", aws-region: "${{ env.AWS_REGION }}" }
+      - run: ./infra/scripts/run-migrations.sh prod ${{ needs.build-push.outputs.image }}
+      - id: td
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with: { task-definition: infra/ecs/api-prod.json, container-name: api, image: "${{ needs.build-push.outputs.image }}" }
+      - uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.td.outputs.task-definition }}
+          cluster: medilens-prod
+          service: medilens-prod-api
+          codedeploy-appspec: infra/ecs/appspec-prod.yaml          # blue/green
+          codedeploy-application: medilens-prod-api
+          codedeploy-deployment-group: medilens-prod-api-bg
+          wait-for-service-stability: true

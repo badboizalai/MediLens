@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(make:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(python3 tools/*)",
+      "Bash(uv run:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm typecheck:*)",
+      "Bash(pnpm test:*)",
+      "Bash(ruff:*)",
+      "Bash(pytest:*)",
+      "Bash(terraform fmt:*)",
+      "Bash(terraform validate:*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./secrets/**)",
+      "Read(./data/raw/**)",
+      "Read(./data/private/**)",
+      "Read(./ml/datasets/real/**)",
+      "Read(./imaging/dicom-real/**)",
+      "Bash(terraform apply:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(git push --force:*)",
+      "Bash(rm -rf:*)"
+    ]
+  },
+  "env": {
+    "ENV": "local"
+  }
+}

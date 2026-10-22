@@ -1,0 +1,2 @@
+hazard_id,title,situation,harm,causes,severity,probability,controls,cs_ids,verification,residual_severity,residual_probability,owner,status,notes
+HZ-001,Finding on wrong side,Laterality misread from record,User misinforms clinician / worries about wrong organ,OCR or LLM laterality error,3,3,Laterality rules; confidence highlight; user confirmation; source snippet,CS-001;CS-002;CS-003,TC-120;TC-121,3,1,ai-ml-engineer,open,

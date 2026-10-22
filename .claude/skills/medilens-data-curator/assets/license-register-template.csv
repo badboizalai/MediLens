@@ -1,0 +1,4 @@
+lic_id,source_name,url,licence_name,licence_url,access_type,training_allowed,product_use_allowed,commercial_allowed,redistribution_allowed,share_alike,attribution_text,intended_use,decision,conditions,reviewer,decision_date,next_review,notes
+LIC-001,MediLens synthetic records,internal,Own,,open,yes,yes,yes,yes,no,,dev+golden+training,approved,,DC,2026-11-12,2027-02-12,
+LIC-002,Medical Segmentation Decathlon,http://medicaldecathlon.com/,CC BY-SA 4.0,https://creativecommons.org/licenses/by-sa/4.0/,open,yes,yes,yes,yes,yes,"Antonelli et al., The Medical Segmentation Decathlon",evaluation,approved with conditions,share-alike for derived data,REG,2026-11-12,2027-02-12,
+LIC-003,DENTEX,https://dentex.grand-challenge.org/,CC BY-NC-SA 4.0,https://creativecommons.org/licenses/by-nc-sa/4.0/,registration,yes,no,no,yes,yes,cite challenge paper,learning only,approved with conditions,non-commercial learning only,REG,2026-11-12,2027-02-12,

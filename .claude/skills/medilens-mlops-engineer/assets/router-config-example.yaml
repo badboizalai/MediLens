@@ -1,0 +1,23 @@
+# AI Gateway router config (stored in AppConfig, validated on deploy)
+environment: staging
+allowlist:
+  S: ["<tier-S model id, pinned>"]
+  M: ["<tier-M model id, pinned>"]
+  L: ["<tier-L model id, pinned>"]
+fallback_order: [bedrock-ap-southeast-1, secondary-provider]
+budgets:
+  usd_per_day: 5
+  per_subject_per_day: {documents: 20, questions: 50, tokens: 200000}
+tasks:
+  classify: {tier: S, max_output_tokens: 20, cache_ttl_h: 720}
+  extract:
+    tier: M
+    escalate_to: L
+    escalate_if: {confidence_below: 0.78, schema_failures: 2}
+    max_output_tokens: 800
+    prompt_cache: true
+    cache_ttl_h: 720
+  map: {tier: S, escalate_to: M, escalate_if: {confidence_below: 0.7}, max_output_tokens: 120}
+  explain: {tier: M, max_output_tokens: 400, semantic_cache: true, cache_ttl_h: 168}
+  judge: {tier: L, mode: batch}
+kill_switches: {explain: false, extract: false}

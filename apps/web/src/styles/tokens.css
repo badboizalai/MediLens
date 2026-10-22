@@ -1,0 +1,7 @@
+/* Design tokens — severity colours per BR-020. Source of truth: packages/design-system. */
+:root {
+  --ml-severity-normal: #2e7d32;
+  --ml-severity-mild: #f9a825;
+  --ml-severity-moderate: #ef6c00;
+  --ml-severity-severe: #c62828;
+}

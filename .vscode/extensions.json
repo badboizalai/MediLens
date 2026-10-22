@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "anthropic.claude-code",
+    "ms-python.python",
+    "charliermarsh.ruff",
+    "ms-python.mypy-type-checker",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "hashicorp.terraform",
+    "ms-azuretools.vscode-docker",
+    "redhat.vscode-yaml",
+    "editorconfig.editorconfig",
+    "bierner.markdown-mermaid",
+    "mtxr.sqltools",
+    "ms-playwright.playwright",
+    "eamodio.gitlens"
+  ]
+}

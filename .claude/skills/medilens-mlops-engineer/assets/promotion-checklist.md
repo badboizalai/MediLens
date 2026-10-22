@@ -1,0 +1,11 @@
+# Promotion checklist — MC-<nnn>
+- [ ] Registry entry and Model Card complete
+- [ ] Golden-set eval: no Unit worse than baseline by > 1 point F1; subgroup gaps ≤ 5 points
+- [ ] Red-team and guardrail suite pass
+- [ ] AI impact assessment (if new use case/data/provider)
+- [ ] Vendor assessment (if new provider) and OTIA impact checked
+- [ ] Cost model updated; budget alarms adjusted
+- [ ] Shadow 7 days: output diff reviewed, cost and latency within limits
+- [ ] Canary 10% with rollback criteria configured
+- [ ] 100% rollout; 7-day watch; decision logged
+- [ ] Fallback provider tested (< 5 minutes switch)

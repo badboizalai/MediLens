@@ -1,0 +1,18 @@
+{
+  "name": "medilens",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "engines": { "node": ">=20.11" },
+  "scripts": {
+    "dev": "pnpm --filter @medilens/web dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "prettier": "3.4.2",
+    "typescript": "5.7.2"
+  }
+}

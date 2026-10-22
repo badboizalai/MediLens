@@ -1,0 +1,6 @@
+# Replace @owner with real handles / teams.
+*                      @owner
+/infra/                @owner
+/safety/               @owner
+/regulatory/           @owner
+/.claude/              @owner

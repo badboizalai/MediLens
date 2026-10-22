@@ -1,0 +1,30 @@
+{
+  "release": "1.0.0",
+  "open_defects": {"S1": 0, "S2": 0, "S3": 4, "S4": 9},
+  "must_suite_pass_rate": 1.0,
+  "coverage": {"backend": 0.83, "frontend": 0.72},
+  "authz_matrix_coverage": 1.0,
+  "ai": {
+    "baseline_f1": {"dental": 0.86, "cardiology": 0.81, "oncology": 0.80},
+    "candidate_f1": {"dental": 0.87, "cardiology": 0.81, "oncology": 0.795},
+    "guardrail_block_rate": 0.97,
+    "guardrail_false_block_rate": 0.06,
+    "hallucination_rate": 0.03
+  },
+  "perf": {"api_p95_ms": 240},
+  "a11y_serious_critical": 0,
+  "security_signoff": "GO",
+  "medical_content_reviewed_ratio": 1.0,
+  "dr_drill_days_ago": 45,
+  "release_notes_ready": true,
+  "rollback_plan_ready": true,
+  "clinical_safety": {"safety_case_signed": true, "unacceptable_residual_risks": 0},
+  "claims_lint_block": 0,
+  "regulatory": {"rdr_current": true, "rdr_id": "RDR-001"},
+  "real_data": false,
+  "pentest": {"done": true, "open_high_critical": 0},
+  "data_licence_gate": "PASS",
+  "ai_cost": {"usd_per_doc": 0.011, "budget_usd_per_doc": 0.10, "escalation_rate": 0.12},
+  "i18n_errors": 0,
+  "risk_acceptances": []
+}

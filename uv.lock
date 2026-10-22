@@ -1378,6 +1378,7 @@ name = "medilens-phi-service"
 version = "0.1.0"
 source = { editable = "apps/phi-service" }
 dependencies = [
+    { name = "cryptography" },
     { name = "fastapi" },
     { name = "pydantic" },
     { name = "uvicorn", extra = ["standard"] },
@@ -1391,6 +1392,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "cryptography", specifier = ">=43" },
     { name = "fastapi", specifier = ">=0.115" },
     { name = "pydantic", specifier = ">=2.9" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.32" },

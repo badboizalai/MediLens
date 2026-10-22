@@ -86,3 +86,22 @@ AI merge of #26 was then blocked by the permission classifier → owner merges #
 - Charter wording: timeline/sharing = Should (align with #8); BA review of US titles in traceability; REG co-sign column in license register.
 
 **Quality notes from review**: 3 real defects caught and fixed in round 2 (gate dates #5, UI copy failing claims lint #14, one-off regex exception #19). Code PRs (#15, #17, #19, #21, #23, #24) re-verified by the orchestrator on clean worktrees / independent re-runs.
+
+---
+# Run 2 — S03–S06 (owner: "full authority, 10 parallel workers, 5 hours")
+- Started: 2026-10-23 06:33 +07 · Deadline: 11:35 +07 · Owner authorised AI review **and merge** of all PRs for this run.
+- Sprint 1–2 closed on the AI side: #25, #26, #28, #29 (regulatory claims-ok), #27 (CI hardening) merged → Governance + CI green path.
+- Constraint: Terraform = code + `validate` only (no AWS credentials; `apply` denied).
+
+| ID | Day | Task | Owner skill | Paths | Status | Branch | PR |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| S3-T21 | D21 | C4 + arc42 SAD | solution-architect | `docs/architecture/SAD.md`, `c4/` | in-progress | docs/S3-T21-sad-c4 | |
+| S3-T23 | D23 | Security CI: Semgrep, SCA, Trivy, SBOM | security-engineer | `.github/workflows/security.yml` | in-progress | ci/S3-T23-security-pipeline | |
+| S3-T24 | D24 | Terraform org, SCPs, org CloudTrail | cloud-devops | `infra/terraform/org/` | in-progress | feat/S3-T24-tf-org | |
+| S3-T25 | D25 | Terraform nonprod VPC + endpoints | cloud-devops | `infra/terraform/modules/network/`, `envs/dev/network.tf` | in-progress | feat/S3-T25-tf-network | |
+| S3-T26 | D26 | API foundation: settings, problem details, request id, logging | backend | `apps/api/src/medilens/core/`, `main.py`, tests | in-progress | feat/S3-T26-api-foundation | |
+| S3-T27 | D27 | OIDC JWT validation, identity module | backend | `apps/api/.../modules/identity/` | in-progress | feat/S3-T27-api-auth | |
+| S3-T28 | D28 | Web app shell, i18n, OIDC sign-in | frontend | `apps/web/` | in-progress | feat/S3-T28-web-shell-auth | |
+| S3-T29 | D29 | STRIDE threat model v1 | security-engineer | `docs/security/` | in-progress | docs/S3-T29-threat-model | |
+| S4-T31 | D31–33 | ERD, schemas/roles, initial migration, RLS | backend | `apps/api/migrations/`, `core/db.py`, `docs/architecture/erd.md` | in-progress | feat/S4-T31-db-foundation | |
+| S4-T38 | D37–38 | Design system tokens, components, Storybook | frontend | `packages/design-system/` | in-progress | feat/S4-T38-design-system | |

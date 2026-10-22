@@ -1,6 +1,7 @@
 # Data and asset sources (summary of `data/license-register.csv`)
 
 Task S2-T05, drafted 2026-10-23 by Data Curator; Regulatory sign-off pending (gate G1-D). Next review 2027-01-23.
+Reviewer semantics: `reviewer` is the Data Curator (DC) who prepared the row. `reg_cosign` is empty while Regulatory (REG, human) has not co-signed; REG fills it with `name, YYYY-MM-DD` on co-sign. A row is not final for gate G1-D until `reg_cosign` is filled. The register checker ignores this extra column.
 Rule: if a licence term is not certain, status is `needs-verification` and nothing is downloaded or used. Terms quoted from plan section 25.2 are claims to check, not approvals.
 
 | ID | Source | Licence (as stated, unverified unless noted) | Status |

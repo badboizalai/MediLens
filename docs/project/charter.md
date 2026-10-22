@@ -15,7 +15,8 @@ MediLens là web app giúp bệnh nhân **hiểu bệnh án của chính mình**
 | G5 | Học quy trình dự án lớn | Đủ bộ tài liệu (BRD, SRS, ADR, runbook...) |
 
 ## 3. Phạm vi
-- **Trong (v1.0):** auth và hồ sơ, upload + OCR, trích xuất thực thể y khoa, mapping vùng giải phẫu, viewer 3D/2D cho 3 Unit (Răng hàm mặt, Tim mạch, Ung bướu), timeline pre/post, giải thích LLM + RAG có trích dẫn, chia sẻ có hạn, admin và audit.
+- **Trong (v1.0, Must):** auth và hồ sơ, upload + OCR, trích xuất thực thể y khoa, mapping vùng giải phẫu, viewer 3D/2D cho 3 Unit (Răng hàm mặt, Tim mạch, Ung bướu), giải thích LLM + RAG có trích dẫn, admin và audit.
+- **Trong (v1.0, Should - cắt đầu tiên nếu trễ):** timeline pre/post, chia sẻ có hạn. Khớp [mvp-scope.md](../product/mvp-scope.md). Mục tiêu G3 (§2) chỉ bắt buộc nếu timeline không bị cắt.
 - **Ngoài:** chẩn đoán, kê đơn, kết nối HIS/EMR, DICOM/CT chuyên sâu (v2.0, cần chạy lại G0-R), thanh toán bảo hiểm, dữ liệu bệnh nhân thật trước G3-P.
 
 ## 4. Ngân sách

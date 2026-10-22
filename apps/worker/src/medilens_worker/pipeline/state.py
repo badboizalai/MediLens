@@ -1,8 +1,9 @@
 """Document processing state machine (see plan §8.1 / §9.1)."""
-from enum import StrEnum
+
+from enum import Enum
 
 
-class DocStatus(StrEnum):
+class DocStatus(str, Enum):  # StrEnum needs 3.11
     UPLOADED = "uploaded"
     VALIDATED = "validated"
     PREPROCESSED = "preprocessed"
@@ -15,8 +16,14 @@ class DocStatus(StrEnum):
 
 
 ORDER = [
-    DocStatus.UPLOADED, DocStatus.VALIDATED, DocStatus.PREPROCESSED, DocStatus.CLASSIFIED,
-    DocStatus.OCR_DONE, DocStatus.EXTRACTED, DocStatus.NEEDS_REVIEW, DocStatus.CONFIRMED,
+    DocStatus.UPLOADED,
+    DocStatus.VALIDATED,
+    DocStatus.PREPROCESSED,
+    DocStatus.CLASSIFIED,
+    DocStatus.OCR_DONE,
+    DocStatus.EXTRACTED,
+    DocStatus.NEEDS_REVIEW,
+    DocStatus.CONFIRMED,
 ]
 
 

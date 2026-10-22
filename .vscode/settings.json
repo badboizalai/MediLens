@@ -5,12 +5,23 @@
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
   "files.exclude": { "**/__pycache__": true, "**/.pytest_cache": true, "**/.ruff_cache": true },
-  "search.exclude": { "**/node_modules": true, "**/.next": true, "docs/plan": true, "**/.venv": true },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.next": true,
+    "docs/plan": true,
+    "**/.venv": true
+  },
 
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
   "python.testing.pytestEnabled": true,
   "python.testing.pytestArgs": ["apps", "tests"],
-  "[python]": { "editor.defaultFormatter": "charliermarsh.ruff", "editor.codeActionsOnSave": { "source.organizeImports": "explicit", "source.fixAll": "explicit" } },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll": "explicit"
+    }
+  },
 
   "[typescript]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
   "[typescriptreact]": { "editor.defaultFormatter": "esbenp.prettier-vscode" },
@@ -21,6 +32,9 @@
   "eslint.workingDirectories": [{ "mode": "auto" }],
 
   "tailwindCSS.experimental.classRegex": [["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]],
-  "yaml.schemas": { "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml" },
-  "markdown.validate.enabled": true
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml"
+  },
+  "markdown.validate.enabled": true,
+  "python.terminal.useEnvFile": true
 }

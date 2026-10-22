@@ -9,6 +9,7 @@ Usage:
 - Same input + same key → same pseudonym, so joins across tables still work.
 - --birth-year-band turns a year into a 5-year band (e.g. 1987 → "1985-1989").
 """
+
 import argparse
 import csv
 import hashlib
@@ -62,7 +63,13 @@ def main() -> int:
         with open(a.src, encoding="utf-8") as fi, open(a.dst, "w", encoding="utf-8") as fo:
             for line in fi:
                 if line.strip():
-                    fo.write(json.dumps(transform(json.loads(line), k, a.hash, set(a.drop), a.birth_year_band), ensure_ascii=False) + "\n")
+                    fo.write(
+                        json.dumps(
+                            transform(json.loads(line), k, a.hash, set(a.drop), a.birth_year_band),
+                            ensure_ascii=False,
+                        )
+                        + "\n"
+                    )
                     n += 1
     else:
         with open(a.src, newline="", encoding="utf-8") as fi:

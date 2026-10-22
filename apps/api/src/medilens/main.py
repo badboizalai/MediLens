@@ -5,7 +5,9 @@ from medilens.core.errors import AppError, app_error_handler
 
 settings = get_settings()
 
-app = FastAPI(title="MediLens API", version="0.1.0", docs_url="/docs" if settings.env != "prod" else None)
+app = FastAPI(
+    title="MediLens API", version="0.1.0", docs_url="/docs" if settings.env != "prod" else None
+)
 app.add_exception_handler(AppError, app_error_handler)
 
 

@@ -9,8 +9,12 @@ class DocumentPolicy:
     async def can_read(self, p: Principal, doc: Document) -> bool:
         if doc.profile_id in p.profile_ids_owned:
             return True
-        return await self.shares.has_active_grant(grantee=p.user_id, profile_id=doc.profile_id,
-                                                  scope=("document", doc.id), at=self.clock.now())
+        return await self.shares.has_active_grant(
+            grantee=p.user_id,
+            profile_id=doc.profile_id,
+            scope=("document", doc.id),
+            at=self.clock.now(),
+        )
 ```
 Service code: load by ID **with** owner scope where possible (`WHERE id=:id AND profile_id = ANY(:allowed)`); if not found → `NotFound` (404).
 

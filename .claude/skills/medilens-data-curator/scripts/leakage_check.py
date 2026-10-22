@@ -7,6 +7,7 @@ Hashes every file (SHA-256 of bytes; with --text, of normalised text:
 lower-case, collapsed whitespace, for .txt/.json/.md/.csv) and reports files
 whose hash appears in both folders. Exit 1 when any overlap is found.
 """
+
 import hashlib
 import os
 import re
@@ -44,7 +45,9 @@ def main(argv):
     a, b = [x for x in argv[1:] if not x.startswith("--")][:2]
     ia, ib = index(a, text_mode), index(b, text_mode)
     common = set(ia) & set(ib)
-    print(f"{a}: {sum(len(v) for v in ia.values())} files · {b}: {sum(len(v) for v in ib.values())} files · overlap: {len(common)}")
+    print(
+        f"{a}: {sum(len(v) for v in ia.values())} files · {b}: {sum(len(v) for v in ib.values())} files · overlap: {len(common)}"
+    )
     for h in sorted(common):
         print(f"  {ia[h][0]}  <->  {ib[h][0]}")
     print("RESULT:", "FAIL (leakage)" if common else "PASS")

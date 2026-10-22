@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Generate docs/agents/skill-catalog.md from .claude/skills/*/SKILL.md frontmatter."""
+
 from __future__ import annotations
 
 import re

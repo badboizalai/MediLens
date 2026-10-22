@@ -9,6 +9,7 @@ Blur score = variance of the Laplacian on a grayscale image resized so the
 short side is 1000 px (so scores are comparable across resolutions).
 Requires: pip install opencv-python numpy
 """
+
 import argparse
 import json
 
@@ -36,8 +37,14 @@ def assess(path: str, threshold: float, min_short: int) -> dict:
         reasons.append("too_dark")
     if brightness > 235:
         reasons.append("overexposed")
-    return {"file": path, "ok": not reasons, "blur_score": round(blur, 1),
-            "short_side": short, "brightness": round(brightness, 1), "reasons": reasons}
+    return {
+        "file": path,
+        "ok": not reasons,
+        "blur_score": round(blur, 1),
+        "short_side": short,
+        "brightness": round(brightness, 1),
+        "reasons": reasons,
+    }
 
 
 def main() -> None:

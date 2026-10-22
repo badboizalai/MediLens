@@ -6,6 +6,7 @@ Usage: python sample_size.py [--p 0.85] [--e 0.05] [--conf 0.95] [--strata 1] [-
 n = z^2 * p(1-p) / e^2, optional finite-population correction
 n_adj = n / (1 + (n - 1) / N). Prints per-stratum and total sizes.
 """
+
 import argparse
 import math
 

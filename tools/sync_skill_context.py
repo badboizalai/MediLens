@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Copy the canonical docs/agents/project-context.md into every skill's references/."""
+
 from __future__ import annotations
 
 import shutil

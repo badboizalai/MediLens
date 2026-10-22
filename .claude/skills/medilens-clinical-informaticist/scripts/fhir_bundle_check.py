@@ -11,23 +11,44 @@ valid formats (ICD-10 pattern, LOINC check digit, UCUM present for quantities),
 dates parse, and identity fields that must be dropped at the PHI boundary.
 Exit 1 on errors (warnings do not fail).
 """
+
 import csv
 import json
 import re
 import sys
 from datetime import date
 
-SUPPORTED = {"Patient", "Condition", "Observation", "Procedure", "DocumentReference",
-             "Encounter", "BodyStructure", "Device", "DeviceUseStatement", "ImagingStudy"}
-IGNORED = {"MedicationStatement", "MedicationRequest", "AllergyIntolerance", "Immunization",
-           "Practitioner", "Organization", "Composition", "DiagnosticReport"}
+SUPPORTED = {
+    "Patient",
+    "Condition",
+    "Observation",
+    "Procedure",
+    "DocumentReference",
+    "Encounter",
+    "BodyStructure",
+    "Device",
+    "DeviceUseStatement",
+    "ImagingStudy",
+}
+IGNORED = {
+    "MedicationStatement",
+    "MedicationRequest",
+    "AllergyIntolerance",
+    "Immunization",
+    "Practitioner",
+    "Organization",
+    "Composition",
+    "DiagnosticReport",
+}
 ICD10_SYS = "http://hl7.org/fhir/sid/icd-10"
 LOINC_SYS = "http://loinc.org"
 UCUM_SYS = "http://unitsofmeasure.org"
 ICD10_RX = re.compile(r"^[A-Z][0-9]{2}(\.[0-9A-Z]{1,2})?$")
 LOINC_RX = re.compile(r"^(\d{1,5})-(\d)$")
 IDENTITY_FIELDS = ("name", "identifier", "telecom", "address", "photo", "contact")
-FDI = {f"{q}{t}" for q in (1, 2, 3, 4) for t in range(1, 9)} | {f"{q}{t}" for q in (5, 6, 7, 8) for t in range(1, 6)}
+FDI = {f"{q}{t}" for q in (1, 2, 3, 4) for t in range(1, 9)} | {
+    f"{q}{t}" for q in (5, 6, 7, 8) for t in range(1, 6)
+}
 
 
 def luhn_check_digit(payload: str) -> int:
@@ -53,7 +74,9 @@ def check_code(system: str, code: str) -> str | None:
             return f"LOINC code '{code}' fails the check digit"
         return None
     if system in ("FDI",):
-        return None if code in FDI else f"FDI tooth '{code}' is not a valid permanent/deciduous tooth"
+        return (
+            None if code in FDI else f"FDI tooth '{code}' is not a valid permanent/deciduous tooth"
+        )
     return None
 
 
@@ -79,7 +102,10 @@ def check_bundle(path: str) -> int:
     if b.get("type") not in ("collection", "document", "searchset", "transaction", "batch"):
         errors.append(f"unsupported bundle type {b.get('type')!r}")
     entries = b.get("entry") or []
-    ids = {f"{e.get('resource', {}).get('resourceType')}/{e.get('resource', {}).get('id')}" for e in entries}
+    ids = {
+        f"{e.get('resource', {}).get('resourceType')}/{e.get('resource', {}).get('id')}"
+        for e in entries
+    }
     counts = {}
     for n, e in enumerate(entries):
         r = e.get("resource") or {}
@@ -95,7 +121,9 @@ def check_bundle(path: str) -> int:
         if rt == "Patient":
             present = [f for f in IDENTITY_FIELDS if f in r]
             if present:
-                warns.append(f"{where}: identity fields {present} will be dropped at the PHI boundary")
+                warns.append(
+                    f"{where}: identity fields {present} will be dropped at the PHI boundary"
+                )
         subj = (r.get("subject") or {}).get("reference")
         if subj and subj not in ids:
             warns.append(f"{where}: subject reference {subj} not found in bundle")
@@ -103,7 +131,11 @@ def check_bundle(path: str) -> int:
             msg = check_code(coding.get("system"), coding.get("code"))
             if msg:
                 errors.append(f"{where}: {msg}")
-        if rt == "Condition" and not (r.get("code") or {}).get("coding") and not (r.get("code") or {}).get("text"):
+        if (
+            rt == "Condition"
+            and not (r.get("code") or {}).get("coding")
+            and not (r.get("code") or {}).get("text")
+        ):
             errors.append(f"{where}: Condition without code or text")
         if rt == "Observation":
             if "valueQuantity" in r:
@@ -119,7 +151,10 @@ def check_bundle(path: str) -> int:
         for key in ("recordedDate", "effectiveDateTime", "performedDateTime", "date", "birthDate"):
             if key in r and not parse_date(r[key]):
                 errors.append(f"{where}: {key} is not a valid date ({r[key]!r})")
-    print("Resources:", ", ".join(f"{k}={v}" for k, v in sorted(counts.items(), key=lambda kv: str(kv[0]))))
+    print(
+        "Resources:",
+        ", ".join(f"{k}={v}" for k, v in sorted(counts.items(), key=lambda kv: str(kv[0]))),
+    )
     for w in warns:
         print("WARN ", w)
     for x in errors:
@@ -132,7 +167,9 @@ def check_codes_csv(path: str) -> int:
     bad = 0
     with open(path, newline="", encoding="utf-8") as fh:
         for i, row in enumerate(csv.DictReader(fh), 2):
-            msg = check_code((row.get("target_system") or "").strip(), (row.get("code") or "").strip())
+            msg = check_code(
+                (row.get("target_system") or "").strip(), (row.get("code") or "").strip()
+            )
             if msg:
                 bad += 1
                 print(f"line {i}: {msg}")

@@ -9,6 +9,7 @@ Checks: unknown region codes, duplicate labels, two labels mapped to the same
 region (warning), left/right words in the label vs laterality column and vs the
 region code suffix (_l/_r). Exit 1 on errors.
 """
+
 import csv
 import sys
 
@@ -56,10 +57,14 @@ def main(argv):
             if ls and rs and ls != rs:
                 errors.append(f"line {i}: label {label} is {ls} but region {code} is {rs}")
             if code in regions and regions[code] and lat and regions[code].lower() != lat:
-                warns.append(f"line {i}: laterality {lat} differs from region list ({regions[code]})")
+                warns.append(
+                    f"line {i}: laterality {lat} differs from region list ({regions[code]})"
+                )
     for code, labels in used.items():
         if len(labels) > 1:
-            warns.append(f"region {code} receives several labels: {', '.join(labels)} (merge meshes?)")
+            warns.append(
+                f"region {code} receives several labels: {', '.join(labels)} (merge meshes?)"
+            )
     for w in warns:
         print("WARN ", w)
     for e in errors:

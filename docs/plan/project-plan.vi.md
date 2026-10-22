@@ -1184,7 +1184,7 @@ Quy tắc phụ thuộc: `api → application → domain`; `infra` cài đặt i
 
 ### 17.3 Chuẩn code & chất lượng (BE-CODE-xxx)
 
-- Python 3.12, type hints đầy đủ, `mypy --strict` cho `domain` và `application`; `ruff` (lint + format); không `print`, dùng logger cấu trúc.
+- Python 3.10, type hints đầy đủ, `mypy --strict` cho `domain` và `application`; `ruff` (lint + format); không `print`, dùng logger cấu trúc.
 - Async end-to-end (asyncpg, httpx); không gọi blocking I/O trong event loop; CPU-bound (OCR, xử lý ảnh) chỉ ở worker.
 - Transaction ở tầng application, một use case một transaction; outbox ghi cùng transaction.
 - Mỗi BR-xxx có hàm/rule tên rõ (`ensure_fields_confirmed()`), có unit test mang tên mã rule.

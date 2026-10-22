@@ -2,7 +2,7 @@
 name = "medilens-api"
 version = "0.1.0"
 description = "MediLens FastAPI modular monolith"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 dependencies = [
   "fastapi>=0.115",
   "uvicorn[standard]>=0.32",
@@ -30,17 +30,73 @@ packages = ["src/medilens"]
 root_package = "medilens"
 
 [[tool.importlinter.contracts]]
-name = "Layers inside each module: api -> application -> domain"
+name = "identity: api -> application -> domain"
 type = "layers"
-layers = ["medilens.modules.*.api", "medilens.modules.*.application", "medilens.modules.*.domain"]
-exhaustive = false
+layers = ["medilens.modules.identity.api", "medilens.modules.identity.application", "medilens.modules.identity.domain"]
+
+[[tool.importlinter.contracts]]
+name = "patient: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.patient.api", "medilens.modules.patient.application", "medilens.modules.patient.domain"]
+
+[[tool.importlinter.contracts]]
+name = "document: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.document.api", "medilens.modules.document.application", "medilens.modules.document.domain"]
+
+[[tool.importlinter.contracts]]
+name = "extraction: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.extraction.api", "medilens.modules.extraction.application", "medilens.modules.extraction.domain"]
+
+[[tool.importlinter.contracts]]
+name = "anatomy: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.anatomy.api", "medilens.modules.anatomy.application", "medilens.modules.anatomy.domain"]
+
+[[tool.importlinter.contracts]]
+name = "clinical: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.clinical.api", "medilens.modules.clinical.application", "medilens.modules.clinical.domain"]
+
+[[tool.importlinter.contracts]]
+name = "knowledge: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.knowledge.api", "medilens.modules.knowledge.application", "medilens.modules.knowledge.domain"]
+
+[[tool.importlinter.contracts]]
+name = "sharing: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.sharing.api", "medilens.modules.sharing.application", "medilens.modules.sharing.domain"]
+
+[[tool.importlinter.contracts]]
+name = "notification: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.notification.api", "medilens.modules.notification.application", "medilens.modules.notification.domain"]
+
+[[tool.importlinter.contracts]]
+name = "audit: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.audit.api", "medilens.modules.audit.application", "medilens.modules.audit.domain"]
+
+[[tool.importlinter.contracts]]
+name = "admin: api -> application -> domain"
+type = "layers"
+layers = ["medilens.modules.admin.api", "medilens.modules.admin.application", "medilens.modules.admin.domain"]
 
 [[tool.importlinter.contracts]]
 name = "Modules are independent (talk via application services / events)"
 type = "independence"
 modules = [
-  "medilens.modules.identity", "medilens.modules.patient", "medilens.modules.document",
-  "medilens.modules.extraction", "medilens.modules.anatomy", "medilens.modules.clinical",
-  "medilens.modules.knowledge", "medilens.modules.sharing", "medilens.modules.notification",
-  "medilens.modules.audit", "medilens.modules.admin",
+  "medilens.modules.identity",
+  "medilens.modules.patient",
+  "medilens.modules.document",
+  "medilens.modules.extraction",
+  "medilens.modules.anatomy",
+  "medilens.modules.clinical",
+  "medilens.modules.knowledge",
+  "medilens.modules.sharing",
+  "medilens.modules.notification",
+  "medilens.modules.audit",
+  "medilens.modules.admin",
 ]

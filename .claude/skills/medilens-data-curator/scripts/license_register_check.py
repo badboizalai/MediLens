@@ -9,12 +9,24 @@ intended while the register says not allowed, NC sources approved for product
 use when --commercial is set, next_review in the past.
 Warnings: share-alike sources, unclear rights, missing attribution for CC BY*.
 """
+
 import csv
 import sys
 from datetime import date
 
-REQUIRED = ["lic_id", "source_name", "licence_name", "training_allowed", "product_use_allowed",
-            "commercial_allowed", "share_alike", "intended_use", "decision", "reviewer", "next_review"]
+REQUIRED = [
+    "lic_id",
+    "source_name",
+    "licence_name",
+    "training_allowed",
+    "product_use_allowed",
+    "commercial_allowed",
+    "share_alike",
+    "intended_use",
+    "decision",
+    "reviewer",
+    "next_review",
+]
 
 
 def yes(v):
@@ -58,9 +70,14 @@ def main(argv):
             errors.append(f"{lid}: intended use includes training but training_allowed is not yes")
         if ("product" in use or "commercial" in use) and not yes(r.get("product_use_allowed")):
             errors.append(f"{lid}: intended product use but product_use_allowed is not yes")
-        if commercial and ("-NC" in lic or "NC-" in lic or "NONCOMMERCIAL" in lic.replace(" ", "")) and \
-                ("product" in use or "commercial" in use or "train" in use):
-            errors.append(f"{lid}: non-commercial licence used for product/training in commercial mode")
+        if (
+            commercial
+            and ("-NC" in lic or "NC-" in lic or "NONCOMMERCIAL" in lic.replace(" ", ""))
+            and ("product" in use or "commercial" in use or "train" in use)
+        ):
+            errors.append(
+                f"{lid}: non-commercial licence used for product/training in commercial mode"
+            )
         if commercial and "DUA" in (r.get("notes", "") + lic).upper() and "product" in use:
             errors.append(f"{lid}: DUA-restricted source marked for product use")
         for col in ("training_allowed", "product_use_allowed", "commercial_allowed"):
@@ -79,7 +96,9 @@ def main(argv):
                 errors.append(f"{lid}: next_review is not a date ({nr})")
         else:
             errors.append(f"{lid}: next_review missing")
-    print(f"Sources: {len(rows)}  mode: {'commercial' if commercial else 'learning'}  today: {today}")
+    print(
+        f"Sources: {len(rows)}  mode: {'commercial' if commercial else 'learning'}  today: {today}"
+    )
     for w in warns:
         print("WARN ", w)
     for e in errors:

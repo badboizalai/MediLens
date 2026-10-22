@@ -1,4 +1,5 @@
 """RFC 9457 problem+json errors. Codes follow the catalog in backend-engineer/references/error-catalog.md."""
+
 from fastapi import Request
 from fastapi.responses import JSONResponse
 
@@ -26,5 +27,10 @@ async def app_error_handler(_: Request, exc: AppError) -> JSONResponse:
     return JSONResponse(
         status_code=exc.status,
         media_type="application/problem+json",
-        content={"type": f"urn:medilens:error:{exc.code}", "title": exc.code, "status": exc.status, "detail": exc.detail},
+        content={
+            "type": f"urn:medilens:error:{exc.code}",
+            "title": exc.code,
+            "status": exc.status,
+            "detail": exc.detail,
+        },
     )

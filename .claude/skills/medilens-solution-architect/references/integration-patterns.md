@@ -37,6 +37,8 @@ Steps: mark deleting → revoke sessions → delete S3 objects (versions) → de
 ```python
 class OcrProvider(Protocol):
     async def recognize(self, image: bytes, lang_hints: list[str]) -> OcrResult: ...
+
+
 class LlmProvider(Protocol):
     async def extract(self, text: str, schema: dict, prompt_version: str) -> ExtractionResult: ...
 ```

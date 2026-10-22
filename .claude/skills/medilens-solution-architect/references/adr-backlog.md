@@ -3,7 +3,7 @@
 | ADR | Decision | Status | Chosen | Main alternatives | Revisit when |
 | --- | --- | --- | --- | --- | --- |
 | 001 | Architecture style | Accepted | Modular monolith + AI worker | Microservices, plain monolith | > 3 developers or independent scaling needs |
-| 002 | Backend language/framework | Accepted | Python 3.12 + FastAPI | NestJS, Spring Boot | — |
+| 002 | Backend language/framework | Accepted | Python 3.10 + FastAPI | NestJS, Spring Boot | — |
 | 003 | Identity provider | Proposed | Cognito (managed) | Keycloak (learning OIDC deeply), Auth0 | Need for custom flows Cognito cannot do |
 | 004 | Compute | Accepted | ECS Fargate | App Runner, Lambda, EKS | Need K8s ecosystem or GPU |
 | 005 | Messaging | Accepted | SQS (jobs) + EventBridge (events, scheduler) | Redis/Celery broker, RabbitMQ | Complex routing needs |

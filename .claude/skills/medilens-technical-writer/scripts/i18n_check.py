@@ -9,16 +9,26 @@ untranslated, except short codes/brand names or --allow-same keys), and risky
 claim words (diagnose/detect disease/replace doctor/prognosis; chẩn đoán in
 non-quote context). Exit 1 on missing keys, empty values or placeholder errors.
 """
+
 import json
 import re
 import sys
 import unicodedata
 
 PH_RX = re.compile(r"\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*(?:,|\})")
-CLAIM_RX = [re.compile(p) for p in (
-    r"\bdiagnos(e|es|is|ing)\b", r"\bdetects? (disease|cancer|tumou?rs?)\b", r"\breplaces? (your )?doctor\b",
-    r"\bprognos(is|tic)\b", r"\b(giup|tu|ai) chan doan\b", r"\bphat hien (benh|ung thu)\b", r"\bthay the bac si\b",
-    r"\btien luong\b")]
+CLAIM_RX = [
+    re.compile(p)
+    for p in (
+        r"\bdiagnos(e|es|is|ing)\b",
+        r"\bdetects? (disease|cancer|tumou?rs?)\b",
+        r"\breplaces? (your )?doctor\b",
+        r"\bprognos(is|tic)\b",
+        r"\b(giup|tu|ai) chan doan\b",
+        r"\bphat hien (benh|ung thu)\b",
+        r"\bthay the bac si\b",
+        r"\btien luong\b",
+    )
+]
 SAME_OK = re.compile(r"^[A-Z0-9 ._%/+-]{1,12}$|^MediLens|^https?://|^\{[^}]+\}$")
 
 
@@ -35,7 +45,9 @@ def flatten(d, prefix=""):
 
 def fold(s):
     s = s.replace("đ", "d").replace("Đ", "D")
-    return "".join(c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn").lower()
+    return "".join(
+        c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn"
+    ).lower()
 
 
 def main(argv):
@@ -70,7 +82,9 @@ def main(argv):
             f = fold(text)
             for rx in CLAIM_RX:
                 if rx.search(f):
-                    warns.append(f"risky claim in {path} {k}: {text[:60]!r} (run claims_lint / Regulatory review)")
+                    warns.append(
+                        f"risky claim in {path} {k}: {text[:60]!r} (run claims_lint / Regulatory review)"
+                    )
                     break
     print(f"{a_path}: {len(a)} keys · {b_path}: {len(b)} keys")
     for w in warns:

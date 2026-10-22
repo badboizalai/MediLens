@@ -13,6 +13,7 @@ Wrapped fields {"value": ..., "confidence": ...} are unwrapped to their value.
 
 CER mode: each JSONL line is {"id", "text"}.
 """
+
 import argparse
 import json
 import sys
@@ -20,8 +21,14 @@ import unicodedata
 from collections import defaultdict
 from difflib import SequenceMatcher
 
-LIST_KEYS = {"teeth": "fdi", "diagnoses": "text", "observations": "name",
-             "metastases": "site", "nodes": "station", "treatments": "type"}
+LIST_KEYS = {
+    "teeth": "fdi",
+    "diagnoses": "text",
+    "observations": "name",
+    "metastases": "site",
+    "nodes": "station",
+    "treatments": "type",
+}
 
 
 def norm(v):
@@ -72,8 +79,10 @@ def strip_accents(s):
 
 
 def similar(a, b):
-    return max(SequenceMatcher(None, a, b).ratio(),
-               SequenceMatcher(None, strip_accents(a), strip_accents(b)).ratio())
+    return max(
+        SequenceMatcher(None, a, b).ratio(),
+        SequenceMatcher(None, strip_accents(a), strip_accents(b)).ratio(),
+    )
 
 
 def load(path, key="doc_id"):
@@ -123,8 +132,14 @@ def field_mode(a):
                 if grp == "ALL":
                     errors.append((doc_id, path, None, pf[path]))
 
-    lines = ["# Extraction evaluation", "", f"Gold docs: {len(gold)} · Pred docs: {len(pred)}", "",
-             "| Group | Precision | Recall | F1 (exact) | F1 (fuzzy) |", "| --- | --- | --- | --- | --- |"]
+    lines = [
+        "# Extraction evaluation",
+        "",
+        f"Gold docs: {len(gold)} · Pred docs: {len(pred)}",
+        "",
+        "| Group | Precision | Recall | F1 (exact) | F1 (fuzzy) |",
+        "| --- | --- | --- | --- | --- |",
+    ]
     for grp in sorted(groups, key=lambda x: (x != "ALL", x)):
         c = groups[grp]
         p, r, f = prf(c["tp"], c["fp"], c["fn"])
@@ -132,7 +147,13 @@ def field_mode(a):
         fp_fuzzy = c["fp"] - (c["tpf"] - c["tp"])
         _, _, ff = prf(c["tpf"], max(fp_fuzzy, 0), max(fn_fuzzy, 0))
         lines.append(f"| {grp} | {p:.3f} | {r:.3f} | {f:.3f} | {ff:.3f} |")
-    lines += ["", "## First 25 errors", "", "| doc | path | gold | pred |", "| --- | --- | --- | --- |"]
+    lines += [
+        "",
+        "## First 25 errors",
+        "",
+        "| doc | path | gold | pred |",
+        "| --- | --- | --- | --- |",
+    ]
     for doc_id, path, gv, pv in errors[:25]:
         lines.append(f"| {doc_id} | `{path}` | {gv} | {pv} |")
     report = "\n".join(lines)

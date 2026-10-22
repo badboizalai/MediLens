@@ -1178,7 +1178,7 @@ Dependency rule: `api → application → domain`; `infra` implements `domain` i
 
 ### 17.3 Coding and quality standards (BE-CODE-xxx)
 
-- Python 3.12, full type hints, `mypy --strict` for `domain` and `application`; `ruff` (lint + format); no `print`, use the structured logger.
+- Python 3.10, full type hints, `mypy --strict` for `domain` and `application`; `ruff` (lint + format); no `print`, use the structured logger.
 - Async end-to-end (asyncpg, httpx); no blocking I/O in the event loop; CPU-bound work (OCR, image processing) only in the worker.
 - Transactions at the application layer, one use case = one transaction; outbox written in the same transaction.
 - Every BR-xxx has a clearly named function/rule (`ensure_fields_confirmed()`) and a unit test named with the rule code.

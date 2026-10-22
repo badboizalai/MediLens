@@ -8,6 +8,7 @@ The rules file is scanned for codes like BR-012. The matrix must have
 columns br_id, us_id, tc_id, status. Prints rules with no story, rules with
 no test, and tests that failed. Exit code 1 if any MUST gap is found.
 """
+
 import csv
 import re
 import sys

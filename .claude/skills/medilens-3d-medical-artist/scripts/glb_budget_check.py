@@ -10,6 +10,7 @@ primitives. Reports file size, meshes, triangles per mesh, unnamed meshes,
 names that are not region codes (except aux_/device_ prefixes) and, with
 --regions, regions that have no mesh. Exit 1 on budget or naming errors.
 """
+
 import argparse
 import csv
 import json
@@ -88,7 +89,9 @@ def main():
     if a.regions:
         with open(a.regions, newline="", encoding="utf-8") as fh:
             rows = list(csv.DictReader(fh))
-        required = {r["region_code"] for r in rows if (r.get("mesh_required") or "yes").lower() == "yes"}
+        required = {
+            r["region_code"] for r in rows if (r.get("mesh_required") or "yes").lower() == "yes"
+        }
         allowed = {r["region_code"] for r in rows}
         for name in sorted(found - allowed):
             errors.append(f"mesh '{name}' is not a known region_code")

@@ -2,7 +2,9 @@ name: CI
 on:
   pull_request:
   push: { branches: [main] }
-concurrency: { group: ci-${{ github.ref }}, cancel-in-progress: true }
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 permissions: { contents: read }
 
 jobs:
@@ -16,6 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+        with: { python-version: "3.10" }
       - run: uv sync --all-packages
       - run: uv run ruff check . && uv run ruff format --check .
       - run: cd apps/api && uv run lint-imports
@@ -35,7 +38,8 @@ jobs:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
       - uses: gitleaks/gitleaks-action@v2
-        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   terraform:
     runs-on: ubuntu-latest
     steps:

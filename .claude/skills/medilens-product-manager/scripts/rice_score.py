@@ -9,6 +9,7 @@ CSV columns: id,title,reach,impact,confidence,effort[,override]
 - override (optional): security | safety | gate | commitment — forces the item
   above scored items in that order.
 """
+
 import argparse
 import csv
 
@@ -39,7 +40,9 @@ def main() -> None:
     rows.sort(key=lambda r: (r["_rank"], -r["rice"]))
     print(f"{'#':>3}  {'id':<10} {'rice':>8}  override    title")
     for i, r in enumerate(rows, 1):
-        print(f"{i:>3}  {r['id']:<10} {r['rice']:>8}  {(r.get('override') or '-'):<10}  {r['title']}")
+        print(
+            f"{i:>3}  {r['id']:<10} {r['rice']:>8}  {(r.get('override') or '-'):<10}  {r['title']}"
+        )
 
     if a.out:
         fields = [k for k in rows[0].keys() if not k.startswith("_")] if rows else []

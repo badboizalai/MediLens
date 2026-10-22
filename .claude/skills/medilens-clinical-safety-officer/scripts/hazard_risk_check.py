@@ -9,11 +9,23 @@ residuals needing explicit sign-off, and information-only controls for S >= 4.
 Exit code 1 when any blocking problem is found (unacceptable residual, missing
 controls or CS links); --strict also fails on ALARP rows without notes.
 """
+
 import csv
 import sys
 
-REQUIRED = ["hazard_id", "title", "harm", "severity", "probability", "controls", "cs_ids",
-            "residual_severity", "residual_probability", "owner", "status"]
+REQUIRED = [
+    "hazard_id",
+    "title",
+    "harm",
+    "severity",
+    "probability",
+    "controls",
+    "cs_ids",
+    "residual_severity",
+    "residual_probability",
+    "owner",
+    "status",
+]
 INFO_ONLY_WORDS = ("disclaimer", "label", "warning text", "help text", "banner")
 
 
@@ -62,7 +74,9 @@ def main(argv):
         seen.add(hid)
         for col in REQUIRED:
             if not (row.get(col) or "").strip():
-                (blocking if col in ("controls", "cs_ids") else warnings).append(f"{hid}: empty {col}")
+                (blocking if col in ("controls", "cs_ids") else warnings).append(
+                    f"{hid}: empty {col}"
+                )
         s = as_int(row.get("severity"), "severity", hid, blocking)
         p = as_int(row.get("probability"), "probability", hid, blocking)
         rs = as_int(row.get("residual_severity"), "residual_severity", hid, blocking)
@@ -85,8 +99,10 @@ def main(argv):
             if parts and all(any(w in part for w in INFO_ONLY_WORDS) for part in parts):
                 blocking.append(f"{hid}: severity {s} controlled by information only")
 
-    print(f"Rows: {len(rows)} | acceptable {summary['acceptable']} | ALARP {summary['ALARP']} | "
-          f"UNACCEPTABLE {summary['UNACCEPTABLE']}")
+    print(
+        f"Rows: {len(rows)} | acceptable {summary['acceptable']} | ALARP {summary['ALARP']} | "
+        f"UNACCEPTABLE {summary['UNACCEPTABLE']}"
+    )
     for w in warnings:
         print("WARN ", w)
     for b in blocking:

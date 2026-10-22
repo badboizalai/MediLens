@@ -4,7 +4,9 @@ from alembic import context
 from sqlalchemy import create_engine
 
 config = context.config
-url = os.environ.get("DATABASE_URL", "postgresql+psycopg://medilens:medilens_dev@localhost:5432/medilens")
+url = os.environ.get(
+    "DATABASE_URL", "postgresql+psycopg://medilens:medilens_dev@localhost:5432/medilens"
+)
 target_metadata = None  # set to the shared Base.metadata once models exist
 
 

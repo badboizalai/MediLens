@@ -8,6 +8,7 @@ by MediLens), private tags, BurnedInAnnotation = YES, and whether
 PatientIdentityRemoved = YES. Never prints attribute values (only names).
 Exit 1 if any file fails. Requires pydicom.
 """
+
 import os
 import sys
 
@@ -18,11 +19,29 @@ except ImportError:  # pragma: no cover
     sys.exit(2)
 
 IDENTIFYING = [
-    "PatientName", "PatientID", "PatientBirthDate", "OtherPatientIDs", "OtherPatientNames",
-    "PatientAddress", "PatientTelephoneNumbers", "PatientMotherBirthName", "ReferringPhysicianName",
-    "PerformingPhysicianName", "OperatorsName", "InstitutionName", "InstitutionAddress", "StationName",
-    "AccessionNumber", "StudyID", "DeviceSerialNumber", "RequestingPhysician", "AdditionalPatientHistory",
-    "PhysiciansOfRecord", "NameOfPhysiciansReadingStudy", "MedicalRecordLocator", "PatientInsurancePlanCodeSequence",
+    "PatientName",
+    "PatientID",
+    "PatientBirthDate",
+    "OtherPatientIDs",
+    "OtherPatientNames",
+    "PatientAddress",
+    "PatientTelephoneNumbers",
+    "PatientMotherBirthName",
+    "ReferringPhysicianName",
+    "PerformingPhysicianName",
+    "OperatorsName",
+    "InstitutionName",
+    "InstitutionAddress",
+    "StationName",
+    "AccessionNumber",
+    "StudyID",
+    "DeviceSerialNumber",
+    "RequestingPhysician",
+    "AdditionalPatientHistory",
+    "PhysiciansOfRecord",
+    "NameOfPhysiciansReadingStudy",
+    "MedicalRecordLocator",
+    "PatientInsurancePlanCodeSequence",
 ]
 
 
@@ -35,7 +54,11 @@ def check_file(path):
     for kw in IDENTIFYING:
         if kw in ds:
             val = ds.get(kw)
-            if val not in (None, "", [], b"") and str(val).strip() not in ("", "ANONYMIZED", "ANONYMOUS"):
+            if val not in (None, "", [], b"") and str(val).strip() not in (
+                "",
+                "ANONYMIZED",
+                "ANONYMOUS",
+            ):
                 problems.append(f"identifying attribute present: {kw}")
     private = [el.tag for el in ds.iterall() if el.tag.is_private]
     if private:
@@ -75,7 +98,9 @@ def main(argv):
         probs = check_file(path)
         if probs:
             failed += 1
-            print(f"FAIL {os.path.relpath(path, target if os.path.isdir(target) else os.path.dirname(target) or '.')}")
+            print(
+                f"FAIL {os.path.relpath(path, target if os.path.isdir(target) else os.path.dirname(target) or '.')}"
+            )
             for p in probs:
                 print("     -", p)
     print(f"checked={checked} failed={failed} → {'FAIL' if failed else 'PASS'}")

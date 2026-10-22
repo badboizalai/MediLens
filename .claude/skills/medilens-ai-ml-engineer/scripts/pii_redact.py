@@ -11,20 +11,34 @@ placeholder→original map (keep it inside the PHI boundary; never send it out).
 This is a first layer only: combine with an NER model for names/addresses
 written without labels, and measure recall on a labelled set (target ≥ 99%).
 """
+
 import argparse
 import json
 import re
 
 PATTERNS = [
     ("EMAIL", re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")),
-    ("NATIONAL_ID", re.compile(r"(?<!\d)\d{12}(?!\d)")),          # CCCD 12 digits
-    ("OLD_ID", re.compile(r"(?<!\d)\d{9}(?!\d)")),                # CMND 9 digits
+    ("NATIONAL_ID", re.compile(r"(?<!\d)\d{12}(?!\d)")),  # CCCD 12 digits
+    ("OLD_ID", re.compile(r"(?<!\d)\d{9}(?!\d)")),  # CMND 9 digits
     ("PHONE", re.compile(r"(?<!\d)(?:\+?84|0)(?:[\s.-]?\d){9,10}(?!\d)")),
-    ("INSURANCE_ID", re.compile(r"\b[A-Z]{2}\d{13}\b")),          # BHYT card pattern
-    ("PATIENT_CODE", re.compile(r"(?i)\b(?:mã\s*(?:bn|bệnh nhân|y tế)|mrn|patient\s*id)[:\s#]*([A-Z0-9-]{4,})")),
-    ("LABELLED_NAME", re.compile(r"(?i)(?:họ\s*(?:và)?\s*tên|tên\s*bệnh\s*nhân|patient\s*name|name)\s*[:\-]\s*([^\n,;]{2,60})")),
+    ("INSURANCE_ID", re.compile(r"\b[A-Z]{2}\d{13}\b")),  # BHYT card pattern
+    (
+        "PATIENT_CODE",
+        re.compile(r"(?i)\b(?:mã\s*(?:bn|bệnh nhân|y tế)|mrn|patient\s*id)[:\s#]*([A-Z0-9-]{4,})"),
+    ),
+    (
+        "LABELLED_NAME",
+        re.compile(
+            r"(?i)(?:họ\s*(?:và)?\s*tên|tên\s*bệnh\s*nhân|patient\s*name|name)\s*[:\-]\s*([^\n,;]{2,60})"
+        ),
+    ),
     ("LABELLED_ADDRESS", re.compile(r"(?i)(?:địa\s*chỉ|address)\s*[:\-]\s*([^\n]{4,120})")),
-    ("DOB", re.compile(r"(?i)(?:ngày\s*sinh|dob|date\s*of\s*birth)\s*[:\-]?\s*(\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4})")),
+    (
+        "DOB",
+        re.compile(
+            r"(?i)(?:ngày\s*sinh|dob|date\s*of\s*birth)\s*[:\-]?\s*(\d{1,2}[/.-]\d{1,2}[/.-]\d{2,4})"
+        ),
+    ),
 ]
 
 
@@ -38,6 +52,7 @@ def redact(text: str):
             ph = f"[{label}_{counters[label]}]"
             mapping[ph] = target
             return m.group(0).replace(target, ph) if group_only and m.lastindex else ph
+
         return repl
 
     for label, pat in PATTERNS:

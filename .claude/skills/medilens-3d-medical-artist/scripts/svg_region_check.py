@@ -9,6 +9,7 @@ starting with 'aux_' or 'defs_'), regions required in 2D that are missing, and
 forbidden content (script elements, external hrefs, inline fill on regions).
 Exit 1 on errors.
 """
+
 import argparse
 import csv
 import re
@@ -44,7 +45,11 @@ def main():
         i = el.attrib.get("id")
         if i:
             ids.append(i)
-            if tag in ("path", "polygon", "ellipse", "circle", "rect") and "fill" in el.attrib and not i.startswith("aux_"):
+            if (
+                tag in ("path", "polygon", "ellipse", "circle", "rect")
+                and "fill" in el.attrib
+                and not i.startswith("aux_")
+            ):
                 warns.append(f"region '{i}' has inline fill (viewer should set colours)")
     seen, dup = set(), set()
     for i in ids:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Validate skills and agents: frontmatter, name == folder, referenced files exist."""
+
 from __future__ import annotations
 
 import re
@@ -18,7 +19,9 @@ def fm(path: Path) -> dict[str, str]:
         return {}
     return {
         k.strip(): v.strip()
-        for k, _, v in (ln.partition(":") for ln in m.group(1).splitlines() if re.match(r"^[A-Za-z_-]+:", ln))
+        for k, _, v in (
+            ln.partition(":") for ln in m.group(1).splitlines() if re.match(r"^[A-Za-z_-]+:", ln)
+        )
     }
 
 
@@ -31,12 +34,18 @@ def main() -> int:
             errors.append(f"{d.name}: frontmatter name {meta.get('name')!r} != folder")
         if len(meta.get("description", "")) < 50:
             errors.append(f"{d.name}: description missing/too short")
-        for ref in set(re.findall(r"`((?:references|assets|scripts)/[\w./-]+)`", skill.read_text(encoding="utf-8"))):
+        for ref in set(
+            re.findall(
+                r"`((?:references|assets|scripts)/[\w./-]+)`", skill.read_text(encoding="utf-8")
+            )
+        ):
             if not (d / ref).exists():
                 errors.append(f"{d.name}: referenced file missing: {ref}")
         ctx = d / "references" / "project-context.md"
         if ctx.exists() and ctx.read_bytes() != CANONICAL.read_bytes():
-            errors.append(f"{d.name}: project-context.md out of sync (run tools/sync_skill_context.py)")
+            errors.append(
+                f"{d.name}: project-context.md out of sync (run tools/sync_skill_context.py)"
+            )
     for agent in sorted(AGENTS.glob("*.md")):
         meta = fm(agent)
         for key in ("name", "description"):

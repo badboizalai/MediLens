@@ -9,6 +9,7 @@ card patterns, labelled names/addresses/DOB, JWT-like tokens, AWS keys, and
 Vietnamese/English clinical terms appearing next to identifiers. Exit 1 if
 anything is found, so it can gate CI on sample logs from staging.
 """
+
 import argparse
 import re
 import sys
@@ -22,7 +23,12 @@ RULES = [
     ("labelled_dob", re.compile(r"(?i)(?:ngày\s*sinh|dob|birth[_\s]?date)\W{1,3}\d")),
     ("jwt", re.compile(r"\beyJ[\w-]{10,}\.[\w-]{10,}\.[\w-]{10,}\b")),
     ("aws_access_key", re.compile(r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b")),
-    ("clinical_term", re.compile(r"(?i)\b(?:chẩn đoán|ung thư|di căn|carcinoma|metastasis|diagnosis|icd10?_?code)\b")),
+    (
+        "clinical_term",
+        re.compile(
+            r"(?i)\b(?:chẩn đoán|ung thư|di căn|carcinoma|metastasis|diagnosis|icd10?_?code)\b"
+        ),
+    ),
 ]
 
 

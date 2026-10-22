@@ -9,20 +9,40 @@ Rule types: not_null, unique, accepted_values, regex, range, fdi, pii_scan.
 Each rule: {"id": "DQ-04", "column": "fdi", "type": "fdi", "severity": "MUST"}.
 Exit code 1 if any MUST rule fails.
 """
+
 import csv
 import json
 import re
 import sys
 
-FDI = {f"{q}{p}" for q in range(1, 5) for p in range(1, 9)} | {f"{q}{p}" for q in range(5, 9) for p in range(1, 6)}
-PII = [re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"), re.compile(r"(?<!\d)(?:\+?84|0)\d{9,10}(?!\d)"), re.compile(r"(?<!\d)\d{12}(?!\d)")]
+FDI = {f"{q}{p}" for q in range(1, 5) for p in range(1, 9)} | {
+    f"{q}{p}" for q in range(5, 9) for p in range(1, 6)
+}
+PII = [
+    re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"),
+    re.compile(r"(?<!\d)(?:\+?84|0)\d{9,10}(?!\d)"),
+    re.compile(r"(?<!\d)\d{12}(?!\d)"),
+]
 
 EXAMPLE = [
     {"id": "DQ-01", "column": "icd10_code", "type": "not_null", "severity": "MUST"},
     {"id": "DQ-04", "column": "fdi", "type": "fdi", "severity": "MUST"},
-    {"id": "DQ-05", "column": "value", "type": "range", "min": 0, "max": 1000, "severity": "SHOULD"},
+    {
+        "id": "DQ-05",
+        "column": "value",
+        "type": "range",
+        "min": 0,
+        "max": 1000,
+        "severity": "SHOULD",
+    },
     {"id": "DQ-08", "column": "sha256", "type": "unique", "severity": "MUST"},
-    {"id": "DQ-X1", "column": "status", "type": "accepted_values", "values": ["draft", "confirmed"], "severity": "MUST"},
+    {
+        "id": "DQ-X1",
+        "column": "status",
+        "type": "accepted_values",
+        "values": ["draft", "confirmed"],
+        "severity": "MUST",
+    },
     {"id": "DQ-13", "column": "*", "type": "pii_scan", "severity": "MUST"},
 ]
 
@@ -84,7 +104,9 @@ def main():
         if bad and rule.get("severity", "MUST") == "MUST":
             must_fail = True
         sample = ", ".join(str(i + 1) for i in bad[:5])
-        print(f"{status:4} {rule['id']:<7} {rule['type']:<15} {rule.get('column', ''):<14} failures={len(bad)} {('rows: ' + sample) if bad else ''}")
+        print(
+            f"{status:4} {rule['id']:<7} {rule['type']:<15} {rule.get('column', ''):<14} failures={len(bad)} {('rows: ' + sample) if bad else ''}"
+        )
     return 1 if must_fail else 0
 
 

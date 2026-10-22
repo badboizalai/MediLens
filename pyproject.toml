@@ -4,17 +4,20 @@ members = ["apps/api", "apps/worker", "apps/ai-gateway", "apps/phi-service"]
 
 [tool.ruff]
 line-length = 100
-target-version = "py312"
+target-version = "py310"
 extend-exclude = [".claude/skills/*/assets"]  # templates contain placeholders
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "S", "N"]
-ignore = ["S101"]  # assert allowed (tests)
+ignore = ["S101", "E501", "N818", "UP038"]  # assert in tests; line length handled by formatter
 
 [tool.ruff.lint.per-file-ignores]
-".claude/skills/**/scripts/*.py" = ["S", "N"]
+".claude/skills/**/scripts/*.py" = ["S", "N", "E741"]
 "**/tests/**" = ["S"]
 
 [tool.pytest.ini_options]
 testpaths = ["apps", "tests"]
-addopts = "-q"
+addopts = "-q --import-mode=importlib"
+
+[dependency-groups]
+dev = ["ruff>=0.8", "pytest>=8", "httpx>=0.27", "import-linter>=2.1", "mypy>=1.13"]

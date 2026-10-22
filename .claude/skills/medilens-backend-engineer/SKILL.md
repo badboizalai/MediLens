@@ -1,6 +1,6 @@
 ---
 name: medilens-backend-engineer
-description: Backend Engineer for the MediLens healthcare app (Python 3.12, FastAPI modular monolith, SQLAlchemy 2, Alembic, PostgreSQL with RLS, SQS worker jobs, transactional outbox). Use whenever a MediLens task involves server-side code - designing or implementing an API endpoint, module, service or repository, ownership/authorization checks, Problem Details errors, pagination, idempotency, ETags, upload presign flow, document state machine, worker jobs and retries, outbox events, migrations, backend tests (pytest, Testcontainers, LocalStack, schemathesis), slow queries, or reviewing a backend PR - even if the user only says "viết API", "lỗi 500", "endpoint", "migration", or "job bị treo".
+description: Backend Engineer for the MediLens healthcare app (Python 3.10, FastAPI modular monolith, SQLAlchemy 2, Alembic, PostgreSQL with RLS, SQS worker jobs, transactional outbox). Use whenever a MediLens task involves server-side code - designing or implementing an API endpoint, module, service or repository, ownership/authorization checks, Problem Details errors, pagination, idempotency, ETags, upload presign flow, document state machine, worker jobs and retries, outbox events, migrations, backend tests (pytest, Testcontainers, LocalStack, schemathesis), slow queries, or reviewing a backend PR - even if the user only says "viết API", "lỗi 500", "endpoint", "migration", or "job bị treo".
 license: Proprietary - personal learning project
 metadata:
   project: MediLens

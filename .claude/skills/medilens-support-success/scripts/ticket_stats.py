@@ -8,6 +8,7 @@ percentiles (hours, wall-clock) against SLA targets, open S1/S2, safety and
 privacy flagged tickets, and with --g5h the hypercare exit check: no new S1/S2
 in the last 14 days and no open safety tickets. Exit 1 if --g5h fails.
 """
+
 import argparse
 import csv
 from collections import Counter
@@ -45,29 +46,47 @@ def main():
     print("by severity:", dict(sorted(Counter(r["severity"] for r in rows).items())))
     frt_breach = 0
     for sev in ("S1", "S2", "S3", "S4"):
-        frt = [(parse(r["first_response_at"]) - parse(r["created_at"])).total_seconds() / 3600
-               for r in rows if r["severity"] == sev and r.get("first_response_at")]
-        res = [(parse(r["resolved_at"]) - parse(r["created_at"])).total_seconds() / 3600
-               for r in rows if r["severity"] == sev and r.get("resolved_at")]
+        frt = [
+            (parse(r["first_response_at"]) - parse(r["created_at"])).total_seconds() / 3600
+            for r in rows
+            if r["severity"] == sev and r.get("first_response_at")
+        ]
+        res = [
+            (parse(r["resolved_at"]) - parse(r["created_at"])).total_seconds() / 3600
+            for r in rows
+            if r["severity"] == sev and r.get("resolved_at")
+        ]
         breaches = sum(1 for x in frt if x > FRT_SLA_H[sev])
         frt_breach += breaches
         if frt or res:
             p90f, p90r = pct(frt, 0.9), pct(res, 0.9)
-            print(f"  {sev}: FRT p50={pct(frt, 0.5) or 0:.1f}h p90={p90f or 0:.1f}h (SLA {FRT_SLA_H[sev]}h, breaches {breaches}) · "
-                  f"resolution p90={p90r if p90r is not None else float('nan'):.1f}h")
-    open_s12 = [r["id"] for r in rows if r["severity"] in ("S1", "S2") and r["status"] != "resolved"]
+            print(
+                f"  {sev}: FRT p50={pct(frt, 0.5) or 0:.1f}h p90={p90f or 0:.1f}h (SLA {FRT_SLA_H[sev]}h, breaches {breaches}) · "
+                f"resolution p90={p90r if p90r is not None else float('nan'):.1f}h"
+            )
+    open_s12 = [
+        r["id"] for r in rows if r["severity"] in ("S1", "S2") and r["status"] != "resolved"
+    ]
     safety = [r["id"] for r in rows if r.get("safety", "").lower() == "yes"]
-    safety_open = [r["id"] for r in rows if r.get("safety", "").lower() == "yes" and r["status"] != "resolved"]
+    safety_open = [
+        r["id"] for r in rows if r.get("safety", "").lower() == "yes" and r["status"] != "resolved"
+    ]
     privacy = [r["id"] for r in rows if r.get("privacy", "").lower() == "yes"]
     print("open S1/S2:", open_s12 or "none")
     print("safety-flagged:", safety or "none", "| open:", safety_open or "none")
     print("privacy-flagged:", privacy or "none")
     if a.g5h:
         window = today - timedelta(days=14)
-        recent = [r["id"] for r in rows if r["severity"] in ("S1", "S2") and parse(r["created_at"]) >= window]
+        recent = [
+            r["id"]
+            for r in rows
+            if r["severity"] in ("S1", "S2") and parse(r["created_at"]) >= window
+        ]
         ok = not recent and not safety_open and not open_s12
-        print(f"G5-H check (window {window.date()}..{today.date()}): new S1/S2={recent or 'none'}; "
-              f"open safety={safety_open or 'none'} → {'PASS' if ok else 'FAIL'}")
+        print(
+            f"G5-H check (window {window.date()}..{today.date()}): new S1/S2={recent or 'none'}; "
+            f"open safety={safety_open or 'none'} → {'PASS' if ok else 'FAIL'}"
+        )
         raise SystemExit(0 if ok else 1)
 
 

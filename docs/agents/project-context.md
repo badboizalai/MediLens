@@ -68,7 +68,7 @@ Document state machine: `uploaded → validating → rejected | queued → ocr_r
 
 ## 6. Tech stack
 Frontend: Next.js (App Router) + TypeScript, Tailwind + shadcn/ui, TanStack Query, Zustand, React Hook Form + Zod, next-intl, Three.js + React Three Fiber + drei, SVG + D3, ECharts/Recharts; Cornerstone3D/OHIF for CT slices (v2).
-Backend: Python 3.12, FastAPI, SQLAlchemy 2 + Alembic, Pydantic v2, asyncpg, httpx, Celery/Dramatiq (SQS broker on AWS), Cedar policies.
+Backend: Python 3.10, FastAPI, SQLAlchemy 2 + Alembic, Pydantic v2, asyncpg, httpx, Celery/Dramatiq (SQS broker on AWS), Cedar policies.
 AI: OpenCV, PaddleOCR + VietOCR (Vietnamese printed), LLM vision on Bedrock for handwriting, Textract only for English documents (Textract does not support Vietnamese), pypdf/pdfplumber + python-docx for digital records, PyTorch, pydicom, TotalSegmentator, scikit-image (marching cubes), SimpleITK (registration), Ultralytics YOLO, SAM, bge-m3/multilingual-e5 embeddings, Langfuse/MLflow, Label Studio.
 Data: PostgreSQL, S3 + Parquet/Iceberg, Glue Catalog, Athena, dbt, Prefect/Dagster, Great Expectations, Lake Formation.
 DevOps: Docker, Terraform, GitHub Actions (OIDC → AWS), ECR, ECS, AppConfig.

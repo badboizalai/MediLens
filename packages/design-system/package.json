@@ -2,6 +2,7 @@
   "name": "@medilens/design-system",
   "version": "0.1.0",
   "private": true,
+  "devDependencies": { "typescript": "5.7.2" },
   "main": "src/index.ts",
   "scripts": { "lint": "echo skip", "typecheck": "tsc --noEmit", "test": "echo no-tests", "build": "echo skip" }
 }

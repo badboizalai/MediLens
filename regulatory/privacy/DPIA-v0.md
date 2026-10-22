@@ -15,7 +15,7 @@
 - Processors: AWS, nhà cung cấp LLM/OCR/email (xem data-inventory.md).
 
 ## 2. Mô tả xử lý
-- Mục đích: giúp người dùng hiểu hồ sơ của chính họ (upload, OCR + LLM trích xuất, review, viewer). Chỉ minh họa/giải thích, không chẩn đoán (BR-042).
+- Mục đích: giúp người dùng hiểu hồ sơ của chính họ (upload, OCR + LLM trích xuất, review, viewer). Chỉ minh họa/giải thích, không chẩn đoán (BR-042). <!-- claims-ok -->
 - Chủ thể: người lớn, trẻ em qua người giám hộ (BR-001), người được chia sẻ (bác sĩ, chỉ xem).
 - Dữ liệu: C4 PHI, C3 PII (xem data-inventory.md D1-D14).
 - Nguồn: người dùng tải lên. Nơi xử lý: AWS Singapore, LLM `VERIFY:`.
@@ -41,7 +41,7 @@ Likelihood (L) và Impact (I): 1 thấp, 2 vừa, 3 cao. Điểm = L x I. Mức 
 | R5 | Chuyển ra nước ngoài không có OTIA/consent | 3 | 2 | 6 | OTIA trong 60 ngày, consent nêu rõ, không dùng dữ liệu thật trước | Thấp sau khi nộp |
 | R6 | Prompt injection qua nội dung hồ sơ | 2 | 2 | 4 | SEC-AI-01, OCR text là dữ liệu, kiểm thử 50 ảnh độc | Thấp |
 | R7 | Thông tin sai hiển thị (trích xuất/vị trí sai) gây hiểu lầm | 2 | 3 | 6 | Review bắt buộc của người dùng, `ai_value`/`user_value`, hiển thị độ tin cậy, CSO duyệt | Vừa |
-| R8 | Tổn thương tâm lý (hình ảnh ung thư, từ ngữ đáng sợ) | 2 | 2 | 4 | Giọng văn trấn an, CSO duyệt, không tiên lượng/liều (BR-022/023) | Thấp |
+| R8 | Tổn thương tâm lý (hình ảnh ung thư, từ ngữ đáng sợ) | 2 | 2 | 4 | Giọng văn trấn an, CSO duyệt, không tiên lượng/liều (BR-022/023) | Thấp <!-- claims-ok --> |
 | R9 | Xóa không triệt để (bản sao, backup, cache) | 2 | 2 | 4 | Crypto-shredding (SEC-DP-08), DSR runbook, backup hết hạn | Thấp-vừa |
 | R10 | Tái định danh từ analytics/dữ liệu tặng | 1 | 3 | 3 | HMAC khóa riêng, bỏ C3, k ≥ 10 (DAT-08/09), khử định danh có QA | Thấp |
 | R11 | Dữ liệu trẻ em xử lý không có consent giám hộ | 1 | 3 | 3 | BR-001, kiểm tra tuổi, bản ghi consent | Thấp |

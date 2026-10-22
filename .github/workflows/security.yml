@@ -1,0 +1,107 @@
+name: security
+# S3-T23: SAST, SCA, image scan, SBOM. Separate from ci.yml.
+on:
+  pull_request:
+  schedule:
+    - cron: "0 3 * * 1"   # weekly, Monday 03:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sast:
+    name: Semgrep SAST (blocking on ERROR)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install semgrep
+      - name: Semgrep scan
+        run: |
+          set -o pipefail
+          semgrep scan --metrics=off --severity ERROR --error \
+            --config p/python --config p/typescript --config p/secrets --config p/owasp-top-ten \
+            2>&1 | tee semgrep.txt
+      - name: Summary
+        if: always()
+        run: |
+          { echo "## Semgrep (severity ERROR blocks)"; echo '```'; tail -n 40 semgrep.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+  sca-python:
+    name: pip-audit (${{ matrix.app }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [api, worker, phi-service, ai-gateway]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.10" }
+      - run: pip install pip-audit
+      - name: Audit
+        run: |
+          set -o pipefail
+          pip-audit apps/${{ matrix.app }} 2>&1 | tee audit.txt
+      - name: Summary
+        if: always()
+        run: |
+          { echo "## pip-audit apps/${{ matrix.app }}"; echo '```'; tail -n 40 audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+  sca-node:
+    name: pnpm audit (non-blocking, threshold high)
+    runs-on: ubuntu-latest
+    # Non-blocking at first to baseline existing findings. Follow-up: make blocking once clean.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with: { node-version-file: .nvmrc, cache: pnpm }
+      - name: Audit
+        run: |
+          set -o pipefail
+          pnpm audit --prod --audit-level high 2>&1 | tee audit.txt
+      - name: Summary
+        if: always()
+        run: |
+          { echo "## pnpm audit --prod (high+, non-blocking)"; echo '```'; tail -n 40 audit.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+  image:
+    name: Image scan + SBOM (${{ matrix.app }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [api]   # add worker/phi-service/ai-gateway once they have a Dockerfile
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t medilens-${{ matrix.app }}:ci apps/${{ matrix.app }}
+      - name: Trivy scan (HIGH/CRITICAL, fixable, blocking)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: medilens-${{ matrix.app }}:ci
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          exit-code: "1"
+          format: table
+          output: trivy-${{ matrix.app }}.txt
+      - name: Summary
+        if: always()
+        run: |
+          { echo "## Trivy ${{ matrix.app }}"; echo '```'; tail -n 60 trivy-${{ matrix.app }}.txt || true; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+      - name: SBOM (SPDX)
+        if: always()
+        uses: anchore/sbom-action@v0
+        with:
+          image: medilens-${{ matrix.app }}:ci
+          format: spdx-json
+          artifact-name: sbom-${{ matrix.app }}.spdx.json
+          output-file: sbom-${{ matrix.app }}.spdx.json

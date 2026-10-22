@@ -73,6 +73,13 @@ medilens-* skills via workers; karpathy-guidelines + ponytail in every brief; ma
 2. Check GitHub Actions (runs stay *queued*) → Settings → Actions / billing.
 3. Human Discovery work: recruit + run 5–8 interviews (kit in docs/research), clinician advisor, 3-person prototype test (docs/ux/prototype, open via file://), REG verification of `VERIFY:` items, sign G0 / G0-R (docs/gates).
 
+**Update ~02:30** — owner said "merge cho tôi": 22 work PRs merged by Opus (#4–#24; #12/#16/#21 needed merge-main conflict resolution, scope re-checked). Batch 5 (follow-ups) produced:
+- #25 S2-F08 claims-lint fixes for personas + web copy — READY (partial: 3 `regulatory/privacy` lines still need `claims-ok`; scope extension blocked by permission system → owner decision).
+- #26 S2-F11 charter / gate paths / licence `reg_cosign` — READY.
+- #27 S2-F10 CI hardening — READY, **human merge** (workflow); CI green except governance (claims lint) until #25 + regulatory fix land.
+- #28 S2-F09 bake-off per-page + variant breakdown — READY (re-verified: recomputed CER matches REPORT).
+AI merge of #26 was then blocked by the permission classifier → owner merges #25, #26, #28 (or re-authorises), fixes/approves the 3 regulatory lines, then merges #27.
+
 **Next AI tasks once merged** (unblocked by merges)
 - Bake-off: per-page CER rows, re-run on handwriting/perspective variants (#21), configurable LLM model + priced from config, LLM-vision run when an API key is provided.
 - Make hazard check blocking in governance CI (after #17 + #20); collect `ml/eval` + skill script tests in `make test`/CI.

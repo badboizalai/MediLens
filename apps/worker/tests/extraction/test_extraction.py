@@ -115,3 +115,12 @@ def test_handler_wired_and_saves_run():
     finally:
         deps.configure(None)
     assert saved[0].document_id == "d1" and saved[0].unit == "dental"
+
+
+def test_out_of_range_confidence_rejected():
+    bad = good()
+    bad["teeth"][0]["fdi"]["confidence"] = 1.7
+    gw = StubGateway(bad, bad)
+    with pytest.raises(ExtractionError, match="1.7"):
+        run_extraction("d1", PAGES, gw, unit="dental")
+    assert "maximum" in gw.prompts[1] or "1.7" in gw.prompts[1]

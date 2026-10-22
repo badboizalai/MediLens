@@ -6,7 +6,9 @@ from dataclasses import dataclass, field
 from typing import Protocol
 from urllib import request as urlrequest
 
-from .jsonschema_lite import Validator
+from jsonschema import Draft202012Validator
+from referencing import Registry, Resource
+
 from .prompts import PROMPT_VERSION, UNITS, classify_prompt, extract_prompt, load_schemas
 
 
@@ -147,7 +149,10 @@ def run_extraction(
     if unit not in UNITS:
         raise ExtractionError(f"unknown unit {unit!r}")
     schemas = load_schemas()
-    validator = Validator(list(schemas.values()))
+    registry = Registry().with_resources(
+        [(s["$id"], Resource.from_contents(s)) for s in schemas.values()]
+    )
+    validator = Draft202012Validator(schemas[unit], registry=registry)
     schema = schemas[unit]
 
     errors: list[str] = []
@@ -156,7 +161,10 @@ def run_extraction(
         cost += c.cost_usd
         result, errors = _parse(c.text)
         if result is not None:
-            errors = validator.errors(result, schema)
+            errors = [
+                f"{e.json_path}: {e.message}"[:300]
+                for e in sorted(validator.iter_errors(result), key=lambda e: e.json_path)
+            ]
         if not errors:
             flags = check_citations(result, pages)
             return ExtractionRun(

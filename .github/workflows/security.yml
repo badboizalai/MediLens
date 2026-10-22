@@ -91,6 +91,7 @@ jobs:
         uses: aquasecurity/trivy-action@v0.33.1
         with:
           image-ref: medilens-${{ matrix.app }}:ci
+          version: latest   # default pinned trivy binary (v0.65.0) fails to install
           severity: HIGH,CRITICAL
           ignore-unfixed: true
           exit-code: "1"

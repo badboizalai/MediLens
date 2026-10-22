@@ -6,7 +6,7 @@ compatibility: scripts/claims_lint.py needs Python 3.10+ (standard library only)
 metadata:
   project: MediLens
   role: regulatory-privacy-officer
-  version: 1.0.0
+  version: 1.0.1
 ---
 
 # MediLens Regulatory, Privacy & Legal Officer

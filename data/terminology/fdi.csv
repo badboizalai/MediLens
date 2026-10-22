@@ -1,0 +1,53 @@
+fdi,dentition,quadrant,position,arch,laterality,name_en,name_vi
+11,permanent,1,1,upper,right,Upper right central incisor,Răng cửa giữa hàm trên bên phải
+12,permanent,1,2,upper,right,Upper right lateral incisor,Răng cửa bên hàm trên bên phải
+13,permanent,1,3,upper,right,Upper right canine,Răng nanh hàm trên bên phải
+14,permanent,1,4,upper,right,Upper right first premolar,Răng cối nhỏ thứ nhất hàm trên bên phải
+15,permanent,1,5,upper,right,Upper right second premolar,Răng cối nhỏ thứ hai hàm trên bên phải
+16,permanent,1,6,upper,right,Upper right first molar,Răng cối lớn thứ nhất hàm trên bên phải
+17,permanent,1,7,upper,right,Upper right second molar,Răng cối lớn thứ hai hàm trên bên phải
+18,permanent,1,8,upper,right,Upper right third molar,Răng cối lớn thứ ba hàm trên bên phải
+21,permanent,2,1,upper,left,Upper left central incisor,Răng cửa giữa hàm trên bên trái
+22,permanent,2,2,upper,left,Upper left lateral incisor,Răng cửa bên hàm trên bên trái
+23,permanent,2,3,upper,left,Upper left canine,Răng nanh hàm trên bên trái
+24,permanent,2,4,upper,left,Upper left first premolar,Răng cối nhỏ thứ nhất hàm trên bên trái
+25,permanent,2,5,upper,left,Upper left second premolar,Răng cối nhỏ thứ hai hàm trên bên trái
+26,permanent,2,6,upper,left,Upper left first molar,Răng cối lớn thứ nhất hàm trên bên trái
+27,permanent,2,7,upper,left,Upper left second molar,Răng cối lớn thứ hai hàm trên bên trái
+28,permanent,2,8,upper,left,Upper left third molar,Răng cối lớn thứ ba hàm trên bên trái
+31,permanent,3,1,lower,left,Lower left central incisor,Răng cửa giữa hàm dưới bên trái
+32,permanent,3,2,lower,left,Lower left lateral incisor,Răng cửa bên hàm dưới bên trái
+33,permanent,3,3,lower,left,Lower left canine,Răng nanh hàm dưới bên trái
+34,permanent,3,4,lower,left,Lower left first premolar,Răng cối nhỏ thứ nhất hàm dưới bên trái
+35,permanent,3,5,lower,left,Lower left second premolar,Răng cối nhỏ thứ hai hàm dưới bên trái
+36,permanent,3,6,lower,left,Lower left first molar,Răng cối lớn thứ nhất hàm dưới bên trái
+37,permanent,3,7,lower,left,Lower left second molar,Răng cối lớn thứ hai hàm dưới bên trái
+38,permanent,3,8,lower,left,Lower left third molar,Răng cối lớn thứ ba hàm dưới bên trái
+41,permanent,4,1,lower,right,Lower right central incisor,Răng cửa giữa hàm dưới bên phải
+42,permanent,4,2,lower,right,Lower right lateral incisor,Răng cửa bên hàm dưới bên phải
+43,permanent,4,3,lower,right,Lower right canine,Răng nanh hàm dưới bên phải
+44,permanent,4,4,lower,right,Lower right first premolar,Răng cối nhỏ thứ nhất hàm dưới bên phải
+45,permanent,4,5,lower,right,Lower right second premolar,Răng cối nhỏ thứ hai hàm dưới bên phải
+46,permanent,4,6,lower,right,Lower right first molar,Răng cối lớn thứ nhất hàm dưới bên phải
+47,permanent,4,7,lower,right,Lower right second molar,Răng cối lớn thứ hai hàm dưới bên phải
+48,permanent,4,8,lower,right,Lower right third molar,Răng cối lớn thứ ba hàm dưới bên phải
+51,deciduous,5,1,upper,right,Deciduous upper right central incisor,Răng cửa giữa hàm trên bên phải
+52,deciduous,5,2,upper,right,Deciduous upper right lateral incisor,Răng cửa bên hàm trên bên phải
+53,deciduous,5,3,upper,right,Deciduous upper right canine,Răng nanh hàm trên bên phải
+54,deciduous,5,4,upper,right,Deciduous upper right first molar,Răng cối sữa thứ nhất hàm trên bên phải
+55,deciduous,5,5,upper,right,Deciduous upper right second molar,Răng cối sữa thứ hai hàm trên bên phải
+61,deciduous,6,1,upper,left,Deciduous upper left central incisor,Răng cửa giữa hàm trên bên trái
+62,deciduous,6,2,upper,left,Deciduous upper left lateral incisor,Răng cửa bên hàm trên bên trái
+63,deciduous,6,3,upper,left,Deciduous upper left canine,Răng nanh hàm trên bên trái
+64,deciduous,6,4,upper,left,Deciduous upper left first molar,Răng cối sữa thứ nhất hàm trên bên trái
+65,deciduous,6,5,upper,left,Deciduous upper left second molar,Răng cối sữa thứ hai hàm trên bên trái
+71,deciduous,7,1,lower,left,Deciduous lower left central incisor,Răng cửa giữa hàm dưới bên trái
+72,deciduous,7,2,lower,left,Deciduous lower left lateral incisor,Răng cửa bên hàm dưới bên trái
+73,deciduous,7,3,lower,left,Deciduous lower left canine,Răng nanh hàm dưới bên trái
+74,deciduous,7,4,lower,left,Deciduous lower left first molar,Răng cối sữa thứ nhất hàm dưới bên trái
+75,deciduous,7,5,lower,left,Deciduous lower left second molar,Răng cối sữa thứ hai hàm dưới bên trái
+81,deciduous,8,1,lower,right,Deciduous lower right central incisor,Răng cửa giữa hàm dưới bên phải
+82,deciduous,8,2,lower,right,Deciduous lower right lateral incisor,Răng cửa bên hàm dưới bên phải
+83,deciduous,8,3,lower,right,Deciduous lower right canine,Răng nanh hàm dưới bên phải
+84,deciduous,8,4,lower,right,Deciduous lower right first molar,Răng cối sữa thứ nhất hàm dưới bên phải
+85,deciduous,8,5,lower,right,Deciduous lower right second molar,Răng cối sữa thứ hai hàm dưới bên phải

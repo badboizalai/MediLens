@@ -12,6 +12,7 @@ class DocStatus(str, Enum):  # StrEnum needs 3.11
     EXTRACTED = "extracted"
     NEEDS_REVIEW = "needs_review"
     CONFIRMED = "confirmed"
+    NEEDS_RETAKE = "needs_retake"  # expected user outcome, e.g. blurry photo
     FAILED = "failed"
 
 
@@ -34,8 +35,13 @@ def next_status(current: DocStatus) -> DocStatus | None:
 
 ALLOWED: dict[DocStatus, frozenset[DocStatus]] = {
     DocStatus.UPLOADED: frozenset({DocStatus.VALIDATED, DocStatus.FAILED}),
-    DocStatus.VALIDATED: frozenset({DocStatus.PREPROCESSED, DocStatus.FAILED}),
-    DocStatus.PREPROCESSED: frozenset({DocStatus.CLASSIFIED, DocStatus.FAILED}),
+    DocStatus.NEEDS_RETAKE: frozenset({DocStatus.UPLOADED}),  # user re-uploads (API)
+    DocStatus.VALIDATED: frozenset(
+        {DocStatus.PREPROCESSED, DocStatus.NEEDS_RETAKE, DocStatus.FAILED}
+    ),
+    DocStatus.PREPROCESSED: frozenset(
+        {DocStatus.CLASSIFIED, DocStatus.NEEDS_RETAKE, DocStatus.FAILED}
+    ),
     DocStatus.CLASSIFIED: frozenset({DocStatus.OCR_DONE, DocStatus.FAILED}),
     DocStatus.OCR_DONE: frozenset({DocStatus.EXTRACTED, DocStatus.FAILED}),
     DocStatus.EXTRACTED: frozenset({DocStatus.NEEDS_REVIEW, DocStatus.FAILED}),
@@ -43,6 +49,13 @@ ALLOWED: dict[DocStatus, frozenset[DocStatus]] = {
     DocStatus.CONFIRMED: frozenset(),
     DocStatus.FAILED: frozenset(),
 }
+
+
+class NonRetryable(Exception):
+    """Expected terminal outcome of a step: set `status`, record `reason`, ack. No retry/DLQ."""
+
+    status: DocStatus = DocStatus.FAILED
+    reason: str = "non_retryable"
 
 
 class InvalidTransition(Exception):
@@ -63,6 +76,7 @@ class StatusRepo:
 
     def __init__(self) -> None:
         self._s: dict[str, DocStatus] = {}
+        self.reasons: dict[str, str] = {}  # user-facing reason codes (no PHI)
 
     def get(self, document_id: str) -> DocStatus:
         return self._s.get(document_id, DocStatus.UPLOADED)

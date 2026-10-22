@@ -6,6 +6,7 @@ requires-python = ">=3.10,<3.13"
 # Heavy engine deps live only in this env (never in the root workspace).
 dependencies = [
   "pillow>=10",
+  "tomli>=2; python_version < '3.11'",
   "numpy<2",
   "setuptools<81",  # vietocr/paddle import pkg_resources
   "paddlepaddle==2.6.2",

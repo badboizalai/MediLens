@@ -1,4 +1,4 @@
-"""Load golden-v0 pages: one page per record (degraded variant when it exists, else clean).
+"""Load golden-v0 pages: one page per image variant (clean, degraded, handwriting, perspective).
 
 Reference text is not stored in golden-v0 itself; `make_reference` re-emits it from the
 seeded generator into reference/golden-v0.reference.jsonl (synthetic text only).
@@ -19,6 +19,7 @@ DEFAULT_REFERENCE = (
 class Page:
     doc_id: str
     image: Path
+    variant: str
     lang: str
     quality: str
     unit: str
@@ -37,16 +38,16 @@ def load_pages(golden: Path, reference: Path = DEFAULT_REFERENCE) -> list[Page]:
         for row in map(json.loads, filter(str.strip, f)):
             doc_id = row["doc_id"]
             rec = json.loads((golden / "records" / f"{doc_id}.json").read_text(encoding="utf-8"))
-            images = {i["variant"]: i["file"] for i in rec["metadata"]["images"]}
-            rel = images.get("degraded") or images["clean"]
-            pages.append(
-                Page(
-                    doc_id=doc_id,
-                    image=golden / rel,
-                    lang=rec["metadata"]["lang"],
-                    quality=row["quality"],
-                    unit=row["unit"],
-                    reference=refs[doc_id],
+            for img in rec["metadata"]["images"]:
+                pages.append(
+                    Page(
+                        doc_id=doc_id,
+                        image=golden / img["file"],
+                        variant=img["variant"],
+                        lang=rec["metadata"]["lang"],
+                        quality=row["quality"],
+                        unit=row["unit"],
+                        reference=refs[doc_id],
+                    )
                 )
-            )
     return pages

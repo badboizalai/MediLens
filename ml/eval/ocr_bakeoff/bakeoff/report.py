@@ -36,8 +36,8 @@ def render(results: list[dict], meta: dict, commentary: str = "") -> str:
     ok = [r for r in results if r["status"] == "ok"]
     lines = ["# OCR bake-off report: golden-v0", ""]
     lines += [
-        f"Dataset: `{meta['golden']}`, {meta['pages']} pages (one per record; degraded variant "
-        "when the record has one), 100% synthetic. Reference = text drawn by the generator. "
+        f"Dataset: `{meta['golden']}`, {meta['pages']} page images (every variant of every "
+        "record: clean, degraded, handwriting, perspective), 100% synthetic. Reference = text drawn by the generator. "
         "CER = (S+D+I)/N chars, micro-averaged, NFC-normalised, whitespace collapsed. "
         f"Hardware: {meta['hardware']}. Python {meta['python']}.",
         "",
@@ -73,6 +73,14 @@ def render(results: list[dict], meta: dict, commentary: str = "") -> str:
             ["Engine", *langs],
             [[r["engine"], *[pct(r["cer"]["by_lang"].get(k)) for k in langs]] for r in ok],
         )
+        lines += ["## CER by image variant", ""]
+        order = ("clean", "degraded", "handwriting", "perspective")
+        variants = [v for v in order if any(v in r["cer"]["by_variant"] for r in ok)]
+        counts = {v: sum(1 for x in ok[0]["rows"] if x["variant"] == v) for v in variants}
+        lines += _table(
+            ["Engine", *[f"{v} (n={counts[v]})" for v in variants]],
+            [[r["engine"], *[pct(r["cer"]["by_variant"].get(v)) for v in variants]] for r in ok],
+        )
         lines += ["## CER by quality", ""]
         quals = [
             q for q in ("good", "medium", "poor") if any(q in r["cer"]["by_quality"] for r in ok)
@@ -88,11 +96,13 @@ def render(results: list[dict], meta: dict, commentary: str = "") -> str:
     lines += ["## Recommendation", "", recommendation(results), ""]
     lines += [
         "Caveats: golden-v0 is synthetic, one template per Unit, rendered in a clean sans font with "
-        "mild degradations and no handwriting, stamps or perspective warp, so all numbers are "
-        "optimistic versus real Vietnamese records. 50 pages: use for ranking and regression only, "
+        "mild degradations; the handwriting variant is typeface jitter (not pen strokes) and the "
+        "perspective variant a flat 4-point warp; no stamps. All numbers are optimistic versus "
+        "real Vietnamese records. Handwriting/perspective groups have 5 pages each: indicative "
+        "only. Pages are not independent (variants share a record's text). Use for ranking and regression only, "
         "not release claims. Latency is wall-clock on the machine above (not the production "
         "worker) after one warm-up page; compute USD is an assumed container price, not an AWS "
-        "quote. Handwriting is untested; a real-like redacted set is needed before deciding.",
+        "quote. Real handwriting is untested; a real-like redacted set is needed before deciding.",
         "",
     ]
     if commentary.strip():

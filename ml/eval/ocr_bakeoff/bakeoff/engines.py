@@ -4,9 +4,23 @@ from __future__ import annotations
 
 import base64
 import os
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Protocol
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
+
+
+CONFIG_PATH = Path(__file__).with_name("config.toml")
+
+
+def load_config(path: Path = CONFIG_PATH) -> dict:
+    with path.open("rb") as f:
+        return tomllib.load(f)
 
 
 class EngineUnavailable(RuntimeError):
@@ -94,16 +108,17 @@ class VietOcrEngine:
 class LlmVisionEngine:
     """Anthropic vision transcription. Needs ANTHROPIC_API_KEY; synthetic images only.
 
-    Prices are illustrative (plan 28.4 Tier M: 1 / 5 USD per million tokens); override via env.
+    Model id and token prices come from config.toml (package dir), not code.
     """
 
     name = "llm-vision"
     PROMPT = "Transcribe all text in this image exactly, line by line. Output only the text."
 
-    def __init__(self, model: str | None = None) -> None:
-        self.model = model or os.environ.get("BAKEOFF_LLM_MODEL", "claude-haiku-4-5")
-        self.usd_in = float(os.environ.get("BAKEOFF_LLM_USD_IN_PER_M", "1.0")) / 1e6
-        self.usd_out = float(os.environ.get("BAKEOFF_LLM_USD_OUT_PER_M", "5.0")) / 1e6
+    def __init__(self, config: dict | None = None) -> None:
+        cfg = config if config is not None else load_config()["llm_vision"]
+        self.model = cfg["model"]
+        self.usd_in = float(cfg["usd_in_per_mtok"]) / 1e6
+        self.usd_out = float(cfg["usd_out_per_mtok"]) / 1e6
         self._client = None
 
     def load(self) -> None:

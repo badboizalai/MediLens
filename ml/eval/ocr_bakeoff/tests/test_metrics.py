@@ -40,9 +40,9 @@ def test_cer_empty_prediction_is_100_percent():
 
 def test_aggregate_micro_average_and_groups():
     rows = [
-        {"lang": "vi", "quality": "good", "edits": 1, "chars": 10},
-        {"lang": "vi", "quality": "poor", "edits": 4, "chars": 10},
-        {"lang": "en", "quality": "good", "edits": 0, "chars": 20},
+        {"lang": "vi", "quality": "good", "variant": "clean", "edits": 1, "chars": 10},
+        {"lang": "vi", "quality": "poor", "variant": "perspective", "edits": 4, "chars": 10},
+        {"lang": "en", "quality": "good", "variant": "clean", "edits": 0, "chars": 20},
     ]
     agg = aggregate(rows)
     assert agg["overall"] == pytest.approx(5 / 40)
@@ -50,6 +50,8 @@ def test_aggregate_micro_average_and_groups():
     assert agg["by_lang"]["en"] == 0.0
     assert agg["by_quality"]["good"] == pytest.approx(1 / 30)
     assert agg["by_quality"]["poor"] == pytest.approx(0.4)
+    assert agg["by_variant"]["clean"] == pytest.approx(1 / 30)
+    assert agg["by_variant"]["perspective"] == pytest.approx(0.4)
 
 
 def test_aggregate_empty():

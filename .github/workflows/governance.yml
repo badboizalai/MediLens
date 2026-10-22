@@ -27,8 +27,10 @@ jobs:
         with: { python-version: "3.10" }
       - name: Detect changed areas
         id: changed
+        env:
+          BASE_REF: ${{ github.base_ref }}
         run: |
-          files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          files=$(git diff --name-only "origin/${BASE_REF}...HEAD")
           has() { echo "$files" | grep -qE "$1" && echo true || echo false; }
           echo "skills=$(has '^(\.claude/|tools/validate_skills\.py|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
           echo "safety=$(has '^(safety/|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
@@ -43,7 +45,7 @@ jobs:
         run: |
           tests=$(ls .claude/skills/*/scripts/test_*.py 2>/dev/null || true)
           if [ -z "$tests" ]; then echo "no skill script tests found"; exit 0; fi
-          uv run --with pytest pytest $tests
+          uv run --with pytest --with defusedxml pytest $tests
       - name: Hazard risk check
         if: steps.changed.outputs.safety == 'true'
         run: python3 .claude/skills/medilens-clinical-safety-officer/scripts/hazard_risk_check.py safety/hazard-log.csv

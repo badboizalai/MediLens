@@ -8,6 +8,7 @@ from medilens_ai_gateway.gateway import CompletionRequest, Gateway, GatewayError
 from medilens_ai_gateway.main import app
 from medilens_ai_gateway.providers import StubProvider
 from medilens_ai_gateway.redaction import redact
+from medilens_ai_gateway.service_token import mint
 
 # All values below are synthetic.
 PII_CASES = {
@@ -125,8 +126,75 @@ def test_logs_contain_no_raw_pii(cfg, caplog):
         assert secret not in logs
 
 
-def test_http_endpoint_and_allowlist():
-    c = TestClient(app)
-    body = {"tenant_id": "t", "profile_id": "p", "prompt": "SĐT 0912 345 678"}
-    assert c.post("/v1/complete", json=body).status_code == 200
-    assert c.post("/v1/complete", json={**body, "model": "nope"}).status_code == 403
+SECRET = "test-secret"  # noqa: S105
+
+
+def _auth(**kw):
+    kw.setdefault("tenants", ["t"])
+    kw.setdefault("profiles", ["p"])
+    kw.setdefault("audience", "ai-gateway")
+    tok = mint(kw.pop("secret", SECRET), caller="api", **kw)
+    return {"Authorization": f"Bearer {tok}"}
+
+
+@pytest.fixture
+def http(monkeypatch):
+    monkeypatch.setenv("AI_GATEWAY_SERVICE_SECRET", SECRET)
+    return TestClient(app)
+
+
+BODY = {"tenant_id": "t", "profile_id": "p", "prompt": "SĐT 0912 345 678"}
+
+
+def test_http_endpoint_and_allowlist(http):
+    assert http.post("/v1/complete", json=BODY, headers=_auth()).status_code == 200
+    r = http.post("/v1/complete", json={**BODY, "model": "nope"}, headers=_auth())
+    assert r.status_code == 403
+
+
+def _bad():
+    p, sig = mint(SECRET, caller="api", audience="ai-gateway").split(".")
+    return {
+        "missing": {},
+        "garbage": {"Authorization": "Bearer x"},
+        "expired": _auth(now=time.time() - 600),
+        "wrong_audience": _auth(audience="phi-service"),
+        "tampered": {"Authorization": f"Bearer {p[:-2]}xx.{sig}"},
+        "wrong_secret": _auth(secret="other"),
+    }
+
+
+@pytest.mark.parametrize("headers", _bad().values(), ids=_bad().keys())
+def test_bad_token_401(http, headers):
+    assert http.post("/v1/complete", json=BODY, headers=headers).status_code == 401
+
+
+def test_secret_unset_fails_closed(monkeypatch):
+    monkeypatch.delenv("AI_GATEWAY_SERVICE_SECRET", raising=False)
+    r = TestClient(app).post("/v1/complete", json=BODY, headers=_auth())
+    assert r.status_code == 401
+
+
+def test_replayed_token_401(http):
+    h = _auth()
+    assert http.post("/v1/complete", json=BODY, headers=h).status_code == 200
+    assert http.post("/v1/complete", json=BODY, headers=h).status_code == 401
+
+
+@pytest.mark.parametrize(
+    "scope",
+    [
+        {"tenants": ["other"]},
+        {"profiles": ["other"]},
+        {"tenants": None},
+        {"profiles": None},
+    ],
+)
+def test_scope_escalation_403(http, scope):
+    h = _auth(**scope)
+    assert http.post("/v1/complete", json=BODY, headers=h).status_code == 403
+
+
+def test_ttl_over_five_minutes_rejected():
+    with pytest.raises(ValueError):
+        mint(SECRET, caller="api", audience="ai-gateway", ttl_s=301)

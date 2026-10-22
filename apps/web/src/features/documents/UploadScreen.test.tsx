@@ -10,34 +10,47 @@ import en from '../../../messages/en.json';
 import vi from '../../../messages/vi.json';
 import { UploadScreen } from './UploadScreen';
 
-const PUT_URL = 'https://uploads.test/doc-1/';
+const PUT_URL = 'https://uploads.test/';
+const PROFILE = '11111111-1111-4111-8111-111111111111';
 const calls: string[] = [];
-let statuses: object[] = [];
+let statuses: Record<string, object[]> = {};
+let n = 0;
+const uuid = (i: number) => `00000000-0000-4000-8000-${String(i).padStart(12, '0')}`;
+const out = (id: string, status: string, extra = {}) => ({ id, profile_id: PROFILE, status, ...extra });
 
 const server = setupServer(
-  http.post('*/v1/profiles/:pid/documents', async ({ request }) => {
-    const body = (await request.json()) as { pages: unknown[] };
-    calls.push(`create:${body.pages.length}`);
-    return HttpResponse.json({
-      document_id: 'doc-1',
-      uploads: body.pages.map((_, i) => ({ url: `${PUT_URL}${i}` })),
-    });
+  http.post('*/v1/profiles/:pid/documents', async ({ request, params }) => {
+    const body = (await request.json()) as { content_type: string; size_bytes: number };
+    expect(params.pid).toBe(PROFILE);
+    expect(Object.keys(body).sort()).toEqual(['content_type', 'size_bytes']);
+    const id = uuid(++n);
+    calls.push(`create:${id.slice(-1)}`);
+    return HttpResponse.json(
+      { document_id: id, upload_url: `${PUT_URL}${id}`, method: 'PUT', headers: { 'Content-Type': body.content_type }, expires_in: 300 },
+      { status: 201 },
+    );
   }),
-  http.put(`${PUT_URL}:i`, ({ params }) => {
-    calls.push(`put:${String(params.i)}`);
+  http.put(`${PUT_URL}:id`, ({ params }) => {
+    calls.push(`put:${String(params.id).slice(-1)}`);
     return new HttpResponse(null, { status: 200 });
   }),
-  http.post('*/v1/documents/:id/complete', () => {
-    calls.push('complete');
-    return new HttpResponse(null, { status: 204 });
+  http.post('*/v1/documents/:id/complete', ({ params }) => {
+    calls.push(`complete:${String(params.id).slice(-1)}`);
+    return HttpResponse.json(out(String(params.id), 'uploaded'));
   }),
-  http.get('*/v1/documents/:id', () => HttpResponse.json(statuses.shift() ?? { status: 'queued' })),
+  http.get('*/v1/documents/:id', ({ params }) => {
+    const id = String(params.id);
+    const queue = statuses[id] ?? [];
+    // the last scripted status sticks, like a settled document
+    return HttpResponse.json((queue.length > 1 ? queue.shift() : queue[0]) ?? out(id, 'uploaded'));
+  }),
 );
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => {
   server.resetHandlers();
   calls.length = 0;
-  statuses = [];
+  statuses = {};
+  n = 0;
 });
 afterAll(() => server.close());
 
@@ -47,7 +60,7 @@ function setup(messages = en) {
   const user = userEvent.setup({ applyAccept: false });
   const view = render(
     <NextIntlClientProvider locale="en" messages={messages}>
-      <UploadScreen profileId="me" pollMs={10} />
+      <UploadScreen profileId={PROFILE} pollMs={10} />
     </NextIntlClientProvider>,
   );
   const input = view.container.querySelector<HTMLInputElement>('input[type=file]:not([capture])')!;
@@ -89,7 +102,7 @@ describe('UploadScreen', () => {
 
     await user.click(screen.getByRole('button', { name: 'Upload' }));
     await screen.findByText(/Reading your record/);
-    expect(calls).toEqual(['create:2', 'put:0', 'put:1', 'complete']);
+    expect(calls).toEqual(['create:1', 'put:1', 'complete:1', 'create:2', 'put:2', 'complete:2']);
     expect(screen.getByText(/You can leave this page/)).toBeInTheDocument();
   });
 
@@ -98,7 +111,7 @@ describe('UploadScreen', () => {
     ['too_dark', /too dark/],
     ['not_a_document', /couldn't see a document page/],
   ])('explains the retake reason %s and lets the user retake', async (reason, text) => {
-    statuses = [{ status: 'needs_retake', retake_reason: reason }];
+    statuses = { [uuid(1)]: [out(uuid(1), 'needs_retake', { retake_reason: reason })] };
     const { user, input, view } = setup();
     await user.upload(input, png('a.png'));
     await user.click(await screen.findByRole('button', { name: 'Upload' }));
@@ -111,7 +124,7 @@ describe('UploadScreen', () => {
   it('keeps the selection and continues after a network error', async () => {
     let fail = true;
     server.use(
-      http.put(`${PUT_URL}:i`, () => {
+      http.put(`${PUT_URL}:id`, () => {
         if (fail) return HttpResponse.error();
         return new HttpResponse(null, { status: 200 });
       }),
@@ -123,7 +136,15 @@ describe('UploadScreen', () => {
     expect(screen.getByText(/a\.png/)).toBeInTheDocument();
     fail = false;
     await user.click(screen.getByRole('button', { name: 'Retry' }));
-    await waitFor(() => expect(calls).toContain('complete'));
+    await waitFor(() => expect(calls).toContain('complete:1'));
     expect(calls.filter((c) => c.startsWith('create'))).toHaveLength(1);
+  });
+
+  it('shows ready only when every page has reached review', async () => {
+    statuses = { [uuid(1)]: [out(uuid(1), 'needs_review')], [uuid(2)]: [out(uuid(2), 'ocr_done'), out(uuid(2), 'needs_review')] };
+    const { user, input } = setup();
+    await user.upload(input, [png('a.png'), png('b.png')]);
+    await user.click(await screen.findByRole('button', { name: 'Upload' }));
+    expect(await screen.findByText(/draft is ready/)).toBeInTheDocument();
   });
 });

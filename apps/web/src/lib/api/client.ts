@@ -1,31 +1,49 @@
 import { z } from 'zod';
 
 /**
- * Typed client for the upload flow (BR-010):
- *   POST /v1/profiles/{id}/documents   -> presigned PUT targets (one per page, in order)
- *   PUT  <presigned url>               -> bytes go straight to storage
- *   POST /v1/documents/{id}/complete   -> starts processing
- *   GET  /v1/documents/{id}            -> processing status / retake reason
+ * Typed client for the upload flow (BR-010), matching apps/api document router:
+ *   POST /v1/profiles/{profile_id}/documents  {content_type,size_bytes} -> presigned PUT (one document per file)
+ *   PUT  <upload_url>                          -> bytes go straight to storage
+ *   POST /v1/documents/{id}/complete           -> DocumentOut, starts processing
+ *   GET  /v1/documents/{id}                    -> DocumentOut (+ retake_reason from the worker)
  */
 
 export const RETAKE_REASONS = ['blurry', 'too_dark', 'not_a_document'] as const;
 export type RetakeReason = (typeof RETAKE_REASONS)[number];
 
 const createResponse = z.object({
-  document_id: z.string().min(1),
-  uploads: z.array(z.object({ url: z.string().url(), headers: z.record(z.string()).optional() })).min(1),
+  document_id: z.string().uuid(),
+  upload_url: z.string().url(),
+  method: z.string().default('PUT'),
+  headers: z.record(z.string()).default({}),
+  expires_in: z.number(),
 });
-const statusResponse = z.object({
-  status: z.enum(['queued', 'reading', 'extracting', 'ready', 'needs_retake', 'failed']),
+const documentOut = z.object({
+  id: z.string().uuid(),
+  profile_id: z.string().uuid(),
+  status: z.string(),
+  // Set by the worker together with status "needs_retake" (codes from the quality gate).
   retake_reason: z.enum(RETAKE_REASONS).nullish(),
 });
-export type DocumentStatus = z.infer<typeof statusResponse>;
+export type DocumentOut = z.infer<typeof documentOut>;
+export type UploadTarget = z.infer<typeof createResponse>;
 
-export interface PageFile {
-  filename: string;
-  content_type: string;
-  size_bytes: number;
-}
+/** Coarse UI stage derived from the backend/worker document status. */
+export type Stage = 'queued' | 'reading' | 'extracting' | 'ready' | 'needs_retake' | 'failed';
+const STAGE: Record<string, Stage> = {
+  'uploaded-pending': 'queued',
+  uploaded: 'queued',
+  validated: 'reading',
+  preprocessed: 'reading',
+  classified: 'reading',
+  ocr_done: 'extracting',
+  extracted: 'extracting',
+  needs_review: 'ready',
+  confirmed: 'ready',
+  needs_retake: 'needs_retake',
+  failed: 'failed',
+};
+export const stageOf = (status: string): Stage => STAGE[status] ?? 'queued';
 
 export class ApiError extends Error {
   constructor(
@@ -49,30 +67,28 @@ async function call(path: string, init: RequestInit): Promise<unknown> {
     const problem = (await res.json().catch(() => ({}))) as { title?: string };
     throw new ApiError(res.status, problem.title);
   }
-  return res.status === 204 ? null : res.json();
+  return res.json();
 }
 
-export async function createDocument(profileId: string, pages: PageFile[]) {
+/** One document per file (one page = one document). */
+export async function createDocument(profileId: string, file: { content_type: string; size_bytes: number }) {
   const body = await call(`/v1/profiles/${encodeURIComponent(profileId)}/documents`, {
     method: 'POST',
-    body: JSON.stringify({ pages }),
+    body: JSON.stringify(file),
   });
   return createResponse.parse(body);
 }
 
-export async function putToPresignedUrl(
-  target: { url: string; headers?: Record<string, string> },
-  file: Blob,
-  signal?: AbortSignal,
-) {
-  const res = await fetch(target.url, { method: 'PUT', body: file, headers: target.headers, signal });
+export async function putToPresignedUrl(target: UploadTarget, file: Blob, signal?: AbortSignal) {
+  const res = await fetch(target.upload_url, { method: target.method, body: file, headers: target.headers, signal });
   if (!res.ok) throw new ApiError(res.status);
 }
 
 export async function completeDocument(documentId: string) {
-  await call(`/v1/documents/${encodeURIComponent(documentId)}/complete`, { method: 'POST' });
+  return documentOut.parse(await call(`/v1/documents/${encodeURIComponent(documentId)}/complete`, { method: 'POST' }));
 }
 
-export async function getDocumentStatus(documentId: string) {
-  return statusResponse.parse(await call(`/v1/documents/${encodeURIComponent(documentId)}`, { method: 'GET' }));
+/** Status read; not on main yet. Shape is DocumentOut plus an optional retake_reason. */
+export async function getDocument(documentId: string) {
+  return documentOut.parse(await call(`/v1/documents/${encodeURIComponent(documentId)}`, { method: 'GET' }));
 }

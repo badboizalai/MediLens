@@ -10,7 +10,8 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "font-src 'self'",
-  "connect-src 'self'",
+  // Presigned PUTs go straight to object storage; its origin comes from the environment.
+  `connect-src 'self'${process.env.NEXT_PUBLIC_STORAGE_ORIGIN ? ` ${process.env.NEXT_PUBLIC_STORAGE_ORIGIN}` : ''}`,
   "worker-src 'self' blob:",
   "object-src 'none'",
   "base-uri 'self'",

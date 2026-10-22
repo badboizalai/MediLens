@@ -1,0 +1,82 @@
+name: Deploy staging
+# plan on PR; apply ONLY via manual workflow_dispatch gated by the `staging` environment.
+on:
+  pull_request:
+    paths:
+      - "infra/terraform/**"
+      - ".github/workflows/deploy-staging.yml"
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Image tag (git SHA) to deploy"
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: deploy-staging
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ap-southeast-1
+  TF_DIR: infra/terraform/envs/staging
+  # Non-secret config from repo variables (Settings > Variables).
+  ROLE_ARN: ${{ vars.AWS_STAGING_ROLE_ARN }}
+  ECR_REGISTRY: ${{ vars.AWS_STAGING_ECR_REGISTRY }}
+  TF_VAR_certificate_arn: ${{ vars.STAGING_CERTIFICATE_ARN }}
+  TF_VAR_waf_web_acl_arn: ${{ vars.STAGING_WAF_WEB_ACL_ARN }}
+
+jobs:
+  plan:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: "1.9.8" }
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Plan
+        working-directory: ${{ env.TF_DIR }}
+        env:
+          TF_VAR_api_image: ${{ env.ECR_REGISTRY }}/medilens-staging/api:${{ github.sha }}
+          TF_VAR_worker_image: ${{ env.ECR_REGISTRY }}/medilens-staging/worker:${{ github.sha }}
+        run: |
+          terraform init -input=false
+          terraform plan -input=false -lock-timeout=60s
+
+  deploy:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: staging # required reviewers configured on the environment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with: { terraform_version: "1.9.8" }
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+      - id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Build and push images
+        env:
+          TAG: ${{ inputs.image_tag }}
+        run: |
+          for svc in api worker; do
+            docker build -t "$ECR_REGISTRY/medilens-staging/$svc:$TAG" "apps/$svc"
+            docker push "$ECR_REGISTRY/medilens-staging/$svc:$TAG"
+          done
+      - name: Apply
+        working-directory: ${{ env.TF_DIR }}
+        env:
+          TF_VAR_api_image: ${{ env.ECR_REGISTRY }}/medilens-staging/api:${{ inputs.image_tag }}
+          TF_VAR_worker_image: ${{ env.ECR_REGISTRY }}/medilens-staging/worker:${{ inputs.image_tag }}
+        run: |
+          terraform init -input=false
+          terraform apply -input=false -auto-approve -lock-timeout=60s

@@ -51,19 +51,23 @@ Mục tiêu tổng: **~$20–80/tháng**; cảnh báo ở 80% ngân sách (R12).
 Danh sách đầy đủ: plan §11 và `risk-register.md` của PM skill. R18 (chưa có bác sĩ cố vấn, 3×4=12) cần đóng trong S01–S04.
 
 ## 7. Mốc và cổng
-S01 bắt đầu 2026-10-19; sprint 2 tuần; ngày = thứ Sáu cuối sprint.
+S01 bắt đầu 2026-10-19; sprint 2 tuần.
 
 | Cổng | Sprint | Ngày | Nội dung |
 | --- | --- | --- | --- |
 | G0, G0-R | S02 | 2026-11-13 | Khóa scope MVP, BRD, prototype, Intended Use, RDR |
-| G1, G1-D | S05 | 2026-12-25 | ADR chốt, CI xanh, 1 tài liệu chạy end-to-end trên staging; License Register |
-| G2 | S11 | 2027-03-19 | Feature complete |
-| G2-CS | S13 | 2027-04-16 | Clinical Safety Case ký |
-| G3, G3-P | S14 | 2027-04-30 | Release gate, pentest độc lập |
-| G4 | S16 | 2027-05-28 | **Launch v1.0 (tuần 32)** |
-| G5-H / G5 / G6 | S18 / S20 / S26 | 2027-06-25 / 07-23 / 10-15 | Hypercare exit / v1.5 / v2.0 CT |
+| G1, G1-D | S05 | 2026-12-28 | ADR chốt, CI xanh, 1 tài liệu chạy end-to-end trên staging; License Register |
+| G2 | S11 | 2027-03-30 | Feature complete |
+| G2-CS | S13 | 2027-04-28 | Clinical Safety Case ký |
+| G3, G3-P | S14 | 2027-05-13 | Release gate, pentest độc lập |
+| G4 | S16 | 2027-06-10 | **Launch v1.0 (tuần 32 theo sheet)** |
+| G5-H | S18 | 2027-07-08 | Hypercare exit |
+| G5 | S20 | 2027-08-05 | Release v1.5 |
+| G0-R (CT) | S21 | 2027-08-19 | Chạy lại G0-R cho CT |
+| G1-D (lần 2) | S22 | 2027-09-06 | Quyền huấn luyện/dùng model trước fine-tune |
+| G6 | S26 | 2027-11-01 | Release v2.0 |
 
-Nguồn: `docs/plan/MediLens_Sprint_Plan_52w.xlsx` (số sprint của từng cổng); ngày tính từ ngày bắt đầu S01. Nếu sheet lệch, sheet là chuẩn.
+Nguồn: sheet Gates của `docs/plan/MediLens_Sprint_Plan_52w.xlsx` (đã tính ngày nghỉ lễ, gồm Tết). Nếu lệch, sheet là chuẩn.
 
 ## 8. Giả định và ràng buộc
 Dữ liệu synthetic/public có license; stack và kiến trúc theo `docs/agents/project-context.md`; mọi thay đổi scope qua change request và decision log.

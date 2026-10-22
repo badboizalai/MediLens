@@ -26,7 +26,7 @@ Influence/Interest: H cao, M vừa, L thấp.
 
 | Họp | Khi nào | Nội dung | Output |
 | --- | --- | --- | --- |
-| Steering cuối phase | Cuối P0 (G0, 2026-11-13), P1 (G1, 2026-12-25), P2 (G2), P3 (G3), P4 (G4), P5, P6 (G6) | Kết quả cổng, rủi ro đỏ, ngân sách, go/no-go | Biên bản, quyết định, hành động |
+| Steering cuối phase | Cuối P0 (G0, 2026-11-13), P1 (G1, 2026-12-28), P2 (G2, 2027-03-30), P3 (G3, 2027-05-13), P4 (G4, 2027-06-10), P5 (G5, 2027-08-05), P6 (G6, 2027-11-01) | Kết quả cổng, rủi ro đỏ, ngân sách, go/no-go | Biên bản, quyết định, hành động |
 | Báo cáo tháng | Tuần đầu mỗi tháng, gửi Steering | Template §3 | Báo cáo (PR hoặc Notion) |
 | Review/Retro sprint | Ngày cuối mỗi sprint (2 tuần) | Demo 5 phút, giữ/bỏ/thử, cập nhật risk | Cập nhật register |
 

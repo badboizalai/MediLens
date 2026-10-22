@@ -1,1 +1,6 @@
-{ "home": { "title": "MediLens", "disclaimer": "MediLens giúp bạn hiểu hồ sơ y tế của mình. Hãy dùng cùng lời khuyên của bác sĩ." } }
+{
+  "home": { "title": "MediLens", "disclaimer": "MediLens giúp bạn hiểu hồ sơ y tế của mình. Hãy dùng cùng lời khuyên của bác sĩ." },
+  "nav": { "label": "Điều hướng chính", "language": "Ngôn ngữ", "signIn": "Đăng nhập", "signOut": "Đăng xuất" },
+  "signIn": { "title": "Đăng nhập", "description": "Đăng nhập để xem hồ sơ của bạn.", "submit": "Tiếp tục đăng nhập" },
+  "dashboard": { "title": "Hồ sơ của bạn", "empty": "Bạn chưa thêm hồ sơ nào." }
+}

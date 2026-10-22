@@ -31,7 +31,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version-file: .nvmrc, cache: pnpm }
       - run: pnpm install --frozen-lockfile || pnpm install
-      - run: pnpm lint && pnpm typecheck && pnpm -r test --passWithNoTests
+      - run: pnpm lint && pnpm typecheck && pnpm -r test -- --passWithNoTests
   security:
     runs-on: ubuntu-latest
     steps:

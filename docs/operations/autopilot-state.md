@@ -18,37 +18,46 @@
 ## Backlog
 | ID | Day | Task | Owner skill | Paths | Depends on | Status | Branch | PR |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| S1-T01 | D01–D02 | Project charter + business case (incl. do-nothing) + stakeholder register + governance | product-manager | `docs/project/` | — | in-progress | | |
-| S1-T02 | D03–D04 | Intended Use Statement + forbidden-claims list + Regulatory Decision Record RDR-001 | regulatory-privacy-officer | `regulatory/` | — | in-progress | | |
-| S1-T03 | D05–D06 | User research kit: research plan, interview guide, consent form, anonymised note template, PII checklist | business-analyst | `docs/research/` | — | in-progress | | |
-| S1-T04 | D09 | Clinical Risk Management Plan + hazard log (ISO 14971 style) seeded with known hazards | clinical-safety-officer | `safety/` | — | in-progress | | |
-| S2-T05 | D16 | License Register for planned sources + validation with `license_register_check.py` | data-curator | `data/license-register.csv`, `data/catalog/` | — | in-progress | | |
-| S2-T11 | D15 | Synthetic record generator + golden set v0 (50 docs, 3 Units, degradations) + Dataset Card + schema validation | ai-ml-engineer | `ml/datasets/`, `ml/eval/golden-v0/` | — | in-progress | | |
-| S2-T06 | D18 | ADR-001 modular monolith, ADR-006 hybrid OCR, ADR-012 region + Bedrock availability | solution-architect | `docs/architecture/adr/` | — | todo | | |
-| S2-T07 | D11 | Problem statement + MoSCoW, MVP locked to 3 Units | business-analyst | `docs/product/` | S1-T01 | todo | | |
-| S2-T08 | D12 | BRD v1: To-Be BPMN, BR-001…BR-045, VI–EN glossary | business-analyst | `docs/brd/` | S2-T07 | todo | | |
-| S2-T09 | D08 | Proto-personas + As-Is journey (hypotheses to validate) | ux-ui-designer | `docs/ux/personas/` | S1-T03 | todo | | |
-| S2-T10 | D13–D14 | IA/sitemap + low-fi wireframes (8 screens) + prototype test script | ux-ui-designer | `docs/ux/wireframes/` | S2-T07 | todo | | |
+| S1-T01 | D01–D02 | Project charter + business case (incl. do-nothing) + stakeholder register + governance | product-manager | `docs/project/` | — | in-review: READY (round 2) | docs/S1-T01-charter | #5 |
+| S1-T02 | D03–D04 | Intended Use Statement + forbidden-claims list + Regulatory Decision Record RDR-001 | regulatory-privacy-officer | `regulatory/` | — | in-review: READY | docs/S1-T02-intended-use-rdr | #4 |
+| S1-T03 | D05–D06 | User research kit: research plan, interview guide, consent form, anonymised note template, PII checklist | business-analyst | `docs/research/` | — | in-review: READY | docs/S1-T03-research-kit | #6 |
+| S1-T04 | D09 | Clinical Risk Management Plan + hazard log (ISO 14971 style) seeded with known hazards | clinical-safety-officer | `safety/` | — | **done (merged)** | docs/S1-T04-crmp-hazard-log | #3 |
+| S2-T05 | D16 | License Register for planned sources + validation with `license_register_check.py` | data-curator | `data/license-register.csv`, `data/catalog/` | — | **done (merged)** | docs/S2-T05-license-register | #2 |
+| S2-T11 | D15 | Synthetic record generator + golden set v0 (50 docs, 3 Units, degradations) + Dataset Card + schema validation | ai-ml-engineer | `ml/datasets/`, `ml/eval/golden-v0/` | — | in-progress | feat/S2-T11-golden-v0 |  |
+| S2-T06 | D18 | ADR-001 modular monolith, ADR-006 hybrid OCR, ADR-012 region + Bedrock availability | solution-architect | `docs/architecture/adr/` | — | in-review: READY | docs/S2-T06-adrs | #10 |
+| S2-T07 | D11 | Problem statement + MoSCoW, MVP locked to 3 Units | business-analyst | `docs/product/` | S1-T01 | in-review: READY (stacked on #5) | docs/S2-T07-mvp-scope | #8 |
+| S2-T08 | D12 | BRD v1: To-Be BPMN, BR-001…BR-045, VI–EN glossary | business-analyst | `docs/brd/` | S2-T07 | in-review: READY | docs/S2-T08-brd-v1 | #13 |
+| S2-T09 | D08 | Proto-personas + As-Is journey (hypotheses to validate) | ux-ui-designer | `docs/ux/personas/` | S1-T03 | in-review: READY (stacked on #6) | docs/S2-T09-proto-personas | #11 |
+| S2-T10 | D13–D14 | IA/sitemap + low-fi wireframes (8 screens) + prototype test script | ux-ui-designer | `docs/ux/wireframes/` | S2-T07 | in-progress | docs/S2-T10-ia-wireframes |  |
 | S2-T12 | D17 | OCR bake-off harness (CER, latency, USD/doc) + report on golden v0 | ai-ml-engineer | `ml/eval/ocr_bakeoff/` | S2-T11 | todo | | |
-| S2-T13 | D19 | DPIA v0 + data inventory + OTIA decision | regulatory-privacy-officer | `regulatory/privacy/` | S1-T02 | todo | | |
-| S1-T14 | D10 | Sprint-01 report, risk register (L×I), retro template | product-manager | `docs/project/reports/`, `docs/project/risk-register.md` | S1-T01 | todo | | |
+| S2-T13 | D19 | DPIA v0 + data inventory + OTIA decision | regulatory-privacy-officer | `regulatory/privacy/` | S1-T02 | in-review: READY (stacked on #4) | docs/S2-T13-dpia-v0 | #12 |
+| S1-T14 | D10 | Sprint-01 report, risk register (L×I), retro template | product-manager | `docs/project/reports/`, `docs/project/risk-register.md` | S1-T01 | in-review: READY (stacked on #5) | docs/S1-T14-risk-register | #9 |
+| S2-F01 | — | Extend claims_lint for BR-042 phrases (+tests) | regulatory-privacy-officer | `.claude/skills/medilens-regulatory-privacy-officer/scripts/` | — | in-progress | feat/S2-F01-claims-lint-rules | |
+| S2-F02 | — | Hazard check accepts project hazard-log columns | clinical-safety-officer | `.claude/skills/medilens-clinical-safety-officer/`, `safety/README.md` | — | in-progress | fix/S2-F02-hazard-check-columns | |
+| S2-F03 | — | Clinician interview guide + persona validation threshold | business-analyst | `docs/research/` | S1-T03 | in-progress | docs/S2-F03-clinician-guide | |
+| S2-F04 | — | BR traceability matrix | qa-engineer | `docs/requirements/` | S2-T08 | in-progress | docs/S2-F04-traceability | |
 | S2-T15 | D20 | Gate evidence packs G0 + G0-R (checklists, links, open items) for human sign-off | qc-release-gatekeeper | `docs/gates/` | all above | todo | | |
 
 ## Batches
 - **Batch 1** (00:30): S1-T01, S1-T02, S1-T03, S1-T04, S2-T05, S2-T11 — 6 workers; 10 GB free RAM.
+- **Batch 2** (~00:45): S2-T06, S2-T07, S2-T08, S2-T09, S2-T10, S2-T13, S1-T14 — 7 workers (docs-only, light); owner said "don't care about dates, fill tasks fast" → BRD/wireframes started from plan §2.4 without waiting for T07.
+- **Batch 3** (~01:00): follow-ups from reviews S2-F01…F04.
 
-## PRs waiting for human merge
-_none yet_
+## PRs waiting for merge
+Merge order matters (stacked): **#5 → #8, #9** · **#4 → #12** · **#6 → #11** · #10, #13 independent. #7 (RULES change) must be merged by the human.
+Merged: #2 (license register), #3 (CRMP/hazard log).
 
 ## Decisions
 - 2026-10-23: Sprint 1–2 follow the 52-week sheet (P0 Discovery), not the older §5.1 build sprints.
-- 2026-10-23: AI never approves or merges PRs; Opus reviews with `--comment` plus a verdict, and the human merges (RULES A3).
+- 2026-10-23: Opus reviews with `--comment` plus a verdict (GitHub forbids self-approve).
+- 2026-10-23: Owner authorised AI merge of good PRs → RULES change in PR #7 (human merges #7). #2, #3 merged by Opus; further merges blocked by the Claude Code permission classifier → waiting for owner.
+- 2026-10-23: gh 2.46 `gh pr edit` fails (Projects classic GraphQL) → use `gh api` for labels/reviews.
 
 ## Blockers
 _none_
 
 ## Helper tools used
-_empty_
+medilens-* skills via workers; karpathy-guidelines + ponytail in every brief; mattpocock /tdd in code tasks (T11, F01, F02); taste-skill in UX tasks (T09, T10); claims_lint.py, license_register_check.py, hazard_risk_check.py, check_traceability.py; laya not needed yet (routing unambiguous).
 
 ## Handover
 _written at stop_

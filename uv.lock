@@ -1296,6 +1296,7 @@ source = { editable = "apps/ai-gateway" }
 dependencies = [
     { name = "fastapi" },
     { name = "pydantic" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -1309,6 +1310,7 @@ dev = [
 requires-dist = [
     { name = "fastapi", specifier = ">=0.115" },
     { name = "pydantic", specifier = ">=2.9" },
+    { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.32" },
 ]
 

@@ -9,6 +9,8 @@ on:
       - "regulatory/**"
       - "docs/ux/**"
       - "apps/web/messages/**"
+      - "ml/datasets/synth/**"
+      - "ml/eval/ocr_bakeoff/**"
       - ".github/workflows/governance.yml"
 concurrency:
   group: governance-${{ github.ref }}
@@ -30,6 +32,7 @@ jobs:
           has() { echo "$files" | grep -qE "$1" && echo true || echo false; }
           echo "skills=$(has '^(\.claude/|tools/validate_skills\.py|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
           echo "safety=$(has '^(safety/|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
+          echo "ml=$(has '^(ml/datasets/synth/|ml/eval/ocr_bakeoff/|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
           echo "data=$(has '^(data/|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
           echo "claims=$(has '^(regulatory/|docs/ux/|apps/web/messages/|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
       - name: Validate skills
@@ -43,9 +46,12 @@ jobs:
           uv run --with pytest pytest $tests
       - name: Hazard risk check
         if: steps.changed.outputs.safety == 'true'
-        # TODO(#17): remove continue-on-error once hazard_risk_check.py supports the project column aliases.
-        continue-on-error: true
         run: python3 .claude/skills/medilens-clinical-safety-officer/scripts/hazard_risk_check.py safety/hazard-log.csv
+      - name: ML unit tests (synthetic generator, OCR metrics only)
+        if: steps.changed.outputs.ml == 'true'
+        run: |
+          (cd ml/datasets/synth && uv run --no-project --with pillow --with pytest --with jsonschema pytest)
+          (cd ml/eval/ocr_bakeoff && uv run --no-project --with pytest pytest tests/test_metrics.py)
       - name: Licence register check
         if: steps.changed.outputs.data == 'true'
         run: python3 .claude/skills/medilens-data-curator/scripts/license_register_check.py data/license-register.csv

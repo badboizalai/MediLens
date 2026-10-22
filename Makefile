@@ -55,7 +55,7 @@ governance: ## Run the CI governance checks locally
 	python3 tools/validate_skills.py
 	@tests=$$(ls .claude/skills/*/scripts/test_*.py 2>/dev/null); \
 	if [ -n "$$tests" ]; then uv run --with pytest pytest $$tests; else echo "no skill script tests found"; fi
-	-python3 .claude/skills/medilens-clinical-safety-officer/scripts/hazard_risk_check.py safety/hazard-log.csv # non-blocking until #17 (column aliases)
+	python3 .claude/skills/medilens-clinical-safety-officer/scripts/hazard_risk_check.py safety/hazard-log.csv
 	python3 .claude/skills/medilens-data-curator/scripts/license_register_check.py data/license-register.csv
 	@paths=""; for p in regulatory docs/ux apps/web/messages; do [ -e "$$p" ] && paths="$$paths $$p"; done; \
 	[ -z "$$paths" ] || python3 .claude/skills/medilens-regulatory-privacy-officer/scripts/claims_lint.py $$paths

@@ -157,17 +157,17 @@ Trust boundaries: TB1/TB2 (every request authenticated, no anonymous links per B
 | S-11 | Notifications | I | Email leaks PHI or reveals a share to a wrong address | 2 | 3 | 6 | Emails carry no PHI, only a sign-in link; SEC-DP-06 | Low | backend-engineer |
 
 ## 6. New requirements and open items
-| ID | Item | Type | Owner | Target |
-| --- | --- | --- | --- | --- |
-| O-01 | Add promote-by-version-id + checksum rule to SEC-AP-07 (U-06) | New requirement | security-engineer | Sprint 4 |
-| O-02 | Cache key includes profile scope + prompt version, in AI Gateway spec (A-09) | New requirement | mlops-engineer | Sprint 4 |
-| O-03 | Add "fail closed when redaction errors" to SEC-AI-02 (A-02) | New requirement | ai-ml-engineer | Sprint 4 |
-| O-04 | Define clinician verification workflow (S-06); promote SEC-ID-09 to MUST before clinician shares | Decision | product-manager | before G3-P |
-| O-05 | Vendor assessment for Bedrock and overseas-transfer assessment signed (A-03) | Compliance | regulatory-privacy-officer | before real data |
-| O-06 | Measure redaction recall on the labelled set; record in sign-off (A-02) | Test | ai-ml-engineer | before G3-P |
-| O-07 | Run LLM-01..12 suite; record results in release sign-off | Test | qa-engineer | each release |
-| O-08 | Level A to B boundary hardening (A-06); until then synthetic data only | Constraint | solution-architect | G3-P |
-| O-09 | Extend model to DICOM intake, analytics export, CI supply chain, auth | Scope | security-engineer | model v2 |
+| ID | Item | Type | Owner | Target | Status | Evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| O-01 | Add promote-by-version-id + checksum rule to SEC-AP-07 (U-06) | New requirement | security-engineer | Sprint 4 | Open: defined as SEC-AP-07a, not implemented | `docs/security/security-requirements.md` |
+| O-02 | Cache key includes profile scope + prompt version, in AI Gateway spec (A-09) | New requirement | mlops-engineer | Sprint 4 | Done: SEC-AI-10 verified by unit tests | `apps/ai-gateway/tests/test_gateway.py` |
+| O-03 | Add "fail closed when redaction errors" to SEC-AI-02 (A-02) | New requirement | ai-ml-engineer | Sprint 4 | Done: SEC-AI-02a verified by unit test | `apps/ai-gateway/tests/test_gateway.py` |
+| O-04 | Define clinician verification workflow (S-06); promote SEC-ID-09 to MUST before clinician shares | Decision | product-manager | before G3-P | Open | - |
+| O-05 | Vendor assessment for Bedrock and overseas-transfer assessment signed (A-03) | Compliance | regulatory-privacy-officer | before real data | Open | - |
+| O-06 | Measure redaction recall on the labelled set; record in sign-off (A-02) | Test | ai-ml-engineer | before G3-P | Open | - |
+| O-07 | Run LLM-01..12 suite; record results in release sign-off | Test | qa-engineer | each release | Open | - |
+| O-08 | Level A to B boundary hardening (A-06); until then synthetic data only | Constraint | solution-architect | G3-P | Open | - |
+| O-09 | Extend model to DICOM intake, analytics export, CI supply chain, auth | Scope | security-engineer | model v2 | Open | - |
 
 ## 7. Residual risk summary
 No threat is rated High after controls. Medium residuals: U-05 (scanner evasion), A-01 (injection), A-02 (redaction miss), A-03 (vendor, pending), A-06 (level A only), A-10 (clinical misleading output), S-01 (session theft), S-05 and S-08 (viewed data cannot be unseen), S-06 (clinician verification). Residuals A-02, A-03, A-10 need explicit acceptance in the DPIA and the Clinical Safety Case.

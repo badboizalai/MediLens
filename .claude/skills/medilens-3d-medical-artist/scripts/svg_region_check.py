@@ -3,7 +3,7 @@
 
 Usage: python svg_region_check.py body.svg --regions regions.csv [--column svg_required]
 
-Finds every element id in the SVG (standard library XML parser), reports
+Finds every element id in the SVG (defusedxml parser, XXE-safe), reports
 duplicate ids, ids that are not region codes (ignoring 'sys_' groups and ids
 starting with 'aux_' or 'defs_'), regions required in 2D that are missing, and
 forbidden content (script elements, external hrefs, inline fill on regions).
@@ -14,7 +14,14 @@ import argparse
 import csv
 import re
 import sys
-import xml.etree.ElementTree as ET
+
+try:
+    from defusedxml import ElementTree as ET  # DTD/entity attacks rejected
+except ImportError:
+    sys.exit(
+        "svg_region_check.py needs defusedxml (pip install defusedxml); "
+        "refusing to parse SVG with an unsafe XML parser"
+    )
 
 SURFACE_RX = re.compile(r"^(tooth_\d{2})_[OMDBL]$")
 

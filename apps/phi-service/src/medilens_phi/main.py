@@ -1,9 +1,8 @@
-"""PHI service (level A). Service auth is a shared bearer token: TEMPORARY until mTLS/IAM."""
+"""PHI service (level A). Service auth: signed short-lived tokens (docs/architecture/service-auth.md)."""
 
 from __future__ import annotations
 
 import base64
-import hmac
 import logging
 import os
 
@@ -13,6 +12,9 @@ from pydantic import BaseModel
 from medilens_phi.crypto import AesGcmEncryptor, DecryptionError, Encryptor
 from medilens_phi.repository import InMemorySubjectRepository, SubjectRepository
 from medilens_phi.service import SubjectNotFound, SubjectService
+from medilens_phi.service_token import TokenError, Verifier, bearer
+
+AUDIENCE = "phi-service"
 
 log = logging.getLogger("medilens_phi")
 
@@ -34,25 +36,32 @@ class SubjectOut(SubjectIn):
 
 def create_app(
     *,
-    service_token: str | None = None,
+    service_secret: str | None = None,
     encryptor: Encryptor | None = None,
     repo: SubjectRepository | None = None,
 ) -> FastAPI:
-    """Unset token => every protected call is 401. Unset KEK => ephemeral dev key."""
-    token = service_token if service_token is not None else os.environ.get("PHI_SERVICE_TOKEN", "")
+    """Unset secret => every protected call is 401. Unset KEK => refused unless ENV=local."""
+    secret = (
+        service_secret if service_secret is not None else os.environ.get("PHI_SERVICE_SECRET", "")
+    )
+    verifier = Verifier(secret, AUDIENCE)
     if encryptor is None:
         raw = os.environ.get("PHI_KEK_B64")
         if not raw:
-            log.warning("PHI_KEK_B64 unset: using ephemeral dev key")
+            if os.environ.get("ENV") != "local":
+                raise RuntimeError("PHI_KEK_B64 is required unless ENV=local (no ephemeral KEK)")
+            log.warning("PHI_KEK_B64 unset: using ephemeral dev key (ENV=local)")
         encryptor = AesGcmEncryptor(base64.b64decode(raw) if raw else os.urandom(32))
     svc = SubjectService(repo or InMemorySubjectRepository(), encryptor)
     app = FastAPI(title="MediLens phi-service")
 
     def require_service(request: Request) -> None:
-        got = request.headers.get("authorization", "")
-        want = f"Bearer {token}"
-        if not token or not hmac.compare_digest(got.encode(), want.encode()):
-            raise HTTPException(401, "unauthorized", headers={"WWW-Authenticate": "Bearer"})
+        try:
+            verifier.verify(bearer(request.headers.get("authorization", "")))
+        except TokenError:
+            raise HTTPException(
+                401, "unauthorized", headers={"WWW-Authenticate": "Bearer"}
+            ) from None
 
     @app.get("/healthz")
     def healthz() -> dict[str, str]:

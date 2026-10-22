@@ -15,10 +15,7 @@ concurrency:
 
 jobs:
   sast:
-    name: Semgrep SAST (non-blocking until baseline fixed)
-    # Non-blocking: 2 pre-existing ERROR findings (svg_region_check.py XXE, governance.yml shell
-    # injection) live outside this task's paths. Follow-up: fix both, then drop continue-on-error.
-    continue-on-error: true
+    name: Semgrep SAST
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -87,11 +84,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Build image
         run: docker build -t medilens-${{ matrix.app }}:ci apps/${{ matrix.app }}
-      - name: Trivy scan (HIGH/CRITICAL, fixable; non-blocking until baseline fixed)
-        # 2 pre-existing HIGH: jaraco.context 5.3.0 (CVE-2026-23949), wheel 0.45.1 (CVE-2026-24049),
-        # from base-image setuptools. Dockerfile is outside this task's paths.
-        # Follow-up: upgrade setuptools/wheel in apps/api/Dockerfile, then drop continue-on-error.
-        continue-on-error: true
+      - name: Trivy scan (HIGH/CRITICAL, fixable)
         uses: aquasecurity/trivy-action@v0.33.1
         with:
           image-ref: medilens-${{ matrix.app }}:ci

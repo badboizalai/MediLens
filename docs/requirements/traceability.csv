@@ -1,0 +1,33 @@
+br_id,us_id,us_title,tc_id,tc_level,test_idea,status
+BR-001,US-001,Register as adult or create minor profile,TC-001,api,Register with birth year making user 17 → rejected; Caregiver creates minor profile → allowed and flagged,planned
+BR-002,US-002,Give consent before first upload,TC-002,api,Upload without consent → 403 `/errors/consent-required`; bump terms version → upload blocked until re-consent,planned
+BR-003,US-003,Sign in with MFA,TC-003,api,Admin login without second factor → denied; Patient login without MFA → allowed with prompt,planned
+BR-004,US-004,Account lockout after failed logins,TC-004,api,5 wrong passwords then correct one → still locked; email alert sent; unlocked after 15 min,planned
+BR-005,US-005,Session expiry and token rotation,TC-005,api,Idle 31 min → 401; reuse an already-rotated refresh token → rejected,planned
+BR-006,US-006,Access only own or shared profiles,TC-006,api,User A requests user B's document → 404/403 + audit; Admin reads PHI without reason → denied,planned
+BR-010,US-007,Upload JPG/PNG/HEIC/PDF within limits,TC-007,api,21 MB file → 413 `/errors/file-too-large`; `.docx` → rejected; 31-page PDF → rejected,planned
+BR-011,US-008,Get re-capture guidance for blurry photo,TC-008,api,Blurred synthetic photo → 422 `/errors/low-quality-image` with tips; 500 px image → rejected,planned
+BR-012,US-009,Confirm low-confidence fields,TC-009,e2e,"Confirm with an unconfirmed yellow field → 422 `/errors/unconfirmed-fields`; 0.69 flagged, 0.70 not",planned
+BR-013,US-010,Review AI draft before it is shown,TC-010,api,Draft finding never returned by `/findings`; appears after confirmation,planned
+BR-014,US-011,See edit history of a field,TC-011,api,"Edit a field → history row (user, old, new); evaluation set excludes users without consent",planned
+BR-015,US-012,See findings that could not be mapped to a region,TC-012,unit,Unknown site text → `unmapped` and listed; mapping confidence < 0.6 → `unmapped`,planned
+BR-016,US-013,Warn on duplicate document,TC-013,api,Re-upload same file → 409 `/errors/duplicate-document`; same date/facility/diagnosis → duplicate warning,planned
+BR-017,US-014,Records grouped into clinical Units,TC-014,unit,C34.1 → Oncology (primary) and Respiratory; MVP shows only enabled Units,planned
+BR-020,US-015,Read severity by label as well as colour,TC-015,e2e,Colour-blind simulation: each level still distinguishable by label; no colour-only indicator,planned
+BR-021,US-016,See metastasis only when the record states it,TC-016,e2e,"Record without M1 → no metastasis lines; ""possible spread"" layer carries the label",planned
+BR-022,US-017,Ask questions answered from approved articles,TC-017,api,Question outside the KB → fallback answer; every answer carries citations,planned
+BR-023,US-018,Safe answers to dose/prognosis/emergency questions,TC-018,api,"Red-team prompts (""how many mg"", ""how long do I have"") refused; ""chest pain"" → 115 first",planned
+BR-024,US-019,Article sources and review date,TC-019,api,Article last reviewed 13 months ago appears in `knowledge.review_due`; article without source cannot publish,planned
+BR-025,US-020,Compare same finding over time,TC-020,unit,mmol/L vs mg/dL glucose converted; different region → no comparison offered,planned
+BR-030,US-021,Share records with expiry and scope,TC-021,api,91-day expiry → rejected; revoke → recipient gets 404 immediately; out-of-scope document hidden,planned
+BR-031,US-022,Shared link needs sign-in,TC-022,api,"Open link while signed out → login required, no data leaked",planned
+BR-032,US-023,Export or delete my data,TC-023,api,"Export contains all user data; deletion request → purged from every store at day 30, audit retained",planned
+BR-033,US-024,Encrypted originals and watermarked previews,TC-024,api,Object has KMS encryption; preview image shows recipient name,planned
+BR-034,US-025,Opt in before data is used for training,TC-025,api,Dataset build excludes non-opted-in users; consent withdrawal removes rows,planned
+BR-035,US-026,Audit trail of data access,TC-026,api,Read a finding → audit row; attempt to update/delete audit row → denied,planned
+BR-040,US-027,Describe symptoms in own words,TC-027,e2e,"Free-text entry → no ICD-10, neutral colour, label shown",planned
+BR-041,US-028,See 115 first for emergency text,TC-028,e2e,"Text ""đau ngực dữ dội"" → 115 banner rendered before all content",planned
+BR-042,US-029,CT shows illustrative anatomy only,TC-029,manual,Pipeline emits anatomy meshes only; no lesion/measurement output field exists; claims review passes,planned
+BR-043,US-030,CT de-identified on upload,TC-030,api,Synthetic DICOM with PHI tags → none remain downstream; other user cannot fetch original,planned
+BR-044,US-031,See which source wins on conflict,TC-031,unit,"Record says right kidney, patient text says left → record wins, mismatch warning shown",planned
+BR-045,US-032,Import digital records without OCR,TC-032,api,Text-layer PDF → no OCR job; valid FHIR Bundle → zero LLM calls,planned

@@ -1,0 +1,57 @@
+name: Governance
+on:
+  pull_request:
+    paths:
+      - ".claude/**"
+      - "tools/validate_skills.py"
+      - "safety/**"
+      - "data/license-register.csv"
+      - "regulatory/**"
+      - "docs/ux/**"
+      - "apps/web/messages/**"
+      - ".github/workflows/governance.yml"
+concurrency:
+  group: governance-${{ github.ref }}
+  cancel-in-progress: true
+permissions: { contents: read }
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: astral-sh/setup-uv@v5
+        with: { python-version: "3.10" }
+      - name: Detect changed areas
+        id: changed
+        run: |
+          files=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          has() { echo "$files" | grep -qE "$1" && echo true || echo false; }
+          echo "skills=$(has '^(\.claude/|tools/validate_skills\.py|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
+          echo "safety=$(has '^(safety/|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
+          echo "data=$(has '^(data/|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
+          echo "claims=$(has '^(regulatory/|docs/ux/|apps/web/messages/|\.github/workflows/governance\.yml)')" >> "$GITHUB_OUTPUT"
+      - name: Validate skills
+        if: steps.changed.outputs.skills == 'true'
+        run: python3 tools/validate_skills.py
+      - name: Skill script tests
+        if: steps.changed.outputs.skills == 'true'
+        run: |
+          tests=$(ls .claude/skills/*/scripts/test_*.py 2>/dev/null || true)
+          if [ -z "$tests" ]; then echo "no skill script tests found"; exit 0; fi
+          uv run --with pytest pytest $tests
+      - name: Hazard risk check
+        if: steps.changed.outputs.safety == 'true'
+        # TODO(#17): remove continue-on-error once hazard_risk_check.py supports the project column aliases.
+        continue-on-error: true
+        run: python3 .claude/skills/medilens-clinical-safety-officer/scripts/hazard_risk_check.py safety/hazard-log.csv
+      - name: Licence register check
+        if: steps.changed.outputs.data == 'true'
+        run: python3 .claude/skills/medilens-data-curator/scripts/license_register_check.py data/license-register.csv
+      - name: Claims lint
+        if: steps.changed.outputs.claims == 'true'
+        run: |
+          paths=""
+          for p in regulatory docs/ux apps/web/messages; do [ -e "$p" ] && paths="$paths $p"; done
+          [ -z "$paths" ] || python3 .claude/skills/medilens-regulatory-privacy-officer/scripts/claims_lint.py $paths

@@ -1,0 +1,99 @@
+{
+  "doc_id": "gv0-010-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-03-28"
+        },
+        "value": "2024-03-28"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 14"
+          },
+          "value": "14"
+        }
+      },
+      {
+        "condition": "impacted",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 15"
+          },
+          "value": "15"
+        }
+      },
+      {
+        "condition": "crown",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 34"
+          },
+          "value": "34"
+        }
+      },
+      {
+        "condition": "root_canal",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 45"
+          },
+          "value": "45"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.1.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-010-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1933,
+      "name": "Lê Thị Giả",
+      "sex": "female"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "dental"
+}

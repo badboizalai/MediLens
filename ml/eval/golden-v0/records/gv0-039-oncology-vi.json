@@ -1,0 +1,172 @@
+{
+  "doc_id": "gv0-039-oncology-vi",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-02-06"
+        },
+        "value": "2025-02-06"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Ung bướu"
+        },
+        "value": "Khoa Ung bướu"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "metastases": [
+      {
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Phổi"
+          },
+          "value": "Phổi"
+        },
+        "stated_as": "confirmed"
+      },
+      {
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Não"
+          },
+          "value": "Não"
+        },
+        "stated_as": "confirmed"
+      }
+    ],
+    "nodes": [],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G3"
+        },
+        "value": "G3"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Ung thư biểu mô tuyến"
+        },
+        "value": "Ung thư biểu mô tuyến"
+      },
+      "laterality": "right",
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Phổi (thùy trên)"
+        },
+        "value": "Phổi (thùy trên)"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "16 mm"
+        },
+        "unit": "mm",
+        "value": 16
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M1"
+        },
+        "value": "M1"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N0"
+        },
+        "value": "N0"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IV"
+        },
+        "value": "IV"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T2"
+        },
+        "value": "T2"
+      }
+    },
+    "treatments": []
+  },
+  "metadata": {
+    "generator_version": "0.1.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-039-oncology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.82,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 5.23,
+            "type": "skew"
+          },
+          {
+            "strength": 0.47,
+            "type": "shadow"
+          },
+          {
+            "type": "fold",
+            "y": 444
+          }
+        ],
+        "file": "images/gv0-039-oncology-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1941,
+      "name": "Phạm Văn Giả",
+      "sex": "male"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "poor",
+  "unit": "oncology"
+}

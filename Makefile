@@ -51,5 +51,13 @@ skills-sync: ## Sync canonical project-context into all skills
 	python3 tools/sync_skill_context.py
 skills-package: ## Zip each skill into dist/skills
 	tools/package_skills.sh
+governance: ## Run the CI governance checks locally
+	python3 tools/validate_skills.py
+	@tests=$$(ls .claude/skills/*/scripts/test_*.py 2>/dev/null); \
+	if [ -n "$$tests" ]; then uv run --with pytest pytest $$tests; else echo "no skill script tests found"; fi
+	-python3 .claude/skills/medilens-clinical-safety-officer/scripts/hazard_risk_check.py safety/hazard-log.csv # non-blocking until #17 (column aliases)
+	python3 .claude/skills/medilens-data-curator/scripts/license_register_check.py data/license-register.csv
+	@paths=""; for p in regulatory docs/ux apps/web/messages; do [ -e "$$p" ] && paths="$$paths $$p"; done; \
+	[ -z "$$paths" ] || python3 .claude/skills/medilens-regulatory-privacy-officer/scripts/claims_lint.py $$paths
 
-.PHONY: help setup up down api-dev web-dev worker-dev migrate api-client lint api-lint format typecheck test e2e load skills-check skills-sync skills-package
+.PHONY: help setup up down api-dev web-dev worker-dev migrate api-client lint api-lint format typecheck test e2e load skills-check skills-sync skills-package governance

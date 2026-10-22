@@ -1,2 +1,2 @@
-hazard_id,title,situation,harm,causes,severity,probability,controls,cs_ids,verification,residual_severity,residual_probability,owner,status,notes
-HZ-001,Finding on wrong side,Laterality misread from record,User misinforms clinician / worries about wrong organ,OCR or LLM laterality error,3,3,Laterality rules; confidence highlight; user confirmation; source snippet,CS-001;CS-002;CS-003,TC-120;TC-121,3,1,ai-ml-engineer,open,
+id,hazard,cause,harm,severity,likelihood,initial_risk,controls,residual_severity,residual_likelihood,residual_risk,owner,status,verification
+HZ-001,Finding shown on the wrong side (left/right),OCR or LLM laterality error,User misinforms clinician or worries about the wrong organ,3,3,9 ALARP,CS-001 laterality rules + confidence highlight; CS-002 user confirmation; CS-003 show source snippet,3,1,3 acceptable,ai-ml-engineer,open,TC-TBD (planned: laterality golden set + review-screen E2E)

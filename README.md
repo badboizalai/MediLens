@@ -10,7 +10,7 @@
 ![node](https://img.shields.io/badge/node-20%2B-green)
 ![license](https://img.shields.io/badge/license-proprietary-lightgrey)
 
-[Tiếng Việt](#tiếng-việt) · [English](#english) · [Docs](docs/) · [Kế hoạch / Plan](docs/plan/)
+[Tiếng Việt](#tiếng-việt) · [English](#english) · [RULES](RULES.md) · [Docs](docs/) · [Kế hoạch / Plan](docs/plan/)
 
 </div>
 
@@ -130,7 +130,7 @@ Mở thư mục trong VS Code, cài extension khuyến nghị. Claude đọc [`C
 Danh mục skill: [`docs/agents/skill-catalog.md`](docs/agents/skill-catalog.md) · Hướng dẫn gói skill: [`docs/agents/skill-pack-readme.md`](docs/agents/skill-pack-readme.md).
 
 ## Quy ước / Conventions
-Conventional Commits · mỗi endpoint mới có authz test · thay đổi schema = migration · quyết định = ADR · không dữ liệu thật trong repo/log/prompt. Xem [`CONTRIBUTING.md`](CONTRIBUTING.md), [`SECURITY.md`](SECURITY.md).
+Toàn bộ luật quản lý dự án và chất lượng code: [`RULES.md`](RULES.md). Tóm tắt: Conventional Commits · mỗi endpoint mới có authz test · thay đổi schema = migration · quyết định = ADR · không dữ liệu thật trong repo/log/prompt. Xem [`CONTRIBUTING.md`](CONTRIBUTING.md), [`SECURITY.md`](SECURITY.md).
 
 ## Tài liệu / Documentation
 | | |

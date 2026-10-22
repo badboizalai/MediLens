@@ -1,4 +1,5 @@
 # Contributing
+0. Read [`RULES.md`](RULES.md) — it is binding.
 1. Pick/open an issue (template: owner role, reviewers, requirement codes, sprint/gate).
 2. Branch `feat|fix|docs|chore/<scope>-<short>`; Conventional Commits (`feat(api): ...`).
 3. Route with `/route` to find owner + reviewers; follow the owner skill's workflow.

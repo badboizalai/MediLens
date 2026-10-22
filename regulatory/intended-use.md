@@ -34,7 +34,7 @@ MediLens giúp người dùng xem lại và hiểu thông tin **đã được gh
 | 1 | Không đưa ra kết luận về bệnh (không có chẩn đoán, không có danh sách bệnh nghi ngờ) | Chỉ hiển thị nội dung hồ sơ đã ghi; trường "Chẩn đoán (theo hồ sơ)" là trích nguyên văn | <!-- claims-ok -->
 | 2 | Không đề xuất, thay đổi hay ngừng điều trị/thuốc; không đưa liều | Mọi câu hỏi về điều trị chuyển về bác sĩ |
 | 3 | Không phân tích hình ảnh để phát hiện, đo hay mô tả đặc điểm tổn thương | Áp dụng cho ảnh chụp, X-quang, CT, ảnh da, răng; CT chỉ dựng hình minh họa |
-| 4 | Không dự đoán diễn tiến, thời gian sống, không chấm điểm nguy cơ | BR-022/023 |
+| 4 | Không dự đoán diễn tiến, thời gian sống, không chấm điểm nguy cơ | BR-022/023 <!-- claims-ok --> |
 | 5 | Không phân loại mức khẩn cấp; mọi tình huống cấp cứu luôn hướng đến số **115** | Duy nhất ngoại lệ là chuyển hướng cấp cứu |
 | 6 | Không thay thế bác sĩ hay cơ sở y tế | Luôn khuyến khích dùng cùng lời khuyên của bác sĩ | <!-- claims-ok -->
 | 7 | Không cảnh báo diễn biến chỉ số theo dõi (xu hướng xấu đi) | Chỉ hiển thị giá trị đã ghi và khoảng tham chiếu in trong hồ sơ |

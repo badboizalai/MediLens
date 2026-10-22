@@ -101,3 +101,8 @@ modules = [
   "medilens.modules.audit",
   "medilens.modules.admin",
 ]
+# Authentication is a cross-cutting identity concern: routers may depend on the current Principal.
+ignore_imports = [
+  "medilens.modules.*.api.* -> medilens.modules.identity.api.dependencies",
+  "medilens.modules.*.api.* -> medilens.modules.identity.domain.principal",
+]

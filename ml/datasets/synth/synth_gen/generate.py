@@ -12,7 +12,7 @@ from pathlib import Path
 
 from . import content, render
 
-GENERATOR_VERSION = "0.1.0"
+GENERATOR_VERSION = "0.2.0"
 DEFAULT_SEED = 20260101
 UNIT_COUNTS = [("dental", 17), ("cardiology", 17), ("oncology", 16)]
 QUALITY_COUNTS = [("good", 25), ("medium", 18), ("poor", 7)]  # 50/35/15 %
@@ -28,6 +28,16 @@ def plan(seed: int) -> list[dict]:
         {"unit": u, "lang": "en" if i % 5 == 4 else "vi", "quality": q}
         for i, (u, q) in enumerate(zip(units, qualities, strict=True))
     ]
+
+
+def variant_subset(seed: int, n: int = 10) -> dict[int, str]:
+    """Seeded ~20 % of records get an extra variant: half handwriting, half perspective.
+
+    Uses its own RNG so existing plan/records are unchanged.
+    """
+    rng = random.Random(f"{seed}:variants")  # noqa: S311 - deterministic synthetic data
+    picked = rng.sample(range(sum(c for _, c in UNIT_COUNTS)), n)
+    return {i: ("handwriting" if k % 2 == 0 else "perspective") for k, i in enumerate(picked)}
 
 
 def generate_record(index: int, spec: dict, seed: int) -> tuple[dict, list[str], list[str]]:
@@ -67,6 +77,7 @@ def generate(out: Path, seed: int = DEFAULT_SEED, images: bool = True) -> list[d
     if images:
         (out / "images").mkdir(exist_ok=True)
     records = []
+    extra = variant_subset(seed)
     for i, spec in enumerate(plan(seed)):
         rec, header, lines = generate_record(i, spec, seed)
         if images:
@@ -76,6 +87,15 @@ def generate(out: Path, seed: int = DEFAULT_SEED, images: bool = True) -> list[d
             if spec["quality"] != "good":
                 deg, ops = render.degrade(clean, spec["quality"], rng)
                 variants.append(("degraded", deg, ops))
+            kind = extra.get(i)
+            if kind == "handwriting":
+                hand = render.render_clean(header, lines, random.Random(f"{seed}:{i}:hand"))  # noqa: S311
+                variants.append(
+                    ("handwriting", hand, [{"type": "handwriting", "font": "DejaVuSans-jitter"}])
+                )
+            elif kind == "perspective":
+                warped, wops = render.perspective(clean, rng)
+                variants.append(("perspective", warped, wops))
             for name, img, ops in variants:
                 rel = f"images/{rec['doc_id']}_{name}.jpg"
                 render.to_jpeg(img, out / rel, 80)

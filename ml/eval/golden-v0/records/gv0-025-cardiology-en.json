@@ -179,7 +179,7 @@
     ]
   },
   "metadata": {
-    "generator_version": "0.1.0",
+    "generator_version": "0.2.0",
     "images": [
       {
         "degradations": [],
@@ -201,6 +201,34 @@
         "file": "images/gv0-025-cardiology-en_degraded.jpg",
         "jpeg_quality": 80,
         "variant": "degraded"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                79,
+                29
+              ],
+              [
+                987,
+                34
+              ],
+              [
+                982,
+                1192
+              ],
+              [
+                51,
+                1233
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv0-025-cardiology-en_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
       }
     ],
     "lang": "en",

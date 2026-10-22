@@ -2,5 +2,48 @@
   "home": { "title": "MediLens", "disclaimer": "MediLens helps you understand your own medical records. Use it alongside your doctor's advice." },
   "nav": { "label": "Main", "language": "Language", "signIn": "Sign in", "signOut": "Sign out" },
   "signIn": { "title": "Sign in", "description": "Sign in to see your records.", "submit": "Continue to sign in" },
-  "dashboard": { "title": "Your records", "empty": "You have not added any records yet." }
+  "dashboard": { "title": "Your records", "empty": "You have not added any records yet.", "upload": "Add a record" },
+  "upload": {
+    "title": "Add a medical record",
+    "hint": "Take or choose your record (JPG, PNG, HEIC, PDF, up to 20 MB, 30 pages).",
+    "takePhoto": "Take photo",
+    "chooseFile": "Choose file",
+    "dropHere": "or drop a file here",
+    "selected": "Selected pages",
+    "pageLabel": "Page {n}",
+    "size": "{mb} MB",
+    "moveUp": "Move {name} up",
+    "moveDown": "Move {name} down",
+    "remove": "Remove {name}",
+    "submit": "Upload",
+    "retry": "Connection lost. Press Retry to continue.",
+    "retryButton": "Retry",
+    "badType": "{name}: this format isn't supported. Please use JPG, PNG, HEIC or PDF.",
+    "tooLarge": "{name}: the file is too large (max 20 MB, 30 pages). Split it or retake.",
+    "empty": "{name}: the file is empty. Please choose another one.",
+    "tooManyPages": "A document can have up to 30 pages. Remove some pages or split it.",
+    "genericError": "Something went wrong. Please try again.",
+    "tips": {
+      "title": "Tips for a clear photo",
+      "light": "Use a bright place with even light.",
+      "flat": "Put the page flat and hold the phone straight above it.",
+      "frame": "Keep the whole page in view, with all four corners visible.",
+      "glare": "Avoid glare and shadows; skip the flash on glossy paper.",
+      "privacy": "Cover other people's names or details before you take the photo."
+    },
+    "progress": { "uploading": "Uploading {done} of {total}…", "label": "Upload progress" },
+    "processing": "Reading your record… usually under 2 minutes.",
+    "leave": "You can leave this page; we'll tell you when it's done.",
+    "steps": { "label": "Processing steps", "queued": "Waiting", "reading": "Reading", "extracting": "Finding the details" },
+    "ready": "Your draft is ready. Please check each field.",
+    "failed": "We couldn't read this record. Please try again.",
+    "retake": {
+      "title": "Let's try another photo",
+      "blurry": "The photo is a bit blurry. Retake it in good light, holding the phone parallel to the page.",
+      "too_dark": "The photo is too dark. Retake it in a brighter place, without the flash on glossy paper.",
+      "not_a_document": "We couldn't see a document page. Place the whole page in view and retake the photo.",
+      "button": "Retake",
+      "note": "This is normal and does not mean you did anything wrong."
+    }
+  }
 }

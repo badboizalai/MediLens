@@ -1,4 +1,11 @@
-@import './tokens.css';
+/* styles.css is not in the package exports map, so import it by path. */
+@import '../../../../packages/design-system/src/styles.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background: var(--ml-color-brand-surface);
+  color: var(--ml-color-brand-text);
+  font-family: var(--ml-font-family-sans);
+}

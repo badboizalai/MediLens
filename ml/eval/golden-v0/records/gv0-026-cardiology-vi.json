@@ -1,0 +1,184 @@
+{
+  "doc_id": "gv0-026-cardiology-vi",
+  "fields": {
+    "diagnoses": [
+      {
+        "icd10_candidates": [
+          {
+            "code": "I48.9",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tâm nhĩ"
+          },
+          "value": "Tâm nhĩ"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Rung nhĩ"
+          },
+          "value": "Rung nhĩ"
+        }
+      }
+    ],
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-04-24"
+        },
+        "value": "2024-04-24"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Tim mạch"
+        },
+        "value": "Khoa Tim mạch"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "observations": [
+      {
+        "loinc_hint": "8867-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Nhịp tim"
+          },
+          "value": "Nhịp tim"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-100"
+          },
+          "value": "60-100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "58 /min"
+          },
+          "unit": "/min",
+          "value": 58.0
+        }
+      },
+      {
+        "loinc_hint": "8462-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Huyết áp tâm trương"
+          },
+          "value": "Huyết áp tâm trương"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-80"
+          },
+          "value": "60-80"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "72 mmHg"
+          },
+          "unit": "mmHg",
+          "value": 72.0
+        }
+      },
+      {
+        "loinc_hint": "13457-7",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "LDL-C"
+          },
+          "value": "LDL-C"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<100"
+          },
+          "value": "<100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "107 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 107.0
+        }
+      }
+    ],
+    "procedures": [
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Siêu âm tim"
+        },
+        "value": "Siêu âm tim"
+      },
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Holter điện tâm đồ"
+        },
+        "value": "Holter điện tâm đồ"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.1.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-026-cardiology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1911,
+      "name": "Lê Văn Thử Nghiệm",
+      "sex": "male"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "cardiology"
+}

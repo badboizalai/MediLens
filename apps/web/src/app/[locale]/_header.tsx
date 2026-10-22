@@ -6,10 +6,9 @@ export async function Header() {
   const t = await getTranslations('nav');
   const locale = await getLocale();
   const session = await auth();
-  const btn =
-    'rounded-md border border-neutral-300 px-3 py-1.5 text-sm hover:bg-neutral-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2';
+  const btn = 'ml-btn ml-btn--secondary';
   return (
-    <header className="flex items-center justify-between border-b border-neutral-200 px-6 py-3">
+    <header className="flex items-center justify-between border-b border-brand-border px-6 py-3">
       <a href={`/${locale}`} className="text-lg font-semibold">
         MediLens
       </a>

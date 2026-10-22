@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
-from synth_gen import generate
+from synth_gen import generate, render
 
 SCHEMAS = Path(__file__).resolve().parents[3] / "eval" / "golden-v0" / "schemas"
 FDI = {f"{q}{n}" for q in (1, 2, 3, 4) for n in range(1, 9)}
@@ -72,3 +72,34 @@ def test_synthetic_safety_and_plausibility(records):
             assert bool(r["fields"]["metastases"]) == (m_stage == "M1")
         text = json.dumps(r, ensure_ascii=False).lower()
         assert "mg " not in text and "liều" not in text and "dose" not in text
+
+
+def test_perspective_and_handwriting_subset(tmp_path):
+    recs = generate.generate(tmp_path)
+    kinds = Counter(
+        im["variant"]
+        for r in recs
+        for im in r["metadata"]["images"]
+        if im["variant"] in ("handwriting", "perspective")
+    )
+    assert kinds == {"handwriting": 5, "perspective": 5}  # 20 % of 50 records
+    for r in recs:
+        for im in r["metadata"]["images"]:
+            if im["variant"] == "perspective":
+                assert im["degradations"][0]["type"] == "perspective"
+                assert len(im["degradations"][0]["corners"]) == 4
+            if im["variant"] == "handwriting":
+                clean = (tmp_path / im["file"].replace("handwriting", "clean")).read_bytes()
+                assert (tmp_path / im["file"]).read_bytes() != clean
+
+
+def test_ground_truth_unchanged_by_variants(tmp_path):
+    with_img = generate.generate(tmp_path)
+    no_img = generate.generate(tmp_path / "n", images=False)
+    assert [r["fields"] for r in with_img] == [r["fields"] for r in no_img]
+
+
+def test_perspective_coeffs_identity():
+    pts = [(0, 0), (10, 0), (10, 10), (0, 10)]
+    c = render._perspective_coeffs(pts, pts)
+    assert [round(v, 6) for v in c] == [1, 0, 0, 0, 1, 0, 0, 0]

@@ -96,13 +96,24 @@
     ]
   },
   "metadata": {
-    "generator_version": "0.1.0",
+    "generator_version": "0.2.0",
     "images": [
       {
         "degradations": [],
         "file": "images/gv0-005-dental-en_clean.jpg",
         "jpeg_quality": 80,
         "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "font": "DejaVuSans-jitter",
+            "type": "handwriting"
+          }
+        ],
+        "file": "images/gv0-005-dental-en_handwriting.jpg",
+        "jpeg_quality": 80,
+        "variant": "handwriting"
       }
     ],
     "lang": "en",

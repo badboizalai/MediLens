@@ -29,9 +29,47 @@ def _font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
         raise RuntimeError("DejaVu Sans font (Vietnamese diacritics) not found") from e
 
 
-def render_clean(header: list[str], lines: list[str]) -> Image.Image:
+def _glyph_text(
+    img: Image.Image,
+    xy: tuple[int, int],
+    text: str,
+    font: ImageFont.FreeTypeFont,
+    rng: random.Random,
+) -> None:
+    """Handwriting-style simulation: per-glyph baseline jitter, rotation, stroke thickness, ink."""
+    x, y = xy
+    ink = (rng.randint(15, 45), rng.randint(25, 55), rng.randint(90, 140))  # blue-ish pen
+    for ch in text:
+        adv = font.getlength(ch)
+        if ch != " ":
+            size = int(font.size * 1.6)
+            layer = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+            ImageDraw.Draw(layer).text(
+                (size // 4, size // 4), ch, font=font, fill=ink + (255,),
+                stroke_width=rng.choice((0, 0, 1)), stroke_fill=ink + (255,),
+            )  # fmt: skip
+            layer = layer.rotate(rng.uniform(-9, 9), resample=Image.BICUBIC)
+            img.paste(layer, (int(x - size // 4), int(y - size // 4 + rng.uniform(-3, 3))), layer)
+        x += adv * rng.uniform(0.92, 1.08)
+
+
+def render_clean(
+    header: list[str], lines: list[str], hand_rng: random.Random | None = None
+) -> Image.Image:
+    """Typeset page; with `hand_rng`, header/body text is drawn as simulated handwriting."""
     img = Image.new("RGB", (WIDTH, HEIGHT), (250, 249, 245))
     d = ImageDraw.Draw(img)
+    if hand_rng is not None:
+        rng, real = hand_rng, d
+
+        class _D:  # route text() through the glyph jitter drawer, delegate the rest
+            def text(self, xy, text, font, fill):  # noqa: ARG002
+                _glyph_text(img, xy, text, font, rng)
+
+            def __getattr__(self, n):
+                return getattr(real, n)
+
+        d = _D()  # type: ignore[assignment]
     y = 50
     d.text((50, y), header[0], font=_font(22, True), fill=(20, 20, 20))
     y += 70
@@ -92,6 +130,40 @@ def degrade(img: Image.Image, quality: str, rng: random.Random) -> tuple[Image.I
         img, y = _fold(img, rng)
         ops.append({"type": "fold", "y": y})
     return img, ops
+
+
+def _perspective_coeffs(
+    src: list[tuple[float, float]], dst: list[tuple[float, float]]
+) -> list[float]:
+    """Solve the 8 coefficients mapping dst points to src points (Pillow PERSPECTIVE)."""
+    a = []
+    for (x, y), (u, v) in zip(dst, src, strict=True):
+        a.append([x, y, 1, 0, 0, 0, -u * x, -u * y, u])
+        a.append([0, 0, 0, x, y, 1, -v * x, -v * y, v])
+    n = 8
+    for i in range(n):  # Gauss-Jordan with partial pivoting
+        piv = max(range(i, n), key=lambda r: abs(a[r][i]))
+        a[i], a[piv] = a[piv], a[i]
+        a[i] = [v / a[i][i] for v in a[i]]
+        for r in range(n):
+            if r != i:
+                f = a[r][i]
+                a[r] = [vr - f * vi for vr, vi in zip(a[r], a[i], strict=True)]
+    return [a[i][n] for i in range(n)]
+
+
+def perspective(img: Image.Image, rng: random.Random) -> tuple[Image.Image, list[dict]]:
+    """4-point warp: each page corner moves inward by up to ~9 % of the page size."""
+    w, h = img.size
+    base = [(0, 0), (w, 0), (w, h), (0, h)]
+    corners = [
+        (round(x + (1 if x == 0 else -1) * rng.uniform(0.01, 0.09) * w),
+         round(y + (1 if y == 0 else -1) * rng.uniform(0.01, 0.09) * h))
+        for x, y in base
+    ]  # fmt: skip
+    coeffs = _perspective_coeffs(base, corners)
+    out = img.transform((w, h), Image.PERSPECTIVE, coeffs, Image.BICUBIC, fillcolor=(210, 205, 195))
+    return out, [{"type": "perspective", "corners": [list(c) for c in corners]}]
 
 
 def to_jpeg(img: Image.Image, path: Path, quality: int = 80) -> None:

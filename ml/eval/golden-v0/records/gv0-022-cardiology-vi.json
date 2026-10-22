@@ -243,7 +243,7 @@
     ]
   },
   "metadata": {
-    "generator_version": "0.1.0",
+    "generator_version": "0.2.0",
     "images": [
       {
         "degradations": [],
@@ -265,6 +265,34 @@
         "file": "images/gv0-022-cardiology-vi_degraded.jpg",
         "jpeg_quality": 80,
         "variant": "degraded"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                75,
+                58
+              ],
+              [
+                968,
+                24
+              ],
+              [
+                915,
+                1261
+              ],
+              [
+                36,
+                1204
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv0-022-cardiology-vi_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
       }
     ],
     "lang": "vi",

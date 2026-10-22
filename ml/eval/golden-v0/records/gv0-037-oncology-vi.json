@@ -115,13 +115,41 @@
     "treatments": []
   },
   "metadata": {
-    "generator_version": "0.1.0",
+    "generator_version": "0.2.0",
     "images": [
       {
         "degradations": [],
         "file": "images/gv0-037-oncology-vi_clean.jpg",
         "jpeg_quality": 80,
         "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                66,
+                63
+              ],
+              [
+                964,
+                76
+              ],
+              [
+                972,
+                1225
+              ],
+              [
+                83,
+                1252
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv0-037-oncology-vi_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
       }
     ],
     "lang": "vi",

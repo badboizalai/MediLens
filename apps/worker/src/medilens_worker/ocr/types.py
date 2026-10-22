@@ -3,6 +3,8 @@
 from dataclasses import dataclass, field
 from enum import Enum
 
+from medilens_worker.pipeline.state import DocStatus, NonRetryable
+
 
 class RetakeReason(str, Enum):  # StrEnum needs 3.11
     """User-facing reason codes: the client maps these to localized retake tips."""
@@ -12,12 +14,13 @@ class RetakeReason(str, Enum):  # StrEnum needs 3.11
     NOT_A_DOCUMENT = "not_a_document"
 
 
-class RetakeRequired(Exception):
+class RetakeRequired(NonRetryable):
     """A page failed the quality gate. Carries only the code (no PHI)."""
 
     def __init__(self, page: int, reason: RetakeReason) -> None:
         super().__init__(f"retake:{reason.value}")
-        self.page, self.reason = page, reason
+        self.page, self.reason = page, reason.value
+        self.status = DocStatus.NEEDS_RETAKE
 
 
 @dataclass(frozen=True)

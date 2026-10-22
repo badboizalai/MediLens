@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
+import { WebMcpProvider } from '@/lib/webmcp/WebMcpProvider';
 import '@/styles/globals.css';
 
 export default async function RootLayout({
@@ -15,7 +16,10 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body>
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider messages={messages}>
+          <WebMcpProvider />
+          {children}
+        </NextIntlClientProvider>
       </body>
     </html>
   );

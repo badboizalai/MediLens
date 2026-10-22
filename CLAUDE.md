@@ -11,6 +11,17 @@ Web app that helps patients **understand** their medical records: upload (photo/
 ## How to work: route first
 For any non-trivial task, use the **`medilens-skill-router`** agent (or `/route <task>`) to pick the owner skill and reviewers, then invoke it (`/medilens-<role>`). Multi-role work → `medilens-orchestrator`.
 
+## AI control layer (always on)
+Installed plugins/tools — use them in every session and tell sub-agents to use them:
+- **andrej-karpathy-skills** — think before coding, simplicity first, surgical changes, verifiable goals.
+- **ponytail** — smallest solution that works (YAGNI, stdlib first).
+- **mattpocock-skills** — `/grill-with-docs` before non-trivial changes, `/tdd` for logic, issue/spec flows.
+- **taste-skill** — any UI/frontend work (`apps/web`, design-system).
+- **claude-mem** — cross-session memory (local, Anthropic plan; cloud sync off). Wrap sensitive text in `<private>`.
+- **laya** (MCP, if enabled) — fast typed routing/classification decisions.
+- **WebMCP** — web app exposes page tools via `navigator.modelContext` (`apps/web/src/lib/webmcp/`).
+Autonomous delivery: `medilens-opus-orchestrator` (Opus) delegates to parallel `medilens-sonnet-worker` (Sonnet) agents; state in `docs/operations/autopilot-state.md`.
+
 ## Layout (monorepo)
 `apps/{web,api,worker,phi-service,ai-gateway}` · `packages/{anatomy-assets,api-client,design-system}` · `ml/` · `imaging/` · `data/` · `infra/` · `regulatory/` · `safety/` · `docs/` · `tests/` · `tools/`
 

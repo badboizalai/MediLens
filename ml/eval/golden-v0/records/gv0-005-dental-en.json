@@ -1,0 +1,119 @@
+{
+  "doc_id": "gv0-005-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-09-04"
+        },
+        "value": "2025-09-04"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "filling",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 12"
+          },
+          "value": "12"
+        },
+        "surfaces": [
+          "O"
+        ]
+      },
+      {
+        "condition": "periapical_lesion",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 15"
+          },
+          "value": "15"
+        },
+        "severity": "monitor"
+      },
+      {
+        "condition": "filling",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 32"
+          },
+          "value": "32"
+        },
+        "surfaces": [
+          "D",
+          "L"
+        ]
+      },
+      {
+        "condition": "crown",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 41"
+          },
+          "value": "41"
+        }
+      },
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 46"
+          },
+          "value": "46"
+        },
+        "severity": "moderate"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.1.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-005-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1935,
+      "name": "Nguyễn Thị Test",
+      "sex": "female"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "dental"
+}

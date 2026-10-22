@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://medilens.local/schemas/cardiology.v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "encounter",
+    "diagnoses"
+  ],
+  "properties": {
+    "encounter": {
+      "$ref": "common.v1.json#/$defs/Encounter"
+    },
+    "diagnoses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "text"
+        ],
+        "properties": {
+          "text": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          },
+          "icd10_candidates": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string"
+                },
+                "score": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "site": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          },
+          "laterality": {
+            "type": "string",
+            "enum": [
+              "left",
+              "right",
+              "bilateral",
+              "midline",
+              "unknown"
+            ]
+          },
+          "severity": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "monitor",
+              "mild",
+              "moderate",
+              "severe",
+              null
+            ]
+          }
+        }
+      }
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "value"
+        ],
+        "properties": {
+          "name": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          },
+          "value": {
+            "$ref": "common.v1.json#/$defs/NumberField"
+          },
+          "reference_range": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          },
+          "loinc_hint": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "procedures": {
+      "type": "array",
+      "items": {
+        "$ref": "common.v1.json#/$defs/StringField"
+      }
+    }
+  }
+}

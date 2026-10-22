@@ -1,0 +1,90 @@
+{
+  "doc_id": "gv0-007-dental-vi",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-08-09"
+        },
+        "value": "2024-08-09"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Răng Hàm Mặt"
+        },
+        "value": "Khoa Răng Hàm Mặt"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "periodontal": [
+      {
+        "condition": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "viêm lợi (Q3)"
+          },
+          "value": "viêm lợi"
+        },
+        "quadrant": 3
+      }
+    ],
+    "teeth": [
+      {
+        "condition": "fracture",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 16"
+          },
+          "value": "16"
+        }
+      },
+      {
+        "condition": "missing",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 25"
+          },
+          "value": "25"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.1.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-007-dental-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1949,
+      "name": "Phạm Thị Giả",
+      "sex": "female"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "dental"
+}

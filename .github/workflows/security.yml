@@ -88,7 +88,7 @@ jobs:
       - name: Build image
         run: docker build -t medilens-${{ matrix.app }}:ci apps/${{ matrix.app }}
       - name: Trivy scan (HIGH/CRITICAL, fixable, blocking)
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@v0.33.1
         with:
           image-ref: medilens-${{ matrix.app }}:ci
           severity: HIGH,CRITICAL

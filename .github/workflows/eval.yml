@@ -1,0 +1,39 @@
+name: Extraction eval
+on:
+  pull_request:
+    paths:
+      - "ml/**"
+      - "apps/worker/src/medilens_worker/extraction/**"
+      - ".github/workflows/eval.yml"
+concurrency:
+  group: eval-${{ github.ref }}
+  cancel-in-progress: true
+permissions: { contents: read }
+
+jobs:
+  extraction-eval:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ml/eval/extraction
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.10" }
+      - name: Unit tests (metrics, baseline determinism)
+        run: |
+          python -m pip install --quiet pytest
+          python -m pytest
+      - name: Score baseline against golden-v1 (gate)
+        run: python -m extraction_eval run --out-dir out
+      - name: Job summary
+        if: always()
+        run: |
+          if [ -f out/report.md ]; then cat out/report.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: extraction-eval-report
+          path: ml/eval/extraction/out/
+          if-no-files-found: warn

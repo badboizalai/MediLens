@@ -99,6 +99,7 @@ jobs:
       - name: Summary
         if: always()
         run: |
+          cat trivy-${{ matrix.app }}.txt
           { echo "## Trivy ${{ matrix.app }}"; echo '```'; tail -n 60 trivy-${{ matrix.app }}.txt || true; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
       - name: SBOM (SPDX)
         if: always()

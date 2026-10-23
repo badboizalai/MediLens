@@ -1,0 +1,61 @@
+# Dental VI<->EN plain-language terms (S8-T77). Own-authored; no licensed text. Owner: clinical-informaticist.
+# Wording explains vocabulary only; it does not label conditions or advise treatment (BR-042).
+# icd10 stays "" until gate G1-D approves LIC-002 (data/license-register.csv); the loader enforces this.
+# abbrev values are synthetic examples of shorthand seen in VN records. region_hint: region_code or "".
+- {term_id: dt_caries, vi: sâu răng, en: tooth decay (cavity), abbrev: [sâu R, caries], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_filling, vi: trám răng, en: filling, abbrev: [trám, trám R], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_missing_tooth, vi: mất răng, en: missing tooth, abbrev: [mất R], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_implant, vi: cấy ghép implant, en: dental implant, abbrev: [implant, cấy ghép], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_crown, vi: mão răng, en: crown, abbrev: [mão, bọc sứ], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_bridge, vi: cầu răng, en: dental bridge, abbrev: [cầu], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_denture, vi: hàm giả, en: denture, abbrev: [hàm tháo lắp], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_veneer, vi: mặt dán sứ, en: veneer, abbrev: [veneer], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_root_canal, vi: điều trị tủy, en: root canal treatment, abbrev: [ĐT tủy, lấy tủy, RCT], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_pulp, vi: tủy răng, en: tooth pulp, abbrev: [tủy], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_pulpitis, vi: viêm tủy, en: inflamed pulp, abbrev: [viêm tủy R], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_extraction, vi: nhổ răng, en: tooth extraction, abbrev: [nhổ R, nhổ], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_wisdom_tooth, vi: răng khôn, en: wisdom tooth, abbrev: [R8, răng số 8], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_impacted, vi: răng mọc ngầm, en: impacted tooth, abbrev: [R ngầm, mọc kẹt], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_periodontitis, vi: viêm nha chu, en: periodontitis (gum and bone inflammation), abbrev: [VNC], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_gingivitis, vi: viêm lợi, en: gingivitis (gum inflammation), abbrev: [viêm nướu], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_calculus, vi: cao răng, en: dental calculus (tartar), abbrev: [vôi răng], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_scaling, vi: lấy cao răng, en: scaling (tartar removal), abbrev: [cạo vôi], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_plaque, vi: mảng bám, en: plaque, abbrev: [mảng bám răng], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_gum, vi: nướu (lợi), en: gum (gingiva), abbrev: [lợi, nướu], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_gum_recession, vi: tụt nướu, en: receding gum, abbrev: [tụt lợi], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_mobility, vi: răng lung lay, en: loose tooth, abbrev: [lung lay, R lung lay], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_abscess, vi: áp xe răng, en: dental abscess (pocket of pus), abbrev: [áp xe], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_fracture, vi: răng nứt vỡ, en: cracked or broken tooth, abbrev: [vỡ R, gãy R], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_attrition, vi: mòn răng, en: tooth wear, abbrev: [mòn cổ răng], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_sensitivity, vi: ê buốt răng, en: tooth sensitivity, abbrev: [ê buốt], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_malocclusion, vi: khớp cắn lệch, en: bite misalignment, abbrev: [lệch khớp cắn], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_orthodontics, vi: niềng răng (chỉnh nha), en: braces (orthodontics), abbrev: [niềng, chỉnh nha], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_retainer, vi: hàm duy trì, en: retainer, abbrev: [duy trì], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_fluoride, vi: bôi fluor, en: fluoride application, abbrev: [fluor], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_sealant, vi: trám bít hố rãnh, en: fissure sealant, abbrev: [trám bít], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_bone_graft, vi: ghép xương, en: bone graft, abbrev: [ghép xương ổ răng], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_xray, vi: phim X-quang răng, en: dental X-ray, abbrev: [XQ, panorama], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_bleaching, vi: tẩy trắng răng, en: teeth whitening, abbrev: [tẩy trắng], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_deciduous, vi: răng sữa, en: baby (deciduous) tooth, abbrev: [R sữa, răng tạm], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_permanent, vi: răng vĩnh viễn, en: permanent tooth, abbrev: [R vĩnh viễn, răng thật], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_incisor, vi: răng cửa, en: incisor, abbrev: [R cửa], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_canine, vi: răng nanh, en: canine, abbrev: [R nanh], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_premolar, vi: răng cối nhỏ, en: premolar, abbrev: [R cối nhỏ], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_molar, vi: răng cối lớn, en: molar, abbrev: [R cối lớn, R hàm], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_surface_m, vi: mặt gần, en: mesial surface (side toward the front midline), abbrev: [M], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_surface_d, vi: mặt xa, en: distal surface (side away from the front midline), abbrev: [D], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_surface_o, vi: mặt nhai, en: occlusal surface (chewing surface), abbrev: [O], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_surface_b, vi: mặt ngoài (má), en: buccal surface (cheek side), abbrev: [B], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_surface_l, vi: mặt trong (lưỡi), en: lingual surface (tongue side), abbrev: [L], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_surface_p, vi: mặt trong (khẩu cái), en: palatal surface (palate side), abbrev: [P], region_hint: jaw_upper, icd10: ""}
+- {term_id: dt_surface_i, vi: mặt cắn (răng cửa), en: incisal edge (biting edge of front teeth), abbrev: [I], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_upper_jaw, vi: hàm trên, en: upper jaw, abbrev: [HT], region_hint: jaw_upper, icd10: ""}
+- {term_id: dt_lower_jaw, vi: hàm dưới, en: lower jaw, abbrev: [HD], region_hint: jaw_lower, icd10: ""}
+- {term_id: dt_quadrant_1, vi: cung phần tư 1 (hàm trên phải), en: quadrant 1 (upper right), abbrev: [phần tư 1], region_hint: quadrant_1, icd10: ""}
+- {term_id: dt_quadrant_2, vi: cung phần tư 2 (hàm trên trái), en: quadrant 2 (upper left), abbrev: [phần tư 2], region_hint: quadrant_2, icd10: ""}
+- {term_id: dt_quadrant_3, vi: cung phần tư 3 (hàm dưới trái), en: quadrant 3 (lower left), abbrev: [phần tư 3], region_hint: quadrant_3, icd10: ""}
+- {term_id: dt_quadrant_4, vi: cung phần tư 4 (hàm dưới phải), en: quadrant 4 (lower right), abbrev: [phần tư 4], region_hint: quadrant_4, icd10: ""}
+- {term_id: dt_tmj, vi: khớp thái dương hàm, en: jaw joint (temporomandibular joint), abbrev: [khớp TDH, TMJ], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_bruxism, vi: nghiến răng, en: teeth grinding, abbrev: [nghiến], region_hint: sys_dental, icd10: ""}
+- {term_id: dt_anesthesia, vi: gây tê tại chỗ, en: local anaesthetic, abbrev: [tê], region_hint: "", icd10: ""}
+- {term_id: dt_recall, vi: tái khám, en: follow-up visit, abbrev: [hẹn tái khám, TK], region_hint: "", icd10: ""}

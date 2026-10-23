@@ -8,7 +8,7 @@ cv2 = pytest.importorskip("cv2")
 np = pytest.importorskip("numpy")
 
 from medilens_worker.ocr import service  # noqa: E402
-from medilens_worker.ocr.preprocess import measure, preprocess_page  # noqa: E402
+from medilens_worker.ocr.preprocess import crop_document, measure, preprocess_page  # noqa: E402
 from medilens_worker.ocr.service import InMemoryPageStore  # noqa: E402
 from medilens_worker.ocr.types import RetakeReason, RetakeRequired  # noqa: E402
 
@@ -77,6 +77,47 @@ def test_perspective_crop_finds_page_on_desk():
     assert reason is None and out is not None
     img = cv2.imdecode(np.frombuffer(out.image, np.uint8), cv2.IMREAD_COLOR)
     assert img.shape[0] < 1200 and img.mean() > 150  # desk cropped away
+
+
+def _on_desk(bg, dst, size=(1600, 1200), page=None):
+    page = _text_page(800, 1000) if page is None else page
+    h, w = page.shape[:2]
+    src = np.float32([[0, 0], [w - 1, 0], [w - 1, h - 1], [0, h - 1]])
+    m = cv2.getPerspectiveTransform(src, np.float32(dst))
+    desk = np.full((size[1], size[0], 3), bg, np.uint8)
+    inside = cv2.warpPerspective(np.full((h, w), 255, np.uint8), m, size) > 0
+    desk[inside] = cv2.warpPerspective(page, m, size)[inside]
+    return desk
+
+
+MILD = [[200, 100], [1000, 130], [980, 1130], [220, 1100]]  # ~800x1000 page, mild keystone
+
+
+@pytest.mark.parametrize("bg", [40, 225])  # dark desk (Otsu) and low-contrast desk (Canny)
+def test_crop_document_warps_to_upright_page(bg):
+    out = crop_document(_on_desk(bg, MILD))
+    h, w = out.shape[:2]
+    assert 0.7 < w / h < 0.95  # page is 0.8 wide:high
+    gray = cv2.cvtColor(out, cv2.COLOR_BGR2GRAY)
+    for y, x in [(8, 8), (8, w - 9), (h - 9, 8), (h - 9, w - 9)]:  # no desk left in corners
+        assert gray[y - 4 : y + 5, x - 4 : x + 5].min() > 200
+    # axis-aligned: text rows project sharply
+    assert np.var((255 - gray).sum(axis=1)) > 0
+
+
+def test_full_frame_scan_with_inner_table_is_not_cropped():
+    img = np.full((1400, 1000, 3), 250, np.uint8)
+    for y in range(340, 1080, 40):
+        cv2.putText(img, "Chi so xet nghiem 12.5", (100, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, 0, 2)
+    cv2.rectangle(img, (80, 300), (920, 1100), 0, 3)
+    assert crop_document(img).shape == img.shape
+
+
+def test_crop_document_falls_back_when_no_page():
+    flat = np.full((600, 800, 3), 128, np.uint8)
+    noise = np.random.default_rng(0).integers(0, 255, (600, 800, 3), dtype=np.uint8)
+    assert crop_document(flat) is flat
+    assert crop_document(noise) is noise
 
 
 def test_service_raises_retake_and_records_code():

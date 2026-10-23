@@ -47,10 +47,8 @@ class DocumentRepository(Protocol):
 
     def mark_rejected(self, document_id: UUID) -> None: ...
 
-    def lock(self, document_id: UUID) -> Document | None:
-        """Row-lock the document for a status change (no RLS scope: system caller)."""
-
-    def set_status(self, document_id: UUID, status: str) -> None: ...
+    def apply_status(self, document_id: UUID, status: str) -> str:
+        """Forward-only worker status change; `applied` | `ignored` | `unknown`. No RLS scope."""
 
 
 class EventOutbox(Protocol):

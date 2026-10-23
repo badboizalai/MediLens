@@ -17,7 +17,6 @@ from medilens.modules.document.domain.models import (
     TooManyPendingUploads,
     UnsupportedFileType,
     UploadMissing,
-    accepts_status,
     quarantine_key,
     sniff_mime,
 )
@@ -123,10 +122,4 @@ class StatusService:
 
     def apply(self, document_id: UUID, status: str) -> str:
         """Returns `applied`, `ignored` (regression/duplicate/final) or `unknown`."""
-        doc = self._repo.lock(document_id)
-        if doc is None:
-            return "unknown"
-        if not accepts_status(doc.status, status):
-            return "ignored"
-        self._repo.set_status(document_id, status)
-        return "applied"
+        return self._repo.apply_status(document_id, status)

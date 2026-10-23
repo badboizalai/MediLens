@@ -2,13 +2,15 @@ import json
 import logging
 from collections.abc import Iterator
 from pathlib import Path
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 import pytest
 from medilens.core.db import make_engine, make_session_factory
-from medilens.modules.document.domain.models import accepts_status
+from medilens.modules.document.infra.sql_repository import SqlDocumentRepository
 from medilens.shared.api_events_consumer import InvalidEvent, consume_once, handle, parse
 from sqlalchemy import Engine, text
+from sqlalchemy import event as sa_event
+from sqlalchemy.exc import ProgrammingError
 
 from tests.db.conftest import (  # noqa: F401  (Testcontainers fixtures)
     alembic_cfg,
@@ -17,7 +19,6 @@ from tests.db.conftest import (  # noqa: F401  (Testcontainers fixtures)
 )
 
 EXAMPLES = Path(__file__).resolve().parents[4] / "docs/architecture/contracts/examples"
-PIPELINE = ["uploaded", "validated", "preprocessed", "classified", "ocr_done", "extracted"]
 
 
 def event(doc: object, status: str, **extra: object) -> str:
@@ -33,23 +34,41 @@ def event(doc: object, status: str, **extra: object) -> str:
 
 
 @pytest.fixture
-def engine(migrated_url: str) -> Iterator[Engine]:  # noqa: F811
+def admin(migrated_url: str) -> Iterator[Engine]:  # noqa: F811
+    """Superuser: seeding and assertions only."""
     eng = make_engine(migrated_url)
     yield eng
     eng.dispose()
 
 
-def new_doc(engine: Engine, status: str) -> str:
-    # NOTE: superuser connection bypasses RLS; the system-caller RLS path is an open point.
+@pytest.fixture
+def engine(migrated_url: str) -> Iterator[Engine]:  # noqa: F811
+    """The consumer's view: non-superuser, no app.profile_ids, so RLS cannot hide problems."""
+    eng = make_engine(migrated_url)
+
+    @sa_event.listens_for(eng, "begin")
+    def _as_consumer(conn):  # type: ignore[no-untyped-def]
+        conn.exec_driver_sql("SET LOCAL ROLE api_events_consumer")
+
+    yield eng
+    eng.dispose()
+
+
+def new_doc(engine: Engine, status: str, profile: str | None = None) -> str:
     with engine.begin() as c:
         uid = c.execute(
             text("INSERT INTO identity.users (external_sub) VALUES (:s) RETURNING id"),
             {"s": str(uuid4())},
         ).scalar_one()
-        pid = c.execute(
-            text("INSERT INTO identity.patient_profiles (owner_user_id) VALUES (:u) RETURNING id"),
-            {"u": uid},
-        ).scalar_one()
+        pid = (
+            profile
+            or c.execute(
+                text(
+                    "INSERT INTO identity.patient_profiles (owner_user_id) VALUES (:u) RETURNING id"
+                ),
+                {"u": uid},
+            ).scalar_one()
+        )
         return str(
             c.execute(
                 text(
@@ -90,15 +109,12 @@ CASES = [
 
 
 @pytest.mark.parametrize(("stored", "incoming", "expected"), CASES)
-def test_forward_only_matrix(engine: Engine, stored: str, incoming: str, expected: str) -> None:
-    doc = new_doc(engine, stored)
+def test_forward_only_matrix(
+    admin: Engine, engine: Engine, stored: str, incoming: str, expected: str
+) -> None:
+    doc = new_doc(admin, stored)  # any profile, consumer sets no app.profile_ids
     handle(event(doc, incoming), make_session_factory(engine))
-    assert status_of(engine, doc) == expected
-
-
-def test_domain_rule_matches_matrix() -> None:
-    assert all(accepts_status(a, b) for a, b in zip(PIPELINE, PIPELINE[1:], strict=False))
-    assert not accepts_status("extracted", "extracted")
+    assert status_of(admin, doc) == expected
 
 
 def test_unknown_document_is_dropped_and_logs_id_only(
@@ -109,6 +125,43 @@ def test_unknown_document_is_dropped_and_logs_id_only(
         out = handle(event(ghost, "validated", reason="x"), make_session_factory(engine))
     assert out == "unknown"
     assert str(ghost) in caplog.text
+
+
+def test_outcomes(admin: Engine, engine: Engine) -> None:
+    doc = new_doc(admin, "uploaded")
+    sf = make_session_factory(engine)
+    outs = []
+    for st in ("validated", "validated", "confirmed"):
+        with sf.begin() as ses:
+            outs.append(SqlDocumentRepository(ses).apply_status(UUID(doc), st))
+    assert outs == ["applied", "ignored", "ignored"]
+
+
+def test_consumer_role_has_no_table_access(engine: Engine) -> None:
+    for sql in ("SELECT 1 FROM clinical.documents", "UPDATE clinical.documents SET status='x'"):
+        with pytest.raises(ProgrammingError, match="permission denied"), engine.begin() as c:
+            c.execute(text(sql))
+
+
+def test_app_rw_cannot_execute_function(admin: Engine) -> None:
+    with pytest.raises(ProgrammingError, match="permission denied"), admin.begin() as c:
+        c.exec_driver_sql("SET LOCAL ROLE app_rw")
+        c.execute(text("SELECT clinical.apply_document_status(gen_random_uuid(), 'validated')"))
+
+
+def test_function_changes_only_status(admin: Engine, engine: Engine) -> None:
+    doc = new_doc(admin, "uploaded")
+    cols = "profile_id, storage_key, sha256, mime, pages, doc_type, deleted_at, uploaded_at"
+    with admin.connect() as c:
+        before = c.execute(
+            text(f"SELECT {cols} FROM clinical.documents WHERE id=:i"), {"i": doc}
+        ).one()
+    handle(event(doc, "validated"), make_session_factory(engine))
+    with admin.connect() as c:
+        after = c.execute(
+            text(f"SELECT {cols} FROM clinical.documents WHERE id=:i"), {"i": doc}
+        ).one()
+    assert after == before
 
 
 @pytest.mark.parametrize(
@@ -150,9 +203,9 @@ class FakeSqs:
         self.deleted.append(ReceiptHandle)
 
 
-def test_delete_after_commit_and_invalid_left_for_dlq(engine: Engine) -> None:
-    doc = new_doc(engine, "uploaded")
+def test_delete_after_commit_and_invalid_left_for_dlq(admin: Engine, engine: Engine) -> None:
+    doc = new_doc(admin, "uploaded")
     sqs = FakeSqs([event(doc, "validated"), "garbage", event(uuid4(), "validated")])
     assert consume_once(sqs, "q", make_session_factory(engine)) == 2
     assert sqs.deleted == ["r0", "r2"]  # unknown id is dropped (deleted); garbage is not
-    assert status_of(engine, doc) == "validated"
+    assert status_of(admin, doc) == "validated"

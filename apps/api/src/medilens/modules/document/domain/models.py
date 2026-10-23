@@ -10,19 +10,6 @@ PRESIGN_TTL_SECONDS = 300  # SEC-DP-05, U-04
 STATUS_PENDING = "uploaded-pending"
 STATUS_UPLOADED = "uploaded"
 STATUS_REJECTED = "rejected"  # BR-010/BR-016: API-only terminal status
-# Pipeline order (contracts README): a worker event may only move a document forward.
-_PIPELINE = (
-    "uploaded-pending",
-    "uploaded",
-    "validated",
-    "preprocessed",
-    "classified",
-    "ocr_done",
-    "extracted",
-    "needs_review",
-)
-_FINAL = frozenset({"needs_retake", "failed", STATUS_REJECTED, "confirmed"})
-_WORKER_TERMINAL = frozenset({"needs_retake", "failed"})
 EVENT_DOCUMENT_UPLOADED = "DocumentUploaded"
 ALLOWED_TYPES = frozenset({"image/jpeg", "image/png", "image/heic", "application/pdf"})
 SNIFF_BYTES = 16
@@ -31,15 +18,6 @@ PENDING_WINDOW_SECONDS = (
     2 * PRESIGN_TTL_SECONDS
 )  # older pending rows are abandoned and do not count
 _HEIC_BRANDS = {b"heic", b"heix", b"heim", b"heis", b"mif1", b"msf1"}
-
-
-def accepts_status(current: str, incoming: str) -> bool:
-    """Forward-only: terminals are final; `confirmed` is API-owned, never set from events."""
-    if current in _FINAL or current not in _PIPELINE:
-        return False
-    if incoming in _WORKER_TERMINAL:
-        return True
-    return incoming in _PIPELINE and _PIPELINE.index(incoming) > _PIPELINE.index(current)
 
 
 def quarantine_key(profile_id: UUID, document_id: UUID) -> str:

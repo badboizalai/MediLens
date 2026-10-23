@@ -14,6 +14,9 @@ def _dims(data: bytes) -> tuple[int, int] | None:
     if data.startswith(b"\xff\xd8"):
         i = 2
         while i + 9 <= len(data) and data[i] == 0xFF:
+            if data[i + 1] == 0xFF:  # fill byte before a marker
+                i += 1
+                continue
             m = data[i + 1]
             if m in _SOF:
                 h, w = struct.unpack(">HH", data[i + 5 : i + 9])

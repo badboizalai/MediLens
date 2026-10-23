@@ -203,6 +203,7 @@ def test_jpeg_header_dims():
 
     sof = b"\xff\xc0" + struct.pack(">HBHHB", 11, 8, 30000, 40000, 1) + b"\x00" * 3
     assert declared_pixels(b"\xff\xd8" + sof) == 1_200_000_000
+    assert declared_pixels(b"\xff\xd8\xff\xff" + sof) == 1_200_000_000  # fill byte before SOF
 
 
 @needs_cv2

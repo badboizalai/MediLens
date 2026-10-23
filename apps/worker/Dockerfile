@@ -16,7 +16,7 @@ FROM python:3.10-slim
 # libgomp1: OpenMP runtime needed by paddle/torch wheels.
 RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
     && rm -rf /var/lib/apt/lists/* \
-    && pip uninstall -y setuptools wheel pip 2>/dev/null || true
+    && (pip uninstall -y setuptools wheel pip 2>/dev/null || true)
 COPY --from=build /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH" PYTHONUNBUFFERED=1
 WORKDIR /app

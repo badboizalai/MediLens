@@ -182,19 +182,30 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 | S6-T53-ADR | ADR-0005 worker→API hand-off (Proposed) | solution-architect | docs/architecture/adr | main | **merged** | docs/S6-T53-adr-worker-handoff | #65 | 1 |
 | S6-T53a | Terraform api-events queue + DLQ alarm + extractions/* IAM | cloud-devops | infra/terraform/envs/staging, modules/sqs | main | **merged** (Opus: JOBS_QUEUE_URL→WORKER_QUEUE_URL) | feat/S6-T53a-tf-api-events | #68 | 1 |
 | S6-T53f | JSON Schema contracts + status mapping + check in `make governance` | backend | docs/architecture/contracts, tools/check_contracts.py | main | **merged** | docs/S6-T53f-event-contracts | #71 | 1 |
-| S6-T53b | Worker chaining + status events + scan-pending budget | backend | worker pipeline/, queue/, main.py | main | in-progress | feat/S6-T53b-worker-chaining-events | | |
-| S6-T57b | API `rejected` status for rejected uploads | backend | api modules/document | main | in-progress | fix/S6-T57b-rejected-status | | |
-| S6-T54a | Rules page classifier (9 types) + golden eval | ai-ml | worker classify/, ml/eval/classify | main | in-progress | feat/S6-T54a-page-classifier | | |
-| S6-T55 | Document edge detection + perspective warp | ai-ml | worker ocr/preprocess.py | main | in-progress | feat/S6-T55-doc-edge-perspective | | |
-| S7-T64 | Web review screen with confirm gate | frontend | apps/web features/review | main | in-progress | feat/S7-T64-review-screen | | |
-| S6-T58 | Upload security review vs SEC-AP-07 | security | docs/security/reviews | main | in-progress | docs/S6-T58-upload-security-review | | |
-| S6-T53c | Worker result export to S3 + `extraction.completed` (needs runId) | backend | worker extraction/, main.py | after T53b | todo | | | |
-| S6-T53d | API consumer: status applier + extraction ingest | backend | api document/, extraction/ | after T57b | todo | | | |
+| S6-T53b | Worker chaining + status events + scan-pending budget (RetryLater) | backend | worker pipeline/, queue/, main.py | main | **merged** | feat/S6-T53b-worker-chaining-events | #73 | 1 |
+| S6-T57b | API `rejected` status for rejected uploads | backend | api modules/document | main | **merged** | fix/S6-T57b-rejected-status | #78 | 1 |
+| S6-T54a | Rules page classifier (9 types) + golden eval (1.0 but only 2 types present → D54 still open) | ai-ml | worker classify/, ml/eval/classify | main | **merged** | feat/S6-T54a-page-classifier | #76 | 1 |
+| S6-T55 | Document edge/perspective: frame-quad reject + Canny with border-step check | ai-ml | worker ocr/preprocess.py | main | **merged** (round 2: full-frame scan regression fixed) | feat/S6-T55-doc-edge-perspective | #74 | 2 |
+| S7-T64 | Web review screen with confirm gate (BR-012) | frontend | apps/web features/review | main | **merged** | feat/S7-T64-review-screen | #75 | 1 |
+| S6-T58 | Upload security review vs SEC-AP-07 (PARTIAL; NO-GO for real data until F1–F4, F6) | security | docs/security/reviews | main | **merged** | docs/S6-T58-upload-security-review | #77 | 1 |
+| S6-T53c | Worker result export to S3 + `extraction.completed` | backend | worker extraction/, main.py | main | in-progress | feat/S6-T53c-worker-result-export | | |
+| S6-T53d | API api-events consumer: status apply + extraction ingest | backend | api document/, extraction/, shared/api_events_consumer.py | main | in-progress | feat/S6-T53d-api-events-consumer | | |
+| S6-T58-F2 | Staging storage wiring, least-privilege IAM, scan gate on (F1/F2/F6/F8) | cloud-devops | infra/terraform/envs/staging, modules/storage | main | in-progress | feat/S6-T58-F2-staging-storage | | |
+| S6-T58-F3F4 | Worker upload hardening: PDF name normalisation, uninspectable/malformed PDFs, image re-encode | security | worker intake/ | main | in-progress | fix/S6-T58-F3F4-upload-hardening | | |
+| S7-T66 | Anatomy mapping: FDI parser, location dictionary, laterality | ai-ml | worker anatomy/, ml/eval/anatomy | main | in-progress | feat/S7-T66-anatomy-mapping | | |
+| S7-T68 | Hazard log v1 draft (CSO sign-off = human) | clinical-safety | safety/ | main | in-progress | docs/S7-T68-hazard-log-v1 | | |
 | S6-T53e | Status API + SSE (<2 s) | backend | api document/api | after T53d | todo | | | |
+| S6-T54b | Classify inside `extract` via `unit_for` (decision: option 1, no state-machine change) | ai-ml | worker extraction/deps.py | after T53c | todo | | | |
+| S6-T54c | 9-type labelled synthetic set (30/type) + re-eval classifier | data-curator + ai-ml | ml/datasets/synth, ml/eval/classify | — | todo | | | |
+| S6-T55b | VietOCR for printed lines + CER re-run | ai-ml | worker ocr/ | — | todo | | | |
+| S7-T64b | Page image endpoint + bbox overlay on review screen | backend + frontend | api document/, web review | — | todo | | | |
 ## Follow-ups from reviews
 - Shared ownership/audit port in `medilens.shared` (document + extraction infra both query `identity.*`/`audit.*` directly; precedent accepted) — #72.
 - PDF active-content regex is evadable; polyglot JPEG+ZIP and `%PDF`+HTML pass API and worker → sandboxed decode/re-encode in preprocess — #67, #69.
 - Staging: worker needs quarantine `GetObject`/`GetObjectTagging` + pages bucket; DLQ alarm actions unwired; relay needs a runtime (ECS task) — #68, #70.
+- Runner edge cases (#73): re-chained attempt-1 can race a running retry of the next step; terminal guard should include NEEDS_RETAKE.
+- 409 from confirm should carry structured `field_ids` (web parses `detail`, #75); web STAGE map lacks `rejected`.
+- Security review F5 closed by #73, F9 closed by #78; F7 (rate limit/daily quota), F10–F12 open.
 - Region SVG: clinical-informaticist laterality review; `svg_id` in region tree — #66.
 
 ## Human decisions (recorded, not resolved by AI)

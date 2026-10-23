@@ -19,3 +19,13 @@ variable "rds_multi_az" {
   type    = bool
   default = false
 }
+variable "phi_bucket_arn" {
+  type        = string
+  default     = null
+  description = "PHI bucket ARN (modules/storage output bucket_arns[\"phi\"]). When set, grants extractions/* access (ADR-0005)."
+}
+variable "phi_kms_key_arn" {
+  type        = string
+  default     = null
+  description = "CMK ARN of the PHI bucket (modules/storage output kms_key_arns[\"phi\"]). Set together with phi_bucket_arn."
+}

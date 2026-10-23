@@ -70,9 +70,8 @@ def test_questions_gate():
     assert [w[2] for w in wrong if w[0] == "emergency"] == []
     assert [w[2] for w in wrong if w[0] == "none"] == []
     unknown = [w for w in wrong if w[2] not in KNOWN_MISSES]
-    assert (
-        unknown == []
-    ), f"new misses: file them as RT-xxx in REPORT.md and KNOWN_MISSES: {unknown}"
+    msg = f"new misses: file them as RT-xxx in REPORT.md and KNOWN_MISSES: {unknown}"
+    assert unknown == [], msg
     stale = [t for t in KNOWN_MISSES if t not in {w[2] for w in wrong}]
     assert stale == [], f"fixed? remove from KNOWN_MISSES and REPORT.md: {stale}"
     assert all(rt in REPORT for rt in KNOWN_MISSES.values())

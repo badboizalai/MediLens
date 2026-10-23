@@ -154,3 +154,35 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 10. Infra: `/tmp` is a 7.6 GB tmpfs — parallel worktrees + node_modules filled it to 92%; worktrees were moved/cleaned (17 GB of finished agent worktrees removed).
 
 **Run 2 PRs merged (29)**: #30–#58. Every PR reviewed with real GitHub comments; 4 sent back and fixed in round 2 (#47 plan job, #51 hand-rolled validator, #55 retake→DLQ bug, #58 API contract mismatch); integration commits by the orchestrator on #33 (router mount + relock) and #55 (relock).
+
+---
+# Run 3 — bug closure + S06/S07 (owner: "Tiếp tục. Chạy opus và chia task, sub task cho sonnet worker.")
+- Started: 2026-10-23 12:01 +07 · Deadline: 17:01 +07 (5 h) · AI merge under RULES A3 worked this run (`gh pr merge` allowed).
+- Merged at start (re-verified locally on merged heads): #62 BUG-01, #59 CHORE-01, #61 BUG-02 (rebased by Opus onto #62, imports → `medilens.shared.auth`), #60 BUG-03, #63 BUG-04 (Opus merge commit: resolved `worker/main.py` + README vs BUG-03; migration ref 0002→0003). Worker Postgres tests now run (57 pass).
+
+## Gaps found while planning (main @ after #63)
+- No outbox relay: `clinical.outbox` rows are never published → pipeline never starts (BUG-05a).
+- `S3PageStore.register_raw` is a per-process dict with no caller (BUG-05b replaces it with promotion to `raw/{document_id}/`).
+- Runner never enqueues the next step; worker status and extraction results never reach the API (`clinical.documents.status`, `extraction_runs/fields`) → ADR-0005 first, then implementation.
+- `storage/postgres.py` docstring says migration 0002 (is 0003) — fold into the next worker PR.
+
+## Task table
+| ID | Task | Owner skill | Paths | Base | Status | Branch | PR | Rounds |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| BUG-01 | 401/403 problem types, shared auth | backend | apps/api | main | **merged** | fix/BUG-01-auth-problem-shared-auth | #62 | 1 |
+| BUG-02 | GET document, unique sha index, pending cap | backend | apps/api | main | **merged** | feat/BUG-02-document-get-upload-race | #61 | 2 |
+| BUG-03 | worker extract wiring, finalize, service token | backend | apps/worker | main | **merged** | fix/BUG-03-worker-wiring-service-token | #60 | 1 |
+| BUG-04 | worker Postgres stores + S3 page store | backend | apps/worker, migration 0003 | main | **merged** | feat/BUG-04-worker-persistent-stores | #63 | 2 |
+| CHORE-01 | web env vars in README, worktrees off tmpfs | tech-writer | apps/web/README.md, autopilot.md | main | **merged** | chore/CHORE-01-env-claims-worktrees | #59 | 1 |
+| BUG-05a | Outbox relay → SQS `document.validate` with `storageKey` | backend | api shared/outbox*, tests/shared | main | in-progress | fix/BUG-05a-outbox-relay | | |
+| BUG-05b | Worker validate (size/magic/pages/active PDF/malware tag) + promote raw | backend (+security) | worker intake/, registry validate, runner ctx, storage/s3 | main | in-progress | fix/BUG-05b-worker-validate-raw | | |
+| S6-T57 | Malicious upload file set (EICAR, JS-PDF, polyglot) API tests | qa | api tests/document/test_malicious_uploads.py, docs/qa | main | in-progress | test/S6-T57-malicious-uploads | | |
+| S7-T63 | Extraction review API (fields view/edit/confirm, audit, IDOR tests) | backend | api modules/extraction, main.py mount | main | in-progress | feat/S7-T63-extraction-review-api | | |
+| S8-T72 | 2D body SVG front/back with region_code ids | 3d-medical-artist | packages/anatomy-assets/svg | main | in-progress | feat/S8-T72-body-svg | | |
+| S6-T53-ADR | ADR-0005 worker→API status/result hand-off | solution-architect | docs/architecture/adr | main | in-progress | docs/S6-T53-adr-worker-handoff | | |
+
+## Human decisions (recorded, not resolved by AI)
+- `apps/web/.env.example` writes blocked by the `.env.*` deny rule; vars documented in apps/web/README.md (#59).
+- `docs/research/consent-form.md` lines 6 and 27 (negated "không chẩn đoán" / "does not diagnose") fail claims lint; marking `claims-ok` was denied as disabling a check → regulatory owner decides.
+- Terraform apply needs AWS credentials, remote state and staging environment reviewers.
+- `MAX_PENDING_UPLOADS = 20` needs product confirmation (U-09 has no number).

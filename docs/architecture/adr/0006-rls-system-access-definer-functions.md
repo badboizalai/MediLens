@@ -29,6 +29,9 @@ Tests for these paths run as the non-superuser consumer role (a superuser would 
 - Negative / trade-offs: every new system write path (for example S6-T53d2 extraction ingest) needs its own function, migration and security review; functions are reviewed like endpoints (authorization, input validation, test); `SECURITY DEFINER` mistakes (search_path, PUBLIC execute) are dangerous, so the checklist above is mandatory.
 - Follow-up tasks: S6-T53d status applier uses `clinical.apply_document_status`; S6-T53d2 adds the extraction ingest function.
 
+## Addendum (S6-T53d2)
+`clinical.ingest_extraction()` (migration 0005) follows this pattern with its own NOLOGIN owner `extraction_ingest_definer`: SELECT of `documents(id, profile_id, deleted_at)`, INSERT-only column grants on `extraction_runs` and `extraction_fields`, `profile_id` derived from the document, idempotent on the run id, EXECUTE only for `api_events_consumer`. Nuance: `INSERT ... ON CONFLICT` evaluates SELECT policies, so the `extraction_runs` policy for the definer has no `FOR` clause; the column grants (SELECT `id` only) still cap what it can read.
+
 ## Exit strategy
 If system paths multiply beyond a handful, move them to a separate internal service with its own database role, keeping the same function signatures as the contract. Cost: one module, no data migration.
 

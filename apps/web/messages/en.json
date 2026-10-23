@@ -167,5 +167,29 @@
       "body": "Something went wrong on our side. Your file is safe; please try again.",
       "action": "Upload again"
     }
+  },
+  "dental": {
+    "title": "Teeth chart",
+    "chartLabel": "Permanent teeth chart, FDI numbering, dentist's view",
+    "listTitle": "Teeth with notes in your record",
+    "empty": "No teeth with notes in your record.",
+    "tooth": "Tooth {fdi}",
+    "item": "Tooth {fdi}: {state}",
+    "itemSurfaces": "Tooth {fdi}: {state}, surfaces {surfaces}",
+    "details": "Selected: {text}",
+    "note": "This chart illustrates what was noted in your record to help you understand it. It is not medical advice.",
+    "state": {
+      "caries": "Caries noted",
+      "filled": "Filled",
+      "missing": "Missing",
+      "implant": "Implant"
+    },
+    "surface": {
+      "M": "mesial",
+      "D": "distal",
+      "O": "occlusal",
+      "B": "buccal",
+      "L": "lingual"
+    }
   }
 }

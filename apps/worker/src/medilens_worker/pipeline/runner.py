@@ -6,8 +6,9 @@ from dataclasses import dataclass
 
 from medilens_worker.jobs.registry import REGISTRY, JobContext, JobSpec
 from medilens_worker.pipeline.idempotency import IdempotencyStore, dedup_key
-from medilens_worker.pipeline.state import DocStatus, NonRetryable, StatusRepo
+from medilens_worker.pipeline.state import DocStatus, NonRetryable, RetryLater, StatusRepo
 from medilens_worker.queue.base import Message, Queue
+from medilens_worker.queue.events import EventSink, InMemoryEventSink
 
 log = logging.getLogger("medilens_worker")
 
@@ -42,6 +43,25 @@ def _parse(body: str) -> dict:
     return d
 
 
+def _emit(events: EventSink, doc_id: str, status: DocStatus, reason: str | None = None) -> None:
+    ev: dict = {
+        "event": "document.status_changed",
+        "schemaVersion": 1,
+        "documentId": doc_id,
+        "status": status.value,
+    }
+    if reason:
+        ev["reason"] = reason
+    events(ev)
+
+
+def _chain(queue: Queue, registry: dict[str, JobSpec], doc_id: str, dst: DocStatus) -> None:
+    # ids only: the schema forbids storageKey/mime outside document.validate
+    nxt = next((t for t, sp in registry.items() if sp.src == dst), None)
+    if nxt:
+        queue.send(json.dumps({"type": nxt, "documentId": doc_id, "attempt": 1}))
+
+
 def handle(
     queue: Queue,
     msg: Message,
@@ -49,6 +69,7 @@ def handle(
     store: IdempotencyStore,
     policy: RetryPolicy = DEFAULT_POLICY,
     registry: dict[str, JobSpec] = REGISTRY,
+    events: EventSink | None = None,
 ) -> str:
     """Returns outcome: done | duplicate | in_progress | retry | dlq | terminal."""
     try:
@@ -58,6 +79,7 @@ def handle(
         _event("dlq", reason="poison_message")
         return "dlq"
 
+    events = events or InMemoryEventSink()
     step, doc_id, attempt = d["type"], d["documentId"], d.get("attempt", 1)
     spec = registry.get(step)
     if spec is None:
@@ -67,6 +89,9 @@ def handle(
 
     key = dedup_key(doc_id, step, attempt)
     if store.seen(key) or statuses.get(doc_id) == spec.dst:
+        if statuses.get(doc_id) == spec.dst:  # a crash may have lost the event or the next step
+            _emit(events, doc_id, spec.dst)
+            _chain(queue, registry, doc_id, spec.dst)
         queue.ack(msg)
         _event("duplicate", step=step, document_id=doc_id, attempt=attempt)
         return "duplicate"
@@ -79,9 +104,12 @@ def handle(
             raise RuntimeError("invalid_state")
         spec.handler(JobContext(doc_id, attempt, lambda s: queue.extend_visibility(msg, s), d))
         statuses.set(doc_id, spec.dst)
+        _emit(events, doc_id, spec.dst)
+        _chain(queue, registry, doc_id, spec.dst)
     except NonRetryable as out:
         statuses.set(doc_id, out.status)
         statuses.reasons[doc_id] = out.reason
+        _emit(events, doc_id, out.status, out.reason)
         store.mark(key)
         queue.ack(msg)
         _event(
@@ -91,13 +119,16 @@ def handle(
     except Exception as exc:  # noqa: BLE001 - boundary: any handler failure is retried
         store.release(key)
         reason = type(exc).__name__
-        if attempt < policy.max_attempts:
-            queue.send(json.dumps({**d, "attempt": attempt + 1}), policy.delay(attempt))
+        max_attempts = exc.max_attempts if isinstance(exc, RetryLater) else policy.max_attempts
+        if attempt < max_attempts:
+            delay = exc.delay_seconds if isinstance(exc, RetryLater) else policy.delay(attempt)
+            queue.send(json.dumps({**d, "attempt": attempt + 1}), delay)
             queue.ack(msg)
             _event("retry", step=step, document_id=doc_id, attempt=attempt, reason=reason)
             return "retry"
         if statuses.get(doc_id) not in (DocStatus.FAILED, DocStatus.CONFIRMED):
             statuses.set(doc_id, DocStatus.FAILED)
+            _emit(events, doc_id, DocStatus.FAILED, "max_attempts")
         queue.send_dlq(msg, f"max_attempts:{reason}")
         _event("dlq", reason="max_attempts", step=step, document_id=doc_id, attempt=attempt)
         return "dlq"

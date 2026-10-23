@@ -1,4 +1,4 @@
-"""Postgres-backed status + idempotency (schema `worker`, migration 0002)."""
+"""Postgres-backed status + idempotency (schema `worker`, migration 0003)."""
 
 from collections.abc import Iterator, MutableMapping
 

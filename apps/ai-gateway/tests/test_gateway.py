@@ -87,7 +87,7 @@ def test_metering_uses_config_prices(cfg):
     r = g.complete(req("hello world"))
     p = cfg.prices[r.model]
     assert r.cost_usd == pytest.approx(
-        (r.input_tokens * p.input + r.output_tokens * p.output) / 1e6
+        (r.input_tokens * p.input + r.output_tokens * p.output) / 1e3
     )
     assert g.total_tokens == r.input_tokens + r.output_tokens
     assert g.total_cost_usd == r.cost_usd > 0

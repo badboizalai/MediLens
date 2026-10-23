@@ -1,5 +1,5 @@
 import os
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 
 from fastapi import Depends, FastAPI, HTTPException, Request
 from pydantic import BaseModel, Field
@@ -31,6 +31,8 @@ class CompleteBody(BaseModel):
     prompt: str
     model: str | None = None
     max_output_tokens: int = Field(default=400, ge=1, le=4096)
+    tier: Literal["auto"] | None = None
+    document_id: str | None = Field(default=None, max_length=128)
 
 
 _STATUS = {

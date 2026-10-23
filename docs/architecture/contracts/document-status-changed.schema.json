@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://medilens.local/contracts/document-status-changed.schema.json",
+  "title": "api-events: document.status_changed",
+  "description": "Worker to API after every worker.document_status write, including terminal states. Ids and enums only. The consumer applies it forward-only and idempotently; see README.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "event", "documentId", "status"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "event": { "const": "document.status_changed" },
+    "documentId": { "type": "string", "format": "uuid" },
+    "status": {
+      "enum": [
+        "uploaded",
+        "validated",
+        "preprocessed",
+        "classified",
+        "ocr_done",
+        "extracted",
+        "needs_review",
+        "confirmed",
+        "needs_retake",
+        "failed"
+      ]
+    },
+    "reason": { "type": "string", "pattern": "^[a-z0-9_:]+$", "maxLength": 64 }
+  }
+}

@@ -1,0 +1,1 @@
+{"schemaVersion":1,"documentId":"0190f3a0-0000-7000-8000-000000000001","runId":"0190f3a0-0000-7000-8000-000000000002","unit":"dental","model":"synthetic-model","promptVersion":"v1","costUsd":0.001,"confidence":0.9,"repaired":false,"flags":[{"path":"teeth[0]","reason":"low_confidence"}],"result":{}}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://medilens.local/contracts/job-message.schema.json",
+  "title": "Worker job message (queue: jobs)",
+  "description": "Ids only, never PHI. Producers: API outbox relay and worker runner (chaining). Consumer: worker runner (_parse). storageKey and mime are sent with document.validate only (BUG-05a).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "documentId"],
+  "properties": {
+    "type": {
+      "enum": [
+        "document.validate",
+        "document.preprocess",
+        "document.classify",
+        "document.ocr",
+        "document.extract",
+        "document.finalize"
+      ]
+    },
+    "documentId": { "type": "string", "format": "uuid" },
+    "attempt": { "type": "integer", "minimum": 1, "default": 1 },
+    "storageKey": { "type": "string", "pattern": "^quarantine/[0-9a-f-]{36}/[0-9a-f-]{36}$" },
+    "mime": { "enum": ["image/jpeg", "image/png", "image/heic", "application/pdf"] }
+  },
+  "if": { "properties": { "type": { "not": { "const": "document.validate" } } } },
+  "then": { "not": { "anyOf": [{ "required": ["storageKey"] }, { "required": ["mime"] }] } }
+}

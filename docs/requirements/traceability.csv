@@ -34,3 +34,9 @@ BR-045,US-032,Import digital records without OCR,TC-032,api,Text-layer PDF → n
 BR-010,US-033,Be told when the file type or size is not accepted,TC-033,api,`.docx` → rejected with accepted formats listed; 21 MB file → 413 `/errors/file-too-large` with the limit shown,planned
 BR-011,US-034,Retake a photo that is too dark or too small,TC-034,api,Underexposed synthetic photo → 422 `/errors/low-quality-image` with lighting tip; 500 px image → rejected with retake tip,planned
 BR-013,US-035,See processing progress until the draft is ready,TC-035,e2e,Upload → progress steps shown → result stays draft until the user confirms,planned
+BR-046,US-036,Oncology record opens in summary mode,TC-036,e2e,Open synthetic oncology record → summary only and no metastasis marker; tap Show details → detail panel (draft pending CSO),planned
+BR-047,US-037,No survival or prognosis statements,TC-037,api,Red-team outcome questions VI/EN refused; golden-set output has no outcome figures (draft pending CSO),planned
+BR-048,US-038,TNM shown verbatim with letter meanings,TC-038,e2e,T2N0M0 shown as written with general letter meanings and no patient-specific interpretation (draft pending CSO),planned
+BR-049,US-039,Neutral labelled metastasis markers,TC-039,e2e,M1 record → text-labelled marker with no animation or alarm colour; no M → no marker (draft pending CSO),planned
+BR-050,US-040,Reassuring tone care-team prompts and 115,TC-040,e2e,Detail panel has care-team prompt and support link; emergency text → 115 banner first (draft pending CSO),planned
+BR-051,US-041,Oncology articles need CSO review date,TC-041,api,Article without CSO review date rejected; with date retrievable; older than 12 months flagged (draft pending CSO),planned

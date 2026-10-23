@@ -25,6 +25,10 @@ describe('CSP', () => {
     expect(dir(csp, 'img-src')).toContain('blob:');
   });
 
+  it('img-src allows the storage origin for presigned page images', () => {
+    expect(dir(csp, 'img-src')).toBe("img-src 'self' data: blob: https://s3.test");
+  });
+
   it('dev relaxes eval and HMR only', () => {
     const dev: string = buildCsp({ prod: false });
     expect(dir(dev, 'script-src')).toContain("'unsafe-eval'");

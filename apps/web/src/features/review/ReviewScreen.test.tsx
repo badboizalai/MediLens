@@ -21,6 +21,7 @@ const row = (id: string, path: string, low: boolean, extra = {}) => ({
 
 let fields: ReturnType<typeof row>[] = [];
 let confirmStatus = 204;
+let imageStatus = 200;
 const patches: unknown[] = [];
 
 const server = setupServer(
@@ -31,6 +32,11 @@ const server = setupServer(
     const f = fields.find((x) => x.id === params.fid)!;
     return HttpResponse.json({ ...f, user_value: body.user_value, confirmed_at: '2026-01-01T00:00:00Z' });
   }),
+  http.get('*/v1/documents/:id/pages/:n/image', () =>
+    imageStatus === 200
+      ? HttpResponse.json({ url: 'https://s3.test/pre/page.png?sig=x', expiresIn: 300 })
+      : HttpResponse.json({ title: 'Not found' }, { status: 404 }),
+  ),
   http.post('*/v1/documents/:id/confirm', () =>
     confirmStatus === 422
       ? HttpResponse.json({ title: 'Unconfirmed fields remain', field_ids: [LOW] }, { status: 422 })
@@ -42,6 +48,7 @@ afterEach(() => {
   server.resetHandlers();
   patches.length = 0;
   confirmStatus = 204;
+  imageStatus = 200;
 });
 afterAll(() => server.close());
 
@@ -110,5 +117,39 @@ describe('ReviewScreen', () => {
     expect(screen.getByText('Do AI trích xuất — vui lòng kiểm tra lại.')).toBeInTheDocument();
     await user.click(confirmBtn());
     expect(await screen.findByText('Đã xác nhận.')).toBeInTheDocument();
+  });
+
+  it('shows the source page with a highlight scaled from the normalised box', async () => {
+    fields = [row(OK, 'finding.text', false, { source_page: 2, source_box: [0.25, 0.5, 0.75, 0.625] })];
+    const { user, view } = setup();
+    await screen.findByLabelText('finding.text');
+    expect(screen.getByText(/Choose “Show on page”/)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Show on page' }));
+    const img = await screen.findByRole('img', { name: 'Page 2 of your original record' });
+    expect(img).toHaveAttribute('src', 'https://s3.test/pre/page.png?sig=x');
+    const box = screen.getByTestId('bbox');
+    expect(box.style.left).toBe('25%');
+    expect(box.style.top).toBe('50%');
+    expect(box.style.width).toBe('50%');
+    expect(box.style.height).toBe('12.5%');
+    expect(await axe(view.container)).toHaveNoViolations();
+  });
+
+  it('shows the image without a highlight and a note when the box is missing', async () => {
+    fields = [row(OK, 'finding.text', false, { source_box: null })];
+    const { user } = setup();
+    await user.click(await screen.findByRole('button', { name: 'Show on page' }));
+    await screen.findByRole('img', { name: /Page 1/ });
+    expect(screen.queryByTestId('bbox')).not.toBeInTheDocument();
+    expect(screen.getByText("We couldn't mark the exact spot on this page.")).toBeInTheDocument();
+  });
+
+  it('falls back politely when the page image is unavailable', async () => {
+    fields = [row(OK, 'finding.text', false)];
+    imageStatus = 404;
+    const { user } = setup();
+    await user.click(await screen.findByRole('button', { name: 'Show on page' }));
+    expect(await screen.findByText("The page preview isn't available right now.")).toBeInTheDocument();
+    expect(screen.queryByRole('img')).not.toBeInTheDocument();
   });
 });

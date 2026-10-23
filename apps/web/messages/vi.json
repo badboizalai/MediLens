@@ -69,7 +69,14 @@
     "blocked": "Các mục sau vẫn cần bạn kiểm tra:",
     "done": "Đã xác nhận.",
     "source": "Bản gốc",
-    "sourcePlaceholder": "Chưa xem được ảnh trang gốc. Các mục lấy từ những trang sau:"
+    "sourcePlaceholder": "Chưa xem được ảnh trang gốc. Các mục lấy từ những trang sau:",
+    "showOnPage": "Xem trên trang",
+    "sourceSelect": "Chọn “Xem trên trang” ở một mục để thấy nó nằm ở đâu.",
+    "sourceLoading": "Đang tải trang…",
+    "sourceAlt": "Trang {n} của hồ sơ gốc",
+    "boxNote": "Khung được tô sáng đánh dấu nơi giá trị này được đọc.",
+    "noBox": "Chúng tôi chưa đánh dấu được vị trí chính xác trên trang này.",
+    "imageMissing": "Hiện chưa xem được ảnh trang."
   },
   "viewer": {
     "front": "Mặt trước cơ thể",

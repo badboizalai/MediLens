@@ -19,7 +19,12 @@ afterEach(() => vi.restoreAllMocks());
 
 describe('Odontogram', () => {
   it('applies tooth and surface states via data attributes', () => {
-    const { container } = view({ teeth: [{ fdi: '16', state: 'caries', surfaces: ['O', 'M'] }, { fdi: '36', state: 'missing' }] });
+    const { container } = view({
+      teeth: [
+        { fdi: '16', state: 'caries', surfaces: ['O', 'M'] },
+        { fdi: '36', state: 'missing' },
+      ],
+    });
     expect(container.querySelector('#tooth_16')).toHaveAttribute('data-state', 'caries');
     expect(container.querySelector('#tooth_16__O')).toHaveAttribute('data-state', 'caries');
     expect(container.querySelector('#tooth_16__M')).toHaveAttribute('data-state', 'caries');
@@ -50,7 +55,12 @@ describe('Odontogram', () => {
 
   it('selects with Enter and Space and shows details', async () => {
     const user = userEvent.setup();
-    const { container } = view({ teeth: [{ fdi: '24', state: 'caries', surfaces: ['D'] }, { fdi: '25', state: 'filled' }] });
+    const { container } = view({
+      teeth: [
+        { fdi: '24', state: 'caries', surfaces: ['D'] },
+        { fdi: '25', state: 'filled' },
+      ],
+    });
     const t24 = container.querySelector('#tooth_24') as SVGElement;
     expect(container.querySelector('#tooth_26')).not.toHaveAttribute('tabindex');
     await user.tab();
@@ -65,7 +75,12 @@ describe('Odontogram', () => {
   });
 
   it('has no axe violations', async () => {
-    const { container } = view({ teeth: [{ fdi: '16', state: 'caries', surfaces: ['O'] }, { fdi: '21', state: 'implant' }] });
+    const { container } = view({
+      teeth: [
+        { fdi: '16', state: 'caries', surfaces: ['O'] },
+        { fdi: '21', state: 'implant' },
+      ],
+    });
     expect(await axe(container)).toHaveNoViolations();
   });
 });

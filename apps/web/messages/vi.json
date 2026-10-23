@@ -191,5 +191,20 @@
       "B": "má",
       "L": "lưỡi"
     }
+  },
+  "viewer3d": {
+    "title": "Mô hình 3D cơ thể",
+    "canvas": {
+      "body": "Mô hình 3D của cơ thể. Dùng danh sách bên dưới để chọn vùng.",
+      "heart": "Mô hình 3D của tim. Dùng danh sách bên dưới để chọn vùng."
+    },
+    "hint": "Kéo để xoay, cuộn để phóng to, nhấp vào vùng có màu để chọn. Nhấn Escape để đặt lại.",
+    "detail": "Vùng đã chọn",
+    "none": "Chưa chọn vùng nào.",
+    "clear": "Bỏ chọn",
+    "listTitle": "Các vùng có ghi nhận",
+    "empty": "Không có vùng nào có ghi nhận.",
+    "loading": "Đang tải trình xem 3D...",
+    "note": "Màu sắc cho biết điều đã được ghi nhận trong hồ sơ của bạn. Đây chỉ là hình minh họa giúp bạn hiểu, không phải lời khuyên y tế."
   }
 }

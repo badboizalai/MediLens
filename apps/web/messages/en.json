@@ -191,5 +191,20 @@
       "B": "buccal",
       "L": "lingual"
     }
+  },
+  "viewer3d": {
+    "title": "3D body viewer",
+    "canvas": {
+      "body": "3D model of the body. Use the list below to select a region.",
+      "heart": "3D model of the heart. Use the list below to select a region."
+    },
+    "hint": "Drag to rotate, scroll to zoom, click a coloured region to select it. Press Escape to reset.",
+    "detail": "Selected region",
+    "none": "No region selected.",
+    "clear": "Clear selection",
+    "listTitle": "Regions with findings",
+    "empty": "No regions with findings.",
+    "loading": "Loading 3D viewer...",
+    "note": "Colours show what was noted in your record. They are an illustration to help you understand, not medical advice."
   }
 }

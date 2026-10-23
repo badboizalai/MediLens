@@ -174,14 +174,31 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 | BUG-03 | worker extract wiring, finalize, service token | backend | apps/worker | main | **merged** | fix/BUG-03-worker-wiring-service-token | #60 | 1 |
 | BUG-04 | worker Postgres stores + S3 page store | backend | apps/worker, migration 0003 | main | **merged** | feat/BUG-04-worker-persistent-stores | #63 | 2 |
 | CHORE-01 | web env vars in README, worktrees off tmpfs | tech-writer | apps/web/README.md, autopilot.md | main | **merged** | chore/CHORE-01-env-claims-worktrees | #59 | 1 |
-| BUG-05a | Outbox relay → SQS `document.validate` with `storageKey` | backend | api shared/outbox*, tests/shared | main | in-progress | fix/BUG-05a-outbox-relay | | |
-| BUG-05b | Worker validate (size/magic/pages/active PDF/malware tag) + promote raw | backend (+security) | worker intake/, registry validate, runner ctx, storage/s3 | main | in-progress | fix/BUG-05b-worker-validate-raw | | |
-| S6-T57 | Malicious upload file set (EICAR, JS-PDF, polyglot) API tests | qa | api tests/document/test_malicious_uploads.py, docs/qa | main | in-progress | test/S6-T57-malicious-uploads | | |
-| S7-T63 | Extraction review API (fields view/edit/confirm, audit, IDOR tests) | backend | api modules/extraction, main.py mount | main | in-progress | feat/S7-T63-extraction-review-api | | |
-| S8-T72 | 2D body SVG front/back with region_code ids | 3d-medical-artist | packages/anatomy-assets/svg | main | in-progress | feat/S8-T72-body-svg | | |
-| S6-T53-ADR | ADR-0005 worker→API status/result hand-off | solution-architect | docs/architecture/adr | main | in-progress | docs/S6-T53-adr-worker-handoff | | |
+| BUG-05a | Outbox relay → SQS `document.validate` with `storageKey` | backend | api shared/outbox_relay | main | **merged** | fix/BUG-05a-outbox-relay | #70 | 1 |
+| BUG-05b | Worker validate (size/magic/pages/active PDF/malware tag) + promote raw to `raw/{doc}/` | backend (+security) | worker intake/, registry validate, runner ctx, storage/s3 | main | **merged** | fix/BUG-05b-worker-validate-raw | #67 | 1 |
+| S6-T57 | Malicious upload file set API tests | qa | api tests/document, docs/qa | main | **merged** (Opus doc fix: polyglots NOT yet blocked) | test/S6-T57-malicious-uploads | #69 | 1 |
+| S7-T63 | Extraction review API (fields/edit/confirm, audit, IDOR tests) | backend | api modules/extraction | main | **merged** (Opus README merge) | feat/S7-T63-extraction-review-api | #72 | 1 |
+| S8-T72 | 2D body SVG front/back, region_code ids | 3d-medical-artist | packages/anatomy-assets/svg, tests/assets | main | **merged** (Opus: test moved into testpaths) | feat/S8-T72-body-svg | #66 | 1 |
+| S6-T53-ADR | ADR-0005 worker→API hand-off (Proposed) | solution-architect | docs/architecture/adr | main | **merged** | docs/S6-T53-adr-worker-handoff | #65 | 1 |
+| S6-T53a | Terraform api-events queue + DLQ alarm + extractions/* IAM | cloud-devops | infra/terraform/envs/staging, modules/sqs | main | **merged** (Opus: JOBS_QUEUE_URL→WORKER_QUEUE_URL) | feat/S6-T53a-tf-api-events | #68 | 1 |
+| S6-T53f | JSON Schema contracts + status mapping + check in `make governance` | backend | docs/architecture/contracts, tools/check_contracts.py | main | **merged** | docs/S6-T53f-event-contracts | #71 | 1 |
+| S6-T53b | Worker chaining + status events + scan-pending budget | backend | worker pipeline/, queue/, main.py | main | in-progress | feat/S6-T53b-worker-chaining-events | | |
+| S6-T57b | API `rejected` status for rejected uploads | backend | api modules/document | main | in-progress | fix/S6-T57b-rejected-status | | |
+| S6-T54a | Rules page classifier (9 types) + golden eval | ai-ml | worker classify/, ml/eval/classify | main | in-progress | feat/S6-T54a-page-classifier | | |
+| S6-T55 | Document edge detection + perspective warp | ai-ml | worker ocr/preprocess.py | main | in-progress | feat/S6-T55-doc-edge-perspective | | |
+| S7-T64 | Web review screen with confirm gate | frontend | apps/web features/review | main | in-progress | feat/S7-T64-review-screen | | |
+| S6-T58 | Upload security review vs SEC-AP-07 | security | docs/security/reviews | main | in-progress | docs/S6-T58-upload-security-review | | |
+| S6-T53c | Worker result export to S3 + `extraction.completed` (needs runId) | backend | worker extraction/, main.py | after T53b | todo | | | |
+| S6-T53d | API consumer: status applier + extraction ingest | backend | api document/, extraction/ | after T57b | todo | | | |
+| S6-T53e | Status API + SSE (<2 s) | backend | api document/api | after T53d | todo | | | |
+## Follow-ups from reviews
+- Shared ownership/audit port in `medilens.shared` (document + extraction infra both query `identity.*`/`audit.*` directly; precedent accepted) — #72.
+- PDF active-content regex is evadable; polyglot JPEG+ZIP and `%PDF`+HTML pass API and worker → sandboxed decode/re-encode in preprocess — #67, #69.
+- Staging: worker needs quarantine `GetObject`/`GetObjectTagging` + pages bucket; DLQ alarm actions unwired; relay needs a runtime (ECS task) — #68, #70.
+- Region SVG: clinical-informaticist laterality review; `svg_id` in region tree — #66.
 
 ## Human decisions (recorded, not resolved by AI)
+- Accept ADR-0005 (status Proposed, #65).
 - `apps/web/.env.example` writes blocked by the `.env.*` deny rule; vars documented in apps/web/README.md (#59).
 - `docs/research/consent-form.md` lines 6 and 27 (negated "không chẩn đoán" / "does not diagnose") fail claims lint; marking `claims-ok` was denied as disabling a check → regulatory owner decides.
 - Terraform apply needs AWS credentials, remote state and staging environment reviewers.

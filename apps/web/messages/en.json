@@ -218,5 +218,32 @@
     },
     "switchTo2d": "Switch to 2D map",
     "switchTo3d": "Switch to 3D view"
+  },
+  "timeline": {
+    "title": "Compare two visits",
+    "bodyTitle": "Body view",
+    "loading": "Loading your records...",
+    "loadError": "We could not load your records. Please try again.",
+    "empty": "No confirmed findings yet. Upload and confirm a record to see it here.",
+    "oneVisit": "Only one visit is available, so there is nothing to compare yet. Here is that visit.",
+    "latestVisit": "Showing the visit from {date}.",
+    "undated": "Date not listed",
+    "pickBefore": "First visit",
+    "pickAfter": "Second visit",
+    "before": "First visit",
+    "after": "Second visit",
+    "diffTitle": "Differences between the two visits",
+    "diffNote": "This only lists what each record mentions. It does not say whether anything is better or worse. Talk to your doctor about what it means.",
+    "diff": {
+      "added": "Listed only in the second visit",
+      "removed": "Listed only in the first visit",
+      "both": "Listed in both visits"
+    },
+    "none": "None",
+    "obsTitle": "Measurements",
+    "obsCaption": "Measurements from the two visits side by side",
+    "obsName": "Name",
+    "obsUnit": "Unit",
+    "notListed": "Not listed"
   }
 }

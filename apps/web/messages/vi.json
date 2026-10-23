@@ -218,5 +218,32 @@
     },
     "switchTo2d": "Chuyển sang bản đồ 2D",
     "switchTo3d": "Chuyển sang chế độ xem 3D"
+  },
+  "timeline": {
+    "title": "So sánh hai lần khám",
+    "bodyTitle": "Hình cơ thể",
+    "loading": "Đang tải hồ sơ của bạn...",
+    "loadError": "Không thể tải hồ sơ của bạn. Vui lòng thử lại.",
+    "empty": "Chưa có kết quả nào được xác nhận. Hãy tải lên và xác nhận một hồ sơ để xem tại đây.",
+    "oneVisit": "Chỉ có một lần khám nên chưa có gì để so sánh. Dưới đây là lần khám đó.",
+    "latestVisit": "Đang hiển thị lần khám ngày {date}.",
+    "undated": "Không ghi ngày",
+    "pickBefore": "Lần khám thứ nhất",
+    "pickAfter": "Lần khám thứ hai",
+    "before": "Lần khám thứ nhất",
+    "after": "Lần khám thứ hai",
+    "diffTitle": "Khác biệt giữa hai lần khám",
+    "diffNote": "Phần này chỉ liệt kê những gì mỗi hồ sơ có nhắc đến, không cho biết điều gì tốt hơn hay xấu hơn. Hãy hỏi bác sĩ về ý nghĩa của chúng.",
+    "diff": {
+      "added": "Chỉ có trong lần khám thứ hai",
+      "removed": "Chỉ có trong lần khám thứ nhất",
+      "both": "Có trong cả hai lần khám"
+    },
+    "none": "Không có",
+    "obsTitle": "Chỉ số",
+    "obsCaption": "Chỉ số của hai lần khám đặt cạnh nhau",
+    "obsName": "Tên",
+    "obsUnit": "Đơn vị",
+    "notListed": "Không ghi"
   }
 }

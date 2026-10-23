@@ -2,15 +2,15 @@
 
 The worker never touches api tables (ADR-001): no FK to clinical.documents.
 
-Revision ID: 0002
-Revises: 0001
+Revision ID: 0003
+Revises: 0002
 Create Date: 2026-10-23
 """
 
 from alembic import op
 
-revision = "0002"
-down_revision = "0001"
+revision = "0003"
+down_revision = "0002"
 branch_labels = None
 depends_on = None
 
@@ -20,7 +20,10 @@ _STD = """
 _PK = "id uuid PRIMARY KEY DEFAULT public.uuid_v7()"
 _TABLES = {
     "worker.document_status": "document_id text NOT NULL UNIQUE, status text NOT NULL, reason text",
-    "worker.idempotency_keys": "key text NOT NULL UNIQUE",
+    "worker.idempotency_keys": (
+        "key text NOT NULL UNIQUE, claimed_at timestamptz NOT NULL DEFAULT now(), "
+        "done boolean NOT NULL DEFAULT false"
+    ),
 }
 
 

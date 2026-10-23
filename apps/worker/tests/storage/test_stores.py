@@ -22,12 +22,15 @@ def statuses(request: pytest.FixtureRequest):
 
 
 @pytest.fixture(params=["memory", "postgres"])
-def idem(request: pytest.FixtureRequest):
-    if request.param == "memory":
-        return InMemoryIdempotencyStore()
-    from medilens_worker.storage.postgres import PgIdempotencyStore
+def make_idem(request: pytest.FixtureRequest):
+    def make(lease: float = 900):
+        if request.param == "memory":
+            return InMemoryIdempotencyStore(lease_seconds=lease)
+        from medilens_worker.storage.postgres import PgIdempotencyStore
 
-    return PgIdempotencyStore(request.getfixturevalue("pg_url"))
+        return PgIdempotencyStore(request.getfixturevalue("pg_url"), lease_seconds=lease)
+
+    return make
 
 
 @pytest.fixture(params=["memory", "s3"])
@@ -62,20 +65,29 @@ def test_status_reason(statuses) -> None:
     assert statuses.reasons[d] == "boom"
 
 
-def test_idempotency_mark_seen(idem) -> None:
-    k = f"{uuid.uuid4()}:ocr:1"
+def test_double_claim_fails_until_done_or_released(make_idem) -> None:
+    idem, k = make_idem(), f"{uuid.uuid4()}:ocr:1"
+    assert idem.claim(k)
+    assert not idem.claim(k)
     assert not idem.seen(k)
+    idem.release(k)
+    assert idem.claim(k)
     idem.mark(k)
     assert idem.seen(k)
 
 
-def test_postgres_claim_is_atomic(pg_url: str) -> None:
-    from medilens_worker.storage.postgres import PgIdempotencyStore
+def test_stale_lease_is_reclaimable_but_done_never(make_idem) -> None:
+    idem, k = make_idem(lease=0), f"{uuid.uuid4()}:ocr:1"
+    assert idem.claim(k)
+    assert idem.claim(k)  # lease already expired
+    idem.mark(k)
+    assert not idem.claim(k)
 
-    s = PgIdempotencyStore(pg_url)
-    k = f"{uuid.uuid4()}:ocr:1"
+
+def test_claim_is_atomic_across_threads(make_idem) -> None:
+    idem, k = make_idem(), f"{uuid.uuid4()}:ocr:1"
     with ThreadPoolExecutor(8) as ex:
-        wins = list(ex.map(lambda _: s.claim(k), range(8)))
+        wins = list(ex.map(lambda _: idem.claim(k), range(8)))
     assert wins.count(True) == 1
 
 

@@ -14,6 +14,7 @@ class S3PageStore:
     ) -> None:
         self._c = boto3.client("s3", endpoint_url=endpoint_url)
         self._b, self._raw_b = bucket, raw_bucket or bucket
+        self._raw_keys: dict[str, str] = {}
 
     def _keys(self, bucket: str, prefix: str) -> list[str]:
         out: list[str] = []
@@ -27,8 +28,14 @@ class S3PageStore:
     def _put(self, key: str, body: bytes) -> None:
         self._c.put_object(Bucket=self._b, Key=key, Body=body, ServerSideEncryption="AES256")
 
+    def register_raw(self, document_id: str, key: str) -> None:
+        """Raw location comes from the job message (API quarantine key); post-scan location TBD."""
+        self._raw_keys[document_id] = key
+
     def raw_pages(self, document_id: str) -> list[bytes]:
-        return [self._get(self._raw_b, k) for k in self._keys(self._raw_b, f"raw/{document_id}/")]
+        if document_id not in self._raw_keys:
+            raise LookupError("raw_key_unknown")
+        return [self._get(self._raw_b, self._raw_keys[document_id])]
 
     def save_preprocessed(self, document_id: str, pages: list[PreprocessedPage]) -> None:
         for p in pages:

@@ -4,6 +4,7 @@ from collections.abc import Iterator, MutableMapping
 
 from sqlalchemy import Engine, create_engine, text
 
+from medilens_worker.pipeline.idempotency import LEASE_SECONDS
 from medilens_worker.pipeline.state import DocStatus, guard_transition
 
 
@@ -74,27 +75,42 @@ class PgStatusRepo:
 
 
 class PgIdempotencyStore:
-    def __init__(self, url: str) -> None:
+    def __init__(self, url: str, lease_seconds: float = LEASE_SECONDS) -> None:
         self._e = create_engine(url, pool_pre_ping=True)
+        self._lease = lease_seconds
+
+    def claim(self, key: str) -> bool:
+        """Atomic lease: insert, or take over an unfinished lease older than the timeout."""
+        with self._e.begin() as c:
+            res = c.execute(
+                text(
+                    "INSERT INTO worker.idempotency_keys AS t (key) VALUES (:k) "
+                    "ON CONFLICT (key) DO UPDATE SET claimed_at = clock_timestamp() "
+                    "WHERE NOT t.done AND t.claimed_at <= clock_timestamp() - make_interval(secs => :l)"
+                ),
+                {"k": key, "l": self._lease},
+            )
+        return res.rowcount == 1
 
     def seen(self, key: str) -> bool:
         with self._e.connect() as c:
             row = c.execute(
-                text("SELECT 1 FROM worker.idempotency_keys WHERE key = :k"), {"k": key}
+                text("SELECT 1 FROM worker.idempotency_keys WHERE key = :k AND done"), {"k": key}
             ).first()
         return row is not None
 
-    def claim(self, key: str) -> bool:
-        """Atomic: True for exactly one caller per key."""
+    def mark(self, key: str) -> None:
         with self._e.begin() as c:
-            res = c.execute(
+            c.execute(
                 text(
-                    "INSERT INTO worker.idempotency_keys (key) VALUES (:k) "
-                    "ON CONFLICT (key) DO NOTHING"
+                    "INSERT INTO worker.idempotency_keys (key, done) VALUES (:k, true) "
+                    "ON CONFLICT (key) DO UPDATE SET done = true"
                 ),
                 {"k": key},
             )
-        return res.rowcount == 1
 
-    def mark(self, key: str) -> None:
-        self.claim(key)
+    def release(self, key: str) -> None:
+        with self._e.begin() as c:
+            c.execute(
+                text("DELETE FROM worker.idempotency_keys WHERE key = :k AND NOT done"), {"k": key}
+            )

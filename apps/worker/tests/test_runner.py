@@ -96,3 +96,23 @@ def test_visibility_extension(env):
     q.send(body())
     handle(q, q.receive(), st, store, registry=reg)
     assert q.extensions[0][1] == 120
+
+
+def test_held_lease_leaves_message_and_failure_releases(env):
+    q, st, store = env
+    store.claim("d1:document.validate:1")  # another worker is mid-flight
+    q.send(body())
+    assert handle(q, q.receive(), st, store) == "in_progress"
+    assert st.get("d1") == DocStatus.UPLOADED
+
+
+def test_handler_failure_releases_lease(env):
+    q, st, store = env
+
+    def boom(ctx):
+        raise RuntimeError("x")
+
+    reg = {"document.validate": JobSpec(boom, DocStatus.UPLOADED, DocStatus.VALIDATED)}
+    q.send(body())
+    assert handle(q, q.receive(), st, store, registry=reg) == "retry"
+    assert store.claim("d1:document.validate:1")

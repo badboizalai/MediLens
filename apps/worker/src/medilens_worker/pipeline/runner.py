@@ -50,7 +50,7 @@ def handle(
     policy: RetryPolicy = DEFAULT_POLICY,
     registry: dict[str, JobSpec] = REGISTRY,
 ) -> str:
-    """Returns outcome: done | duplicate | retry | dlq | terminal."""
+    """Returns outcome: done | duplicate | in_progress | retry | dlq | terminal."""
     try:
         d = _parse(msg.body)
     except ValueError:  # includes JSONDecodeError
@@ -70,6 +70,9 @@ def handle(
         queue.ack(msg)
         _event("duplicate", step=step, document_id=doc_id, attempt=attempt)
         return "duplicate"
+    if not store.claim(key):  # another worker holds the lease: leave the message to redeliver
+        _event("in_progress", step=step, document_id=doc_id, attempt=attempt)
+        return "in_progress"
 
     try:
         if statuses.get(doc_id) != spec.src:
@@ -86,6 +89,7 @@ def handle(
         )
         return "terminal"
     except Exception as exc:  # noqa: BLE001 - boundary: any handler failure is retried
+        store.release(key)
         reason = type(exc).__name__
         if attempt < policy.max_attempts:
             queue.send(json.dumps({**d, "attempt": attempt + 1}), policy.delay(attempt))

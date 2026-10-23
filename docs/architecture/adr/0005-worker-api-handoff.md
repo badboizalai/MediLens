@@ -1,6 +1,6 @@
 # ADR-0005: Worker to API hand-off of document status and extraction results
 
-- **Status:** Proposed
+- **Status:** Accepted (2026-10-23, accepted by main session on owner's "Tiếp tục" instruction; owner may override)
 - **Date:** 2026-10-23
 - **Deciders:** Solution Architect (reviewers: backend-engineer, security-engineer)
 - **Related:** ADR-0002 (modular monolith), ADR-010 (outbox, plan §16.3), NFR-01, NFR-04, NFR-08, NFR-15, BR-042; task S6-T53 / D53
@@ -44,6 +44,7 @@ Why: it is the smallest set (one queue, one S3 prefix, one consumer) that keeps 
 
 ## Consequences
 - Positive: no cross-schema access; at-least-once with idempotent consumers; failures are visible as DLQ depth; the review API gets real rows; no new AWS service beyond one SQS queue pair.
+- Addendum (ADR-0006): the API consumer has no profile scope, so it writes `clinical.documents` and ingests extraction results under FORCE RLS only through the narrow `SECURITY DEFINER` functions defined in [ADR-0006](0006-rls-system-access-definer-functions.md).
 - Negative / trade-offs: eventual consistency (status in API lags the worker by about a second); two message contracts (`jobs`, `api-events`) to version; 1 s polling load grows linearly with open streams (fine at MVP); a poison `api-events` message needs a DLQ alarm.
 - Follow-up tasks (each small, one PR):
   - S6-T53a Terraform: `api-events` queue + DLQ, alarms, S3 `extractions/*` IAM for worker (put) and API (get). Paths: `infra/terraform/envs/staging/`, `infra/terraform/modules/`.

@@ -47,6 +47,9 @@ class DocumentRepository(Protocol):
 
     def mark_rejected(self, document_id: UUID) -> None: ...
 
+    def apply_status(self, document_id: UUID, status: str) -> str:
+        """Forward-only worker status change; `applied` | `ignored` | `unknown`. No RLS scope."""
+
 
 class EventOutbox(Protocol):
     def add(self, event_type: str, payload: dict[str, Any]) -> None: ...

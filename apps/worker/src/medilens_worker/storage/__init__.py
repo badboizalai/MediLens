@@ -12,7 +12,8 @@ def build_stores():  # noqa: ANN201 - returns (status repo, idempotency store), 
         from medilens_worker.storage.s3 import S3PageStore  # noqa: PLC0415
 
         raw = os.environ.get("WORKER_RAW_BUCKET")
-        ocr_service.configure(store=S3PageStore(bucket, raw, os.environ.get("AWS_ENDPOINT_URL")))
+        endpoint, kms = os.environ.get("AWS_ENDPOINT_URL"), os.environ.get("PHI_KMS_KEY_ID")
+        ocr_service.configure(store=S3PageStore(bucket, raw, endpoint, kms))
     if url := os.environ.get("WORKER_DATABASE_URL"):
         from medilens_worker.storage.postgres import (  # noqa: PLC0415
             PgIdempotencyStore,

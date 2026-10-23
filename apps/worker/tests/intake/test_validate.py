@@ -173,7 +173,7 @@ def test_s3_promote_and_scan_tag(monkeypatch):
         validate_upload("d1", msg(), s, require_scan=True)
         assert s.raw_pages("d1")[0].startswith(b"\x89PNG")
         got = c.get_object(Bucket="processed", Key="raw/d1/0000")
-        assert got["ServerSideEncryption"] == "AES256"
+        assert got["ServerSideEncryption"] == "aws:kms"
         c.put_object(Bucket="raw", Key=KEY, Body=PNG)
         with pytest.raises(ScanPending):
             validate_upload("d1", msg(), s, require_scan=True)

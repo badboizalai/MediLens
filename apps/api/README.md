@@ -11,3 +11,6 @@ Other users' documents/fields return 404 (RLS + owner scope). Audit rows carry a
 ## Outbox relay
 `DocumentService.complete` writes `DocumentUploaded` to `clinical.outbox`; the relay publishes it to the worker queue (at-least-once, the worker dedups). Run: `DATABASE_URL=... WORKER_QUEUE_URL=... [AWS_ENDPOINT_URL=...] python -m medilens.shared.outbox_relay` (polls every `POLL_INTERVAL_SECONDS`).
 Message: `{"type":"document.validate","documentId":"<uuid>","storageKey":"quarantine/<profile_id>/<document_id>","mime":"<mime>","attempt":1}`. Unknown event types stay unpublished (logged by type only).
+
+## api-events consumer
+`python -m medilens.shared.api_events_consumer` (env `DATABASE_URL`, `API_EVENTS_QUEUE_URL`, optional `AWS_ENDPOINT_URL`) applies worker `document.status_changed` via `clinical.apply_document_status()` (migration 0004, SECURITY DEFINER, forward-only). Its DB login must be a member of the NOLOGIN role `api_events_consumer` (EXECUTE on that function only, no table access): `GRANT api_events_consumer TO <consumer_login>`. The function runs as `doc_status_definer`, let through FORCE RLS by one policy for that role alone.

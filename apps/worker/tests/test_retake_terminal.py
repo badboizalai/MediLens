@@ -46,3 +46,27 @@ def test_needs_retake_only_reachable_before_ocr_and_reuploadable():
         guard_transition(DocStatus.NEEDS_RETAKE, DocStatus.VALIDATED)
     with pytest.raises(InvalidTransition):
         guard_transition(DocStatus.CLASSIFIED, DocStatus.NEEDS_RETAKE)
+
+
+@pytest.mark.parametrize("status", [DocStatus.NEEDS_RETAKE, DocStatus.FAILED])
+def test_job_for_terminal_document_is_noop(status):
+    ran = []
+    reg = {"document.preprocess": JobSpec(ran.append, DocStatus.VALIDATED, DocStatus.PREPROCESSED)}
+    q, st = InMemoryQueue(), StatusRepo()
+    st.set("d1", DocStatus.VALIDATED)
+    st.set("d1", status)
+    q.send(json.dumps({"type": "document.preprocess", "documentId": "d1", "attempt": 1}))
+    assert handle(q, q.receive(), st, InMemoryIdempotencyStore(), registry=reg) == "terminal"
+    assert ran == [] and st.get("d1") == status
+    assert q.receive() is None and q.dlq == [] and q.sent_delays == [0]
+
+
+def test_rechained_attempt1_does_not_race_running_retry():
+    ran = []
+    reg = {"document.preprocess": JobSpec(ran.append, DocStatus.VALIDATED, DocStatus.PREPROCESSED)}
+    q, st, store = InMemoryQueue(), StatusRepo(), InMemoryIdempotencyStore()
+    st.set("d1", DocStatus.VALIDATED)
+    assert store.claim("d1:document.preprocess:0")  # retry attempt 2 holds the step lease
+    q.send(json.dumps({"type": "document.preprocess", "documentId": "d1", "attempt": 1}))
+    assert handle(q, q.receive(), st, store, registry=reg) == "in_progress"
+    assert ran == [] and st.get("d1") == DocStatus.VALIDATED

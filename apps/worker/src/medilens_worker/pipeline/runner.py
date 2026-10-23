@@ -24,6 +24,7 @@ class RetryPolicy:
 
 
 DEFAULT_POLICY = RetryPolicy()
+_STOP = (DocStatus.NEEDS_RETAKE, DocStatus.FAILED)  # terminal: never run or overwrite
 
 
 def _event(event: str, **fields: object) -> None:
@@ -95,10 +96,28 @@ def handle(
         queue.ack(msg)
         _event("duplicate", step=step, document_id=doc_id, attempt=attempt)
         return "duplicate"
+    if statuses.get(doc_id) in _STOP:  # e.g. a redelivery after the sink failed mid-terminal
+        queue.ack(msg)
+        _event("terminal", step=step, document_id=doc_id, status=statuses.get(doc_id).value)
+        return "terminal"
+    # step-level lease (attempt 0) so a re-chained attempt 1 cannot run beside a live retry
+    step_lease = dedup_key(doc_id, step, 0)
     if not store.claim(key):  # another worker holds the lease: leave the message to redeliver
         _event("in_progress", step=step, document_id=doc_id, attempt=attempt)
         return "in_progress"
+    if not store.claim(step_lease):
+        store.release(key)
+        _event("in_progress", step=step, document_id=doc_id, attempt=attempt)
+        return "in_progress"
 
+    try:
+        return _run(queue, msg, d, spec, statuses, store, policy, registry, events, key)
+    finally:
+        store.release(step_lease)
+
+
+def _run(queue, msg, d, spec, statuses, store, policy, registry, events, key) -> str:
+    step, doc_id, attempt = d["type"], d["documentId"], d.get("attempt", 1)
     try:
         if statuses.get(doc_id) != spec.src:
             raise RuntimeError("invalid_state")
@@ -126,7 +145,7 @@ def handle(
             queue.ack(msg)
             _event("retry", step=step, document_id=doc_id, attempt=attempt, reason=reason)
             return "retry"
-        if statuses.get(doc_id) not in (DocStatus.FAILED, DocStatus.CONFIRMED):
+        if statuses.get(doc_id) not in (*_STOP, DocStatus.CONFIRMED):
             statuses.set(doc_id, DocStatus.FAILED)
             _emit(events, doc_id, DocStatus.FAILED, "max_attempts")
         queue.send_dlq(msg, f"max_attempts:{reason}")

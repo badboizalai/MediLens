@@ -6,7 +6,7 @@ from typing import Any
 
 import jwt
 
-from medilens.modules.identity.domain.principal import InvalidToken, Principal
+from medilens.shared.auth import InvalidToken, Principal
 
 # Resolves the signing key for a token's `kid`; raises KeyError if unknown.
 KeyResolver = Callable[[str], Any]

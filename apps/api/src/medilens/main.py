@@ -12,6 +12,7 @@ from medilens.core.errors import (
 from medilens.core.logging import configure_logging
 from medilens.core.middleware import RequestIdMiddleware
 from medilens.modules.document.api.router import router as document_router
+from medilens.modules.extraction.api.router import router as extraction_router
 from medilens.modules.identity.api.dependencies import get_token_validator
 from medilens.modules.identity.api.router import router as identity_router
 from medilens.shared.auth import register_token_validator
@@ -65,6 +66,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     # Register module routers here as they are implemented:
     v1.include_router(identity_router)
     v1.include_router(document_router)
+    v1.include_router(extraction_router)
     # v1.include_router(patient_router)
     app.include_router(v1)
     return app

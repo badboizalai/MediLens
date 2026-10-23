@@ -294,12 +294,12 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 ## Backlog (≤ 1 day each; deps; owner skill)
 | ID | Task | Owner | Paths (main) | Depends | Status | Branch | PR | Rounds |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| S6-T53d2 | ingest `extraction.completed` via definer fn (migration 0005) | backend+security | api migrations, shared/api_events_consumer.py, extraction/infra/ingest.py | — | in-progress | feat/S6-T53d2-extraction-ingest | | |
-| S6-T53e | status SSE `/v1/documents/{id}/events` | backend | api document/ | — | in-progress | feat/S6-T53e-status-sse | | |
-| S6-T56 | web progress screen + retake guidance + `rejected` stage | frontend | web features/documents | — | in-progress | feat/S6-T56-progress-screen | | |
-| BUG-09 | Semgrep blocking SQL text + pnpm audit high | security | api extraction sql_repository.py, package.json, lockfile | — | in-progress | fix/BUG-09-semgrep-pnpm-audit | | |
-| S7-T66b | mapper wired into extraction + `latest()` by uuid7 | ai-ml | worker extraction/, storage/results.py | — | in-progress | feat/S7-T66b-wire-anatomy-mapper | | |
-| S8-T75 | dental + cardiology Unit configs + LOINC subset (also S9-T85) | clinical-informaticist | packages/anatomy-assets/units, tests/assets | — | in-progress | feat/S8-T75-unit-configs-dental-cardio | | |
+| S6-T53d2 | ingest `extraction.completed` via definer fn (migration 0005) | backend+security | api migrations, shared/api_events_consumer.py, extraction/infra/ingest.py | — | **merged** | feat/S6-T53d2-extraction-ingest | #106 | 1 |
+| S6-T53e | status SSE `/v1/documents/{id}/events` | backend | api document/ | — | **merged** (round 2: async stream, no thread per idle stream) | feat/S6-T53e-status-sse | #102 | 2 |
+| S6-T56 | web progress screen + retake guidance + `rejected` stage | frontend | web features/documents | — | **merged** (Opus: prototype-key fix, racy test fixed) | feat/S6-T56-progress-screen | #99 | 1 |
+| BUG-09 | Semgrep blocking SQL text + pnpm audit high | security | api extraction sql_repository.py, package.json, lockfile | — | **merged** (Opus: postcss override bounded ^8.5.18) | fix/BUG-09-semgrep-pnpm-audit | #103 | 1 |
+| S7-T66b | mapper wired into extraction + `latest()` by uuid7 | ai-ml | worker extraction/, storage/results.py | — | **merged** | feat/S7-T66b-wire-anatomy-mapper | #98 | 1 |
+| S8-T75 | dental + cardiology Unit configs + LOINC subset (also S9-T85) | clinical-informaticist | packages/anatomy-assets/units, tests/assets | — | **merged** | feat/S8-T75-unit-configs-dental-cardio | #100 | 1 |
 | S6-T55b | VietOCR/offline OCR baseline + CER vs S02 (or documented blocker) | ai-ml | ml/eval/ocr_bakeoff, worker ocr/ | — | todo | | | |
 | S6-F7 | upload rate limit + daily quota (SEC-AP-07 F7) | backend+security | api document/ | S6-T53e | todo | | | |
 | S7-T61 | prompt v2 few-shot per Unit, citation+bbox+confidence | ai-ml | ml/prompts/extract-v2, worker extraction/prompts.py | S7-T66b | todo | | | |
@@ -339,3 +339,8 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 | S11-T110 | G2 evidence pack (sign-off human) | qc-release | docs/gates/G2.md | all | todo | | | |
 | PM-RPT | sprint reports 06–11 (no fabricated demos/usability results) | product-manager | docs/project/reports | per sprint | todo | | | |
 Human-only in scope: D79 CSO tooth/palette review, D87 usability test, D99 CSO article approval, G2/G2-CS sign-off, LIC-002.
+
+### Run 5 progress (2026-10-24 ~02:35)
+Extra rows: S10-T96 guardrails **merged** #101 (Opus: narrowed diagnosis regex false-blocks); S8-T74b odontogram viewer **merged** #105; S9-T82 GLB **merged** #104 (stylised procedural placeholder, real anatomy pending licence review; no Draco needed at ~120–150 KB); S10-T91 oncology BRs BR-046..051 READY #107 (draft, pending CSO D99).
+In progress (batch 3): S8-CLIN (feat/S8-CLIN-clinical-projection), S9-T81/T83 3D viewer (feat/S9-T81-viewer-3d), S7-T61 prompt v2, S9-T89 headers/CORS, S10-T94 20 KnowledgeArticles (draft-pending-CSO), S10-T97 semantic cache + quota + HTTP traffic/locale.
+Follow-ups noted: wire UploadScreen → /documents/[id]/progress and drop old STAGE map; web SSE needs fetch-streaming (EventSource can't send Authorization); per-user SSE stream cap with F7; pre-commit ruff older than CI ruff (formatting disagreement on multi-line asserts) → CHORE; deployment: RESULTS_BUCKET + consumer s3:GetObject extractions/*.

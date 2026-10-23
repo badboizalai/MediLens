@@ -1,17 +1,16 @@
 """Every id in the body SVGs must be a region_code (or aux_/sys_); reports undrawn regions.
 
-Run: uv run --with pyyaml pytest packages/anatomy-assets/test_svg_regions.py -s
+Run: uv run pytest tests/assets -s  (part of `make test`)
 """
 
 import xml.etree.ElementTree as ET  # trusted, repo-owned files
 from pathlib import Path
 
-import pytest
+import yaml
 
-yaml = pytest.importorskip("yaml")
-HERE = Path(__file__).parent
-TREE = HERE.parents[1] / "data/terminology/region-tree.v1.yaml"
-FILES = sorted((HERE / "svg").glob("body-*.svg"))
+ROOT = Path(__file__).resolve().parents[2]
+TREE = ROOT / "data/terminology/region-tree.v1.yaml"
+FILES = sorted((ROOT / "packages/anatomy-assets/svg").glob("body-*.svg"))
 
 
 def ids(path):

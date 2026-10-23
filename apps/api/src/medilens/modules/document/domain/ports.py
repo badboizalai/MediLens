@@ -37,9 +37,13 @@ class DocumentRepository(Protocol):
     def get(self, document_id: UUID) -> Document | None:
         """None when absent or outside the RLS scope."""
 
+    def count_pending(self) -> int:
+        """Pending (not yet completed) documents inside the RLS scope."""
+
     def has_duplicate(self, profile_id: UUID, sha256: str, excluding: UUID) -> bool: ...
 
-    def mark_uploaded(self, document_id: UUID, sha256: str) -> None: ...
+    def mark_uploaded(self, document_id: UUID, sha256: str) -> None:
+        """Raises DuplicateDocument when a concurrent upload won the unique index."""
 
 
 class EventOutbox(Protocol):

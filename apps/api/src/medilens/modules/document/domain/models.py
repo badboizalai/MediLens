@@ -12,6 +12,7 @@ STATUS_UPLOADED = "uploaded"
 EVENT_DOCUMENT_UPLOADED = "DocumentUploaded"
 ALLOWED_TYPES = frozenset({"image/jpeg", "image/png", "image/heic", "application/pdf"})
 SNIFF_BYTES = 16
+MAX_PENDING_UPLOADS = 20  # U-09: no number in the docs, so a default; tune with product
 _HEIC_BRANDS = {b"heic", b"heix", b"heim", b"heis", b"mif1", b"msf1"}
 
 
@@ -83,3 +84,10 @@ class UploadMissing(AppError):
     code = "MEDILENS-409"
     slug = "upload-missing"
     title = "Upload not found in storage"
+
+
+class TooManyPendingUploads(AppError):
+    status = 429
+    code = "MEDILENS-429"
+    slug = "too-many-pending-uploads"
+    title = "Too many pending uploads"

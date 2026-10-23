@@ -25,6 +25,7 @@ _PROBLEMS = {
     401: {"description": "Unauthenticated"},
     404: {"description": "Not found"},
     409: {"description": "Duplicate or missing upload"},
+    429: {"description": "Too many pending uploads"},
     413: {"description": "File too large"},
     415: {"description": "Unsupported file type"},
 }
@@ -109,4 +110,14 @@ def complete_upload(
 ) -> DocumentOut:
     doc = service.complete(user.sub, document_id)
     session.commit()  # status change and outbox row land together
+    return DocumentOut(id=doc.id, profile_id=doc.profile_id, status=doc.status)
+
+
+@router.get("/documents/{document_id}", response_model=DocumentOut, responses=_PROBLEMS)
+def get_document(
+    document_id: UUID,
+    user: Annotated[Principal, Depends(get_current_user)],
+    service: Annotated[UploadService, Depends(get_service)],
+) -> DocumentOut:
+    doc = service.get(user.sub, document_id)
     return DocumentOut(id=doc.id, profile_id=doc.profile_id, status=doc.status)

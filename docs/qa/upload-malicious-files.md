@@ -9,9 +9,9 @@ Tests: `apps/api/tests/document/test_malicious_uploads.py`; payloads are built i
 | HTML/script with no magic bytes | API magic bytes (415) | `test_html_without_magic_is_rejected` |
 | Empty file | API: size 0 at presign (400); empty object at complete (415) | `test_empty_declared_size_is_400`, `test_empty_object_is_rejected` |
 | Object > 20 MB | API size check (413) | `test_oversize_object_is_413_and_removed` |
-| PDF with `/JavaScript` + `/OpenAction` | worker validate `pdf_active_content` (BUG-05b, #67; byte-level, defence in depth); API accepts | `test_content_level_payloads_pass_api_and_are_left_to_worker` |
-| JPEG+ZIP polyglot | NOT blocked yet: worker validate (#67) only sniffs magic bytes; preprocess must decode + re-encode in a sandbox (follow-up S6-T57b); API accepts | same |
-| `%PDF-` header followed by HTML/script | NOT blocked yet: passes worker validate (#67); needs strict PDF parse / PDF-to-image in a sandbox (follow-up S6-T57b); API accepts | same |
+| PDF with `/JavaScript` + `/OpenAction` | worker validate `pdf_active_content` (BUG-05b, #67; byte-level, defence in depth); API accepts | `test_content_level_payloads_pass_api_and_are_left_to_worker`; also hex-escaped names, `/AA`, `/OpenAction`, `pdf_uninspectable` for `/ObjStm`/`/Encrypt` (S6-T58-F3) |
+| JPEG+ZIP polyglot | worker validate decodes and re-encodes to PNG, dropping the appended ZIP (S6-T58-F4; sandboxed decode still open, F4b); API accepts | `test_jpeg_zip_polyglot_is_stripped` |
+| `%PDF-` header followed by HTML/script | worker validate `pdf_malformed` (needs `%%EOF` near the end and `startxref`/`/Root`; S6-T58-F4); full PDF-to-image in a sandbox is F4b; API accepts | `test_rejections` |
 
 Rejected uploads: Problem Details type/status asserted, quarantine object deleted, no outbox row.
 

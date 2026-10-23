@@ -13,7 +13,11 @@ from medilens_worker.pipeline.state import NonRetryable, RetryLater
 MAX_BYTES = 20 * 1024 * 1024  # same limit as the API (BR-010)
 MAX_PDF_PAGES = 50  # assumption: no documented limit; a record longer than this is out of scope
 _HEIC_BRANDS = {b"heic", b"heix", b"heim", b"heis", b"mif1", b"msf1"}  # copied from the API sniff
-_ACTIVE = re.compile(rb"/(JavaScript|JS|Launch|EmbeddedFile)(?![A-Za-z])")
+_ACTIVE = re.compile(
+    rb"/(JavaScript|JS|Launch|EmbeddedFile|OpenAction|AA|SubmitForm|XFA|RichMedia)(?![A-Za-z])"
+)
+_NAME_HEX = re.compile(rb"#([0-9A-Fa-f]{2})")
+_UNINSPECTABLE = re.compile(rb"/(ObjStm|Encrypt)(?![A-Za-z])")
 # shortcut: byte-level count misses pages inside compressed object streams; use a PDF parser then
 _PAGE = re.compile(rb"/Type\s*/Page(?![A-Za-z])")
 
@@ -67,8 +71,36 @@ def validate_upload(
     if real != message.get("mime"):
         raise Rejected("mime_mismatch")
     if real == "application/pdf":
-        if _ACTIVE.search(data):
-            raise Rejected("pdf_active_content")
-        if len(_PAGE.findall(data)) > MAX_PDF_PAGES:
-            raise Rejected("too_many_pages")
+        _check_pdf(data)
+    elif real == "image/heic":
+        pass  # shortcut: no HEIC decoder in the worker, so no re-encode; add pillow-heif then
+    else:
+        data = _reencode_png(data)
     store.save_raw(document_id, data)
+
+
+def _check_pdf(data: bytes) -> None:
+    # `/Java#53cript` is the same name as `/JavaScript`: decode #xx before matching
+    text = _NAME_HEX.sub(lambda m: bytes([int(m[1], 16)]), data)
+    if b"%%EOF" not in text[-1024:] or not (b"startxref" in text or b"/Root" in text):
+        raise Rejected("pdf_malformed")  # e.g. a `%PDF-` header on an HTML body
+    # shortcut: object streams and encryption hide objects from a byte scan, so reject them;
+    # upgrade: parse in a sandbox (S6-T58-F4b) and allow them
+    if _UNINSPECTABLE.search(text):
+        raise Rejected("pdf_uninspectable")
+    if _ACTIVE.search(text):
+        raise Rejected("pdf_active_content")
+    if len(_PAGE.findall(text)) > MAX_PDF_PAGES:
+        raise Rejected("too_many_pages")
+
+
+def _reencode_png(data: bytes) -> bytes:
+    """Decode and re-encode so appended payloads (polyglots) and EXIF are dropped."""
+    import cv2  # noqa: PLC0415  (ocr extra; imported lazily to keep base installs light)
+    import numpy as np  # noqa: PLC0415
+
+    # shortcut: no pixel cap before decode (decompression bomb); sandboxed decode is S6-T58-F4b
+    img = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
+    if img is None:
+        raise Rejected("unsupported_type")
+    return cv2.imencode(".png", img)[1].tobytes()

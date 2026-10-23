@@ -11,8 +11,7 @@ from medilens.core.db import make_engine, make_session_factory
 from medilens.core.errors import AppError, app_error_handler, validation_error_handler
 from medilens.modules.document.api import router as doc_router
 from medilens.modules.document.domain.models import Presigned
-from medilens.modules.identity.api.dependencies import get_current_user
-from medilens.modules.identity.domain.principal import Principal
+from medilens.shared.auth import Principal, get_current_user
 from sqlalchemy import event, text
 
 from tests.db.conftest import (  # noqa: F401  (Testcontainers fixtures)

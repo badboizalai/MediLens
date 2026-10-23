@@ -15,8 +15,7 @@ from medilens.modules.document.infra.sql_repository import (
     SqlDocumentRepository,
     SqlProfileOwnership,
 )
-from medilens.modules.identity.api.dependencies import get_current_user
-from medilens.modules.identity.domain.principal import Principal
+from medilens.shared.auth import Principal, get_current_user
 from medilens.shared.outbox import SqlOutbox
 
 router = APIRouter(tags=["documents"])

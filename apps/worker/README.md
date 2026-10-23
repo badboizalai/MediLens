@@ -6,6 +6,10 @@ Pulls jobs from Redis, reads from object storage, writes to PostgreSQL. Never se
 - `pipeline/state.py`: allowed-transition table + `guard_transition`. `pipeline/runner.py`: dedup (`document_id:step:attempt`), exponential backoff retries, DLQ on max attempts / unknown type / poison message. Logs carry IDs only, never PHI.
 - `jobs/registry.py`: one stub handler per step. TODO: OCR/preprocess S5-T43, LLM extraction S5-T45.
 
+## Persistent stores (BUG-04)
+Local default is in-memory. Set `WORKER_DATABASE_URL` for Postgres status/idempotency (schema `worker`, api migration `0003`; `PgIdempotencyStore.claim` is an atomic `INSERT ... ON CONFLICT DO NOTHING`). Set `WORKER_PAGES_BUCKET` (processed bucket; optional `WORKER_RAW_BUCKET`) for the S3 page store. Keys carry opaque ids only.
+Idempotency is a lease (`claim`/`mark`/`release`, `LEASE_SECONDS`): a done key is never re-claimed; an unfinished one is re-claimable after the lease. Raw pages are read from the API upload key (`quarantine/{profile_id}/{document_id}`) registered via `S3PageStore.register_raw`; the post-scan clean location is TBD.
+
 ## Wiring and service auth (BUG-03)
 - `main.build_extract_deps()` configures `extraction.deps` at startup from env: `AI_GATEWAY_URL`, `AI_GATEWAY_SERVICE_SECRET`, `WORKER_TENANT_ID`. Missing any of them fails fast unless `ENV=local` (local gets dev defaults). Runs/reviews are in memory until the DB store (BUG-04) replaces them.
 - `finalize` loads the saved run via `ExtractDeps.load_run` and hands it to `save_review`; the runner then moves the document to `needs_review`.

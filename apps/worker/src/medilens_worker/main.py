@@ -7,10 +7,9 @@ from collections.abc import Mapping
 from medilens_worker.extraction import deps as extract_deps
 from medilens_worker.extraction.service import ExtractionRun, HttpGatewayClient
 from medilens_worker.ocr import service as ocr_service
-from medilens_worker.pipeline.idempotency import InMemoryIdempotencyStore
 from medilens_worker.pipeline.runner import handle
-from medilens_worker.pipeline.state import StatusRepo
 from medilens_worker.queue.base import Queue
+from medilens_worker.storage import build_stores
 
 
 def build_queue() -> Queue:
@@ -63,7 +62,7 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     extract_deps.configure(build_extract_deps())
     queue = build_queue()
-    statuses, store = StatusRepo(), InMemoryIdempotencyStore()  # TODO(S5-T43): DB-backed
+    statuses, store = build_stores()
     while True:
         msg = queue.receive()
         if msg is not None:

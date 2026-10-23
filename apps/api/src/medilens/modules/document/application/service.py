@@ -4,6 +4,7 @@ from medilens.modules.document.domain.models import (
     ALLOWED_TYPES,
     EVENT_DOCUMENT_UPLOADED,
     MAX_BYTES,
+    MAX_PENDING_UPLOADS,
     PRESIGN_TTL_SECONDS,
     SNIFF_BYTES,
     STATUS_PENDING,
@@ -13,6 +14,7 @@ from medilens.modules.document.domain.models import (
     DuplicateDocument,
     FileTooLarge,
     Presigned,
+    TooManyPendingUploads,
     UnsupportedFileType,
     UploadMissing,
     quarantine_key,
@@ -52,6 +54,8 @@ class UploadService:
             raise UnsupportedFileType("Accepted formats: JPEG, PNG, HEIC, PDF.")
         if size_bytes > MAX_BYTES:
             raise FileTooLarge("Maximum file size is 20 MB.")
+        if self._repo.count_pending() >= MAX_PENDING_UPLOADS:
+            raise TooManyPendingUploads("Finish or wait for your pending uploads first.")
         doc_id = self._repo.new_id()
         doc = Document(
             doc_id, profile_id, quarantine_key(profile_id, doc_id), content_type, STATUS_PENDING
@@ -61,6 +65,13 @@ class UploadService:
             doc.storage_key, content_type, size_bytes, PRESIGN_TTL_SECONDS
         )
         return doc, presigned
+
+    def get(self, subject: str, document_id: UUID) -> Document:
+        self._scope(subject)
+        doc = self._repo.get(document_id)
+        if doc is None:
+            raise DocumentNotFound
+        return doc
 
     def complete(self, subject: str, document_id: UUID) -> Document:
         self._scope(subject)
@@ -82,7 +93,11 @@ class UploadService:
         if self._repo.has_duplicate(doc.profile_id, digest, doc.id):
             self._reject(doc)
             raise DuplicateDocument("This file was already uploaded for this profile.")
-        self._repo.mark_uploaded(doc.id, digest)
+        try:
+            self._repo.mark_uploaded(doc.id, digest)
+        except DuplicateDocument:  # lost the race against a concurrent complete
+            self._reject(doc)
+            raise
         self._outbox.add(
             EVENT_DOCUMENT_UPLOADED,
             {"document_id": str(doc.id), "profile_id": str(doc.profile_id), "mime": doc.mime},

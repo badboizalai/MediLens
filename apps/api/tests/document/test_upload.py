@@ -204,3 +204,71 @@ def test_presigned_url_expiry_is_at_most_five_minutes() -> None:
     assert int(re.search(r"X-Amz-Expires=(\d+)", p.url).group(1)) <= 300  # type: ignore[union-attr]
     signed = re.search(r"X-Amz-SignedHeaders=([^&]+)", p.url).group(1)  # type: ignore[union-attr]
     assert "content-type" in signed and "content-length" in signed
+
+
+def test_get_document_owner_other_user_and_unauthenticated(env: Env) -> None:
+    doc_id = upload(env)
+    ok = env.client.get(f"/v1/documents/{doc_id}")
+    assert ok.status_code == 200
+    assert ok.json() == {
+        "id": doc_id,
+        "profile_id": str(env.alice_profile),
+        "status": "uploaded-pending",
+    }
+    env.as_user("bob")
+    foreign = env.client.get(f"/v1/documents/{doc_id}")
+    missing = env.client.get(f"/v1/documents/{uuid4()}")
+    assert foreign.status_code == missing.status_code == 404
+    assert foreign.headers["content-type"].startswith("application/problem+json")
+    assert foreign.json()["detail"] == missing.json()["detail"]
+
+    from fastapi.testclient import TestClient
+    from medilens.main import create_app
+
+    r = TestClient(create_app()).get(f"/v1/documents/{doc_id}")
+    assert r.status_code == 401
+    assert r.headers["content-type"].startswith("application/problem+json")
+
+
+def test_concurrent_duplicate_is_caught_by_unique_index(
+    env: Env, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    from medilens.modules.document.infra.sql_repository import SqlDocumentRepository
+
+    first = upload(env)
+    assert env.client.post(f"/v1/documents/{first}/complete").status_code == 200
+    second = upload(env)
+    # simulate the race: the pre-check saw nothing, the index must still refuse
+    monkeypatch.setattr(SqlDocumentRepository, "has_duplicate", lambda *_: False)
+    r = env.client.post(f"/v1/documents/{second}/complete")
+    assert r.status_code == 409 and r.json()["type"].endswith("/duplicate-document")
+    assert len(outbox(env)) == 1
+    assert env.query("SELECT count(*) FROM clinical.documents WHERE sha256 <> ''") == [(1,)]
+
+
+def test_pending_upload_cap_is_429_per_user(env: Env) -> None:
+    from medilens.modules.document.domain.models import MAX_PENDING_UPLOADS
+
+    for _ in range(MAX_PENDING_UPLOADS):
+        assert request(env).status_code == 201
+    r = request(env)
+    assert r.status_code == 429
+    assert r.headers["content-type"].startswith("application/problem+json")
+    assert r.json()["type"].endswith("/too-many-pending-uploads")
+    env.as_user("bob")  # the cap is per user
+    assert request(env, profile=env.bob_profile).status_code == 201
+
+
+def test_old_pending_uploads_do_not_count_toward_cap(env: Env) -> None:
+    from medilens.core.db import make_engine
+    from medilens.modules.document.domain.models import MAX_PENDING_UPLOADS
+    from sqlalchemy import text
+
+    for _ in range(MAX_PENDING_UPLOADS):
+        assert request(env).status_code == 201
+    assert request(env).status_code == 429
+    engine = make_engine(env.url)
+    with engine.begin() as c:  # age every pending row past the window
+        c.execute(text("UPDATE clinical.documents SET created_at = now() - interval '1 day'"))
+    engine.dispose()
+    assert request(env).status_code == 201

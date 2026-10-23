@@ -62,3 +62,11 @@ def test_unknown_line_id_flagged_not_crashing():
 def test_no_boxes_still_strips_lines():
     run = run_extraction("d1", PAGES, Stub(lined([2])), unit="dental")
     assert "lines" not in run.result["teeth"][0]["fdi"]["source"]
+
+
+def test_model_supplied_bbox_is_dropped():
+    from medilens_worker.extraction.service import anchor_lines
+
+    r = {"x": {"value": "a", "confidence": 0.9, "source": {"page": 1, "bbox": [0, 0, 1, 1]}}}
+    anchor_lines(r, ["a"], None)
+    assert "bbox" not in r["x"]["source"]

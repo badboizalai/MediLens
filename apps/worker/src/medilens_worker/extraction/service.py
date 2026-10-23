@@ -174,6 +174,7 @@ def anchor_lines(
             src = node.get("source")
             if isinstance(src, dict) and "confidence" in node:
                 ids = src.pop("lines", None)
+                src.pop("bbox", None)  # coordinates only ever come from OCR boxes below
                 page = src.get("page")
                 if node.get("value") is None or ids is None:
                     return

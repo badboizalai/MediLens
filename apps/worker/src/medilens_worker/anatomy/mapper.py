@@ -40,15 +40,24 @@ def _side(t: str) -> str | None:
     return found.pop() if len(found) == 1 and "both" not in found else "ambiguous"
 
 
+# Group nodes colour every child; never a fallback target (HZ-002, BR-015).
+_GROUPS = {"body", "organs", "lymph_nodes", "bone_sites"}
+
+
+def _parent(code: str) -> str | None:
+    p = tree()[code]
+    return None if p is None or p in _GROUPS or p.startswith("sys_") else p
+
+
 def _resolve(codes: dict[str, str], side: str | None) -> tuple[str | None, float]:
     if side in ("left", "right") and side in codes:
         return codes[side], 0.9
     if "code" in codes:  # side-independent region (a stated side is ignored)
         return codes["code"], 0.9
     if side in ("left", "right"):
-        parent = tree()[codes["right" if "right" in codes else "left"]]
-        return parent, 0.5  # side stated but no code for it: stay at the parent
-    parent = tree()[next(iter(codes.values()))]
+        parent = _parent(codes["right" if "right" in codes else "left"])
+        return (parent, 0.5) if parent else (None, 0.0)  # side stated, no code: stay at the parent
+    parent = _parent(next(iter(codes.values())))
     return (parent, 0.4) if parent else (None, 0.0)  # side unknown: never guess
 
 

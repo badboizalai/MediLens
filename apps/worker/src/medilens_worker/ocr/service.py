@@ -13,6 +13,7 @@ class PageStore(Protocol):
     def save_preprocessed(self, document_id: str, pages: list[PreprocessedPage]) -> None: ...
     def preprocessed(self, document_id: str) -> list[PreprocessedPage]: ...
     def save_ocr(self, document_id: str, pages: list[OcrPage]) -> None: ...
+    def ocr_pages(self, document_id: str) -> list[OcrPage]: ...
     def save_retake(self, document_id: str, page: int, reason: RetakeReason) -> None: ...
 
 
@@ -34,6 +35,9 @@ class InMemoryPageStore:
 
     def save_ocr(self, document_id: str, pages: list[OcrPage]) -> None:
         self.ocr[document_id] = pages
+
+    def ocr_pages(self, document_id: str) -> list[OcrPage]:
+        return self.ocr.get(document_id, [])
 
     def save_retake(self, document_id: str, page: int, reason: RetakeReason) -> None:
         self.retakes[document_id] = (page, reason)

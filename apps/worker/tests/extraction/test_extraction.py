@@ -182,6 +182,11 @@ def test_service_token_copy_identical_to_gateway():
     assert gw.read_bytes() == (Path(service_token.__file__)).read_bytes()
 
 
+def test_load_pages_raises_when_no_ocr_text():
+    with pytest.raises(LookupError, match="no_ocr_pages"):
+        build_extract_deps({"ENV": "local"}).load_pages("missing-doc")
+
+
 def test_out_of_range_confidence_rejected():
     bad = good()
     bad["teeth"][0]["fdi"]["confidence"] = 1.7

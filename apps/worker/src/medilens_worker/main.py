@@ -43,9 +43,15 @@ def build_extract_deps(env: Mapping[str, str] = os.environ) -> extract_deps.Extr
     # shortcut: runs/reviews held in memory; BUG-04 swaps in the DB store
     runs: dict[str, ExtractionRun] = {}
     reviews: dict[str, ExtractionRun] = {}
-    ocr_store = ocr_service.get_store()
+
+    def load_pages(doc: str) -> list[str]:
+        pages = [p.text for p in ocr_service.get_store().ocr_pages(doc)]
+        if not pages:
+            raise LookupError("no_ocr_pages")  # never extract from nothing
+        return pages
+
     return extract_deps.ExtractDeps(
-        load_pages=lambda doc: [p.text for p in getattr(ocr_store, "ocr", {}).get(doc, [])],
+        load_pages=load_pages,
         client=HttpGatewayClient(url, tenant, secret),
         save_run=lambda r: runs.__setitem__(r.document_id, r),
         load_run=runs.get,

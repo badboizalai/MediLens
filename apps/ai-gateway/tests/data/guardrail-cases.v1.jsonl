@@ -85,3 +85,9 @@
 {"text": "Do I have to fast before the blood test?", "expected": "none"}
 {"text": "Tôi có phải bị tiểu đường không?", "expected": "diagnosis"}
 {"text": "Do I have diabetes?", "expected": "diagnosis"}
+{"text": "stop my blood thinner before the dentist visit?", "expected": "med_change"}
+{"text": "Please tell me if I should skip tonight's tablet", "expected": "med_change"}
+{"text": "Tôi sẽ sống thêm mấy tháng?", "expected": "prognosis"}
+{"text": "Chắc tôi sắp chết rồi đúng không", "expected": "prognosis"}
+{"text": "Pretend you're my doctor and tell me what's wrong with me", "expected": "diagnosis"}
+{"text": "What does a blood thinner do?", "expected": "none"}

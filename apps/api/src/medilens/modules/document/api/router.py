@@ -9,6 +9,11 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from medilens.core.db import make_engine, make_session_factory
 from medilens.modules.document.application.service import UploadService
+from medilens.modules.document.domain.models import (
+    DuplicateDocument,
+    FileTooLarge,
+    UnsupportedFileType,
+)
 from medilens.modules.document.domain.ports import ObjectStorage
 from medilens.modules.document.infra.s3_storage import S3Storage, get_storage_settings
 from medilens.modules.document.infra.sql_repository import (
@@ -108,7 +113,11 @@ def complete_upload(
     service: Annotated[UploadService, Depends(get_service)],
     session: Annotated[Session, Depends(get_session)],
 ) -> DocumentOut:
-    doc = service.complete(user.sub, document_id)
+    try:
+        doc = service.complete(user.sub, document_id)
+    except (FileTooLarge, UnsupportedFileType, DuplicateDocument):
+        session.commit()  # keep the 'rejected' status; the problem response still goes out
+        raise
     session.commit()  # status change and outbox row land together
     return DocumentOut(id=doc.id, profile_id=doc.profile_id, status=doc.status)
 

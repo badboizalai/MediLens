@@ -107,7 +107,7 @@ def test_polyglot_html_named_pdf_is_rejected(env: Env) -> None:
     r = env.client.post(f"/v1/documents/{doc_id}/complete")
     assert r.status_code == 415
     assert r.headers["content-type"].startswith("application/problem+json")
-    assert env.query("SELECT status FROM clinical.documents") == [("uploaded-pending",)]
+    assert env.query("SELECT status FROM clinical.documents") == [("rejected",)]
     assert outbox(env) == []
     assert env.storage.objects == {}
 
@@ -273,3 +273,22 @@ def test_old_pending_uploads_do_not_count_toward_cap(env: Env) -> None:
         c.execute(text("UPDATE clinical.documents SET created_at = now() - interval '1 day'"))
     engine.dispose()
     assert request(env).status_code == 201
+
+
+def test_rejected_uploads_do_not_count_toward_cap(env: Env) -> None:
+    from medilens.modules.document.domain.models import MAX_PENDING_UPLOADS
+
+    for _ in range(MAX_PENDING_UPLOADS - 1):
+        assert request(env).status_code == 201
+    bad = upload(env, b"<html></html>", "application/pdf")
+    assert env.client.post(f"/v1/documents/{bad}/complete").status_code == 415
+    assert request(env).status_code == 201  # cap reached only if the rejected row counted
+    assert request(env).status_code == 429
+
+
+def test_same_file_can_be_reuploaded_after_rejection(env: Env) -> None:
+    first = upload(env, PNG, "application/pdf")  # rejected: declared type mismatch
+    assert env.client.post(f"/v1/documents/{first}/complete").status_code == 415
+    second = upload(env)
+    assert env.client.post(f"/v1/documents/{second}/complete").status_code == 200
+    assert env.client.get(f"/v1/documents/{first}").json()["status"] == "rejected"

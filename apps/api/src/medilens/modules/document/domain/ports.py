@@ -45,6 +45,8 @@ class DocumentRepository(Protocol):
     def mark_uploaded(self, document_id: UUID, sha256: str) -> None:
         """Raises DuplicateDocument when a concurrent upload won the unique index."""
 
+    def mark_rejected(self, document_id: UUID) -> None: ...
+
 
 class EventOutbox(Protocol):
     def add(self, event_type: str, payload: dict[str, Any]) -> None: ...

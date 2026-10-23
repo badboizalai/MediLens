@@ -11,6 +11,7 @@ from medilens.core.db import scope_to_profiles
 from medilens.modules.document.domain.models import (
     PENDING_WINDOW_SECONDS,
     STATUS_PENDING,
+    STATUS_REJECTED,
     STATUS_UPLOADED,
     Document,
     DuplicateDocument,
@@ -100,3 +101,9 @@ class SqlDocumentRepository:
                 )
         except IntegrityError as e:  # ux_documents_profile_sha256: concurrent duplicate
             raise DuplicateDocument("This file was already uploaded for this profile.") from e
+
+    def mark_rejected(self, document_id: UUID) -> None:
+        self._session.execute(
+            text("UPDATE clinical.documents SET status = :s WHERE id = :id"),
+            {"s": STATUS_REJECTED, "id": document_id},
+        )

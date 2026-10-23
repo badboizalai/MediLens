@@ -68,10 +68,6 @@ def test_oversize_object_is_413_and_removed(env: Env) -> None:
     assert_blocked(env, key, r, 413, "/file-too-large")
 
 
-@pytest.mark.xfail(
-    reason="TODO(S6-T57): API leaves a rejected document 'uploaded-pending'; no 'rejected' status",
-    strict=True,
-)
 def test_rejected_document_status_is_rejected(env: Env) -> None:
     doc_id, _, r = complete(env, EICAR, "application/pdf")
     assert r.status_code == 415

@@ -8,7 +8,7 @@ import re
 from collections.abc import Mapping
 
 from medilens_worker.ocr.service import PageStore
-from medilens_worker.pipeline.state import NonRetryable
+from medilens_worker.pipeline.state import NonRetryable, RetryLater
 
 MAX_BYTES = 20 * 1024 * 1024  # same limit as the API (BR-010)
 MAX_PDF_PAGES = 50  # assumption: no documented limit; a record longer than this is out of scope
@@ -18,7 +18,7 @@ _ACTIVE = re.compile(rb"/(JavaScript|JS|Launch|EmbeddedFile)(?![A-Za-z])")
 _PAGE = re.compile(rb"/Type\s*/Page(?![A-Za-z])")
 
 
-class ScanPending(RuntimeError):
+class ScanPending(RetryLater):
     """Malware scan verdict not available yet: retryable."""
 
 

@@ -58,6 +58,13 @@ class NonRetryable(Exception):
     reason: str = "non_retryable"
 
 
+class RetryLater(Exception):
+    """Retryable with its own, longer budget (e.g. an external verdict that is not ready yet)."""
+
+    delay_seconds: int = 30
+    max_attempts: int = 20
+
+
 class InvalidTransition(Exception):
     def __init__(self, current: DocStatus, to: DocStatus) -> None:
         super().__init__(f"illegal transition {current.value} -> {to.value}")

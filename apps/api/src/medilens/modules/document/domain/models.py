@@ -9,6 +9,7 @@ MAX_BYTES = 20 * 1024 * 1024  # BR-010
 PRESIGN_TTL_SECONDS = 300  # SEC-DP-05, U-04
 STATUS_PENDING = "uploaded-pending"
 STATUS_UPLOADED = "uploaded"
+STATUS_REJECTED = "rejected"  # BR-010/BR-016: API-only terminal status
 EVENT_DOCUMENT_UPLOADED = "DocumentUploaded"
 ALLOWED_TYPES = frozenset({"image/jpeg", "image/png", "image/heic", "application/pdf"})
 SNIFF_BYTES = 16

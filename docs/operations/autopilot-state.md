@@ -126,3 +126,31 @@ AI merge of #26 was then blocked by the permission classifier → owner merges #
 | S3-F16 | — | Security requirements catalog | security | `docs/security/` | in-progress | docs/S3-F16-sec-catalog | |
 
 Open for owner: `apps/web/.env.example` writes are denied by the session file rules (variables listed in PR #32).
+
+## Run 2 — final verification on main @ 16d56c9 (2026-10-23 ~07:30, clean worktree)
+| Check | Result |
+| --- | --- |
+| Python apps (`uv run pytest`: api, worker, ai-gateway, phi-service) | 146 passed, 1 skipped (OpenCV-only test) |
+| ml/datasets/synth · ml/eval/extraction · ml/eval/manifests · bake-off metrics | 11 · 11 · 3 · 8 passed |
+| data/terminology · tools · skill scripts | 41 · 6 · 92 passed |
+| ruff check / format · import-linter | clean · 494 files formatted · 12/12 contracts kept |
+| Web + packages (pnpm lint / typecheck / test / build) | lint clean · typecheck ok · web 20 + design-system 16 tests pass · build ok |
+| pnpm audit --prod | 0 critical; 3 high (playwright@1.49.1, postcss@8.4.31 — dev tooling) |
+| Terraform fmt + validate (org, 6 modules, 3 envs) | all valid |
+| make governance (skills, hazard log, licences, claims on user-facing copy) | PASS |
+| Dataset manifests · data catalog · traceability | OK · 172 columns, 0 problems · 32 BRs, 100% |
+| Live run: Postgres 16 + `alembic upgrade head` + uvicorn | migration 0001 head; /healthz 200, /readyz 200, /v1/me 401 problem+json, /docs 200 |
+
+**Defects/gaps found by verification (not yet fixed — owner said: no new tasks)**
+1. 401 Problem Details from auth carry `type=.../bad-request`, `title="Bad request"` with `status=401` → Unauthorized/Forbidden `AppError` subclasses need their own slug/title (+ `WWW-Authenticate`).
+2. No `GET /v1/documents/{id}` — web status polling depends on it (#58).
+3. `import-linter` exception api→identity (#57) → move Principal/get_current_user to `medilens.shared.auth`.
+4. Duplicate-upload race needs unique index (profile_id, sha256); per-user pending cap (U-09).
+5. Worker `extraction.deps.configure()` not wired at startup; `finalize` step TODO; DB/S3 stores for status/idempotency/pages are in-memory.
+6. AI Gateway/PHI callers (api, worker) don't mint service tokens yet; replay cache per process.
+7. `apps/web/.env.example` could not be written (session file rule) — owner to add AUTH_* + NEXT_PUBLIC_STORAGE_ORIGIN + NEXT_PUBLIC_DEV_PROFILE_ID.
+8. Claims lint is (correctly) scoped to user-facing copy; consider adding participant-facing `docs/research/consent-form.md`.
+9. Terraform never applied (no AWS credentials) — staging needs repo variables, remote state, environment reviewers.
+10. Infra: `/tmp` is a 7.6 GB tmpfs — parallel worktrees + node_modules filled it to 92%; worktrees were moved/cleaned (17 GB of finished agent worktrees removed).
+
+**Run 2 PRs merged (29)**: #30–#58. Every PR reviewed with real GitHub comments; 4 sent back and fixed in round 2 (#47 plan job, #51 hand-rolled validator, #55 retake→DLQ bug, #58 API contract mismatch); integration commits by the orchestrator on #33 (router mount + relock) and #55 (relock).

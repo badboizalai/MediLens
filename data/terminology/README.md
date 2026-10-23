@@ -27,3 +27,6 @@ Format checks are reused from `.claude/skills/medilens-clinical-informaticist/sc
 
 ## Dental terms and ICD-10
 `dental-terms.v1.yaml` is own-authored (no external source). `icd10` is empty for every term: LIC-002 is `needs-verification` (gate G1-D). The loader calls the same licence gate as the ICD-10 loader when `icd10` is set, so filling it fails with `LicenceNotApproved` until approval. Only code identifiers (e.g. K02) may ever go there, never titles. `region_hint` must exist in `region-tree.v1.yaml` or be empty.
+
+## LOINC cardiology subset
+`loinc-cardiology.v1.csv`: 4 codes (LVEF 10230-1, systolic 8480-6, diastolic 8462-4, BP panel 85354-9) with UCUM unit, used by `packages/anatomy-assets/units/cardiology.yaml`. Source: LOINC (c) Regenstrief Institute, Inc., https://loinc.org, used under the LOINC licence (free, attribution required). Names are short paraphrases; LIC-003 is still `needs-verification`, so confirm notice wording and names against a licensed release before any release gate. Codes only, no ICD-10 (LIC-002 not approved).

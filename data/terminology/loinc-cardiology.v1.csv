@@ -1,0 +1,5 @@
+loinc_num,long_common_name,ucum_unit
+10230-1,Left ventricular Ejection fraction,%
+8480-6,Systolic blood pressure,mm[Hg]
+8462-4,Diastolic blood pressure,mm[Hg]
+85354-9,Blood pressure panel with all children optional,

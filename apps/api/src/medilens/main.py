@@ -10,7 +10,7 @@ from medilens.core.errors import (
     validation_error_handler,
 )
 from medilens.core.logging import configure_logging
-from medilens.core.middleware import RequestIdMiddleware
+from medilens.core.middleware import RequestIdMiddleware, SecurityHeadersMiddleware
 from medilens.modules.document.api.router import router as document_router
 from medilens.modules.extraction.api.router import router as extraction_router
 from medilens.modules.identity.api.dependencies import get_token_validator
@@ -51,6 +51,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         ],
         expose_headers=["X-Request-ID", "ETag"],
     )
+    app.add_middleware(SecurityHeadersMiddleware)  # wraps CORS so preflights get headers too
     app.add_middleware(RequestIdMiddleware)  # outermost: ids exist for every response
 
     @app.get("/healthz", tags=["ops"])

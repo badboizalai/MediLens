@@ -1,3 +1,7 @@
+import struct
+import zlib
+from importlib.util import find_spec
+
 import boto3
 import pytest
 from medilens_worker.intake.validate import MAX_PDF_PAGES, ScanPending, validate_upload
@@ -6,11 +10,36 @@ from medilens_worker.pipeline.state import NonRetryable
 from moto import mock_aws
 
 KEY = "quarantine/p1/d1"
-PNG = b"\x89PNG\r\n\x1a\n" + b"0" * 20
+# image decode needs the optional `ocr` extra (cv2); without it these tests are skipped
+needs_cv2 = pytest.mark.skipif(find_spec("cv2") is None, reason="opencv not installed")
+
+
+def _chunk(tag: bytes, body: bytes) -> bytes:
+    return struct.pack(">I", len(body)) + tag + body + struct.pack(">I", zlib.crc32(tag + body))
+
+
+def make_png() -> bytes:  # 1x1 grey pixel, built with the stdlib
+    ihdr = struct.pack(">IIBBBBB", 1, 1, 8, 0, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + _chunk(b"IHDR", ihdr)
+        + _chunk(b"IDAT", zlib.compress(b"\x00\x80"))
+        + _chunk(b"IEND", b"")
+    )
+
+
+PNG = make_png()
+ZIP_TAIL = b"PK\x03\x04" + b"\x00" * 26 + b"payload.txt" + b"PK\x05\x06" + b"\x00" * 18
 
 
 def pdf(pages: int = 1, extra: bytes = b"") -> bytes:
-    return b"%PDF-1.4\n" + b"<< /Type /Page >>\n" * pages + b"<< /Type /Pages >>\n" + extra
+    return (
+        b"%PDF-1.4\n"
+        + b"<< /Type /Page >>\n" * pages
+        + b"<< /Type /Pages >>\n"
+        + extra
+        + b"\ntrailer << /Root 1 0 R >>\nstartxref\n0\n%%EOF\n"
+    )
 
 
 def msg(mime: str = "image/png", **kw):
@@ -51,10 +80,50 @@ PDF = "application/pdf"
         (pdf(extra=b"/OpenAction << /S /JS >>"), msg(PDF), "pdf_active_content"),
         (pdf(extra=b"/EmbeddedFile"), msg(PDF), "pdf_active_content"),
         (pdf(extra=b"/Launch"), msg(PDF), "pdf_active_content"),
+        (pdf(extra=b"/Java#53cript (x)"), msg(PDF), "pdf_active_content"),
+        (pdf(extra=b"/Open#41ction 1 0 R"), msg(PDF), "pdf_active_content"),
+        (pdf(extra=b"/AA << /O 1 0 R >>"), msg(PDF), "pdf_active_content"),
+        (pdf(extra=b"/Type /ObjStm"), msg(PDF), "pdf_uninspectable"),
+        (pdf(extra=b"/Type /Obj#53tm"), msg(PDF), "pdf_uninspectable"),
+        (pdf(extra=b"/Encrypt 9 0 R"), msg(PDF), "pdf_uninspectable"),
+        (b"%PDF-1.7\n<html><script>alert(1)</script></html>\n", msg(PDF), "pdf_malformed"),
+        (pdf().replace(b"%%EOF", b""), msg(PDF), "pdf_malformed"),
+        (pdf(pages=MAX_PDF_PAGES + 1, extra=b"/Type /Pa#67e"), msg(PDF), "too_many_pages"),
     ],
 )
 def test_rejections(data, m, want):
     assert reason(m, mem(data)) == want
+
+
+@needs_cv2
+def test_undecodable_image_is_unsupported():
+    assert reason(msg(), mem(PNG[:8] + b"0" * 20)) == "unsupported_type"
+
+
+@needs_cv2
+def test_jpeg_zip_polyglot_is_stripped():
+    import cv2
+    import numpy as np
+
+    jpg = cv2.imencode(".jpg", np.zeros((8, 8, 3), np.uint8))[1].tobytes()
+    s = mem(jpg + ZIP_TAIL)
+    validate_upload("d1", msg("image/jpeg"), s)
+    (out,) = s.raw_pages("d1")
+    assert out.startswith(b"\x89PNG") and b"PK\x03\x04" not in out and b"PK\x05\x06" not in out
+
+
+@needs_cv2
+def test_png_with_appended_zip_is_stripped():
+    s = mem(PNG + ZIP_TAIL)
+    validate_upload("d1", msg(), s)
+    assert b"PK\x03\x04" not in s.raw_pages("d1")[0]
+
+
+def test_heic_passes_through_unchanged():
+    data = b"\x00\x00\x00\x18ftypheic" + b"0" * 20
+    s = mem(data)
+    validate_upload("d1", msg("image/heic"), s)
+    assert s.raw_pages("d1") == [data]
 
 
 def test_too_large(monkeypatch):
@@ -69,22 +138,25 @@ def test_happy_path_promotes_and_retry_keeps_key():
     assert s.raw_pages("d1") == [pdf(MAX_PDF_PAGES)]
 
 
+@needs_cv2
 def test_malware_scan_paths():
     assert reason(msg(), mem(PNG, "THREATS_FOUND"), require_scan=True) == "malware_detected"
     with pytest.raises(ScanPending):
         validate_upload("d1", msg(), mem(PNG), require_scan=True)
     s = mem(PNG, "NO_THREATS_FOUND")
     validate_upload("d1", msg(), s, require_scan=True)
-    assert s.raw_pages("d1") == [PNG]
+    assert s.raw_pages("d1")[0].startswith(b"\x89PNG")
     validate_upload("d1", msg(), mem(PNG))  # off by default
 
 
+@needs_cv2
 def test_scan_env(monkeypatch):
     monkeypatch.setenv("WORKER_REQUIRE_MALWARE_SCAN", "true")
     with pytest.raises(ScanPending):
         validate_upload("d1", msg(), mem(PNG))
 
 
+@needs_cv2
 def test_s3_promote_and_scan_tag(monkeypatch):
     from medilens_worker.storage.s3 import S3PageStore
 
@@ -99,7 +171,7 @@ def test_s3_promote_and_scan_tag(monkeypatch):
         c.put_object(Bucket="raw", Key=KEY, Body=PNG, Tagging=tag)
         s = S3PageStore("processed", raw_bucket="raw")
         validate_upload("d1", msg(), s, require_scan=True)
-        assert s.raw_pages("d1") == [PNG]
+        assert s.raw_pages("d1")[0].startswith(b"\x89PNG")
         got = c.get_object(Bucket="processed", Key="raw/d1/0000")
         assert got["ServerSideEncryption"] == "AES256"
         c.put_object(Bucket="raw", Key=KEY, Body=PNG)

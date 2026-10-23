@@ -70,4 +70,4 @@ def test_project_schema_without_cs_refs_blocks(tmp_path):
 def test_real_hazard_log():
     log = ROOT / "safety" / "hazard-log.csv"
     r = subprocess.run([sys.executable, str(SCRIPT), str(log)], capture_output=True, text=True)
-    assert "Rows: 16 | acceptable 15 | ALARP 1 | UNACCEPTABLE 0" in r.stdout
+    assert "Rows: 19 | acceptable 17 | ALARP 2 | UNACCEPTABLE 0" in r.stdout

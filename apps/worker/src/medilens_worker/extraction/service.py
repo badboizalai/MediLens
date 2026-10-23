@@ -10,6 +10,9 @@ from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 
 from .prompts import PROMPT_VERSION, UNITS, classify_prompt, extract_prompt, load_schemas
+from .service_token import mint
+
+GATEWAY_AUDIENCE = "ai-gateway"  # apps/ai-gateway main.py AUDIENCE
 
 
 class ExtractionError(Exception):
@@ -33,9 +36,15 @@ class HttpGatewayClient:
     """POST {base_url}/v1/complete (apps/ai-gateway)."""
 
     def __init__(
-        self, base_url: str, tenant_id: str, profile_id: str = "extract", timeout: float = 60
+        self,
+        base_url: str,
+        tenant_id: str,
+        secret: str,
+        profile_id: str = "extract",
+        timeout: float = 60,
     ) -> None:
         self._url = base_url.rstrip("/") + "/v1/complete"
+        self._secret = secret
         self._tenant, self._profile, self._timeout = tenant_id, profile_id, timeout
 
     def complete(self, prompt: str, *, max_output_tokens: int = 4096) -> Completion:
@@ -47,7 +56,15 @@ class HttpGatewayClient:
                 "max_output_tokens": max_output_tokens,
             }
         ).encode()
-        req = urlrequest.Request(self._url, body, {"Content-Type": "application/json"})  # noqa: S310 - fixed internal URL
+        token = mint(  # fresh single-use token per request; scope pinned to our tenant/profile
+            self._secret,
+            caller="worker",
+            audience=GATEWAY_AUDIENCE,
+            tenants=[self._tenant],
+            profiles=[self._profile],
+        )
+        headers = {"Content-Type": "application/json", "Authorization": f"Bearer {token}"}
+        req = urlrequest.Request(self._url, body, headers)  # noqa: S310 - fixed internal URL
         with urlrequest.urlopen(req, timeout=self._timeout) as r:  # noqa: S310 - fixed internal URL
             d = json.load(r)
         return Completion(d["text"], d["model"], float(d["cost_usd"]))

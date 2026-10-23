@@ -77,7 +77,7 @@ def handle(
     try:
         if statuses.get(doc_id) != spec.src:
             raise RuntimeError("invalid_state")
-        spec.handler(JobContext(doc_id, attempt, lambda s: queue.extend_visibility(msg, s)))
+        spec.handler(JobContext(doc_id, attempt, lambda s: queue.extend_visibility(msg, s), d))
         statuses.set(doc_id, spec.dst)
     except NonRetryable as out:
         statuses.set(doc_id, out.status)

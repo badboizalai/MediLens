@@ -110,4 +110,5 @@ class UploadService:
         return Document(doc.id, doc.profile_id, doc.storage_key, doc.mime, STATUS_UPLOADED, digest)
 
     def _reject(self, doc: Document) -> None:
+        self._repo.mark_rejected(doc.id)  # sha256 stays '': outside the unique index
         self._storage.delete(doc.storage_key)  # U-08: no rejected leftovers in quarantine

@@ -11,6 +11,14 @@ Other users' documents/fields return 404 (RLS + owner scope). Audit rows carry a
 ## Document status stream (D53)
 `GET /v1/documents/{id}/events` - Server-Sent Events (`text/event-stream`, `Cache-Control: no-cache`). Owner-only (404 otherwise, like `GET /documents/{id}`). Polls the status every 1 s; emits `event: status` / `data: {"status","updatedAt"}` immediately and on each change (`updatedAt` = when the API observed it), `: keep-alive` comments every 15 s. Closes on a terminal status (`rejected`, `needs_retake`, `failed`, `needs_review`, `confirmed`) or after 300 s; clients reconnect and get the current status first. Constants: `document/application/status_stream.py`. The stream is async (awaited sleep; only the DB poll uses a worker thread). Note: browser `EventSource` cannot send an `Authorization` header, so the web client must use fetch-streaming (e.g. `fetch` + `ReadableStream`) or cookie auth.
 
+## Admin without PHI + break-glass (S11-T105, SEC-AZ-05)
+Admin = token role/group `MEDILENS_ADMIN_ROLE` (default `medilens-admin`); others get 403, no token 401.
+- `GET /v1/admin/stats` - counts only (documents per status, users) via `audit.admin_stats()` (migration 0006, SECURITY DEFINER, owner `admin_definer`); no clinical row is ever readable by an admin.
+- `POST /v1/admin/break-glass` `{profile_id, reason (>=10 chars), ticket?}` - 201 grant valid 1 h (`BREAK_GLASS_TTL`), bound to the admin's `sub`; writes audit `break_glass.opened` and fires the `AlertSink` (default: structured WARNING `break_glass.opened`, ids only, never the reason; a failing sink rolls the grant back).
+- `GET /v1/admin/break-glass/{grant_id}/documents` - `[{id, status}]` of that one profile via `audit.break_glass_documents()`, which re-checks owner/expiry/revocation with `now()`; expired, revoked, foreign or unknown grant -> 403. Each read audits `break_glass.read_documents`.
+
+No BYPASSRLS and `app.profile_ids` is never widened (ADR-0006 definer pattern). Grants are insert-only for `app_rw`; revocation is an operator action (`revoked_at`), no endpoint yet.
+
 ## Outbox relay
 `DocumentService.complete` writes `DocumentUploaded` to `clinical.outbox`; the relay publishes it to the worker queue (at-least-once, the worker dedups). Run: `DATABASE_URL=... WORKER_QUEUE_URL=... [AWS_ENDPOINT_URL=...] python -m medilens.shared.outbox_relay` (polls every `POLL_INTERVAL_SECONDS`).
 Message: `{"type":"document.validate","documentId":"<uuid>","storageKey":"quarantine/<profile_id>/<document_id>","mime":"<mime>","attempt":1}`. Unknown event types stay unpublished (logged by type only).

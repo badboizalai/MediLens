@@ -45,5 +45,30 @@
       "button": "Chụp lại",
       "note": "Điều này bình thường và không phải lỗi của bạn."
     }
+  },
+  "review": {
+    "title": "Kiểm tra hồ sơ của bạn",
+    "loading": "Đang tải các mục…",
+    "loadError": "Chưa tải được các mục. Bạn thử lại nhé.",
+    "fields": "Các mục đã trích xuất",
+    "aiNote": "Do AI trích xuất — vui lòng kiểm tra lại.",
+    "empty": "Chưa đọc được mục nào. Bạn có thể thêm thủ công hoặc tải lại.",
+    "aiExtracted": "AI trích xuất",
+    "edited": "Bạn đã sửa",
+    "confirmed": "Đã xác nhận",
+    "page": "Trang {n}",
+    "needsCheck": "Cần kiểm tra.",
+    "lowConfidence": "Chúng tôi chưa chắc chắn về thông tin này. Bạn kiểm tra giúp nhé.",
+    "required": "Vui lòng nhập giá trị.",
+    "tooLong": "Tối đa {max} ký tự.",
+    "save": "Lưu thay đổi",
+    "confirmField": "Xác nhận giá trị này",
+    "saveError": "Chưa lưu được. Thay đổi của bạn vẫn còn, hãy thử lại.",
+    "remaining": "{n, plural, =0 {Đã kiểm tra hết} other {Còn # mục cần kiểm tra}}",
+    "confirmAll": "Xác nhận hồ sơ",
+    "blocked": "Các mục sau vẫn cần bạn kiểm tra:",
+    "done": "Đã xác nhận.",
+    "source": "Bản gốc",
+    "sourcePlaceholder": "Chưa xem được ảnh trang gốc. Các mục lấy từ những trang sau:"
   }
 }

@@ -181,19 +181,17 @@ data "aws_iam_policy_document" "api_task" {
     actions   = ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:ChangeMessageVisibility", "sqs:GetQueueAttributes"]
     resources = [module.api_events_queue.queue_arn]
   }
-  dynamic "statement" {
-    for_each = var.phi_bucket_arn == null ? [] : [1]
-    content {
-      actions   = ["s3:GetObject"]
-      resources = ["${var.phi_bucket_arn}/extractions/*"]
-    }
+  statement {
+    actions   = ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"]
+    resources = ["${local.quarantine_arn}/quarantine/*"]
   }
-  dynamic "statement" {
-    for_each = var.phi_kms_key_arn == null ? [] : [1]
-    content {
-      actions   = ["kms:GenerateDataKey", "kms:Decrypt"]
-      resources = [var.phi_kms_key_arn]
-    }
+  statement {
+    actions   = ["s3:GetObject"]
+    resources = ["${local.phi_arn}/extractions/*"]
+  }
+  statement {
+    actions   = ["kms:GenerateDataKey", "kms:Decrypt"]
+    resources = [module.storage.kms_key_arns["quarantine"], module.storage.kms_key_arns["phi"]]
   }
   statement {
     actions   = ["sqs:SendMessage", "sqs:GetQueueAttributes"]
@@ -214,19 +212,30 @@ data "aws_iam_policy_document" "worker_task" {
     actions   = ["sqs:SendMessage"]
     resources = [module.api_events_queue.queue_arn]
   }
-  dynamic "statement" {
-    for_each = var.phi_bucket_arn == null ? [] : [1]
-    content {
-      actions   = ["s3:PutObject"]
-      resources = ["${var.phi_bucket_arn}/extractions/*"]
+  statement {
+    actions   = ["s3:GetObject", "s3:GetObjectTagging"]
+    resources = ["${local.quarantine_arn}/quarantine/*"]
+  }
+  statement {
+    actions   = ["s3:PutObject", "s3:GetObject"]
+    resources = [for p in ["raw", "pre", "ocr"] : "${local.phi_arn}/${p}/*"]
+  }
+  statement {
+    actions   = ["s3:ListBucket"]
+    resources = [local.phi_arn]
+    condition {
+      test     = "StringLike"
+      variable = "s3:prefix"
+      values   = [for p in ["raw", "pre", "ocr"] : "${p}/*"]
     }
   }
-  dynamic "statement" {
-    for_each = var.phi_kms_key_arn == null ? [] : [1]
-    content {
-      actions   = ["kms:GenerateDataKey", "kms:Decrypt"]
-      resources = [var.phi_kms_key_arn]
-    }
+  statement {
+    actions   = ["s3:PutObject"]
+    resources = ["${local.phi_arn}/extractions/*"]
+  }
+  statement {
+    actions   = ["kms:GenerateDataKey", "kms:Decrypt"]
+    resources = [module.storage.kms_key_arns["quarantine"], module.storage.kms_key_arns["phi"]]
   }
   statement {
     actions   = ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:ChangeMessageVisibility", "sqs:GetQueueAttributes"]
@@ -261,6 +270,9 @@ module "api" {
     DB_HOST              = split(":", module.rds.endpoint)[0]
     WORKER_QUEUE_URL     = module.jobs_queue.queue_url
     API_EVENTS_QUEUE_URL = module.api_events_queue.queue_url
+    MEDILENS_S3_BUCKET   = module.storage.bucket_names["quarantine"]
+    # Result bucket for extractions/* (ADR-0005).
+    EXTRACTION_RESULTS_BUCKET = module.storage.bucket_names["phi"]
   }
   tags = local.tags
 }
@@ -280,6 +292,11 @@ module "worker" {
     DB_HOST              = split(":", module.rds.endpoint)[0]
     WORKER_QUEUE_URL     = module.jobs_queue.queue_url
     API_EVENTS_QUEUE_URL = module.api_events_queue.queue_url
+    WORKER_RAW_BUCKET    = module.storage.bucket_names["quarantine"]
+    WORKER_PAGES_BUCKET  = module.storage.bucket_names["phi"]
+    # F1: never promote an upload without a clean GuardDuty verdict.
+    WORKER_REQUIRE_MALWARE_SCAN = "true"
+    EXTRACTION_RESULTS_BUCKET   = module.storage.bucket_names["phi"]
   }
   tags = local.tags
 }

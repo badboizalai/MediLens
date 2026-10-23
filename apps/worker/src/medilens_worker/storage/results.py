@@ -1,0 +1,78 @@
+"""Extraction result store (ADR-0005 decision 3). Objects are PHI: never log them."""
+
+import json
+
+import boto3
+
+from medilens_worker.extraction.service import ExtractionRun
+
+
+def to_object(r: ExtractionRun) -> dict:
+    """Shape of docs/architecture/contracts/extraction-result.schema.json."""
+    return {
+        "schemaVersion": 1,
+        "documentId": r.document_id,
+        "runId": r.run_id,
+        "unit": r.unit,
+        "model": r.model,
+        "promptVersion": r.prompt_version,
+        "pipelineVersion": r.pipeline_version,
+        "costUsd": r.cost_usd,
+        "confidence": r.confidence,
+        "repaired": r.repaired,
+        "flags": r.flags,
+        "result": r.result,
+    }
+
+
+def from_object(o: dict) -> ExtractionRun:
+    return ExtractionRun(
+        document_id=o["documentId"],
+        unit=o["unit"],
+        model=o["model"],
+        prompt_version=o["promptVersion"],
+        cost_usd=o["costUsd"],
+        confidence=o["confidence"],
+        result=o["result"],
+        flags=o["flags"],
+        repaired=o["repaired"],
+        run_id=o["runId"],
+        pipeline_version=o.get("pipelineVersion", ""),
+    )
+
+
+class InMemoryResultStore:
+    def __init__(self) -> None:
+        self._runs: dict[str, ExtractionRun] = {}
+
+    def save(self, run: ExtractionRun) -> None:
+        self._runs[run.document_id] = run
+
+    def latest(self, document_id: str) -> ExtractionRun | None:
+        return self._runs.get(document_id)
+
+
+class S3ResultStore:
+    def __init__(self, bucket: str, endpoint_url: str | None = None) -> None:
+        self._c = boto3.client("s3", endpoint_url=endpoint_url)
+        self._b = bucket
+
+    def save(self, run: ExtractionRun) -> None:
+        self._c.put_object(
+            Bucket=self._b,
+            Key=f"extractions/{run.document_id}/{run.run_id}.json",
+            Body=json.dumps(to_object(run)).encode(),
+            ServerSideEncryption="aws:kms",  # ADR-0005: SSE-KMS (bucket default key)
+        )
+
+    def latest(self, document_id: str) -> ExtractionRun | None:
+        objs: list[dict] = []
+        for pg in self._c.get_paginator("list_objects_v2").paginate(
+            Bucket=self._b, Prefix=f"extractions/{document_id}/"
+        ):
+            objs += pg.get("Contents", [])
+        if not objs:
+            return None
+        newest = max(objs, key=lambda o: o["LastModified"])  # a retried extract supersedes
+        body = self._c.get_object(Bucket=self._b, Key=newest["Key"])["Body"].read()
+        return from_object(json.loads(body))

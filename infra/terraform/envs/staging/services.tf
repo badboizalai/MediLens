@@ -259,7 +259,7 @@ module "api" {
   environment = {
     APP_ENV              = "staging"
     DB_HOST              = split(":", module.rds.endpoint)[0]
-    JOBS_QUEUE_URL       = module.jobs_queue.queue_url
+    WORKER_QUEUE_URL     = module.jobs_queue.queue_url
     API_EVENTS_QUEUE_URL = module.api_events_queue.queue_url
   }
   tags = local.tags
@@ -278,7 +278,7 @@ module "worker" {
   environment = {
     APP_ENV              = "staging"
     DB_HOST              = split(":", module.rds.endpoint)[0]
-    JOBS_QUEUE_URL       = module.jobs_queue.queue_url
+    WORKER_QUEUE_URL     = module.jobs_queue.queue_url
     API_EVENTS_QUEUE_URL = module.api_events_queue.queue_url
   }
   tags = local.tags

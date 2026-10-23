@@ -9,14 +9,14 @@ role alone; no BYPASSRLS, app.profile_ids never widened):
 app_rw gets EXECUTE and may only SELECT/INSERT grants (no UPDATE: a grant cannot be extended).
 
 Revision ID: 0006_admin
-Revises: 0005
+Revises: 0006
 Create Date: 2026-10-24
 """
 
 from alembic import op
 
 revision = "0006_admin"
-down_revision = "0005"
+down_revision = "0006"
 branch_labels = None
 depends_on = None
 

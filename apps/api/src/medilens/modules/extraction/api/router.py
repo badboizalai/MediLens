@@ -1,4 +1,4 @@
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from datetime import datetime
 from functools import lru_cache
 from typing import Annotated, Any
@@ -56,8 +56,16 @@ def get_session(
         yield session
 
 
-def get_service(session: Annotated[Session, Depends(get_session)]) -> ReviewService:
-    return ReviewService(SqlReviewRepository(session))
+def get_confirm_hook() -> Callable[[UUID], None]:
+    """Overridden by the composition root (main.py) to project into the clinical module."""
+    return lambda _run: None
+
+
+def get_service(
+    session: Annotated[Session, Depends(get_session)],
+    on_confirmed: Annotated[Callable[[UUID], None], Depends(get_confirm_hook)],
+) -> ReviewService:
+    return ReviewService(SqlReviewRepository(session), on_confirmed)
 
 
 @router.get("/documents/{document_id}/fields", response_model=list[FieldOut], responses=_PROBLEMS)

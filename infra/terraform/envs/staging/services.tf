@@ -154,6 +154,15 @@ module "jobs_queue" {
   tags        = local.tags
 }
 
+# ADR-0005: worker -> API status/result events (ids only, no PHI in messages).
+module "api_events_queue" {
+  source = "../../modules/sqs"
+
+  name        = "${local.name}-api-events"
+  kms_key_arn = aws_kms_key.data.arn
+  tags        = local.tags
+}
+
 module "alb" {
   source = "../../modules/alb"
 
@@ -169,6 +178,24 @@ module "alb" {
 # ---------- Services ----------
 data "aws_iam_policy_document" "api_task" {
   statement {
+    actions   = ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:ChangeMessageVisibility", "sqs:GetQueueAttributes"]
+    resources = [module.api_events_queue.queue_arn]
+  }
+  dynamic "statement" {
+    for_each = var.phi_bucket_arn == null ? [] : [1]
+    content {
+      actions   = ["s3:GetObject"]
+      resources = ["${var.phi_bucket_arn}/extractions/*"]
+    }
+  }
+  dynamic "statement" {
+    for_each = var.phi_kms_key_arn == null ? [] : [1]
+    content {
+      actions   = ["kms:GenerateDataKey", "kms:Decrypt"]
+      resources = [var.phi_kms_key_arn]
+    }
+  }
+  statement {
     actions   = ["sqs:SendMessage", "sqs:GetQueueAttributes"]
     resources = [module.jobs_queue.queue_arn]
   }
@@ -183,6 +210,24 @@ data "aws_iam_policy_document" "api_task" {
 }
 
 data "aws_iam_policy_document" "worker_task" {
+  statement {
+    actions   = ["sqs:SendMessage"]
+    resources = [module.api_events_queue.queue_arn]
+  }
+  dynamic "statement" {
+    for_each = var.phi_bucket_arn == null ? [] : [1]
+    content {
+      actions   = ["s3:PutObject"]
+      resources = ["${var.phi_bucket_arn}/extractions/*"]
+    }
+  }
+  dynamic "statement" {
+    for_each = var.phi_kms_key_arn == null ? [] : [1]
+    content {
+      actions   = ["kms:GenerateDataKey", "kms:Decrypt"]
+      resources = [var.phi_kms_key_arn]
+    }
+  }
   statement {
     actions   = ["sqs:ReceiveMessage", "sqs:DeleteMessage", "sqs:ChangeMessageVisibility", "sqs:GetQueueAttributes"]
     resources = [module.jobs_queue.queue_arn]
@@ -212,9 +257,10 @@ module "api" {
   desired_count      = 2
   min_capacity       = 2
   environment = {
-    APP_ENV        = "staging"
-    DB_HOST        = split(":", module.rds.endpoint)[0]
-    JOBS_QUEUE_URL = module.jobs_queue.queue_url
+    APP_ENV              = "staging"
+    DB_HOST              = split(":", module.rds.endpoint)[0]
+    JOBS_QUEUE_URL       = module.jobs_queue.queue_url
+    API_EVENTS_QUEUE_URL = module.api_events_queue.queue_url
   }
   tags = local.tags
 }
@@ -230,9 +276,10 @@ module "worker" {
   task_policy_json   = data.aws_iam_policy_document.worker_task.json
   log_kms_key_arn    = aws_kms_key.data.arn
   environment = {
-    APP_ENV        = "staging"
-    DB_HOST        = split(":", module.rds.endpoint)[0]
-    JOBS_QUEUE_URL = module.jobs_queue.queue_url
+    APP_ENV              = "staging"
+    DB_HOST              = split(":", module.rds.endpoint)[0]
+    JOBS_QUEUE_URL       = module.jobs_queue.queue_url
+    API_EVENTS_QUEUE_URL = module.api_events_queue.queue_url
   }
   tags = local.tags
 }

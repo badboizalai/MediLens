@@ -16,3 +16,6 @@ Repo variables: `AWS_STAGING_ROLE_ARN`, `AWS_STAGING_ECR_REGISTRY`, `STAGING_CER
 If `AWS_STAGING_ROLE_ARN` is empty, the `plan` and `deploy` jobs are skipped (not green) and a
 `not-configured` job writes "staging not configured" to the job summary.
 `apply` only runs via manual `workflow_dispatch` under the `staging` environment.
+
+## api-events (ADR-0005)
+`module.api_events_queue` (+ DLQ and DLQ-not-empty alarm) carries worker status/result events (ids only). Set `phi_bucket_arn` and `phi_kms_key_arn` (from `modules/storage` outputs) to grant worker `s3:PutObject` and API `s3:GetObject` on `extractions/*`; tasks read `API_EVENTS_QUEUE_URL`. Not applied: no AWS credentials.

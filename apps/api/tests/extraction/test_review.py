@@ -40,8 +40,9 @@ def test_edit_field_not_in_document_is_404(env: Env) -> None:
 
 def test_confirm_blocked_until_low_confidence_confirmed(env: Env) -> None:
     r = env.client.post(f"/v1/documents/{env.doc}/confirm")
-    assert r.status_code == 409 and str(env.low) in r.json()["detail"]
-    assert str(env.high) not in r.json()["detail"]
+    assert r.status_code == 422
+    assert r.json()["field_ids"] == [str(env.low)]
+    assert r.json()["type"].endswith("/errors/unconfirmed-fields")
     assert env.query("SELECT status FROM clinical.extraction_runs") == [("needs_review",)]
 
     edit(env, env.low, "ok")

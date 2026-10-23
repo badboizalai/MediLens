@@ -38,15 +38,14 @@ class ExtractionNotFound(NotFound):
 
 
 class UnconfirmedFields(AppError):
-    status = 409
-    code = "MEDILENS-409"
+    status = 422
+    code = "MEDILENS-422"
     slug = "unconfirmed-fields"
     title = "Unconfirmed fields remain"
 
     def __init__(self, field_ids: list[UUID]) -> None:
-        super().__init__(
-            "Confirm these low-confidence fields first: " + ", ".join(map(str, field_ids))
-        )
+        super().__init__("Confirm the low-confidence fields first.")
+        self.extensions = {"field_ids": [str(i) for i in field_ids]}
 
 
 class ReviewRepository(Protocol):

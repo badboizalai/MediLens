@@ -129,12 +129,13 @@ class Gateway:
             if (cached := self.qa_cache.get(scope, question)) is not None:
                 return replace(cached, cached=True, cost_usd=0.0)
         user = (req.tenant_id, req.profile_id)
-        try:
-            self.quota.check(user)
-        except QuotaExceeded as e:
-            raise GatewayError("quota_exceeded", str(e), e.retry_after_s) from e
+        if qa:  # quota guards user-initiated Q&A only; extraction is never blocked or charged
+            try:
+                self.quota.check(user)
+            except QuotaExceeded as e:
+                raise GatewayError("quota_exceeded", str(e), e.retry_after_s) from e
         resp = self._route(req)
-        if not resp.cached:  # exact-cache hits are free too
+        if qa and not resp.cached:  # exact-cache hits are free too
             self.quota.charge(user, resp.input_tokens + resp.output_tokens)
         if not qa:
             return resp

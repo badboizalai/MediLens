@@ -49,6 +49,38 @@ def test_no_cross_profile_or_locale_leak():
     assert len(p.calls) == 3
 
 
+BASE = "chi so HbA1c cua toi trong lan xet nghiem gan nhat la 6.5 co phai la cao khong a"
+
+
+@pytest.mark.parametrize(
+    "variant",
+    [BASE.replace("6.5", "5.6"), BASE.replace(" khong", "")],
+    ids=["number", "negation"],
+)
+def test_number_or_negation_difference_misses(variant):
+    assert similarity(normalise(BASE), normalise(variant)) >= 0.85  # Jaccard alone would hit
+    g = gw()
+    g.complete(qa(BASE))
+    assert not g.complete(qa(variant)).cached
+
+
+def test_true_paraphrase_still_hits():
+    g = gw()
+    g.complete(qa(BASE))
+    assert g.complete(qa(BASE + " ?")).cached
+
+
+def test_extraction_not_blocked_or_charged_by_quota():
+    g = gw(daily_token_quota=1)
+    g.complete(qa())  # spends the whole budget
+    before = g.quota._usage(("t1", "p1"))
+    for _ in range(2):
+        g.complete(CompletionRequest("t1", "p1", "extract this synthetic note"))
+    assert g.quota._usage(("t1", "p1")) == before
+    with pytest.raises(GatewayError):
+        g.complete(qa(Q2))
+
+
 def test_distinct_question_misses():
     g = gw()
     g.complete(qa())

@@ -17,7 +17,16 @@ def normalise(text: str) -> frozenset[str]:
     """Lowercase, strip diacritics/punctuation, collapse spaces -> token set."""
     t = unicodedata.normalize("NFD", text.lower().replace("đ", "d"))
     t = "".join(c for c in t if unicodedata.category(c) != "Mn")
-    return frozenset(re.sub(r"[^a-z0-9]+", " ", t).split())
+    t = re.sub(r"(?<=\d)[.,](?=\d)", "_", t)  # keep decimals whole: 6.5 != 5.6
+    return frozenset(re.sub(r"[^a-z0-9_]+", " ", t).split())
+
+
+NEGATIONS = frozenset({"khong", "chua", "chang", "not", "no", "never", "without"})
+
+
+def _guard(toks: frozenset[str]) -> tuple[frozenset[str], bool]:
+    """Facts Jaccard can't see: tokens with digits, and whether the question is negated."""
+    return frozenset(t for t in toks if any(c.isdigit() for c in t)), bool(toks & NEGATIONS)
 
 
 def similarity(a: frozenset[str], b: frozenset[str]) -> float:
@@ -51,7 +60,11 @@ class SemanticCache(Generic[V]):
         for key, (ts, v) in list(self._items.items()):
             if now - ts >= self._ttl:
                 del self._items[key]
-            elif key[0] == scope and (sim := similarity(toks, key[1])) >= self._threshold:
+            elif (
+                key[0] == scope
+                and _guard(toks) == _guard(key[1])
+                and (sim := similarity(toks, key[1])) >= self._threshold
+            ):
                 if best is None or sim > best[0]:
                     best = (sim, v)
         if best is None:

@@ -10,7 +10,11 @@ from medilens_worker.ocr.gate import DEFAULT_GATE, GateConfig, decide, quality_s
 from medilens_worker.ocr.types import Metrics, PreprocessedPage, RetakeReason
 
 MIN_DOC_AREA = 0.2  # a page quad must cover at least this share of the frame
+MAX_DOC_AREA = 0.95  # a quad this large is the frame itself, not a page on a desk
 MAX_DESKEW_DEG = 15.0
+MIN_SIDE_FRAC = 0.3  # warped page sides must span this share of the frame
+QUAD_EPS = 0.02  # approxPolyDP epsilon as a share of the contour perimeter
+CANNY_LO, CANNY_HI = 30, 90  # edge thresholds for pages with little contrast to the desk
 
 
 def decode(data: bytes) -> np.ndarray | None:
@@ -46,27 +50,37 @@ def _order(pts: np.ndarray) -> np.ndarray:
     return np.array([pts[s.argmin()], pts[d.argmin()], pts[s.argmax()], pts[d.argmax()]], "float32")
 
 
+def _masks(gray: np.ndarray):
+    """Candidate page masks, cheapest first: Otsu split, then Canny edges for low contrast."""
+    _, otsu = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    yield cv2.morphologyEx(otsu, cv2.MORPH_CLOSE, np.ones((15, 15), np.uint8))
+    edges = cv2.dilate(cv2.Canny(gray, CANNY_LO, CANNY_HI), np.ones((5, 5), np.uint8))
+    closed = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, np.ones((15, 15), np.uint8))
+    yield cv2.erode(closed, np.ones((5, 5), np.uint8))  # undo the dilation so the quad is tight
+
+
 def crop_document(img: np.ndarray) -> np.ndarray:
     """Warp the largest page-like quadrilateral to a rectangle; return img if none found."""
     h, w = img.shape[:2]
     gray = cv2.GaussianBlur(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), (5, 5), 0)
-    _, mask = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, np.ones((15, 15), np.uint8))
-    cnts, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    for c in sorted(cnts, key=cv2.contourArea, reverse=True)[:3]:
-        if cv2.contourArea(c) < MIN_DOC_AREA * h * w:
-            break
-        quad = cv2.approxPolyDP(c, 0.02 * cv2.arcLength(c, True), True)
-        if len(quad) != 4:
-            continue
-        src = _order(quad.reshape(4, 2).astype("float32"))
-        tw = int(max(np.linalg.norm(src[0] - src[1]), np.linalg.norm(src[3] - src[2])))
-        th = int(max(np.linalg.norm(src[0] - src[3]), np.linalg.norm(src[1] - src[2])))
-        if tw < 0.3 * w or th < 0.3 * h:
-            continue
-        dst = np.array([[0, 0], [tw - 1, 0], [tw - 1, th - 1], [0, th - 1]], "float32")
-        m = cv2.getPerspectiveTransform(src, dst)
-        return cv2.warpPerspective(img, m, (tw, th), flags=cv2.INTER_CUBIC)
+    for mask in _masks(gray):
+        cnts, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        for c in sorted(cnts, key=cv2.contourArea, reverse=True)[:3]:
+            if cv2.contourArea(c) < MIN_DOC_AREA * h * w:
+                break
+            if cv2.contourArea(c) > MAX_DOC_AREA * h * w:
+                continue
+            quad = cv2.approxPolyDP(c, QUAD_EPS * cv2.arcLength(c, True), True)
+            if len(quad) != 4:
+                continue
+            src = _order(quad.reshape(4, 2).astype("float32"))
+            tw = int(max(np.linalg.norm(src[0] - src[1]), np.linalg.norm(src[3] - src[2])))
+            th = int(max(np.linalg.norm(src[0] - src[3]), np.linalg.norm(src[1] - src[2])))
+            if tw < MIN_SIDE_FRAC * w or th < MIN_SIDE_FRAC * h:
+                continue
+            dst = np.array([[0, 0], [tw - 1, 0], [tw - 1, th - 1], [0, th - 1]], "float32")
+            m = cv2.getPerspectiveTransform(src, dst)
+            return cv2.warpPerspective(img, m, (tw, th), flags=cv2.INTER_CUBIC)
     return img
 
 

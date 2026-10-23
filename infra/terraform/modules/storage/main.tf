@@ -223,6 +223,26 @@ data "aws_iam_policy_document" "bucket" {
       values   = [aws_kms_key.this[each.key].arn]
     }
   }
+
+  # An omitted header gets the bucket default (the CMK); an explicit AES256 is refused.
+  dynamic "statement" {
+    for_each = each.key == "phi" ? [1] : []
+    content {
+      sid       = "DenyNonKmsEncryption"
+      effect    = "Deny"
+      actions   = ["s3:PutObject"]
+      resources = ["${aws_s3_bucket.this[each.key].arn}/*"]
+      principals {
+        type        = "*"
+        identifiers = ["*"]
+      }
+      condition {
+        test     = "StringNotEqualsIfExists"
+        variable = "s3:x-amz-server-side-encryption"
+        values   = ["aws:kms"]
+      }
+    }
+  }
 }
 
 resource "aws_s3_bucket_policy" "this" {

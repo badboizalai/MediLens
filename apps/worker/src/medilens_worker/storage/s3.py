@@ -8,12 +8,21 @@ import boto3
 from medilens_worker.ocr.types import Metrics, OcrBox, OcrPage, PreprocessedPage, RetakeReason
 
 
+def sse_kms(key_id: str | None) -> dict[str, str]:
+    """SSE-KMS put args; no key id means the bucket default key. Never AES256."""
+    return {"ServerSideEncryption": "aws:kms", **({"SSEKMSKeyId": key_id} if key_id else {})}
+
+
 class S3PageStore:
     def __init__(
-        self, bucket: str, raw_bucket: str | None = None, endpoint_url: str | None = None
+        self,
+        bucket: str,
+        raw_bucket: str | None = None,
+        endpoint_url: str | None = None,
+        kms_key_id: str | None = None,
     ) -> None:
         self._c = boto3.client("s3", endpoint_url=endpoint_url)
-        self._b, self._raw_b = bucket, raw_bucket or bucket
+        self._b, self._raw_b, self._sse = bucket, raw_bucket or bucket, sse_kms(kms_key_id)
 
     def _keys(self, bucket: str, prefix: str) -> list[str]:
         out: list[str] = []
@@ -25,7 +34,7 @@ class S3PageStore:
         return self._c.get_object(Bucket=bucket, Key=key)["Body"].read()
 
     def _put(self, key: str, body: bytes) -> None:
-        self._c.put_object(Bucket=self._b, Key=key, Body=body, ServerSideEncryption="AES256")
+        self._c.put_object(Bucket=self._b, Key=key, Body=body, **self._sse)
 
     def upload_info(self, key: str) -> tuple[int, str | None]:
         size = self._c.head_object(Bucket=self._raw_b, Key=key)["ContentLength"]

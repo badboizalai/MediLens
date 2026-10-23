@@ -4,6 +4,7 @@ import { Canvas, useFrame, useThree, type ThreeEvent } from '@react-three/fiber'
 import { OrbitControls, useGLTF } from '@react-three/drei';
 import { useEffect, useMemo, useRef } from 'react';
 import { Box3, Color, MeshStandardMaterial, Vector3, type Mesh } from 'three';
+import { FPS_WARMUP_S, FPS_WINDOW_S, MAX_DPR, MIN_FPS } from './budget';
 import { NEUTRAL_COLOR, isLod1, regionOf, severityColor, type Region3D } from './logic';
 
 // Bundler resolves these to hashed static assets served from 'self' (CSP connect-src).
@@ -17,12 +18,14 @@ export type Scene3DProps = {
   regions: Region3D[];
   selected: string | null;
   onPick: (code: string | null) => void;
+  /** Called once if average FPS stays below MIN_FPS after warm-up. */
+  onLowFps?: () => void;
 };
 
 type Pose = { pos: Vector3; target: Vector3 };
 type Orbit = { target: Vector3; update: () => void; addEventListener: (t: string, f: () => void) => void; removeEventListener: (t: string, f: () => void) => void };
 
-function Model({ model, regions, selected, onPick }: Scene3DProps) {
+function Model({ model, regions, selected, onPick }: Omit<Scene3DProps, 'onLowFps'>) {
   const { scene } = useGLTF(URLS[model]);
   const root = useMemo(() => scene.clone(true), [scene]);
   const meshes = useMemo(() => {
@@ -36,6 +39,9 @@ function Model({ model, regions, selected, onPick }: Scene3DProps) {
     });
     return out;
   }, [root]);
+
+  // Materials are per-mesh (ours); geometry/textures belong to the shared, cached GLTF.
+  useEffect(() => () => meshes.forEach((m) => (m.material as MeshStandardMaterial).dispose()), [meshes]);
 
   useEffect(() => {
     const sev = new Map(regions.map((r) => [r.region_code, r.severity]));
@@ -110,9 +116,28 @@ function Focus({ model, selected }: { model: string; selected: string | null }) 
   return null;
 }
 
-export default function Scene3D(props: Scene3DProps) {
+/** Counts frames after warm-up; fires onLow once if the average is under MIN_FPS. */
+function FpsGuard({ onLow }: { onLow: () => void }) {
+  const s = useRef({ t: 0, frames: 0, done: false });
+  useFrame((_, dt) => {
+    const c = s.current;
+    if (c.done || dt > 0.5) return; // a long stall (tab hidden) is not a rendering-speed signal
+    c.t += dt;
+    if (c.t < FPS_WARMUP_S) return;
+    c.frames += 1;
+    const span = c.t - FPS_WARMUP_S;
+    if (span >= FPS_WINDOW_S) {
+      c.done = true;
+      if (c.frames / span < MIN_FPS) onLow();
+    }
+  });
+  return null;
+}
+
+export default function Scene3D({ onLowFps, ...props }: Scene3DProps) {
   return (
-    <Canvas camera={{ position: [0, 0.3, props.model === 'body' ? 4 : 2.2], fov: 40 }} dpr={[1, 2]}>
+    <Canvas camera={{ position: [0, 0.3, props.model === 'body' ? 4 : 2.2], fov: 40 }} dpr={[1, MAX_DPR]}>
+      {onLowFps && <FpsGuard onLow={onLowFps} />}
       <ambientLight intensity={0.8} />
       <directionalLight position={[3, 4, 5]} intensity={1.4} />
       <Model {...props} />

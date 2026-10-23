@@ -9,9 +9,10 @@ export type BodyViewer3DProps = {
   regions: Region3D[];
   model: 'body' | 'heart';
   onSelect?: (regionCode: string | null) => void;
+  onLowFps?: () => void;
 };
 
-export function BodyViewer3D({ regions, model, onSelect }: BodyViewer3DProps) {
+export function BodyViewer3D({ regions, model, onSelect, onLowFps }: BodyViewer3DProps) {
   const t = useTranslations('viewer3d');
   const ts = useTranslations('viewer.severity');
   const [selected, setSelected] = useState<string | null>(null);
@@ -32,7 +33,7 @@ export function BodyViewer3D({ regions, model, onSelect }: BodyViewer3DProps) {
         aria-label={t(`canvas.${model}`)}
         className="h-96 w-full rounded-lg bg-[var(--ml-color-brand-surface)] ring-1 ring-[var(--ml-color-brand-border)]"
       >
-        <Scene3D model={model} regions={list} selected={selected} onPick={select} />
+        <Scene3D model={model} regions={list} selected={selected} onPick={select} onLowFps={onLowFps} />
       </div>
       <p className="mt-1 text-xs text-[var(--ml-color-brand-textMuted)]">{t('hint')}</p>
 

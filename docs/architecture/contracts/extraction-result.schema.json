@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://medilens.local/contracts/extraction-result.schema.json",
+  "title": "Extraction result object (S3: extractions/{documentId}/{runId}.json)",
+  "description": "Contains PHI: SSE-KMS bucket only, never in queues or logs. The envelope mirrors the worker ExtractionRun and the clinical.extraction_runs columns. 'result' is validated by the API against ml/schemas/<unit>.v1.json (referenced, not duplicated); extraction_fields rows are derived from it by the API.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "documentId",
+    "runId",
+    "unit",
+    "model",
+    "promptVersion",
+    "costUsd",
+    "confidence",
+    "repaired",
+    "flags",
+    "result"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "documentId": { "type": "string", "format": "uuid" },
+    "runId": { "type": "string", "format": "uuid" },
+    "unit": { "enum": ["dental", "cardiology", "oncology"] },
+    "model": { "type": "string", "minLength": 1 },
+    "promptVersion": { "type": "string", "minLength": 1 },
+    "pipelineVersion": { "type": "string" },
+    "costUsd": { "type": "number", "minimum": 0 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "repaired": { "type": "boolean" },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "reason"],
+        "properties": {
+          "path": { "type": "string" },
+          "reason": { "type": "string", "pattern": "^[a-z0-9_:]+$" }
+        }
+      }
+    },
+    "result": { "type": "object" }
+  }
+}

@@ -14,6 +14,9 @@ MAX_DOC_AREA = 0.95  # a quad this large is the frame itself, not a page on a de
 MAX_DESKEW_DEG = 15.0
 MIN_SIDE_FRAC = 0.3  # warped page sides must span this share of the frame
 QUAD_EPS = 0.02  # approxPolyDP epsilon as a share of the contour perimeter
+MIN_EDGE_STEP = 12  # min grey step across the border; less is an inner box, not a desk
+RING_PX = 12  # width of the strips compared on each side of the border
+GAP_PX = 8  # skipped next to the border so a drawn line does not count
 CANNY_LO, CANNY_HI = 30, 90  # edge thresholds for pages with little contrast to the desk
 
 
@@ -59,6 +62,23 @@ def _masks(gray: np.ndarray):
     yield cv2.erode(closed, np.ones((5, 5), np.uint8))  # undo the dilation so the quad is tight
 
 
+def _has_step(gray: np.ndarray, quad: np.ndarray) -> bool:
+    """True if the strip just outside the quad border is darker or brighter than the one inside."""
+    fill = np.zeros(gray.shape, np.uint8)
+    cv2.fillPoly(fill, [quad.astype(np.int32)], 255)
+
+    def grow(r: int) -> np.ndarray:  # r < 0 erodes
+        k = np.ones((2 * abs(r) + 1,) * 2, np.uint8)
+        return cv2.dilate(fill, k) if r > 0 else cv2.erode(fill, k)
+
+    # Skip a gap on each side so a drawn border line is not part of either strip.
+    inner = (grow(-GAP_PX) > 0) & (grow(-GAP_PX - RING_PX) == 0)
+    outer = (grow(GAP_PX + RING_PX) > 0) & (grow(GAP_PX) == 0)
+    if not inner.any() or not outer.any():
+        return False
+    return abs(float(np.median(gray[inner])) - float(np.median(gray[outer]))) >= MIN_EDGE_STEP
+
+
 def crop_document(img: np.ndarray) -> np.ndarray:
     """Warp the largest page-like quadrilateral to a rectangle; return img if none found."""
     h, w = img.shape[:2]
@@ -72,6 +92,8 @@ def crop_document(img: np.ndarray) -> np.ndarray:
                 continue
             quad = cv2.approxPolyDP(c, QUAD_EPS * cv2.arcLength(c, True), True)
             if len(quad) != 4:
+                continue
+            if not _has_step(gray, quad.reshape(4, 2)):
                 continue
             src = _order(quad.reshape(4, 2).astype("float32"))
             tw = int(max(np.linalg.norm(src[0] - src[1]), np.linalg.norm(src[3] - src[2])))

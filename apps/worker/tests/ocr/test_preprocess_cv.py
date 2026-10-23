@@ -105,6 +105,14 @@ def test_crop_document_warps_to_upright_page(bg):
     assert np.var((255 - gray).sum(axis=1)) > 0
 
 
+def test_full_frame_scan_with_inner_table_is_not_cropped():
+    img = np.full((1400, 1000, 3), 250, np.uint8)
+    for y in range(340, 1080, 40):
+        cv2.putText(img, "Chi so xet nghiem 12.5", (100, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, 0, 2)
+    cv2.rectangle(img, (80, 300), (920, 1100), 0, 3)
+    assert crop_document(img).shape == img.shape
+
+
 def test_crop_document_falls_back_when_no_page():
     flat = np.full((600, 800, 3), 128, np.uint8)
     noise = np.random.default_rng(0).integers(0, 255, (600, 800, 3), dtype=np.uint8)

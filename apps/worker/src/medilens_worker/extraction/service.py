@@ -1,7 +1,9 @@
 """Extraction orchestration: classify -> extract -> validate (+1 repair) -> cite-check."""
 
 import json
+import os
 import re
+import time
 import uuid
 from dataclasses import dataclass, field
 from typing import Protocol
@@ -11,6 +13,7 @@ import structlog
 from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 
+from medilens_worker.anatomy.mapper import map_region
 from medilens_worker.classify.page_types import PageType
 from medilens_worker.classify.rules import LLM_FALLBACK_THRESHOLD, classify_text
 
@@ -82,6 +85,15 @@ class HttpGatewayClient:
         return Completion(d["text"], d["model"], float(d["cost_usd"]))
 
 
+def uuid7() -> str:
+    """RFC 9562 uuid7 (48-bit ms timestamp first, so ids sort by creation time). stdlib has it only from 3.14."""
+    b = bytearray(os.urandom(16))
+    b[:6] = (time.time_ns() // 1_000_000).to_bytes(6, "big")
+    b[6] = 0x70 | (b[6] & 0x0F)
+    b[8] = 0x80 | (b[8] & 0x3F)
+    return str(uuid.UUID(bytes=bytes(b)))
+
+
 @dataclass
 class ExtractionRun:
     document_id: str
@@ -93,7 +105,7 @@ class ExtractionRun:
     result: dict
     flags: list[dict] = field(default_factory=list)  # {path, reason}
     repaired: bool = False
-    run_id: str = field(default_factory=lambda: str(uuid.uuid4()))  # one per extraction run
+    run_id: str = field(default_factory=uuid7)  # one per extraction run
     pipeline_version: str = PIPELINE_VERSION
 
 
@@ -141,6 +153,34 @@ def check_citations(result: dict, pages: list[str]) -> list[dict]:
                 walk(x, f"{path}.{k}")
 
     walk(result, "$")
+    return flags
+
+
+def _locations(result: dict, unit: str):
+    """(path, holder, location StringField) for every item that gets a `region`."""
+    if unit == "dental":
+        for i, t in enumerate(result.get("teeth", [])):
+            yield f"$.teeth[{i}]", t, t.get("fdi")
+    elif unit == "cardiology":
+        for i, d in enumerate(result.get("diagnoses", [])):
+            yield f"$.diagnoses[{i}]", d, d.get("site")
+    elif unit == "oncology":
+        if isinstance(result.get("primary"), dict):
+            yield "$.primary", result["primary"], result["primary"].get("site")
+        for i, m in enumerate(result.get("metastases", [])):
+            yield f"$.metastases[{i}]", m, m.get("site")
+
+
+def map_regions(result: dict, unit: str) -> list[dict]:
+    """Set `region` {region_code, confidence} on each located item; region_code null = unmapped.
+    Unmapped items are kept and flagged, never dropped (illustration only, BR-042)."""
+    flags: list[dict] = []
+    for path, item, loc in _locations(result, unit):
+        text = loc.get("value") if isinstance(loc, dict) else None
+        code, conf = map_region(text, unit) if isinstance(text, str) else (None, 0.0)
+        item["region"] = {"region_code": code, "confidence": conf}
+        if code is None:
+            flags.append({"path": f"{path}.region", "reason": "region_unmapped"})
     return flags
 
 
@@ -212,7 +252,7 @@ def run_extraction(
                 for e in sorted(validator.iter_errors(result), key=lambda e: e.json_path)
             ]
         if not errors:
-            flags = check_citations(result, pages)
+            flags = check_citations(result, pages) + map_regions(result, unit)
             return ExtractionRun(
                 document_id,
                 unit,

@@ -76,6 +76,7 @@ class S3ResultStore:
             objs += pg.get("Contents", [])
         if not objs:
             return None
-        newest = max(objs, key=lambda o: o["LastModified"])  # a retried extract supersedes
+        # runId is uuid7 (time-ordered); LastModified has 1 s resolution and can disagree
+        newest = max(objs, key=lambda o: o["Key"].rsplit("/", 1)[-1])
         body = self._c.get_object(Bucket=self._b, Key=newest["Key"])["Body"].read()
         return from_object(json.loads(body))

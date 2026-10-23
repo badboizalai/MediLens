@@ -9,6 +9,9 @@ from medilens_worker.ocr.types import OcrPage, PreprocessedPage, RetakeReason, R
 
 
 class PageStore(Protocol):
+    def upload_info(self, key: str) -> tuple[int, str | None]: ...  # (size, scan status)
+    def read_upload(self, key: str) -> bytes: ...
+    def save_raw(self, document_id: str, data: bytes) -> None: ...
     def raw_pages(self, document_id: str) -> list[bytes]: ...
     def save_preprocessed(self, document_id: str, pages: list[PreprocessedPage]) -> None: ...
     def preprocessed(self, document_id: str) -> list[PreprocessedPage]: ...
@@ -20,9 +23,20 @@ class PageStore(Protocol):
 class InMemoryPageStore:
     def __init__(self, raw: dict[str, list[bytes]] | None = None) -> None:
         self.raw = raw or {}
+        self.uploads: dict[str, bytes] = {}  # quarantine key -> bytes
+        self.scan: dict[str, str] = {}  # quarantine key -> scan status
         self.pre: dict[str, list[PreprocessedPage]] = {}
         self.ocr: dict[str, list[OcrPage]] = {}
         self.retakes: dict[str, tuple[int, RetakeReason]] = {}
+
+    def upload_info(self, key: str) -> tuple[int, str | None]:
+        return len(self.uploads[key]), self.scan.get(key)
+
+    def read_upload(self, key: str) -> bytes:
+        return self.uploads[key]
+
+    def save_raw(self, document_id: str, data: bytes) -> None:
+        self.raw[document_id] = [data]
 
     def raw_pages(self, document_id: str) -> list[bytes]:
         return self.raw.get(document_id, [])

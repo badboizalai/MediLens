@@ -56,3 +56,18 @@ resource "aws_sqs_queue_policy" "dlq" {
   queue_url = aws_sqs_queue.dlq.id
   policy    = data.aws_iam_policy_document.tls_only["dlq"].json
 }
+
+# Any message in the DLQ is a poison/failed message that needs a human.
+resource "aws_cloudwatch_metric_alarm" "dlq_depth" {
+  alarm_name          = "${var.name}-dlq-not-empty"
+  namespace           = "AWS/SQS"
+  metric_name         = "ApproximateNumberOfMessagesVisible"
+  dimensions          = { QueueName = aws_sqs_queue.dlq.name }
+  statistic           = "Maximum"
+  period              = 300
+  evaluation_periods  = 1
+  threshold           = 0
+  comparison_operator = "GreaterThanThreshold"
+  treat_missing_data  = "notBreaching"
+  tags                = var.tags
+}

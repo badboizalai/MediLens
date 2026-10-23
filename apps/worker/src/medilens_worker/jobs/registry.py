@@ -1,7 +1,7 @@
 """Job handler registry. One handler per pipeline step; bodies are stubs."""
 
-from collections.abc import Callable
-from dataclasses import dataclass
+from collections.abc import Callable, Mapping
+from dataclasses import dataclass, field
 
 from medilens_worker.pipeline.state import DocStatus
 
@@ -11,6 +11,7 @@ class JobContext:
     document_id: str
     attempt: int
     extend_visibility: Callable[[int], None]  # call periodically in long steps
+    message: Mapping[str, object] = field(default_factory=dict)  # parsed job body
 
 
 Handler = Callable[[JobContext], None]
@@ -36,7 +37,11 @@ def job(job_type: str, src: DocStatus, dst: DocStatus) -> Callable[[Handler], Ha
 
 @job("document.validate", DocStatus.UPLOADED, DocStatus.VALIDATED)
 def validate(ctx: JobContext) -> None:
-    """TODO(S5-T43): MIME/size/page checks."""
+    """Check the raw upload named by the message and promote it to the worker bucket."""
+    from medilens_worker.intake.validate import validate_upload
+    from medilens_worker.ocr import service
+
+    validate_upload(ctx.document_id, ctx.message, service.get_store())
 
 
 @job("document.preprocess", DocStatus.VALIDATED, DocStatus.PREPROCESSED)

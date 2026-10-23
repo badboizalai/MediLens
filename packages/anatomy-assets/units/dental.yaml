@@ -1,0 +1,60 @@
+# Unit config v1 (config-only: adding a Unit needs no core code, PB-02).
+# Stored as clinical.unit_configs.config (jsonb). No ICD-10 codes until LIC-002 is approved.
+unit_code: dental
+version: 1
+name_vi: Răng hàm mặt
+name_en: Dental
+extraction_schema: ml/schemas/dental.v1.json
+regions:
+  - sys_dental
+  - jaw_upper
+  - jaw_lower
+  - quadrant_1
+  - quadrant_2
+  - quadrant_3
+  - quadrant_4
+  - quadrant_5
+  - quadrant_6
+  - quadrant_7
+  - quadrant_8
+  - tooth_11
+  - tooth_12
+  - tooth_13
+  - tooth_14
+  - tooth_15
+  - tooth_16
+  - tooth_17
+  - tooth_18
+  - tooth_21
+  - tooth_22
+  - tooth_23
+  - tooth_24
+  - tooth_25
+  - tooth_26
+  - tooth_27
+  - tooth_28
+  - tooth_31
+  - tooth_32
+  - tooth_33
+  - tooth_34
+  - tooth_35
+  - tooth_36
+  - tooth_37
+  - tooth_38
+  - tooth_41
+  - tooth_42
+  - tooth_43
+  - tooth_44
+  - tooth_45
+  - tooth_46
+  - tooth_47
+  - tooth_48
+visual_rules:
+  # severity -> design-system token (packages/design-system/tokens.json). Colour is never a diagnosis (BR-042); always shown with the text label (BR-020).
+  severity_palette:
+    monitor: severity.monitor
+    mild: severity.mild
+    moderate: severity.moderate
+    severe: severity.severe
+  patient_reported: severity.reference  # BR-040: no severity colour
+  default_region_state: severity.reference

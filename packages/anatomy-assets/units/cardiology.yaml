@@ -1,0 +1,49 @@
+# Unit config v1 (config-only: adding a Unit needs no core code, PB-02).
+# Stored as clinical.unit_configs.config (jsonb). No ICD-10 codes until LIC-002 is approved.
+unit_code: cardiology
+version: 1
+name_vi: Tim mạch
+name_en: Cardiology
+extraction_schema: ml/schemas/cardiology.v1.json
+regions:
+  - sys_cardiovascular
+  - heart
+  - heart_ra
+  - heart_la
+  - heart_rv
+  - heart_lv
+  - heart_septum_ias
+  - heart_septum_ivs
+  - valve_aortic
+  - valve_mitral
+  - valve_tricuspid
+  - valve_pulmonary
+  - coronary_arteries
+  - cor_rca
+  - cor_lmca
+  - cor_lad
+  - cor_lcx
+  - great_vessels
+  - aorta
+  - pulmonary_trunk
+  - pulmonary_artery_r
+  - pulmonary_artery_l
+  - pulmonary_veins_r
+  - pulmonary_veins_l
+  - vena_cava_superior
+  - vena_cava_inferior
+observations:
+  # unit is UCUM; code must exist in data/terminology/loinc-cardiology.v1.csv
+  - {key: lvef, loinc: 10230-1, unit: "%", region: heart_lv}
+  - {key: bp_systolic, loinc: 8480-6, unit: "mm[Hg]", region: heart}
+  - {key: bp_diastolic, loinc: 8462-4, unit: "mm[Hg]", region: heart}
+  - {key: bp_panel, loinc: 85354-9, unit: null, region: heart}
+visual_rules:
+  # severity -> design-system token (packages/design-system/tokens.json). Colour is never a diagnosis (BR-042); always shown with the text label (BR-020).
+  severity_palette:
+    monitor: severity.monitor
+    mild: severity.mild
+    moderate: severity.moderate
+    severe: severity.severe
+  patient_reported: severity.reference  # BR-040: no severity colour
+  default_region_state: severity.reference

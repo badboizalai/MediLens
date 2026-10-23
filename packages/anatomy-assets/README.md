@@ -13,3 +13,9 @@ GLB/SVG/unit configs. Mesh/element names MUST equal `region_code`. Validate with
 - No states baked in (no fill). The viewer applies them via CSS; expected hooks: `.tooth[data-state="caries|filled|missing|implant"]`, `.surface[data-state=...]`, `.surface.is-selected`. Strokes use `currentColor`.
 - Check: `uv run --with pyyaml pytest -q tests/assets`.
 - Attribution: original artwork drawn for MediLens from simple geometric shapes; nothing to attribute.
+
+## Unit configs (`units/`)
+- `dental.yaml`, `cardiology.yaml` validate against `units/unit-config.schema.json`; they are the `config` jsonb of `clinical.unit_configs`. Adding a Unit = add a YAML (+ extraction schema), no core code (PB-02).
+- `regions` must exist in `data/terminology/region-tree.v1.yaml`; `observations[].loinc` must exist in `data/terminology/loinc-cardiology.v1.csv` with the same UCUM unit.
+- `visual_rules` only map severity to design-system tokens (no wording; BR-042). No ICD-10 codes (LIC-002 pending).
+- Check: `uv run --with pyyaml --with jsonschema pytest -q tests/assets/test_unit_configs.py`.

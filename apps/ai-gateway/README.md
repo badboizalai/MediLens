@@ -21,3 +21,12 @@ Request `tier: "auto"` (absent = v0 single call) and optional opaque `document_i
 - Metering: `Gateway.document_usage(document_id)` returns USD, tokens and per-tier call counts (in memory, cache hits not counted). Logs carry ids/numbers plus the already-redacted text as in v0.
 
 Test: `uv run pytest apps/ai-gateway -q`
+
+## Safety guardrails (S10-T96)
+`CompletionRequest(traffic="qa", locale="vi"|"en")` turns on deterministic guardrails (`guardrails.py`) for explanation/Q&A traffic; extraction traffic (`traffic=None`) is untouched. Rules run on lowercased, diacritic-stripped text (VI with/without diacritics, EN).
+
+- Input check before redaction and any provider call: `emergency` (chest pain, breathing trouble, ... BR-023/BR-041) returns fixed copy that leads with 115; `dosing`, `med_change`, `prognosis`, `diagnosis` return a fixed refusal pointing to the treating clinician (BR-023/BR-042). No provider call in either case.
+- Output check on the provider answer: dose patterns (`500 mg`, `2 viên`, `3 lần/ngày`; lab units like `mg/dL` are allowed), survival-time phrases and "you have <disease>" are replaced by the refusal.
+- Response carries `guardrail: {category, action}` (`emergency|blocked_input|blocked_output`); logs hold category/action only, never prompt text.
+- Starter set: `tests/data/guardrail-cases.v1.jsonl` (synthetic, 83 cases incl. benign controls). Gate: >= 95% overall, 100% emergency, 0 benign false-blocks. Full red-team set is S10-T98.
+- Limits: regex rules, not a classifier; paraphrases will slip through. HTTP `CompleteBody` does not yet expose `traffic`/`locale` (follow-up in `main.py`).

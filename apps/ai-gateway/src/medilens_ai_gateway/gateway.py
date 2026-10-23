@@ -9,6 +9,7 @@ from concurrent.futures import TimeoutError as FutureTimeout
 from dataclasses import dataclass, field, replace
 
 from .config import GatewayConfig
+from .guardrails import check_input, check_output
 from .providers import Provider, ProviderResult
 from .redaction import redact as default_redact
 
@@ -30,6 +31,8 @@ class CompletionRequest:
     max_output_tokens: int = 400
     tier: str | None = None  # None = single call (v0); "auto" = cascade S -> M
     document_id: str | None = None  # opaque id, metering only
+    traffic: str | None = None  # "qa" = explanation/Q&A: safety guardrails apply (BR-023/041/042)
+    locale: str = "vi"  # language of guardrail copy
 
 
 @dataclass(frozen=True)
@@ -44,6 +47,7 @@ class CompletionResponse:
     tier: str | None = None
     escalated: bool = False
     needs_review: bool = False
+    guardrail: dict[str, str] | None = None  # {category, action} when a guardrail fired
 
 
 @dataclass
@@ -90,9 +94,28 @@ class Gateway:
     def document_usage(self, document_id: str) -> DocumentUsage | None:
         return self._docs.get(document_id)
 
+    def _guarded(self, category: str, action: str, text: str) -> CompletionResponse:
+        log.info("guardrail category=%s action=%s", category, action)  # never the prompt
+        return CompletionResponse(
+            text, "guardrail", 0, 0, 0.0, cached=False,
+            guardrail={"category": category, "action": action},
+        )  # fmt: skip
+
     def complete(self, req: CompletionRequest) -> CompletionResponse:
         if not req.tenant_id or not req.profile_id:
             raise GatewayError("scope_required", "tenant_id and profile_id are required")
+        if req.traffic != "qa":
+            return self._route(req)
+        if hit := check_input(req.prompt, req.locale):  # before redaction/provider: no call at all
+            return self._guarded(hit.category, hit.action, hit.text)
+        resp = self._route(req)
+        if hit := check_output(resp.text, req.locale):
+            return replace(self._guarded(hit.category, hit.action, hit.text), model=resp.model,
+                           input_tokens=resp.input_tokens, output_tokens=resp.output_tokens,
+                           cost_usd=resp.cost_usd, tier=resp.tier)  # fmt: skip
+        return resp
+
+    def _route(self, req: CompletionRequest) -> CompletionResponse:
         if req.tier is None:
             model = req.model or self.config.default_model
             self._check_allowed(model)

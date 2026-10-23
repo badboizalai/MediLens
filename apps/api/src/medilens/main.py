@@ -24,6 +24,8 @@ from medilens.modules.document.api.router import router as document_router
 from medilens.modules.extraction.api import router as extraction_api
 from medilens.modules.identity.api.dependencies import get_token_validator
 from medilens.modules.identity.api.router import router as identity_router
+from medilens.modules.knowledge.api.router import router as knowledge_router
+from medilens.modules.sharing.api.router import router as sharing_router
 from medilens.shared.auth import register_token_validator
 
 API_PREFIX = "/v1"  # every module router mounts under this prefix
@@ -86,6 +88,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     v1.include_router(extraction_api.router)
     v1.include_router(clinical_router)
     v1.include_router(admin_router)
+    v1.include_router(knowledge_router)
+    v1.include_router(sharing_router)
     # v1.include_router(patient_router)
     app.dependency_overrides[extraction_api.get_confirm_hook] = clinical_confirm_hook
     app.include_router(v1)

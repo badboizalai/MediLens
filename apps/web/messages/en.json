@@ -69,7 +69,14 @@
     "blocked": "These items still need your check:",
     "done": "Confirmed.",
     "source": "Original",
-    "sourcePlaceholder": "The original page preview is not available yet. Fields come from these pages:"
+    "sourcePlaceholder": "The original page preview is not available yet. Fields come from these pages:",
+    "showOnPage": "Show on page",
+    "sourceSelect": "Choose “Show on page” on a field to see where it came from.",
+    "sourceLoading": "Loading the page…",
+    "sourceAlt": "Page {n} of your original record",
+    "boxNote": "The highlighted box marks where this value was read.",
+    "noBox": "We couldn't mark the exact spot on this page.",
+    "imageMissing": "The page preview isn't available right now."
   },
   "viewer": {
     "front": "Front view of the body",

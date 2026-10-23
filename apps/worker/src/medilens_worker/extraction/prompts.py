@@ -1,6 +1,7 @@
 """Prompt loading and rendering for extract-v1 (files live in ml/prompts)."""
 
 import json
+import re
 from pathlib import Path
 
 PROMPT_VERSION = "extract-v2"
@@ -29,9 +30,7 @@ def load_schemas() -> dict[str, dict]:
 
 def neutralise(text: str) -> str:
     """Document text is data: it must not be able to close our delimiter tag."""
-    return text.replace("<document_text", "<\\document_text").replace(
-        "</document_text", "<\\/document_text"
-    )
+    return re.sub(r"<\s*(/?)\s*document_text", r"<\\\1document_text", text, flags=re.I)
 
 
 def render_pages(pages: list[str], line_ids: bool = False) -> str:

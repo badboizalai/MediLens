@@ -5,9 +5,9 @@ from functools import lru_cache
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from fastapi.responses import StreamingResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session, sessionmaker
 
 from medilens.core.db import make_engine, make_session_factory
@@ -19,8 +19,8 @@ from medilens.modules.document.domain.models import (
     FileTooLarge,
     UnsupportedFileType,
 )
-from medilens.modules.document.domain.ports import ObjectStorage
-from medilens.modules.document.infra.s3_storage import S3Storage, get_storage_settings
+from medilens.modules.document.domain.ports import ObjectStorage, PageImages
+from medilens.modules.document.infra.s3_storage import S3PageImages, S3Storage, get_storage_settings
 from medilens.modules.document.infra.sql_repository import (
     SqlDocumentRepository,
     SqlProfileOwnership,
@@ -60,6 +60,15 @@ class DocumentOut(BaseModel):
     status: str
 
 
+PAGE_URL_TTL_SECONDS = 300
+
+
+class PageImageOut(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+    url: str
+    expires_in: int = Field(serialization_alias="expiresIn")
+
+
 @lru_cache
 def get_session_factory() -> sessionmaker[Session]:
     return make_session_factory(make_engine())
@@ -75,6 +84,11 @@ def get_session(
 @lru_cache
 def get_storage() -> ObjectStorage:
     return S3Storage(get_storage_settings())
+
+
+@lru_cache
+def get_page_images() -> PageImages:
+    return S3PageImages(get_storage_settings())
 
 
 def get_service(
@@ -135,6 +149,27 @@ def get_document(
 ) -> DocumentOut:
     doc = service.get(user.sub, document_id)
     return DocumentOut(id=doc.id, profile_id=doc.profile_id, status=doc.status)
+
+
+@router.get(
+    "/documents/{document_id}/pages/{page_no}/image",
+    response_model=PageImageOut,
+    responses=_PROBLEMS,
+)
+def get_page_image(
+    document_id: UUID,
+    page_no: int,
+    response: Response,
+    user: Annotated[Principal, Depends(get_current_user)],
+    service: Annotated[UploadService, Depends(get_service)],
+    pages: Annotated[PageImages, Depends(get_page_images)],
+) -> PageImageOut:
+    service.get(user.sub, document_id)  # owner-only: anyone else gets the same 404
+    url = pages.presign_page(document_id, page_no, PAGE_URL_TTL_SECONDS) if page_no >= 1 else None
+    if url is None:
+        raise DocumentNotFound
+    response.headers["Cache-Control"] = "no-store"
+    return PageImageOut(url=url, expires_in=PAGE_URL_TTL_SECONDS)
 
 
 def get_clock() -> Clock:

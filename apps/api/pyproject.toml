@@ -15,6 +15,7 @@ dependencies = [
   "boto3>=1.35",
   "structlog>=24.4",
   "PyJWT[crypto]>=2.9",
+  "cedarpy>=4.12.2",
 ]
 
 [dependency-groups]

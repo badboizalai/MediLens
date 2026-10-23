@@ -188,12 +188,12 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 | S6-T55 | Document edge/perspective: frame-quad reject + Canny with border-step check | ai-ml | worker ocr/preprocess.py | main | **merged** (round 2: full-frame scan regression fixed) | feat/S6-T55-doc-edge-perspective | #74 | 2 |
 | S7-T64 | Web review screen with confirm gate (BR-012) | frontend | apps/web features/review | main | **merged** | feat/S7-T64-review-screen | #75 | 1 |
 | S6-T58 | Upload security review vs SEC-AP-07 (PARTIAL; NO-GO for real data until F1–F4, F6) | security | docs/security/reviews | main | **merged** | docs/S6-T58-upload-security-review | #77 | 1 |
-| S6-T53c | Worker result export to S3 + `extraction.completed` | backend | worker extraction/, main.py | main | in-progress | feat/S6-T53c-worker-result-export | | |
-| S6-T53d | API api-events consumer: status apply + extraction ingest | backend | api document/, extraction/, shared/api_events_consumer.py | main | in-progress | feat/S6-T53d-api-events-consumer | | |
-| S6-T58-F2 | Staging storage wiring, least-privilege IAM, scan gate on (F1/F2/F6/F8) | cloud-devops | infra/terraform/envs/staging, modules/storage | main | in-progress | feat/S6-T58-F2-staging-storage | | |
-| S6-T58-F3F4 | Worker upload hardening: PDF name normalisation, uninspectable/malformed PDFs, image re-encode | security | worker intake/ | main | in-progress | fix/S6-T58-F3F4-upload-hardening | | |
-| S7-T66 | Anatomy mapping: FDI parser, location dictionary, laterality | ai-ml | worker anatomy/, ml/eval/anatomy | main | in-progress | feat/S7-T66-anatomy-mapping | | |
-| S7-T68 | Hazard log v1 draft (CSO sign-off = human) | clinical-safety | safety/ | main | in-progress | docs/S7-T68-hazard-log-v1 | | |
+| S6-T53c | Worker result export to S3 + `extraction.completed` (runId, pipelineVersion) | backend | worker extraction/, storage/results.py, main.py | main | **merged** (continued after rate limit) | feat/S6-T53c-worker-result-export | #82 | 1 |
+| S6-T53d | API api-events consumer: status apply (+ ingest if finished, else S6-T53d2) | backend | api document/, extraction/, shared/api_events_consumer.py | main | in-progress (continued after rate limit) | feat/S6-T53d-api-events-consumer | | |
+| S6-T58-F2 | Staging storage wiring, least-privilege IAM, scan gate on (F1/F2/F8; F6 needs app code) | cloud-devops | infra/terraform/envs/staging | main | **merged** (continued after rate limit) | feat/S6-T58-F2-staging-storage | #81 | 1 |
+| S6-T58-F3F4 | Worker upload hardening: PDF name normalisation, uninspectable/malformed PDFs, image re-encode | security | worker intake/ | main | **merged** | fix/S6-T58-F3F4-upload-hardening | #79 | 1 |
+| S7-T66 | Anatomy mapping: FDI parser, location dictionary, laterality | ai-ml | worker anatomy/, ml/eval/anatomy | main | in-progress (continued after rate limit) | feat/S7-T66-anatomy-mapping | | |
+| S7-T68 | Hazard log v1 draft: HZ-017..019 new, 6 updated, all `draft-pending-CSO` | clinical-safety | safety/ | main | **merged** (draft, not a sign-off) | docs/S7-T68-hazard-log-v1 | #80 | 1 |
 | S6-T53e | Status API + SSE (<2 s) | backend | api document/api | after T53d | todo | | | |
 | S6-T54b | Classify inside `extract` via `unit_for` (decision: option 1, no state-machine change) | ai-ml | worker extraction/deps.py | after T53c | todo | | | |
 | S6-T54c | 9-type labelled synthetic set (30/type) + re-eval classifier | data-curator + ai-ml | ml/datasets/synth, ml/eval/classify | — | todo | | | |
@@ -206,6 +206,10 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 - Runner edge cases (#73): re-chained attempt-1 can race a running retry of the next step; terminal guard should include NEEDS_RETAKE.
 - 409 from confirm should carry structured `field_ids` (web parses `detail`, #75); web STAGE map lacks `rejected`.
 - Security review F5 closed by #73, F9 closed by #78; F7 (rate limit/daily quota), F10–F12 open.
+- Worker `S3PageStore._put` uses SSE-S3 (AES256); bucket policy `StringNotEqualsIfExists` lets it through → switch to `aws:kms` (#81). `kms_admin_role_arns` is a required apply input.
+- Upload hardening F4b: pixel cap before decode, sandboxed PDF rasterisation, worker image must install the `ocr` extra (cv2), HEIC re-encode (#79).
+- Hazard log: BR-012 says 422, API returns 409 (spec mismatch → BA/backend); make `test_hazard_risk_check.py` count-agnostic (#80).
+- Result store `latest()` by LastModified → use time-ordered runId (uuid7) (#82).
 - Region SVG: clinical-informaticist laterality review; `svg_id` in region tree — #66.
 
 ## Human decisions (recorded, not resolved by AI)

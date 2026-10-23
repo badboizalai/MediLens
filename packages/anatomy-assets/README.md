@@ -6,3 +6,10 @@ GLB/SVG/unit configs. Mesh/element names MUST equal `region_code`. Validate with
 - Drawn: organ, bone-site and lymph-node regions (41 distinct region codes across both files). Not drawn: cardiac sub-structures, coronaries, great vessels (heart viewer), dental jaws/quadrants/teeth (FDI chart), and group nodes.
 - Check: `uv run pytest tests/assets -s` (runs in `make test`) (prints undrawn regions).
 - Attribution: original artwork drawn for MediLens from simple geometric shapes; no external source, nothing to attribute (released under the repository licence).
+
+## Odontogram (`svg/odontogram.svg`)
+- 32 permanent teeth, FDI layout, clinician view: patient's right on the viewer's left; upper arch (18..11 | 21..28) above, lower arch (48..41 | 31..38) below, gap at the midline. Deciduous teeth (51-85) are not drawn.
+- Tooth = `<g id="tooth_NN" class="tooth">` (id = `region_code`, with `<title>` and FDI `<text>` label). Surfaces are child shapes `id="tooth_NN__{M|D|O|B|L}"`, `class="surface surface-X"`; M/D swap sides by quadrant (mesial faces the midline), B on top, L at the bottom, O in the centre. Surface ids are viewer-level, not region_codes.
+- No states baked in (no fill). The viewer applies them via CSS; expected hooks: `.tooth[data-state="caries|filled|missing|implant"]`, `.surface[data-state=...]`, `.surface.is-selected`. Strokes use `currentColor`.
+- Check: `uv run --with pyyaml pytest -q tests/assets`.
+- Attribution: original artwork drawn for MediLens from simple geometric shapes; nothing to attribute.

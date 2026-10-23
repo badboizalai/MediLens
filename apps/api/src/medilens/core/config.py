@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     oidc_issuer: str = ""
     oidc_audience: str = "medilens-api"
     cors_origins: list[str] = ["http://localhost:3000"]
+    knowledge_allow_drafts: bool = False  # BR-024/BR-051: only CSO-reviewed articles in prod
 
     @model_validator(mode="after")
     def _prod_is_strict(self) -> "Settings":

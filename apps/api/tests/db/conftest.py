@@ -25,7 +25,7 @@ def pg_url() -> Iterator[str]:
         pytest.skip("Docker not available")
     from testcontainers.postgres import PostgresContainer
 
-    with PostgresContainer("postgres:16", driver="psycopg") as pg:
+    with PostgresContainer("pgvector/pgvector:pg16", driver="psycopg") as pg:
         yield pg.get_connection_url()
 
 

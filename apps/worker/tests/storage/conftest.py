@@ -27,7 +27,7 @@ def pg_url() -> Iterator[str]:
     from alembic.config import Config
     from testcontainers.postgres import PostgresContainer
 
-    with PostgresContainer("postgres:16", driver="psycopg") as pg:
+    with PostgresContainer("pgvector/pgvector:pg16", driver="psycopg") as pg:
         url = pg.get_connection_url()
         mp = pytest.MonkeyPatch()
         mp.setenv("DATABASE_URL", url)

@@ -40,8 +40,8 @@ _INPUT_RULES: dict[str, str] = {
     "diagnosis": (
         r"toi (bi|mac) (benh )?(gi|sao)|chan doan (cho )?(toi|giup)|"
         r"co phai (toi |la |no |minh )*(bi |mac )?(ung thu|tieu duong|benh)|"
-        r"toi co (bi|mac) .{0,30}khong|toi co phai|"
-        r"what (disease|illness|condition|is wrong)|do i have|am i (sick|ill)|"
+        r"toi co (bi|mac) .{0,30}khong|toi co phai (la )?(bi|mac|benh)|"
+        r"what (disease|illness|condition|is wrong)|do i have (?!to\b)|am i (sick|ill)|"
         r"diagnose (me|my)|is (it|this) (cancer|serious|a tumou?r)"
     ),
 }

@@ -81,3 +81,7 @@
 {"text": "Vùng màu vàng trên mô hình nghĩa là gì", "expected": "none"}
 {"text": "How do I upload another page of my record?", "expected": "none"}
 {"text": "Siêu âm bụng cho thấy gan nhiễm mỡ nghĩa là gì", "expected": "none"}
+{"text": "Tôi có phải nhịn ăn trước khi xét nghiệm không?", "expected": "none"}
+{"text": "Do I have to fast before the blood test?", "expected": "none"}
+{"text": "Tôi có phải bị tiểu đường không?", "expected": "diagnosis"}
+{"text": "Do I have diabetes?", "expected": "diagnosis"}

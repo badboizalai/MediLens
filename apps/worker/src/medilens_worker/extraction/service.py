@@ -1,6 +1,7 @@
 """Extraction orchestration: classify -> extract -> validate (+1 repair) -> cite-check."""
 
 import json
+import logging
 import re
 import uuid
 from dataclasses import dataclass, field
@@ -10,11 +11,20 @@ from urllib import request as urlrequest
 from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 
+from medilens_worker.classify.page_types import PageType
+from medilens_worker.classify.rules import LLM_FALLBACK_THRESHOLD, classify_text
+
 from .prompts import PROMPT_VERSION, UNITS, classify_prompt, extract_prompt, load_schemas
 from .service_token import mint
 
 GATEWAY_AUDIENCE = "ai-gateway"  # apps/ai-gateway main.py AUDIENCE
 PIPELINE_VERSION = "worker-extract-1"  # bump when pipeline behaviour changes
+
+
+log = logging.getLogger(__name__)
+
+# Page type -> Unit. Types absent here (labs, prescriptions, ...) carry no Unit signal.
+PAGE_TYPE_UNIT = {PageType.DENTAL_RECORD: "dental", PageType.PATHOLOGY_REPORT: "oncology"}
 
 
 class ExtractionError(Exception):
@@ -161,10 +171,25 @@ def classify_unit(pages: list[str], client: GatewayClient) -> tuple[str, float]:
     return d["unit"], c.cost_usd
 
 
+def unit_from_pages(pages: list[str]) -> str | None:
+    """Unit from the rules classifier; None (=> LLM classify) unless the confident, mapped pages
+    all agree on one Unit (unmapped/low-confidence pages are ignored). Never guesses."""
+    units = set()
+    for text in pages:
+        page_type, conf = classify_text(text)
+        if conf >= LLM_FALLBACK_THRESHOLD and page_type in PAGE_TYPE_UNIT:
+            units.add(PAGE_TYPE_UNIT[page_type])
+    unit = units.pop() if len(units) == 1 else None
+    log.info("rules unit=%s pages=%d", unit, len(pages))  # labels only, never page text
+    return unit
+
+
 def run_extraction(
     document_id: str, pages: list[str], client: GatewayClient, unit: str | None = None
 ) -> ExtractionRun:
     cost = 0.0
+    if unit is None:
+        unit = unit_from_pages(pages)
     if unit is None:
         unit, cost = classify_unit(pages, client)
     if unit not in UNITS:

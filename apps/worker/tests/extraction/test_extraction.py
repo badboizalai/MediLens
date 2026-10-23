@@ -9,6 +9,7 @@ from medilens_worker.extraction.service import (
     ExtractionError,
     HttpGatewayClient,
     run_extraction,
+    unit_from_pages,
 )
 from medilens_worker.extraction.service_token import Verifier, bearer
 from medilens_worker.jobs.registry import REGISTRY, JobContext
@@ -43,11 +44,40 @@ def test_happy_path_record():
     assert len(gw.prompts) == 1
 
 
-def test_classifies_unit_when_missing():
-    gw = StubGateway({"unit": "dental", "confidence": 0.9}, good())
+def test_rules_pick_dental_unit_without_llm_classify():
+    gw = StubGateway(good())
     run = run_extraction("d1", PAGES, gw)
+    assert run.unit == "dental" and run.cost_usd == 0.01
+    assert len(gw.prompts) == 1 and "Classify which clinical Unit" not in gw.prompts[0]
+
+
+def test_pathology_pages_map_to_oncology():
+    assert unit_from_pages(["Ket qua giai phau benh. Sinh thiet u."]) == "oncology"
+
+
+@pytest.mark.parametrize(
+    "pages",
+    [
+        ["Don thuoc: 1 vien moi sang"],  # type with no Unit mapping
+        ["Hello world"],  # no rule fires
+        ["Ket qua giai phau benh", "Rang 36 sau"],  # pages disagree
+        [],
+    ],
+)
+def test_ambiguous_or_unsupported_pages_yield_no_unit(pages):
+    assert unit_from_pages(pages) is None
+
+
+def test_ambiguous_pages_fall_back_to_llm_classifier():
+    gw = StubGateway({"unit": "dental", "confidence": 0.9}, good())
+    run = run_extraction("d1", ["Ghi chu chung."], gw)
     assert run.unit == "dental" and run.cost_usd == 0.02
     assert "Classify which clinical Unit" in gw.prompts[0]
+
+
+def test_explicit_unit_overrides_classification():
+    gw = StubGateway(good())
+    assert run_extraction("d1", ["Ket qua giai phau benh"], gw, unit="dental").unit == "dental"
 
 
 def test_invalid_json_gets_one_repair_then_ok():

@@ -1,13 +1,13 @@
 """Extraction orchestration: classify -> extract -> validate (+1 repair) -> cite-check."""
 
 import json
-import logging
 import re
 import uuid
 from dataclasses import dataclass, field
 from typing import Protocol
 from urllib import request as urlrequest
 
+import structlog
 from jsonschema import Draft202012Validator
 from referencing import Registry, Resource
 
@@ -21,7 +21,7 @@ GATEWAY_AUDIENCE = "ai-gateway"  # apps/ai-gateway main.py AUDIENCE
 PIPELINE_VERSION = "worker-extract-1"  # bump when pipeline behaviour changes
 
 
-log = logging.getLogger(__name__)
+log = structlog.get_logger()
 
 # Page type -> Unit. Types absent here (labs, prescriptions, ...) carry no Unit signal.
 PAGE_TYPE_UNIT = {PageType.DENTAL_RECORD: "dental", PageType.PATHOLOGY_REPORT: "oncology"}
@@ -180,7 +180,7 @@ def unit_from_pages(pages: list[str]) -> str | None:
         if conf >= LLM_FALLBACK_THRESHOLD and page_type in PAGE_TYPE_UNIT:
             units.add(PAGE_TYPE_UNIT[page_type])
     unit = units.pop() if len(units) == 1 else None
-    log.info("rules unit=%s pages=%d", unit, len(pages))  # labels only, never page text
+    log.info("rules_unit", unit=unit, pages=len(pages))  # labels only, never page text
     return unit
 
 

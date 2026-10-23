@@ -100,7 +100,12 @@ class UploadService:
             raise
         self._outbox.add(
             EVENT_DOCUMENT_UPLOADED,
-            {"document_id": str(doc.id), "profile_id": str(doc.profile_id), "mime": doc.mime},
+            {
+                "document_id": str(doc.id),
+                "profile_id": str(doc.profile_id),
+                "mime": doc.mime,
+                "storage_key": doc.storage_key,
+            },
         )
         return Document(doc.id, doc.profile_id, doc.storage_key, doc.mime, STATUS_UPLOADED, digest)
 

@@ -29,4 +29,9 @@ Test: `uv run pytest apps/ai-gateway -q`
 - Output check on the provider answer: dose patterns (`500 mg`, `2 viên`, `3 lần/ngày`; lab units like `mg/dL` are allowed), survival-time phrases and "you have <disease>" are replaced by the refusal.
 - Response carries `guardrail: {category, action}` (`emergency|blocked_input|blocked_output`); logs hold category/action only, never prompt text.
 - Starter set: `tests/data/guardrail-cases.v1.jsonl` (synthetic, 83 cases incl. benign controls). Gate: >= 95% overall, 100% emergency, 0 benign false-blocks. Full red-team set is S10-T98.
-- Limits: regex rules, not a classifier; paraphrases will slip through. HTTP `CompleteBody` does not yet expose `traffic`/`locale` (follow-up in `main.py`).
+- Limits: regex rules, not a classifier; paraphrases will slip through. HTTP `CompleteBody` exposes `traffic` (`"qa"`) and `locale` (`vi`|`en`).
+
+## Semantic cache and token quota (S10-T97)
+- **QA cache** (`cache.py`): only `traffic="qa"` answers that passed guardrails. Key = (tenant, profile, locale, prompt_version) + normalised **redacted** question (lowercase, no diacritics/punctuation, token-set Jaccard >= 0.85, AND identical digit-bearing tokens AND same negation presence (khong/chua/chang/not/no/never/without)). Per-profile scope, so no cross-user hits. TTL = `cache_ttl_s`, max 1000 entries, in-memory; `hits`/`misses` counters on `Gateway.qa_cache`. Guardrail refusals/emergency and extraction traffic are never cached. Shortcut: Jaccard, not embeddings; upgrade to pgvector/Redis later. The exact-match cache key now also includes `locale`.
+- **Quota** (`quota.py`, SEC-AI-07): per (tenant, profile) daily input+output token budget (`daily_token_quota`, default 50000 = assumption, env `AI_GATEWAY_DAILY_TOKEN_QUOTA`, UTC day). Applies to `traffic="qa"` only (check + charge); extraction traffic is never blocked or charged. Checked before the provider call (the last call may overshoot); cache hits are free. Over quota -> HTTP 429 `quota_exceeded` with `Retry-After` (seconds to next UTC day).
+- HTTP response carries `guardrail` and `cached`.

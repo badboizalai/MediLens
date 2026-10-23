@@ -3,10 +3,9 @@
 import logging
 import os
 
-from medilens_worker.pipeline.idempotency import InMemoryIdempotencyStore
 from medilens_worker.pipeline.runner import handle
-from medilens_worker.pipeline.state import StatusRepo
 from medilens_worker.queue.base import Queue
+from medilens_worker.storage import build_stores
 
 
 def build_queue() -> Queue:
@@ -23,7 +22,7 @@ def build_queue() -> Queue:
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     queue = build_queue()
-    statuses, store = StatusRepo(), InMemoryIdempotencyStore()  # TODO(S5-T43): DB-backed
+    statuses, store = build_stores()
     while True:
         msg = queue.receive()
         if msg is not None:

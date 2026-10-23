@@ -128,3 +128,17 @@ def test_baseline_passes_gate_and_is_labelled():
     t = json.loads((ROOT / "thresholds.json").read_text())
     assert metrics.check_gate(r, t) == []
     assert r["overall"]["f1"] < 1.0  # noise really is injected
+
+
+def test_strata_groups_and_no_predictions(tmp_path, capsys):
+    g = rec("d1", [tooth("14", "caries", "tooth_14")])
+    g["strata"] = {"lang": "vi", "noise": "heavy"}
+    r = run([g], [g])
+    assert r["groups"]["lang=vi"]["f1"] == 1.0
+    assert "noise=heavy@unit=dental" in r["groups"]
+    gold = tmp_path / "gold.jsonl"
+    gold.write_text(json.dumps(g) + "\n", encoding="utf-8")
+    pred = tmp_path / "pred.jsonl"
+    pred.write_text(json.dumps(rec("other", [])) + "\n", encoding="utf-8")
+    assert cli.main(["run", "--gold", str(gold), "--pred", str(pred)]) == 0
+    assert "no predictions" in capsys.readouterr().out

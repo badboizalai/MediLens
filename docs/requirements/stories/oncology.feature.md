@@ -1,7 +1,7 @@
 # Oncology content rules: user stories (draft — pending CSO (D99))
 
 Status: **draft — pending CSO (D99)**. Not approved. Rules: `docs/brd/business-rules.md` (BR-046…BR-051). Matrix: `docs/requirements/traceability.csv`.
-Test data is synthetic only. Wording illustrates and explains; it never diagnoses, doses or gives prognosis (BR-042). <!-- claims-ok -->
+Test data is synthetic only. Wording follows BR-042 (illustrate and explain only).
 Copy examples in quotes are illustrative; final wording belongs to the CSO.
 
 ## US-036 Oncology record opens in summary mode (BR-046)

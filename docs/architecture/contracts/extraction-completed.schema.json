@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://medilens.local/contracts/extraction-completed.schema.json",
+  "title": "api-events: extraction.completed",
+  "description": "Pointer to the result object at extractions/{documentId}/{runId}.json in the PHI bucket. Ids only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "event", "documentId", "runId"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "event": { "const": "extraction.completed" },
+    "documentId": { "type": "string", "format": "uuid" },
+    "runId": { "type": "string", "format": "uuid" }
+  }
+}

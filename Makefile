@@ -53,6 +53,7 @@ skills-package: ## Zip each skill into dist/skills
 	tools/package_skills.sh
 governance: ## Run the CI governance checks locally
 	python3 tools/validate_skills.py
+	uv run --with jsonschema python tools/check_contracts.py
 	@tests=$$(ls .claude/skills/*/scripts/test_*.py 2>/dev/null); \
 	if [ -n "$$tests" ]; then uv run --with pytest pytest $$tests; else echo "no skill script tests found"; fi
 	python3 .claude/skills/medilens-clinical-safety-officer/scripts/hazard_risk_check.py safety/hazard-log.csv

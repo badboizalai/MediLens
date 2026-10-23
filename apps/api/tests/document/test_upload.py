@@ -47,6 +47,7 @@ def test_happy_path(env: Env) -> None:
         "document_id": doc_id,
         "profile_id": str(env.alice_profile),
         "mime": "image/png",
+        "storage_key": f"quarantine/{env.alice_profile}/{doc_id}",
     }
 
 

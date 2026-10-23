@@ -3,6 +3,8 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
+from medilens_worker.queue.events import EventSink
+
 from .service import ExtractionRun, GatewayClient
 
 
@@ -11,8 +13,8 @@ class ExtractDeps:
     load_pages: Callable[[str], list[str]]  # document_id -> OCR text per page
     client: GatewayClient
     save_run: Callable[[ExtractionRun], None]
-    load_run: Callable[[str], ExtractionRun | None]  # document_id -> saved run
-    save_review: Callable[[ExtractionRun], None]  # materialize for user review
+    load_run: Callable[[str], ExtractionRun | None]  # document_id -> latest saved run
+    emit: EventSink  # api-events: extraction.completed
     unit_for: Callable[[str], str | None] = lambda document_id: None  # None => classify
 
 

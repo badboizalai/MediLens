@@ -233,3 +233,53 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 4. Terraform apply needs AWS credentials, remote state, staging reviewers, and `kms_admin_role_arns`.
 5. Earlier decisions still open: `apps/web/.env.example` (deny rule), consent-form claims lint lines 6/27, `MAX_PENDING_UPLOADS = 20`.
 **Next AI tasks**: S6-T53e SSE (after #84), S6-T54b classify in extract, S6-T54c 9-type set, S6-T55b VietOCR, S7-T64b page image + bbox, S7-T66b wire mapper, worker `_put` → SSE-KMS, F4b pixel cap + sandboxed PDF raster, F7 rate limit/quota, shared ownership/audit port, runner NEEDS_RETAKE terminal guard, 409 `field_ids`, web `rejected` stage. Session is long → `/compact` before the next run.
+
+---
+# Run 4 — decisions from run 3 + backlog (owner: "Tiếp tục", 2026-10-23)
+- Started: 2026-10-23 18:27 +07 · Window 5 h · **No merges this run** (owner merges). Sonnet session limit hit ~20:50 → 5 workers resumed in their own worktrees after the 21:30 reset; S7-T65 restarted fresh.
+- Verification on an integration branch = origin/main 62c4a2c + all 12 run-4 PR heads merged in the order below (local only, not pushed): api/worker/ai-gateway/phi-service pytest exit 0, tests/assets + data/terminology exit 0, ml/datasets/synth 13 passed, classifier eval macro-F1 1.000 (test split), lint-imports 12 kept / 0 broken, ruff check + format clean, `make governance` PASS, web lint/typecheck ok + vitest 32 passed. Every PR was also re-tested on its own head (all contain main 62c4a2c).
+
+## Decisions (main session; owner may override)
+1. api-events consumer under FORCE RLS: narrow `SECURITY DEFINER` function `clinical.apply_document_status` owned by NOLOGIN `doc_status_definer` (column grants + one RLS policy `TO doc_status_definer`, not BYPASSRLS), EXECUTE only for NOLOGIN `api_events_consumer`; tests run as that role. Recorded in ADR-0006 (#85), implemented in #84 (migration 0004).
+2. ADR-0005 → Accepted (#85). BR-012: unconfirmed low-confidence fields → **422** with `field_ids` extension (#88); web reads `field_ids`.
+3. `MAX_PENDING_UPLOADS = 20` kept as the default named constant.
+4. Cascade escalation threshold 0.7 (= BR-012 review threshold); gateway prices now per 1K tokens (still assumptions).
+
+## Task table
+| ID | Task | Owner skill | Paths | Base | Status | Branch | PR | Rounds |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| CHORE-02 | ADR-0005 Accepted + ADR-0006 definer functions | solution-architect | docs/architecture/adr | main | ready-to-merge | docs/CHORE-02-adr-0005-accept-adr-0006 | #85 | 1 |
+| S6-T53d | api-events consumer + migration 0004 definer fn (security pass) | backend + security | api migrations, document/, shared/api_events_consumer.py | main | ready-to-merge | feat/S6-T53d-api-events-consumer | #84 | 2 |
+| BUG-06 | confirm → 422 + `field_ids` (API + web) | backend + frontend | api extraction/, core/errors.py, web review/ | main | ready-to-merge | fix/BUG-06-confirm-422 | #88 | 1 |
+| S6-T58-F9b | worker page/result writes SSE-KMS with PHI CMK; deny explicit AES256 on phi bucket | backend + devops | worker storage/, infra staging + storage module | main | ready-to-merge | fix/S6-T58-F9b-worker-sse-kms | #87 | 1 |
+| S6-T58-F4b | worker Dockerfile with `ocr` extra (2.9 GB, uid 10001) + pre-decode 50 MP pixel cap | security + devops | worker Dockerfile, intake/, ocr/ | main | ready-to-merge | fix/S6-T58-F4b-worker-image-pixel-cap | #89 | 2 |
+| S6-T54c | 9-type synthetic set (40/type, dev/test) + classifier eval (test macro-F1 0.861→1.000) | ai-ml + data-curator | ml/datasets/synth, ml/eval/classify, worker classify/ | main | ready-to-merge | feat/S6-T54c-classify-9-types | #90 | 1 |
+| S6-T54b | rules classifier picks the Unit in extract (else LLM classify) | ai-ml | worker extraction/ | main | ready-to-merge | feat/S6-T54b-classify-in-extract | #86 | 2 |
+| BUG-08 | runner terminal guard (NEEDS_RETAKE/FAILED) + step lease vs chain race | backend | worker pipeline/ | main | ready-to-merge | fix/BUG-08-runner-terminal-guard | #92 | 1 |
+| S7-T65 | AI Gateway cascade S→M (one escalation) + USD/doc metering | mlops | apps/ai-gateway | main | ready-to-merge | feat/S7-T65-gateway-cascade | #94 | 1 |
+| S8-T77 | dental VI↔EN terms (57), ICD-10 gated on LIC-002 | clinical-informaticist | data/terminology | main | ready-to-merge | feat/S8-T77-dental-terminology | #91 | 1 |
+| S8-T74 | FDI odontogram SVG (32 teeth × 5 surfaces) + asset test | 3d-medical-artist | packages/anatomy-assets/svg, tests/assets | main | ready-to-merge | feat/S8-T74-odontogram-svg | #95 | 1 |
+| S8-T73 | 2D body viewer BodyMap2D (severity, tooltip, list alternative, axe) | frontend | web features/viewer/core, messages, next.config | main | ready-to-merge | feat/S8-T73-viewer-2d | #93 | 1 |
+
+## PRs waiting for human merge (in this order; squash)
+1. #85 → #84 (ADR first; #84 adds migration 0004)
+2. #88
+3. #87 → #89 — **#89 then has a one-paragraph conflict in `apps/worker/README.md`**: keep #89's text and re-add #87's SSE-KMS sentence after "Keys carry opaque ids only." (resolution verified locally)
+4. #90 → #86 (tested together)
+5. #92, #94, #91, #95, #93 (independent)
+6. This state PR last.
+
+## Follow-ups from reviews (next AI tasks)
+- S6-T53d2 extraction ingest: its own definer role/function + security review (ADR-0006); consumer runtime (ECS task) + `GRANT api_events_consumer TO <login>`.
+- Worker + api base images pinned by digest; CI build + Trivy for the worker image (workflow → human merge).
+- Gateway: bound `_docs` usage map (move to S7-T69 metrics mart); real Bedrock adapter must report `confidence`/`schema_valid`; review logging of redacted prompts.
+- Viewer: mount BodyMap2D on a page and verify the webpack `?raw` rule in `next build`; key fallback for id-less shapes; odontogram viewer + FDI surface mapping I→O, P→L (S8-T74 viewer part, S8-T78 visual tests).
+- D55 OCR baseline needs PaddleOCR/VietOCR + render step (REPORT in ml/eval/classify); independent template set before using the classifier score as G2 evidence.
+- PAGE_TYPE_UNIT has no cardiology page type; wire dental `abbrev` into the normaliser (S7-T62).
+- Still open from run 3: S6-T53e SSE, S7-T64b page image + bbox, web `rejected` stage, F7 rate limit/quota, shared ownership/audit port, result store `latest()` by uuid7.
+
+## Owner actions (in order)
+1. Merge the PRs above in order (#89 README conflict as described).
+2. Remove finished worktrees under `.claude/worktrees/` (removal was denied to the AI by the permission classifier), including `verify-run4` (local integration branch `verify/run4-all`, not pushed).
+3. Deployment: `GRANT api_events_consumer TO <consumer_login>`; Terraform apply (AWS credentials, remote state, `kms_admin_role_arns`, staging reviewers); point `var.worker_image` at the new worker image.
+4. Human gates/decisions, unchanged: G2-CS (CSO review of `draft-pending-CSO` hazard rows + dental term wording), G0/G0-R, G1-D (LIC-002 ICD-10 before any ICD code is loaded), consent-form lines 6/27 wording, `apps/web/.env.example` (deny rule).

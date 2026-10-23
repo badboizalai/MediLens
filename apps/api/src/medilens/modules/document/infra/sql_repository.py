@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from medilens.core.db import scope_to_profiles
 from medilens.modules.document.domain.models import (
+    PENDING_WINDOW_SECONDS,
     STATUS_PENDING,
     STATUS_UPLOADED,
     Document,
@@ -73,9 +74,10 @@ class SqlDocumentRepository:
         return self._session.execute(
             text(
                 "SELECT count(*) FROM clinical.documents "
-                "WHERE status = :pending AND deleted_at IS NULL"
+                "WHERE status = :pending AND deleted_at IS NULL "
+                "AND created_at > now() - make_interval(secs => :window)"
             ),
-            {"pending": STATUS_PENDING},
+            {"pending": STATUS_PENDING, "window": PENDING_WINDOW_SECONDS},
         ).scalar_one()
 
     def has_duplicate(self, profile_id: UUID, sha256: str, excluding: UUID) -> bool:

@@ -257,3 +257,18 @@ def test_pending_upload_cap_is_429_per_user(env: Env) -> None:
     assert r.json()["type"].endswith("/too-many-pending-uploads")
     env.as_user("bob")  # the cap is per user
     assert request(env, profile=env.bob_profile).status_code == 201
+
+
+def test_old_pending_uploads_do_not_count_toward_cap(env: Env) -> None:
+    from medilens.core.db import make_engine
+    from medilens.modules.document.domain.models import MAX_PENDING_UPLOADS
+    from sqlalchemy import text
+
+    for _ in range(MAX_PENDING_UPLOADS):
+        assert request(env).status_code == 201
+    assert request(env).status_code == 429
+    engine = make_engine(env.url)
+    with engine.begin() as c:  # age every pending row past the window
+        c.execute(text("UPDATE clinical.documents SET created_at = now() - interval '1 day'"))
+    engine.dispose()
+    assert request(env).status_code == 201

@@ -6,7 +6,7 @@ import time
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import TimeoutError as FutureTimeout
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 
 from .config import GatewayConfig
 from .providers import Provider, ProviderResult
@@ -28,6 +28,8 @@ class CompletionRequest:
     prompt: str
     model: str | None = None
     max_output_tokens: int = 400
+    tier: str | None = None  # None = single call (v0); "auto" = cascade S -> M
+    document_id: str | None = None  # opaque id, metering only
 
 
 @dataclass(frozen=True)
@@ -38,6 +40,18 @@ class CompletionResponse:
     output_tokens: int
     cost_usd: float
     cached: bool
+    confidence: float | None = None
+    tier: str | None = None
+    escalated: bool = False
+    needs_review: bool = False
+
+
+@dataclass
+class DocumentUsage:
+    cost_usd: float = 0.0
+    tokens_in: int = 0
+    tokens_out: int = 0
+    tier_counts: dict[str, int] = field(default_factory=dict)
 
 
 class Gateway:
@@ -55,6 +69,7 @@ class Gateway:
         self._cache: dict[str, tuple[float, CompletionResponse]] = {}
         self.total_cost_usd = 0.0
         self.total_tokens = 0
+        self._docs: dict[str, DocumentUsage] = {}
         self._pool = ThreadPoolExecutor(max_workers=4)
 
     def cache_key(self, req: CompletionRequest, model: str, redacted: str) -> str:
@@ -72,19 +87,52 @@ class Gateway:
             log.error("redaction_failed stage=%s", what)
             raise GatewayError("redaction_failed", f"{what} blocked: redaction error") from exc
 
+    def document_usage(self, document_id: str) -> DocumentUsage | None:
+        return self._docs.get(document_id)
+
     def complete(self, req: CompletionRequest) -> CompletionResponse:
         if not req.tenant_id or not req.profile_id:
             raise GatewayError("scope_required", "tenant_id and profile_id are required")
-        model = req.model or self.config.default_model
+        if req.tier is None:
+            model = req.model or self.config.default_model
+            self._check_allowed(model)
+            return self._call(req, model, "direct")
+        if req.tier != "auto":
+            raise GatewayError("tier_invalid", "tier must be 'auto' or absent")
+        s_model, m_model = self.config.tier_s_model, self.config.tier_m_model
+        self._check_allowed(s_model)
+        self._check_allowed(m_model)
+        first = self._call(req, s_model, "S")
+        if not self._low(first):
+            return first
+        # Exactly one escalation; never beyond M. Each call is redacted afresh (fail closed).
+        second = self._call(req, m_model, "M")
+        return replace(
+            second,
+            escalated=True,
+            needs_review=self._low(second),
+            input_tokens=first.input_tokens + second.input_tokens,
+            output_tokens=first.output_tokens + second.output_tokens,
+            cost_usd=first.cost_usd + second.cost_usd,
+        )
+
+    def _check_allowed(self, model: str) -> None:
         if model not in self.config.allowlist:
             raise GatewayError("model_not_allowed", "model is not in the allowlist")
+
+    def _low(self, r: CompletionResponse) -> bool:
+        return (r.confidence is not None and r.confidence < self.config.escalation_threshold) or (
+            r.needs_review
+        )
+
+    def _call(self, req: CompletionRequest, model: str, tier: str) -> CompletionResponse:
         redacted = self._redact(req.prompt, "request")
 
         key = self.cache_key(req, model, redacted)
         now = self.clock()
         hit = self._cache.get(key)
         if hit and now - hit[0] < self.config.cache_ttl_s:
-            return replace(hit[1], cached=True, cost_usd=0.0)
+            return replace(hit[1], cached=True, cost_usd=0.0, tier=tier)
 
         future = self._pool.submit(
             self.provider.complete,
@@ -105,12 +153,28 @@ class Gateway:
         self.total_cost_usd += cost
         self.total_tokens += result.input_tokens + result.output_tokens
         resp = CompletionResponse(
-            out, model, result.input_tokens, result.output_tokens, cost, cached=False
+            out,
+            model,
+            result.input_tokens,
+            result.output_tokens,
+            cost,
+            cached=False,
+            confidence=result.confidence,
+            tier=tier,
+            needs_review=not result.schema_valid,  # escalation trigger; final value set by complete()
         )
+        if req.document_id:
+            u = self._docs.setdefault(req.document_id, DocumentUsage())
+            u.cost_usd += cost
+            u.tokens_in += result.input_tokens
+            u.tokens_out += result.output_tokens
+            u.tier_counts[tier] = u.tier_counts.get(tier, 0) + 1
         self._cache[key] = (now, resp)
         log.info(
-            "completion model=%s in=%d out=%d cost=%.6f prompt=%s response=%s",
+            "completion model=%s tier=%s doc=%s in=%d out=%d cost=%.6f prompt=%s response=%s",
             model,
+            tier,
+            req.document_id,
             result.input_tokens,
             result.output_tokens,
             cost,
@@ -123,4 +187,4 @@ class Gateway:
         p = self.config.prices.get(model)
         if p is None:
             return 0.0
-        return (r.input_tokens * p.input + r.output_tokens * p.output) / 1_000_000
+        return (r.input_tokens * p.input + r.output_tokens * p.output) / 1_000

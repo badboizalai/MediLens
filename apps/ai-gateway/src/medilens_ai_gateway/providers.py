@@ -10,6 +10,8 @@ class ProviderResult:
     text: str
     input_tokens: int
     output_tokens: int
+    confidence: float | None = None  # None = not reported => no escalation
+    schema_valid: bool = True
 
 
 class Provider(Protocol):

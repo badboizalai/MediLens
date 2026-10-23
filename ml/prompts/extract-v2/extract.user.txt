@@ -1,0 +1,13 @@
+Unit: {unit_code}
+
+JSON Schema:
+{schema_json}
+
+Worked example (synthetic, fake patient). It shows the expected shape only; never copy its values.
+{examples}
+
+Now the real document.
+
+<document_text>
+{document_text}
+</document_text>

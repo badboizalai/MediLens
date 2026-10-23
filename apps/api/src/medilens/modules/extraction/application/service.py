@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from uuid import UUID
 
 from medilens.modules.extraction.domain.models import (
@@ -13,8 +14,11 @@ from medilens.modules.extraction.domain.models import (
 class ReviewService:
     """The caller commits the DB transaction; the audit row shares it."""
 
-    def __init__(self, repo: ReviewRepository) -> None:
+    def __init__(
+        self, repo: ReviewRepository, on_confirmed: Callable[[UUID], None] = lambda _run: None
+    ) -> None:
         self._repo = repo
+        self._on_confirmed = on_confirmed  # wired in main.py (modules never import each other)
 
     def _open(self, subject: str, document_id: UUID) -> tuple[UUID, UUID]:
         actor = self._repo.resolve(subject)
@@ -45,4 +49,5 @@ class ReviewService:
         if pending:
             raise UnconfirmedFields(pending)
         self._repo.mark_confirmed(run)
+        self._on_confirmed(run)  # same transaction as the status change
         self._repo.audit(actor, ACTION_CONFIRM, "document", document_id)

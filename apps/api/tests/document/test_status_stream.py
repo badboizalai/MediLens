@@ -1,3 +1,5 @@
+import asyncio
+import inspect
 import json
 from typing import Any
 from uuid import uuid4
@@ -23,7 +25,7 @@ class FakeClock:
         self.t = 0.0
         self.on_sleep = on_sleep
 
-    def sleep(self, s: float) -> None:
+    async def sleep(self, s: float) -> None:
         self.t += s
         if self.on_sleep:
             self.on_sleep()
@@ -32,9 +34,20 @@ class FakeClock:
         return Clock(self.sleep, lambda: self.t)
 
 
+def collect(poll: Any, clock: Clock) -> list[str | None]:
+    async def run() -> list[str | None]:
+        return [s async for s in watch_status(poll, clock)]
+
+    return asyncio.run(run())
+
+
+def test_watch_is_async_generator() -> None:
+    assert inspect.isasyncgen(watch_status(lambda: None, FakeClock().clock()))
+
+
 def test_watch_emits_changes_then_stops_on_terminal() -> None:
     seq = iter(["uploaded", "uploaded", "validated", "failed", "never"])
-    assert list(watch_status(lambda: next(seq), FakeClock().clock())) == [
+    assert collect(lambda: next(seq), FakeClock().clock()) == [
         "uploaded",
         "validated",
         "failed",
@@ -43,7 +56,7 @@ def test_watch_emits_changes_then_stops_on_terminal() -> None:
 
 def test_watch_heartbeat_and_max_duration() -> None:
     fc = FakeClock()
-    out = list(watch_status(lambda: "uploaded", fc.clock()))
+    out = collect(lambda: "uploaded", fc.clock())
     assert out[0] == "uploaded"
     assert out.count(None) == int(MAX_STREAM_SECONDS // HEARTBEAT_SECONDS)
     assert fc.t <= MAX_STREAM_SECONDS + POLL_SECONDS
@@ -51,7 +64,7 @@ def test_watch_heartbeat_and_max_duration() -> None:
 
 def test_watch_ends_when_document_disappears() -> None:
     seq = iter(["uploaded", None])
-    assert list(watch_status(lambda: next(seq), FakeClock().clock())) == ["uploaded"]
+    assert collect(lambda: next(seq), FakeClock().clock()) == ["uploaded"]
 
 
 def test_stream_pushes_changes_and_closes_on_terminal(env: Env) -> None:

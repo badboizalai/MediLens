@@ -1,5 +1,5 @@
 import json
-from collections.abc import Iterator
+from collections.abc import AsyncIterator, Iterator
 from datetime import datetime, timezone
 from functools import lru_cache
 from typing import Annotated
@@ -176,8 +176,8 @@ def document_events(
     if poll() is None:  # 404 as a normal Problem Details response, before the stream starts
         raise DocumentNotFound
 
-    def frames() -> Iterator[str]:
-        for status in watch_status(poll, clock):
+    async def frames() -> AsyncIterator[str]:
+        async for status in watch_status(poll, clock):
             if status is None:
                 yield ": keep-alive\n\n"
                 continue

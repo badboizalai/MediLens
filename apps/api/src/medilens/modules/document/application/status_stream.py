@@ -1,6 +1,9 @@
 import time
-from collections.abc import Callable, Iterator
+from collections.abc import AsyncIterator, Awaitable, Callable
 from dataclasses import dataclass
+
+import anyio
+from anyio import to_thread
 
 POLL_SECONDS = 1.0  # D53: changes reach the client in < 2 s
 HEARTBEAT_SECONDS = 15.0
@@ -11,17 +14,19 @@ TERMINAL_STATUSES = frozenset({"rejected", "needs_retake", "failed", "needs_revi
 
 @dataclass(frozen=True)
 class Clock:
-    sleep: Callable[[float], None] = time.sleep
+    sleep: Callable[[float], Awaitable[None]] = anyio.sleep
     monotonic: Callable[[], float] = time.monotonic
 
 
-def watch_status(poll: Callable[[], str | None], clock: Clock) -> Iterator[str | None]:
+async def watch_status(poll: Callable[[], str | None], clock: Clock) -> AsyncIterator[str | None]:
     """Yields the status on first read and on every change, None as a heartbeat; ends on a
-    terminal status, when the document disappears, or after MAX_STREAM_SECONDS."""
+    terminal status, when the document disappears, or after MAX_STREAM_SECONDS.
+    Only the (blocking) poll uses a worker thread; waiting is an awaited sleep, so idle streams
+    hold no thread."""
     start = last_sent = clock.monotonic()
     current: str | None = None
     while True:
-        status = poll()
+        status = await to_thread.run_sync(poll)
         if status is None:
             return
         now = clock.monotonic()
@@ -35,4 +40,4 @@ def watch_status(poll: Callable[[], str | None], clock: Clock) -> Iterator[str |
             yield None
         if now - start >= MAX_STREAM_SECONDS:
             return
-        clock.sleep(POLL_SECONDS)
+        await clock.sleep(POLL_SECONDS)

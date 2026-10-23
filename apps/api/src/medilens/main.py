@@ -1,6 +1,11 @@
-from fastapi import APIRouter, FastAPI
+from collections.abc import Callable
+from typing import Annotated
+from uuid import UUID
+
+from fastapi import APIRouter, Depends, FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 
 from medilens.core.config import Settings, get_settings
 from medilens.core.errors import (
@@ -11,13 +16,23 @@ from medilens.core.errors import (
 )
 from medilens.core.logging import configure_logging
 from medilens.core.middleware import RequestIdMiddleware, SecurityHeadersMiddleware
+from medilens.modules.clinical.api.router import router as clinical_router
+from medilens.modules.clinical.application.service import ClinicalService
+from medilens.modules.clinical.infra.sql_repository import SqlClinicalRepository
 from medilens.modules.document.api.router import router as document_router
-from medilens.modules.extraction.api.router import router as extraction_router
+from medilens.modules.extraction.api import router as extraction_api
 from medilens.modules.identity.api.dependencies import get_token_validator
 from medilens.modules.identity.api.router import router as identity_router
 from medilens.shared.auth import register_token_validator
 
 API_PREFIX = "/v1"  # every module router mounts under this prefix
+
+
+def clinical_confirm_hook(
+    session: Annotated[Session, Depends(extraction_api.get_session)],
+) -> Callable[[UUID], None]:
+    """Confirming an extraction projects it into clinical findings, in the same transaction."""
+    return ClinicalService(SqlClinicalRepository(session)).project_run
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -67,8 +82,10 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     # Register module routers here as they are implemented:
     v1.include_router(identity_router)
     v1.include_router(document_router)
-    v1.include_router(extraction_router)
+    v1.include_router(extraction_api.router)
+    v1.include_router(clinical_router)
     # v1.include_router(patient_router)
+    app.dependency_overrides[extraction_api.get_confirm_hook] = clinical_confirm_hook
     app.include_router(v1)
     return app
 

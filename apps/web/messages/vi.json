@@ -191,5 +191,32 @@
       "B": "má",
       "L": "lưỡi"
     }
+  },
+  "viewer3d": {
+    "title": "Mô hình 3D cơ thể",
+    "canvas": {
+      "body": "Mô hình 3D của cơ thể. Dùng danh sách bên dưới để chọn vùng.",
+      "heart": "Mô hình 3D của tim. Dùng danh sách bên dưới để chọn vùng."
+    },
+    "hint": "Kéo để xoay, cuộn để phóng to, nhấp vào vùng có màu để chọn. Nhấn Escape để đặt lại.",
+    "detail": "Vùng đã chọn",
+    "none": "Chưa chọn vùng nào.",
+    "clear": "Bỏ chọn",
+    "listTitle": "Các vùng có ghi nhận",
+    "empty": "Không có vùng nào có ghi nhận.",
+    "loading": "Đang tải trình xem 3D...",
+    "note": "Màu sắc cho biết điều đã được ghi nhận trong hồ sơ của bạn. Đây chỉ là hình minh họa giúp bạn hiểu, không phải lời khuyên y tế.",
+    "reason": {
+      "noWebgl": "Đang hiển thị bản đồ 2D vì thiết bị này không hỗ trợ 3D.",
+      "saveData": "Đang hiển thị bản đồ 2D vì chế độ tiết kiệm dữ liệu đang bật.",
+      "lowCores": "Đang hiển thị bản đồ 2D vì thiết bị này có thể quá chậm cho 3D.",
+      "lowMemory": "Đang hiển thị bản đồ 2D vì thiết bị này có thể quá chậm cho 3D.",
+      "lowFps": "Đã chuyển sang bản đồ 2D vì chế độ xem 3D chạy chậm.",
+      "error": "Đã chuyển sang bản đồ 2D vì không tải được chế độ xem 3D.",
+      "manual2d": "Đang hiển thị bản đồ 2D.",
+      "manual3d": "Đang hiển thị chế độ xem 3D."
+    },
+    "switchTo2d": "Chuyển sang bản đồ 2D",
+    "switchTo3d": "Chuyển sang chế độ xem 3D"
   }
 }

@@ -191,5 +191,32 @@
       "B": "buccal",
       "L": "lingual"
     }
+  },
+  "viewer3d": {
+    "title": "3D body viewer",
+    "canvas": {
+      "body": "3D model of the body. Use the list below to select a region.",
+      "heart": "3D model of the heart. Use the list below to select a region."
+    },
+    "hint": "Drag to rotate, scroll to zoom, click a coloured region to select it. Press Escape to reset.",
+    "detail": "Selected region",
+    "none": "No region selected.",
+    "clear": "Clear selection",
+    "listTitle": "Regions with findings",
+    "empty": "No regions with findings.",
+    "loading": "Loading 3D viewer...",
+    "note": "Colours show what was noted in your record. They are an illustration to help you understand, not medical advice.",
+    "reason": {
+      "noWebgl": "Showing the 2D map because 3D is not available on this device.",
+      "saveData": "Showing the 2D map because data saving is on.",
+      "lowCores": "Showing the 2D map because this device may be too slow for 3D.",
+      "lowMemory": "Showing the 2D map because this device may be too slow for 3D.",
+      "lowFps": "Switched to the 2D map because the 3D view was running slowly.",
+      "error": "Switched to the 2D map because the 3D view could not load.",
+      "manual2d": "Showing the 2D map.",
+      "manual3d": "Showing the 3D view."
+    },
+    "switchTo2d": "Switch to 2D map",
+    "switchTo3d": "Switch to 3D view"
   }
 }

@@ -156,6 +156,55 @@ def check_citations(result: dict, pages: list[str]) -> list[dict]:
     return flags
 
 
+Box = tuple[float, float, float, float]  # normalised x0,y0,x1,y1 in 0..1, origin top-left
+
+
+def anchor_lines(
+    result: dict, pages: list[str], boxes: list[list[Box]] | None = None
+) -> list[dict]:
+    """Consume source.lines (1-based line ids per page; the schema has no such key, so always removed).
+    bbox is the union of the OCR line boxes, never from the model. Unknown id -> flag, no bbox."""
+    flags: list[dict] = []
+
+    def walk(node, path: str) -> None:
+        if isinstance(node, list):
+            for i, x in enumerate(node):
+                walk(x, f"{path}[{i}]")
+        elif isinstance(node, dict):
+            src = node.get("source")
+            if isinstance(src, dict) and "confidence" in node:
+                ids = src.pop("lines", None)
+                src.pop("bbox", None)  # coordinates only ever come from OCR boxes below
+                page = src.get("page")
+                if node.get("value") is None or ids is None:
+                    return
+                if not (isinstance(page, int) and 1 <= page <= len(pages)):
+                    return  # check_citations flags the page
+                n = len(pages[page - 1].split("\n"))
+                if not (
+                    isinstance(ids, list)
+                    and ids
+                    and all(type(i) is int and 1 <= i <= n for i in ids)
+                ):
+                    flags.append({"path": path, "reason": "line_id_unknown"})
+                    return
+                page_boxes = boxes[page - 1] if boxes and len(boxes) >= page else []
+                if len(page_boxes) == n:  # boxes line up with text lines only when counts match
+                    sel = [page_boxes[i - 1] for i in ids]
+                    src["bbox"] = [
+                        min(b[0] for b in sel),
+                        min(b[1] for b in sel),
+                        max(b[2] for b in sel),
+                        max(b[3] for b in sel),
+                    ]
+                return
+            for k, x in node.items():
+                walk(x, f"{path}.{k}")
+
+    walk(result, "$")
+    return flags
+
+
 def _locations(result: dict, unit: str):
     """(path, holder, location StringField) for every item that gets a `region`."""
     if unit == "dental":
@@ -225,7 +274,11 @@ def unit_from_pages(pages: list[str]) -> str | None:
 
 
 def run_extraction(
-    document_id: str, pages: list[str], client: GatewayClient, unit: str | None = None
+    document_id: str,
+    pages: list[str],
+    client: GatewayClient,
+    unit: str | None = None,
+    boxes: list[list[Box]] | None = None,  # per page, one normalised box per text line
 ) -> ExtractionRun:
     cost = 0.0
     if unit is None:
@@ -246,13 +299,14 @@ def run_extraction(
         c = client.complete(extract_prompt(unit, schema, pages, errors or None))
         cost += c.cost_usd
         result, errors = _parse(c.text)
+        anchor_flags = anchor_lines(result, pages, boxes) if result is not None else []
         if result is not None:
             errors = [
                 f"{e.json_path}: {e.message}"[:300]
                 for e in sorted(validator.iter_errors(result), key=lambda e: e.json_path)
             ]
         if not errors:
-            flags = check_citations(result, pages) + map_regions(result, unit)
+            flags = check_citations(result, pages) + anchor_flags + map_regions(result, unit)
             return ExtractionRun(
                 document_id,
                 unit,

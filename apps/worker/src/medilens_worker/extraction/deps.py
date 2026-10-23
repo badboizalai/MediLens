@@ -11,6 +11,8 @@ class ExtractDeps:
     load_pages: Callable[[str], list[str]]  # document_id -> OCR text per page
     client: GatewayClient
     save_run: Callable[[ExtractionRun], None]
+    load_run: Callable[[str], ExtractionRun | None]  # document_id -> saved run
+    save_review: Callable[[ExtractionRun], None]  # materialize for user review
     unit_for: Callable[[str], str | None] = lambda document_id: None  # None => classify
 
 

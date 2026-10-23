@@ -13,8 +13,6 @@ from sqlalchemy.orm import Session
 from medilens.core.db import scope_to_profiles
 from medilens.modules.extraction.domain.models import RUN_CONFIRMED, FieldView
 
-_COLS = "id, field_path, value, user_value, confidence, source_page, source_box, confirmed_at"
-
 
 class SqlReviewRepository:
     def __init__(self, session: Session) -> None:
@@ -50,7 +48,8 @@ class SqlReviewRepository:
     def fields(self, run_id: UUID) -> list[FieldView]:
         rows = self._session.execute(
             text(
-                f"SELECT {_COLS} FROM clinical.extraction_fields "
+                "SELECT id, field_path, value, user_value, confidence, source_page, source_box, confirmed_at "
+                "FROM clinical.extraction_fields "
                 "WHERE run_id = :r AND deleted_at IS NULL ORDER BY id"
             ),
             {"r": run_id},
@@ -61,7 +60,8 @@ class SqlReviewRepository:
         row = self._session.execute(
             text(
                 "UPDATE clinical.extraction_fields SET user_value = :v, confirmed_at = now() "
-                f"WHERE id = :f AND run_id = :r AND deleted_at IS NULL RETURNING {_COLS}"
+                "WHERE id = :f AND run_id = :r AND deleted_at IS NULL RETURNING "
+                "id, field_path, value, user_value, confidence, source_page, source_box, confirmed_at"
             ),
             {"v": value, "f": field_id, "r": run_id},
         ).first()

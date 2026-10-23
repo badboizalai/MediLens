@@ -1,0 +1,8 @@
+{
+  "_comment": "MVP gates. Field F1 and region accuracy from plan section 10.1 (F1 >= 0.80, region accuracy >= 0.85). citation_validity is a project choice (no plan row): every citation must point at text in the document.",
+  "field_f1_overall": 0.80,
+  "field_f1_per_unit": 0.80,
+  "region_accuracy": 0.85,
+  "citation_validity": 0.95,
+  "min_gold_docs": 150
+}

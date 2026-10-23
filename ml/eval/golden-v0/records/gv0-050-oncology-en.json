@@ -1,0 +1,150 @@
+{
+  "doc_id": "gv0-050-oncology-en",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-07-16"
+        },
+        "value": "2024-07-16"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Oncology Department"
+        },
+        "value": "Oncology Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "metastases": [
+      {
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Liver"
+          },
+          "value": "Liver"
+        },
+        "stated_as": "confirmed"
+      }
+    ],
+    "nodes": [
+      {
+        "involved": true,
+        "station": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Iliac"
+          },
+          "value": "Iliac"
+        }
+      }
+    ],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G2"
+        },
+        "value": "G2"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Adenocarcinoma"
+        },
+        "value": "Adenocarcinoma"
+      },
+      "laterality": "midline",
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Colon"
+        },
+        "value": "Colon"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "18 mm"
+        },
+        "unit": "mm",
+        "value": 18
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M1"
+        },
+        "value": "M1"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N1"
+        },
+        "value": "N1"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IV"
+        },
+        "value": "IV"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T3"
+        },
+        "value": "T3"
+      }
+    },
+    "treatments": []
+  },
+  "metadata": {
+    "generator_version": "0.2.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-050-oncology-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1937,
+      "name": "Trần Văn Giả",
+      "sex": "male"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "oncology"
+}

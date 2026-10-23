@@ -1,0 +1,115 @@
+{
+  "doc_id": "gv1-013-dental-vi",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-09-26"
+        },
+        "value": "2024-09-26"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Răng Hàm Mặt"
+        },
+        "value": "Khoa Răng Hàm Mặt"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "impacted",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 17"
+          },
+          "value": "17"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_17"
+        }
+      },
+      {
+        "condition": "impacted",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 22"
+          },
+          "value": "22"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_22"
+        }
+      },
+      {
+        "condition": "crown",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 31"
+          },
+          "value": "31"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_31"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-013-dental-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.84,
+            "type": "blur"
+          },
+          {
+            "angle_deg": -5.5,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-013-dental-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1900,
+      "name": "Phạm Thị Demo",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "dental"
+}

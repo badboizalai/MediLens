@@ -1,0 +1,124 @@
+{
+  "doc_id": "gv0-015-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-09-18"
+        },
+        "value": "2024-09-18"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 21"
+          },
+          "value": "21"
+        },
+        "severity": "monitor"
+      },
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 23"
+          },
+          "value": "23"
+        }
+      },
+      {
+        "condition": "periapical_lesion",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 28"
+          },
+          "value": "28"
+        },
+        "severity": "moderate"
+      },
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 35"
+          },
+          "value": "35"
+        }
+      },
+      {
+        "condition": "periapical_lesion",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 47"
+          },
+          "value": "47"
+        },
+        "severity": "mild"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.2.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-015-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "font": "DejaVuSans-jitter",
+            "type": "handwriting"
+          }
+        ],
+        "file": "images/gv0-015-dental-en_handwriting.jpg",
+        "jpeg_quality": 80,
+        "variant": "handwriting"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1909,
+      "name": "Nguyễn Văn Thử Nghiệm",
+      "sex": "male"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "dental"
+}

@@ -1,0 +1,279 @@
+{
+  "doc_id": "gv0-024-cardiology-vi",
+  "fields": {
+    "diagnoses": [
+      {
+        "icd10_candidates": [
+          {
+            "code": "I35.0",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Van động mạch chủ"
+          },
+          "value": "Van động mạch chủ"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Hẹp van động mạch chủ"
+          },
+          "value": "Hẹp van động mạch chủ"
+        }
+      },
+      {
+        "icd10_candidates": [
+          {
+            "code": "I25.1",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Động mạch vành"
+          },
+          "value": "Động mạch vành"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Bệnh mạch vành xơ vữa"
+          },
+          "value": "Bệnh mạch vành xơ vữa"
+        }
+      },
+      {
+        "icd10_candidates": [
+          {
+            "code": "I48.9",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tâm nhĩ"
+          },
+          "value": "Tâm nhĩ"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Rung nhĩ"
+          },
+          "value": "Rung nhĩ"
+        }
+      }
+    ],
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-10-09"
+        },
+        "value": "2024-10-09"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Tim mạch"
+        },
+        "value": "Khoa Tim mạch"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "observations": [
+      {
+        "loinc_hint": "10230-1",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Phân suất tống máu (EF)"
+          },
+          "value": "Phân suất tống máu (EF)"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "55-70"
+          },
+          "value": "55-70"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "64.6 %"
+          },
+          "unit": "%",
+          "value": 64.6
+        }
+      },
+      {
+        "loinc_hint": "2093-3",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Cholesterol toàn phần"
+          },
+          "value": "Cholesterol toàn phần"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<200"
+          },
+          "value": "<200"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "153 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 153.0
+        }
+      },
+      {
+        "loinc_hint": "8867-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Nhịp tim"
+          },
+          "value": "Nhịp tim"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-100"
+          },
+          "value": "60-100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "93 /min"
+          },
+          "unit": "/min",
+          "value": 93.0
+        }
+      },
+      {
+        "loinc_hint": "13457-7",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "LDL-C"
+          },
+          "value": "LDL-C"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<100"
+          },
+          "value": "<100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "105 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 105.0
+        }
+      }
+    ],
+    "procedures": [
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Holter điện tâm đồ"
+        },
+        "value": "Holter điện tâm đồ"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.2.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-024-cardiology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.82,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 3.82,
+            "type": "skew"
+          },
+          {
+            "strength": 0.57,
+            "type": "shadow"
+          },
+          {
+            "type": "fold",
+            "y": 834
+          }
+        ],
+        "file": "images/gv0-024-cardiology-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1916,
+      "name": "Nguyễn Thị Thử Nghiệm",
+      "sex": "female"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "poor",
+  "unit": "cardiology"
+}

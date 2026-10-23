@@ -1,0 +1,233 @@
+{
+  "doc_id": "gv1-058-cardiology-vi",
+  "fields": {
+    "diagnoses": [
+      {
+        "icd10_candidates": [
+          {
+            "code": "I20.9",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tim"
+          },
+          "value": "Tim"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Cơn đau thắt ngực"
+          },
+          "value": "Cơn đau thắt ngực"
+        }
+      },
+      {
+        "icd10_candidates": [
+          {
+            "code": "I25.1",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Động mạch vành"
+          },
+          "value": "Động mạch vành"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Bệnh mạch vành xơ vữa"
+          },
+          "value": "Bệnh mạch vành xơ vữa"
+        }
+      }
+    ],
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-05-18"
+        },
+        "value": "2024-05-18"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Tim mạch"
+        },
+        "value": "Khoa Tim mạch"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "observations": [
+      {
+        "loinc_hint": "8480-6",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Huyết áp tâm thu"
+          },
+          "value": "Huyết áp tâm thu"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "90-120"
+          },
+          "value": "90-120"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "116 mmHg"
+          },
+          "unit": "mmHg",
+          "value": 116.0
+        }
+      },
+      {
+        "loinc_hint": "8867-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Nhịp tim"
+          },
+          "value": "Nhịp tim"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-100"
+          },
+          "value": "60-100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "81 /min"
+          },
+          "unit": "/min",
+          "value": 81.0
+        }
+      },
+      {
+        "loinc_hint": "13457-7",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "LDL-C"
+          },
+          "value": "LDL-C"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<100"
+          },
+          "value": "<100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "107 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 107.0
+        }
+      }
+    ],
+    "procedures": [
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Điện tâm đồ"
+        },
+        "value": "Điện tâm đồ"
+      },
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Siêu âm tim"
+        },
+        "value": "Siêu âm tim"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-058-cardiology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.69,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 3.18,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-058-cardiology-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1919,
+      "name": "Hoàng Thị Test",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "cardiology"
+}

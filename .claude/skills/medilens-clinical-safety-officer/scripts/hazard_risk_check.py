@@ -3,6 +3,10 @@
 
 Usage: python hazard_risk_check.py hazard-log.csv [--strict]
 
+Accepts the project columns of safety/hazard-log.csv (id, hazard, cause, likelihood,
+residual_likelihood) or the older names via an alias map; cs_ids are taken from
+CS-nnn references in controls when that column is absent.
+
 Checks each row for: required fields, S/P in 1..5, controls and CS links present,
 residual risk region (acceptable 1-4, ALARP 5-9, unacceptable >= 10), severity-5
 residuals needing explicit sign-off, and information-only controls for S >= 4.
@@ -11,7 +15,18 @@ controls or CS links); --strict also fails on ALARP rows without notes.
 """
 
 import csv
+import re
 import sys
+
+# Project hazard-log column names -> canonical (template) names.
+ALIASES = {
+    "id": "hazard_id",
+    "hazard": "title",
+    "cause": "causes",
+    "likelihood": "probability",
+    "residual_likelihood": "residual_probability",
+}
+CS_REF = re.compile(r"CS-\d+")
 
 REQUIRED = [
     "hazard_id",
@@ -27,6 +42,17 @@ REQUIRED = [
     "status",
 ]
 INFO_ONLY_WORDS = ("disclaimer", "label", "warning text", "help text", "banner")
+
+
+def normalize(row):
+    """Map project column names to canonical ones; derive cs_ids from controls."""
+    out = dict(row)
+    for alias, canon in ALIASES.items():
+        if alias in out and not (out.get(canon) or "").strip():
+            out[canon] = out[alias]
+    if not (out.get("cs_ids") or "").strip():
+        out["cs_ids"] = ";".join(dict.fromkeys(CS_REF.findall(out.get("controls") or "")))
+    return out
 
 
 def region(score: int) -> str:
@@ -56,7 +82,7 @@ def main(argv):
     strict = "--strict" in argv
     path = [a for a in argv[1:] if not a.startswith("--")][0]
     with open(path, newline="", encoding="utf-8") as fh:
-        rows = list(csv.DictReader(fh))
+        rows = [normalize(r) for r in csv.DictReader(fh)]
     if not rows:
         print("No rows found.")
         return 1

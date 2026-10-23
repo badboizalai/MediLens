@@ -1,0 +1,113 @@
+{
+  "doc_id": "gv1-020-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-01-29"
+        },
+        "value": "2025-01-29"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "periodontal": [
+      {
+        "condition": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "periodontal pocket (Q3)"
+          },
+          "value": "periodontal pocket"
+        },
+        "quadrant": 3
+      }
+    ],
+    "teeth": [
+      {
+        "condition": "crown",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 12"
+          },
+          "value": "12"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_12"
+        }
+      },
+      {
+        "condition": "fracture",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 31"
+          },
+          "value": "31"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_31"
+        }
+      },
+      {
+        "condition": "root_canal",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 38"
+          },
+          "value": "38"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_38"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-020-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1907,
+      "name": "Lê Văn Demo",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "dental"
+}

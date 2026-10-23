@@ -1,0 +1,10 @@
+[project]
+name = "medilens-synth"
+version = "0.1.0"
+description = "Synthetic medical-record generator for golden-v0 (100% fictional data)"
+requires-python = ">=3.10"
+# pillow: render record images; jsonschema (+referencing): validate ground truth in tests
+dependencies = ["pillow>=10"]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "jsonschema>=4.18"]

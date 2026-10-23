@@ -1,0 +1,219 @@
+{
+  "doc_id": "gv1-085-cardiology-en",
+  "fields": {
+    "diagnoses": [
+      {
+        "icd10_candidates": [
+          {
+            "code": "I34.0",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Mitral valve"
+          },
+          "value": "Mitral valve"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Mitral regurgitation"
+          },
+          "value": "Mitral regurgitation"
+        }
+      }
+    ],
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-04-27"
+        },
+        "value": "2025-04-27"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Cardiology Department"
+        },
+        "value": "Cardiology Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "observations": [
+      {
+        "loinc_hint": "10839-9",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Troponin I"
+          },
+          "value": "Troponin I"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<0.04"
+          },
+          "value": "<0.04"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "0.06 ng/mL"
+          },
+          "unit": "ng/mL",
+          "value": 0.06
+        }
+      },
+      {
+        "loinc_hint": "8867-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Heart rate"
+          },
+          "value": "Heart rate"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-100"
+          },
+          "value": "60-100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "106 /min"
+          },
+          "unit": "/min",
+          "value": 106.0
+        }
+      },
+      {
+        "loinc_hint": "8480-6",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Systolic blood pressure"
+          },
+          "value": "Systolic blood pressure"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "90-120"
+          },
+          "value": "90-120"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "165 mmHg"
+          },
+          "unit": "mmHg",
+          "value": 165.0
+        }
+      },
+      {
+        "loinc_hint": "2093-3",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Total cholesterol"
+          },
+          "value": "Total cholesterol"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<200"
+          },
+          "value": "<200"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "261 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 261.0
+        }
+      }
+    ],
+    "procedures": [
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Electrocardiogram"
+        },
+        "value": "Electrocardiogram"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-085-cardiology-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "font": "DejaVuSans-jitter",
+            "type": "handwriting"
+          }
+        ],
+        "file": "images/gv1-085-cardiology-en_handwriting.jpg",
+        "jpeg_quality": 80,
+        "variant": "handwriting"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1914,
+      "name": "Lê Văn Test",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "good",
+  "unit": "cardiology"
+}

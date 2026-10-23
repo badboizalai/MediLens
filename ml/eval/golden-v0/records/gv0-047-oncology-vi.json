@@ -1,0 +1,173 @@
+{
+  "doc_id": "gv0-047-oncology-vi",
+  "fields": {
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-06-15"
+        },
+        "value": "2024-06-15"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Ung bướu"
+        },
+        "value": "Khoa Ung bướu"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "metastases": [],
+    "nodes": [
+      {
+        "involved": true,
+        "station": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Hạch nách"
+          },
+          "value": "Hạch nách"
+        }
+      }
+    ],
+    "primary": {
+      "grade": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "G3"
+        },
+        "value": "G3"
+      },
+      "histology": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Ung thư biểu mô ống xâm nhập"
+        },
+        "value": "Ung thư biểu mô ống xâm nhập"
+      },
+      "laterality": "right",
+      "site": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Vú"
+        },
+        "value": "Vú"
+      },
+      "size_mm": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "56 mm"
+        },
+        "unit": "mm",
+        "value": 56
+      }
+    },
+    "tnm": {
+      "edition": "AJCC 8",
+      "m": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "M0"
+        },
+        "value": "M0"
+      },
+      "n": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "N1"
+        },
+        "value": "N1"
+      },
+      "stage": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "IIIA"
+        },
+        "value": "IIIA"
+      },
+      "t": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "T3"
+        },
+        "value": "T3"
+      }
+    },
+    "treatments": [
+      {
+        "date": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "2024-10-27"
+          },
+          "value": "2024-10-27"
+        },
+        "type": "radiotherapy"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.2.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-047-oncology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.52,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 0.69,
+            "type": "skew"
+          },
+          {
+            "strength": 0.53,
+            "type": "shadow"
+          },
+          {
+            "type": "fold",
+            "y": 496
+          }
+        ],
+        "file": "images/gv0-047-oncology-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1921,
+      "name": "Phạm Văn Mẫu",
+      "sex": "male"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "poor",
+  "unit": "oncology"
+}

@@ -1,0 +1,245 @@
+{
+  "doc_id": "gv0-025-cardiology-en",
+  "fields": {
+    "diagnoses": [
+      {
+        "icd10_candidates": [
+          {
+            "code": "I35.0",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Aortic valve"
+          },
+          "value": "Aortic valve"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Aortic stenosis"
+          },
+          "value": "Aortic stenosis"
+        }
+      },
+      {
+        "icd10_candidates": [
+          {
+            "code": "I34.0",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Mitral valve"
+          },
+          "value": "Mitral valve"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Mitral regurgitation"
+          },
+          "value": "Mitral regurgitation"
+        }
+      }
+    ],
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-07-22"
+        },
+        "value": "2025-07-22"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Cardiology Department"
+        },
+        "value": "Cardiology Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "observations": [
+      {
+        "loinc_hint": "2093-3",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Total cholesterol"
+          },
+          "value": "Total cholesterol"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<200"
+          },
+          "value": "<200"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "253 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 253.0
+        }
+      },
+      {
+        "loinc_hint": "10230-1",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Ejection fraction"
+          },
+          "value": "Ejection fraction"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "55-70"
+          },
+          "value": "55-70"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "30 %"
+          },
+          "unit": "%",
+          "value": 30.0
+        }
+      },
+      {
+        "loinc_hint": "10839-9",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Troponin I"
+          },
+          "value": "Troponin I"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<0.04"
+          },
+          "value": "<0.04"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "0.02 ng/mL"
+          },
+          "unit": "ng/mL",
+          "value": 0.02
+        }
+      }
+    ],
+    "procedures": [
+      {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Holter monitoring"
+        },
+        "value": "Holter monitoring"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.2.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-025-cardiology-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.02,
+            "type": "blur"
+          },
+          {
+            "angle_deg": -0.04,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv0-025-cardiology-en_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                79,
+                29
+              ],
+              [
+                987,
+                34
+              ],
+              [
+                982,
+                1192
+              ],
+              [
+                51,
+                1233
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv0-025-cardiology-en_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1945,
+      "name": "Lê Văn Mẫu",
+      "sex": "male"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "cardiology"
+}

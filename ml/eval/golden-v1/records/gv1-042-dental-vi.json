@@ -1,0 +1,148 @@
+{
+  "doc_id": "gv1-042-dental-vi",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-04-06"
+        },
+        "value": "2024-04-06"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Răng Hàm Mặt"
+        },
+        "value": "Khoa Răng Hàm Mặt"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "fracture",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 12"
+          },
+          "value": "12"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_12"
+        }
+      },
+      {
+        "condition": "fracture",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 15"
+          },
+          "value": "15"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_15"
+        }
+      },
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 16"
+          },
+          "value": "16"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_16"
+        }
+      },
+      {
+        "condition": "filling",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 24"
+          },
+          "value": "24"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_24"
+        },
+        "surfaces": [
+          "O"
+        ]
+      },
+      {
+        "condition": "implant",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 35"
+          },
+          "value": "35"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_35"
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-042-dental-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.97,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 4.82,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-042-dental-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1931,
+      "name": "Phạm Văn Mẫu",
+      "sex": "male"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "dental"
+}

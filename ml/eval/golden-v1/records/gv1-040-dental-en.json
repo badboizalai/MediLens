@@ -1,0 +1,152 @@
+{
+  "doc_id": "gv1-040-dental-en",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-10-29"
+        },
+        "value": "2024-10-29"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Dental Department"
+        },
+        "value": "Dental Department"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Benh vien Thu Nghiem (Test Hospital)"
+        },
+        "value": "Benh vien Thu Nghiem (Test Hospital)"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "fracture",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 11"
+          },
+          "value": "11"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_11"
+        }
+      },
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 15"
+          },
+          "value": "15"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_15"
+        },
+        "severity": "moderate"
+      },
+      {
+        "condition": "caries",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 28"
+          },
+          "value": "28"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_28"
+        },
+        "severity": "moderate",
+        "surfaces": [
+          "D",
+          "M"
+        ]
+      },
+      {
+        "condition": "fracture",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 42"
+          },
+          "value": "42"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_42"
+        }
+      },
+      {
+        "condition": "periapical_lesion",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tooth 45"
+          },
+          "value": "45"
+        },
+        "region": {
+          "confidence": 1.0,
+          "region_code": "tooth_45"
+        },
+        "severity": "moderate"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-040-dental-en_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.97,
+            "type": "blur"
+          },
+          {
+            "angle_deg": -2.01,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-040-dental-en_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "en",
+    "patient": {
+      "birth_year": 1933,
+      "name": "Hoàng Thị Test",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "dental"
+}

@@ -1,0 +1,301 @@
+{
+  "doc_id": "gv1-091-cardiology-vi",
+  "fields": {
+    "diagnoses": [
+      {
+        "icd10_candidates": [
+          {
+            "code": "I34.0",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Van hai lá"
+          },
+          "value": "Van hai lá"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Hở van hai lá"
+          },
+          "value": "Hở van hai lá"
+        }
+      },
+      {
+        "icd10_candidates": [
+          {
+            "code": "I20.9",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tim"
+          },
+          "value": "Tim"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Cơn đau thắt ngực"
+          },
+          "value": "Cơn đau thắt ngực"
+        }
+      },
+      {
+        "icd10_candidates": [
+          {
+            "code": "I48.9",
+            "score": 1.0
+          }
+        ],
+        "laterality": "unknown",
+        "region": {
+          "confidence": 0.0,
+          "region_code": null
+        },
+        "severity": null,
+        "site": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Tâm nhĩ"
+          },
+          "value": "Tâm nhĩ"
+        },
+        "text": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Rung nhĩ"
+          },
+          "value": "Rung nhĩ"
+        }
+      }
+    ],
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2025-01-01"
+        },
+        "value": "2025-01-01"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Tim mạch"
+        },
+        "value": "Khoa Tim mạch"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "observations": [
+      {
+        "loinc_hint": "13457-7",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "LDL-C"
+          },
+          "value": "LDL-C"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "<100"
+          },
+          "value": "<100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "71 mg/dL"
+          },
+          "unit": "mg/dL",
+          "value": 71.0
+        }
+      },
+      {
+        "loinc_hint": "8462-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Huyết áp tâm trương"
+          },
+          "value": "Huyết áp tâm trương"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-80"
+          },
+          "value": "60-80"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "83 mmHg"
+          },
+          "unit": "mmHg",
+          "value": 83.0
+        }
+      },
+      {
+        "loinc_hint": "10230-1",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Phân suất tống máu (EF)"
+          },
+          "value": "Phân suất tống máu (EF)"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "55-70"
+          },
+          "value": "55-70"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "31.8 %"
+          },
+          "unit": "%",
+          "value": 31.8
+        }
+      },
+      {
+        "loinc_hint": "8867-4",
+        "name": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Nhịp tim"
+          },
+          "value": "Nhịp tim"
+        },
+        "reference_range": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "60-100"
+          },
+          "value": "60-100"
+        },
+        "value": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "71 /min"
+          },
+          "unit": "/min",
+          "value": 71.0
+        }
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.3.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv1-091-cardiology-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.78,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 1.72,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv1-091-cardiology-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      },
+      {
+        "degradations": [
+          {
+            "corners": [
+              [
+                73,
+                63
+              ],
+              [
+                924,
+                34
+              ],
+              [
+                947,
+                1219
+              ],
+              [
+                14,
+                1259
+              ]
+            ],
+            "type": "perspective"
+          }
+        ],
+        "file": "images/gv1-091-cardiology-vi_perspective.jpg",
+        "jpeg_quality": 80,
+        "variant": "perspective"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1948,
+      "name": "Trần Thị Test",
+      "sex": "female"
+    },
+    "seed": 20261001,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "cardiology"
+}

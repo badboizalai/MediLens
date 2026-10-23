@@ -1,0 +1,133 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://medilens.local/schemas/oncology.v1.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "encounter",
+    "primary"
+  ],
+  "properties": {
+    "encounter": {
+      "$ref": "common.v1.json#/$defs/Encounter"
+    },
+    "primary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "site": {
+          "$ref": "common.v1.json#/$defs/StringField"
+        },
+        "laterality": {
+          "type": "string",
+          "enum": [
+            "left",
+            "right",
+            "bilateral",
+            "midline",
+            "unknown"
+          ]
+        },
+        "histology": {
+          "$ref": "common.v1.json#/$defs/StringField"
+        },
+        "size_mm": {
+          "$ref": "common.v1.json#/$defs/NumberField"
+        },
+        "grade": {
+          "$ref": "common.v1.json#/$defs/StringField"
+        }
+      }
+    },
+    "tnm": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "t": {
+          "$ref": "common.v1.json#/$defs/StringField"
+        },
+        "n": {
+          "$ref": "common.v1.json#/$defs/StringField"
+        },
+        "m": {
+          "$ref": "common.v1.json#/$defs/StringField"
+        },
+        "stage": {
+          "$ref": "common.v1.json#/$defs/StringField"
+        },
+        "edition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "station": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          },
+          "involved": {
+            "type": [
+              "boolean",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "metastases": {
+      "type": "array",
+      "description": "Only sites explicitly stated as metastasis in the record (BR-021).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "site"
+        ],
+        "properties": {
+          "site": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          },
+          "stated_as": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "suspected"
+            ]
+          }
+        }
+      }
+    },
+    "treatments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "surgery",
+              "chemotherapy",
+              "radiotherapy",
+              "immunotherapy",
+              "targeted",
+              "hormonal",
+              "other"
+            ]
+          },
+          "date": {
+            "$ref": "common.v1.json#/$defs/DateField"
+          },
+          "note": {
+            "$ref": "common.v1.json#/$defs/StringField"
+          }
+        }
+      }
+    }
+  }
+}

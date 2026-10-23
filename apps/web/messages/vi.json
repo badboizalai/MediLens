@@ -1,1 +1,49 @@
-{ "home": { "title": "MediLens", "disclaimer": "MediLens giúp bạn hiểu hồ sơ y tế của mình. Đây không phải chẩn đoán hay tư vấn điều trị." } }
+{
+  "home": { "title": "MediLens", "disclaimer": "MediLens giúp bạn hiểu hồ sơ y tế của mình. Hãy dùng cùng lời khuyên của bác sĩ." },
+  "nav": { "label": "Điều hướng chính", "language": "Ngôn ngữ", "signIn": "Đăng nhập", "signOut": "Đăng xuất" },
+  "signIn": { "title": "Đăng nhập", "description": "Đăng nhập để xem hồ sơ của bạn.", "submit": "Tiếp tục đăng nhập" },
+  "dashboard": { "title": "Hồ sơ của bạn", "empty": "Bạn chưa thêm hồ sơ nào.", "upload": "Thêm hồ sơ" },
+  "upload": {
+    "title": "Thêm hồ sơ y tế",
+    "hint": "Chụp hoặc chọn hồ sơ của bạn (JPG, PNG, HEIC, PDF, tối đa 20 MB, 30 trang).",
+    "takePhoto": "Chụp ảnh",
+    "chooseFile": "Chọn tệp",
+    "dropHere": "hoặc kéo thả tệp vào đây",
+    "selected": "Các trang đã chọn",
+    "pageLabel": "Trang {n}",
+    "size": "{mb} MB",
+    "moveUp": "Chuyển {name} lên",
+    "moveDown": "Chuyển {name} xuống",
+    "remove": "Xóa {name}",
+    "submit": "Tải lên",
+    "retry": "Mất kết nối. Nhấn Thử lại để tiếp tục.",
+    "retryButton": "Thử lại",
+    "badType": "{name}: định dạng này chưa được hỗ trợ. Hãy dùng JPG, PNG, HEIC hoặc PDF.",
+    "tooLarge": "{name}: tệp quá lớn (tối đa 20 MB, 30 trang). Hãy chia nhỏ hoặc chụp lại.",
+    "empty": "{name}: tệp trống. Hãy chọn tệp khác.",
+    "tooManyPages": "Một tài liệu có tối đa 30 trang. Hãy bớt trang hoặc chia nhỏ.",
+    "genericError": "Đã có lỗi xảy ra. Vui lòng thử lại.",
+    "tips": {
+      "title": "Mẹo để ảnh rõ nét",
+      "light": "Chụp nơi sáng, ánh sáng đều.",
+      "flat": "Đặt tờ giấy phẳng và giữ máy thẳng phía trên.",
+      "frame": "Để cả trang trong khung, thấy đủ bốn góc.",
+      "glare": "Tránh chói và bóng; không dùng đèn flash trên giấy bóng.",
+      "privacy": "Che tên hoặc thông tin của người khác trước khi chụp."
+    },
+    "progress": { "uploading": "Đang tải lên {done}/{total}…", "label": "Tiến độ tải lên" },
+    "processing": "Đang đọc hồ sơ… thường mất dưới 2 phút.",
+    "leave": "Bạn có thể rời trang này, chúng tôi sẽ báo khi xong.",
+    "steps": { "label": "Các bước xử lý", "queued": "Đang chờ", "reading": "Đang đọc", "extracting": "Đang tìm thông tin" },
+    "ready": "Bản nháp của bạn đã sẵn sàng. Hãy kiểm tra từng mục.",
+    "failed": "Chúng tôi chưa đọc được hồ sơ này. Vui lòng thử lại.",
+    "retake": {
+      "title": "Mình thử chụp lại nhé",
+      "blurry": "Ảnh hơi mờ. Hãy chụp lại nơi đủ sáng, giữ máy song song với tờ giấy.",
+      "too_dark": "Ảnh hơi tối. Hãy chụp lại nơi sáng hơn, không dùng flash trên giấy bóng.",
+      "not_a_document": "Chúng tôi chưa thấy trang giấy trong ảnh. Hãy để cả trang trong khung rồi chụp lại.",
+      "button": "Chụp lại",
+      "note": "Điều này bình thường và không phải lỗi của bạn."
+    }
+  }
+}

@@ -1,0 +1,7 @@
+# LLM-vision adapter settings. Change here, not in code.
+# Prices are ASSUMPTIONS for cost comparison (USD per million tokens); verify against
+# the current Anthropic price list before quoting any cost number.
+[llm_vision]
+model = "claude-haiku-5-5"
+usd_in_per_mtok = 1.0
+usd_out_per_mtok = 5.0

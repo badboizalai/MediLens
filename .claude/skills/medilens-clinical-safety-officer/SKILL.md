@@ -6,7 +6,7 @@ compatibility: scripts/hazard_risk_check.py needs Python 3.10+ (standard library
 metadata:
   project: MediLens
   role: clinical-safety-officer
-  version: 1.0.0
+  version: 1.0.1
 ---
 
 # MediLens Clinical Safety Officer

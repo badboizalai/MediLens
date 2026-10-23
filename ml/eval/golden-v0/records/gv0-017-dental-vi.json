@@ -1,0 +1,139 @@
+{
+  "doc_id": "gv0-017-dental-vi",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-02-14"
+        },
+        "value": "2024-02-14"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Răng Hàm Mặt"
+        },
+        "value": "Khoa Răng Hàm Mặt"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "teeth": [
+      {
+        "condition": "caries",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 24"
+          },
+          "value": "24"
+        },
+        "severity": "severe",
+        "surfaces": [
+          "B",
+          "O"
+        ]
+      },
+      {
+        "condition": "filling",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 32"
+          },
+          "value": "32"
+        },
+        "surfaces": [
+          "B",
+          "M"
+        ]
+      },
+      {
+        "condition": "caries",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 34"
+          },
+          "value": "34"
+        },
+        "severity": "mild",
+        "surfaces": [
+          "L"
+        ]
+      },
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 46"
+          },
+          "value": "46"
+        },
+        "severity": "moderate"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.2.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-017-dental-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 0.85,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 0.29,
+            "type": "skew"
+          }
+        ],
+        "file": "images/gv0-017-dental-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      },
+      {
+        "degradations": [
+          {
+            "font": "DejaVuSans-jitter",
+            "type": "handwriting"
+          }
+        ],
+        "file": "images/gv0-017-dental-vi_handwriting.jpg",
+        "jpeg_quality": 80,
+        "variant": "handwriting"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1927,
+      "name": "Hoàng Thị Test",
+      "sex": "female"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "medium",
+  "unit": "dental"
+}

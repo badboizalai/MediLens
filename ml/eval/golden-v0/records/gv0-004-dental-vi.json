@@ -1,0 +1,152 @@
+{
+  "doc_id": "gv0-004-dental-vi",
+  "fields": {
+    "dentition": "permanent",
+    "encounter": {
+      "date": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "2024-04-20"
+        },
+        "value": "2024-04-20"
+      },
+      "department": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Khoa Răng Hàm Mặt"
+        },
+        "value": "Khoa Răng Hàm Mặt"
+      },
+      "facility": {
+        "confidence": 1.0,
+        "source": {
+          "page": 1,
+          "quote": "Bệnh viện Thử Nghiệm"
+        },
+        "value": "Bệnh viện Thử Nghiệm"
+      }
+    },
+    "periodontal": [
+      {
+        "condition": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "viêm lợi (Q4)"
+          },
+          "value": "viêm lợi"
+        },
+        "quadrant": 4
+      }
+    ],
+    "teeth": [
+      {
+        "condition": "pulpitis",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 15"
+          },
+          "value": "15"
+        },
+        "severity": "moderate"
+      },
+      {
+        "condition": "root_canal",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 24"
+          },
+          "value": "24"
+        }
+      },
+      {
+        "condition": "filling",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 31"
+          },
+          "value": "31"
+        },
+        "surfaces": [
+          "L",
+          "M"
+        ]
+      },
+      {
+        "condition": "root_canal",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 47"
+          },
+          "value": "47"
+        }
+      },
+      {
+        "condition": "periapical_lesion",
+        "fdi": {
+          "confidence": 1.0,
+          "source": {
+            "page": 1,
+            "quote": "Răng 48"
+          },
+          "value": "48"
+        },
+        "severity": "mild"
+      }
+    ]
+  },
+  "metadata": {
+    "generator_version": "0.2.0",
+    "images": [
+      {
+        "degradations": [],
+        "file": "images/gv0-004-dental-vi_clean.jpg",
+        "jpeg_quality": 80,
+        "variant": "clean"
+      },
+      {
+        "degradations": [
+          {
+            "sigma": 1.71,
+            "type": "blur"
+          },
+          {
+            "angle_deg": 0.06,
+            "type": "skew"
+          },
+          {
+            "strength": 0.58,
+            "type": "shadow"
+          },
+          {
+            "type": "fold",
+            "y": 757
+          }
+        ],
+        "file": "images/gv0-004-dental-vi_degraded.jpg",
+        "jpeg_quality": 80,
+        "variant": "degraded"
+      }
+    ],
+    "lang": "vi",
+    "patient": {
+      "birth_year": 1940,
+      "name": "Phạm Văn Thử Nghiệm",
+      "sex": "male"
+    },
+    "seed": 20260101,
+    "synthetic": true
+  },
+  "quality": "poor",
+  "unit": "dental"
+}

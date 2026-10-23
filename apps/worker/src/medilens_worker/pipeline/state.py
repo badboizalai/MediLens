@@ -12,6 +12,7 @@ class DocStatus(str, Enum):  # StrEnum needs 3.11
     EXTRACTED = "extracted"
     NEEDS_REVIEW = "needs_review"
     CONFIRMED = "confirmed"
+    NEEDS_RETAKE = "needs_retake"  # expected user outcome, e.g. blurry photo
     FAILED = "failed"
 
 
@@ -30,3 +31,55 @@ ORDER = [
 def next_status(current: DocStatus) -> DocStatus | None:
     i = ORDER.index(current)
     return ORDER[i + 1] if i + 1 < len(ORDER) else None
+
+
+ALLOWED: dict[DocStatus, frozenset[DocStatus]] = {
+    DocStatus.UPLOADED: frozenset({DocStatus.VALIDATED, DocStatus.FAILED}),
+    DocStatus.NEEDS_RETAKE: frozenset({DocStatus.UPLOADED}),  # user re-uploads (API)
+    DocStatus.VALIDATED: frozenset(
+        {DocStatus.PREPROCESSED, DocStatus.NEEDS_RETAKE, DocStatus.FAILED}
+    ),
+    DocStatus.PREPROCESSED: frozenset(
+        {DocStatus.CLASSIFIED, DocStatus.NEEDS_RETAKE, DocStatus.FAILED}
+    ),
+    DocStatus.CLASSIFIED: frozenset({DocStatus.OCR_DONE, DocStatus.FAILED}),
+    DocStatus.OCR_DONE: frozenset({DocStatus.EXTRACTED, DocStatus.FAILED}),
+    DocStatus.EXTRACTED: frozenset({DocStatus.NEEDS_REVIEW, DocStatus.FAILED}),
+    DocStatus.NEEDS_REVIEW: frozenset({DocStatus.CONFIRMED}),  # user action (API)
+    DocStatus.CONFIRMED: frozenset(),
+    DocStatus.FAILED: frozenset(),
+}
+
+
+class NonRetryable(Exception):
+    """Expected terminal outcome of a step: set `status`, record `reason`, ack. No retry/DLQ."""
+
+    status: DocStatus = DocStatus.FAILED
+    reason: str = "non_retryable"
+
+
+class InvalidTransition(Exception):
+    def __init__(self, current: DocStatus, to: DocStatus) -> None:
+        super().__init__(f"illegal transition {current.value} -> {to.value}")
+        self.current, self.to = current, to
+
+
+def guard_transition(current: DocStatus, to: DocStatus) -> DocStatus:
+    """Return `to` if the edge is allowed, else raise InvalidTransition."""
+    if to not in ALLOWED[current]:
+        raise InvalidTransition(current, to)
+    return to
+
+
+class StatusRepo:
+    """In-memory document status store (DB-backed impl comes with S5-T43+)."""
+
+    def __init__(self) -> None:
+        self._s: dict[str, DocStatus] = {}
+        self.reasons: dict[str, str] = {}  # user-facing reason codes (no PHI)
+
+    def get(self, document_id: str) -> DocStatus:
+        return self._s.get(document_id, DocStatus.UPLOADED)
+
+    def set(self, document_id: str, status: DocStatus) -> None:
+        self._s[document_id] = guard_transition(self.get(document_id), status)

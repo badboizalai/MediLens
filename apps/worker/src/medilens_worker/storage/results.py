@@ -5,6 +5,7 @@ import json
 import boto3
 
 from medilens_worker.extraction.service import ExtractionRun
+from medilens_worker.storage.s3 import sse_kms
 
 
 def to_object(r: ExtractionRun) -> dict:
@@ -53,16 +54,18 @@ class InMemoryResultStore:
 
 
 class S3ResultStore:
-    def __init__(self, bucket: str, endpoint_url: str | None = None) -> None:
+    def __init__(
+        self, bucket: str, endpoint_url: str | None = None, kms_key_id: str | None = None
+    ) -> None:
         self._c = boto3.client("s3", endpoint_url=endpoint_url)
-        self._b = bucket
+        self._b, self._sse = bucket, sse_kms(kms_key_id)
 
     def save(self, run: ExtractionRun) -> None:
         self._c.put_object(
             Bucket=self._b,
             Key=f"extractions/{run.document_id}/{run.run_id}.json",
             Body=json.dumps(to_object(run)).encode(),
-            ServerSideEncryption="aws:kms",  # ADR-0005: SSE-KMS (bucket default key)
+            **self._sse,  # ADR-0005: SSE-KMS
         )
 
     def latest(self, document_id: str) -> ExtractionRun | None:

@@ -297,6 +297,7 @@ module "worker" {
     # F1: never promote an upload without a clean GuardDuty verdict.
     WORKER_REQUIRE_MALWARE_SCAN = "true"
     EXTRACTION_RESULTS_BUCKET   = module.storage.bucket_names["phi"]
+    PHI_KMS_KEY_ID              = module.storage.kms_key_arns["phi"]
   }
   tags = local.tags
 }

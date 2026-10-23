@@ -53,7 +53,7 @@ def build_extract_deps(
     if missing:
         raise RuntimeError(f"missing required env: {', '.join(missing)}")
     results = (
-        S3ResultStore(results_bucket, env.get("AWS_ENDPOINT_URL"))
+        S3ResultStore(results_bucket, env.get("AWS_ENDPOINT_URL"), env.get("PHI_KMS_KEY_ID"))
         if results_bucket
         else InMemoryResultStore()  # local only
     )

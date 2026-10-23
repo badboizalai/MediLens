@@ -1,16 +1,15 @@
-"""Evaluate the rules page classifier on golden-v1 ground-truth page text.
+"""Evaluate the rules page classifier on the 9-type synthetic text set (S6-T54c).
 
-golden-v1 has no page-type labels, so labels are derived from `unit`:
-dental -> dental_record; cardiology/oncology -> outpatient_form (every page is a visit form).
-Text = what synth_gen renders (header + body + footer), regenerated from the seeded generator.
+Pages come from `synth_gen.pages` (seeded, text-level, VI/EN mix). Rules are tuned on the `dev`
+split only; the headline numbers are on the held-out `test` split. UNKNOWN (no rule fired) counts
+as a miss for every label, including `other`.
 
-Usage: python ml/eval/classify/run_eval.py [--out ml/eval/classify/REPORT.md]
+Usage: python ml/eval/classify/run_eval.py [--out ml/eval/classify/REPORT.md] [--split test|dev]
 """
 
 from __future__ import annotations
 
 import argparse
-import json
 import sys
 from collections import Counter
 from pathlib import Path
@@ -19,65 +18,101 @@ ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT / "ml" / "datasets" / "synth"))
 sys.path.insert(0, str(ROOT / "apps" / "worker" / "src"))
 
-from medilens_worker.classify.page_types import PageType  # noqa: E402
 from medilens_worker.classify.rules import LLM_FALLBACK_THRESHOLD, classify_text  # noqa: E402
-from synth_gen import generate  # noqa: E402
+from synth_gen.pages import TYPES, generate_pages  # noqa: E402
 
-FOOTER = "SYNTHETIC - TEST ONLY"
-LABEL = {"dental": PageType.DENTAL_RECORD, "cardiology": PageType.OUTPATIENT_FORM,
-         "oncology": PageType.OUTPATIENT_FORM}  # fmt: skip
-GOLDEN = ROOT / "ml" / "eval" / "golden-v1"
+SEED = 20261023
+MACRO_TARGET = 0.90
 
 
-def evaluate() -> tuple[list[tuple[str, PageType, PageType, float]], int]:
-    seed = json.loads(next((GOLDEN / "records").glob("*.json")).read_text("utf-8"))["metadata"][
-        "seed"
-    ]
+NOTES = """
+## Before / after rule changes (macro-F1)
+
+Changes made on `dev` only: title-line bonus (strong match in first 2 lines +2), `other` rules,
+`phieu sieu am`. Before: dev 0.827, test 0.861 (lab/imaging/dental false positives from distractor
+lines; `other` never predicted). After: dev 1.000, test 1.000.
+
+## Caveats
+
+- 1.000 is optimistic: synthetic templates, clean text, no OCR noise, 4-5 title variants per type,
+  written knowing the rule vocabulary. It shows the target is *measurable* and the rules work on
+  clean text; it is not evidence for real scans. The old golden-v1 run (2 types) is superseded.
+- Real-OCR evidence (D55) is still missing, see below.
+
+## Offline OCR baseline (image -> OCR -> classify): not run
+
+No `tesseract` binary, PaddleOCR or VietOCR is installed here, and none was installed (heavy).
+To run it: (1) render page images (`synth_gen`, needs `pillow` and DejaVu Sans); (2) OCR with
+PaddleOCR (`paddlepaddle` CPU + `paddleocr`, ~0.5-1 GB of wheels, det+rec weights ~15-30 MB
+downloaded on first run) or `apt install tesseract-ocr tesseract-ocr-vie` (~30 MB) +
+`pytesseract`; ~1-3 s/page on CPU, ~10 min for 255 pages; (3) feed the text to `classify_text`
+and compare macro-F1 with this report. golden-v1 images carry no page-type labels, so the OCR run
+needs images rendered from `synth_gen.pages` (that render step is not written yet).
+"""
+
+
+def evaluate(split: str) -> list[tuple[str, str, str, float]]:
+    """(id, true, predicted, confidence) for every page of the split."""
     rows = []
-    for i, spec in enumerate(generate.plan(seed, "v1")):
-        rec, header, lines = generate.generate_record(i, spec, seed, "v1")
-        pred, conf = classify_text("\n".join([*header, *lines, FOOTER]))
-        rows.append((rec["doc_id"], LABEL[spec["unit"]], pred, conf))
-    return rows, seed
+    for p in generate_pages(SEED):
+        if p["split"] == split:
+            pred, conf = classify_text(p["text"])
+            rows.append((p["id"], p["label"], pred.value, conf))
+    return rows
 
 
-def report(rows: list[tuple[str, PageType, PageType, float]], seed: int) -> str:
-    n = len(rows)
-    ok = sum(t == p for _, t, p, _ in rows)
+def prf(rows: list[tuple[str, str, str, float]]) -> dict[str, tuple[float, float, float, int]]:
+    out = {}
+    for t in TYPES:
+        tp = sum(a == t and b == t for _, a, b, _ in rows)
+        fp = sum(a != t and b == t for _, a, b, _ in rows)
+        fn = sum(a == t and b != t for _, a, b, _ in rows)
+        p = tp / (tp + fp) if tp + fp else 0.0
+        r = tp / (tp + fn) if tp + fn else 0.0
+        out[t] = (p, r, 2 * p * r / (p + r) if p + r else 0.0, tp + fn)
+    return out
+
+
+def report(rows: list[tuple[str, str, str, float]], split: str) -> str:
+    m = prf(rows)
+    macro = sum(v[2] for v in m.values()) / len(m)
+    acc = sum(a == b for _, a, b, _ in rows) / len(rows)
     low = sum(c < LLM_FALLBACK_THRESHOLD for *_, c in rows)
-    conf = Counter((t.value, p.value) for _, t, p, _ in rows)
-    wrong = [f"{d} ({t.value} -> {p.value}, {c})" for d, t, p, c in rows if t != p]
+    cols = [*TYPES, "unknown"]
+    conf = Counter((a, b) for _, a, b, _ in rows)
+    wrong = [f"{i} ({a} -> {b}, {c})" for i, a, b, c in rows if a != b]
     out = [
-        "# Page classifier (rules) - golden-v1 evaluation",
+        f"# Page classifier (rules) - 9-type synthetic set, `{split}` split",
         "",
-        f"- Pages: {n} (golden-v1, seed {seed}, clean text, one page per record)",
-        f"- Accuracy: **{ok / n:.3f}** ({ok}/{n}); target >= 0.90",
+        f"- Pages: {len(rows)} ({len(rows) // len(TYPES)} per type, seed {SEED}, text-level, VI/EN)",
+        f"- Macro-F1: **{macro:.3f}** (target >= {MACRO_TARGET}); accuracy {acc:.3f}",
         f"- Below LLM fallback threshold ({LLM_FALLBACK_THRESHOLD}): {low}",
         "",
-        "## Confusion (true -> predicted : count)",
+        "## Per-type",
         "",
-        *[f"- {t} -> {p}: {c}" for (t, p), c in sorted(conf.items())],
+        "| type | support | precision | recall | F1 |",
+        "|---|---|---|---|---|",
+        *[f"| {t} | {n} | {p:.3f} | {r:.3f} | {f:.3f} |" for t, (p, r, f, n) in m.items()],
+        "",
+        "## Confusion matrix (rows = true, columns = predicted)",
+        "",
+        "| true \\ pred | " + " | ".join(cols) + " |",
+        "|---|" + "---|" * len(cols),
+        *[f"| {t} | " + " | ".join(str(conf[(t, c)]) for c in cols) + " |" for t in TYPES],
         "",
         "## Misclassified ids",
         "",
         *([f"- {w}" for w in wrong] or ["- none"]),
-        "",
-        "## Caveats",
-        "",
-        "- golden-v1 carries no page-type labels; labels are derived from `unit` (see script).",
-        "- Only 2 of the 9 types occur (dental_record, outpatient_form); the other 7 are covered",
-        "  only by unit-test snippets in `apps/worker/tests/classify`. Accuracy here is optimistic:",
-        "  one template per unit, clean text, no OCR noise. Re-run on real-OCR text and on a",
-        "  9-type labelled set (plan 25.1: 30 per type) before relying on it.",
     ]
-    return "\n".join(out) + "\n"
+    return "\n".join(out) + "\n" + NOTES
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", type=Path)
+    ap.add_argument("--split", default="test", choices=["dev", "test"])
     a = ap.parse_args()
-    text = report(*evaluate())
+    text = report(evaluate(a.split), a.split)
     if a.out:
         a.out.write_text(text, encoding="utf-8")
     print(text)

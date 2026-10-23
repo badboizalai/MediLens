@@ -28,6 +28,27 @@ def test_types(text, expected):
     assert conf >= LLM_FALLBACK_THRESHOLD
 
 
+def test_title_beats_stray_mention():
+    # dev-split failures: a stray "xet nghiem" / "rang 16" line must not outvote the page title
+    assert (
+        classify_text("TOA THUỐC\nHọ tên: Nguyen Van Test\nKết quả xét nghiệm máu: bình thường")[0]
+        is PageType.PRESCRIPTION
+    )
+    assert (
+        classify_text("PHIẾU SIÊU ÂM\nHọ tên: Nguyen Van Test\nKết quả xét nghiệm máu")[0]
+        is PageType.IMAGING_REPORT
+    )
+    assert (
+        classify_text("PHIẾU CHỈ ĐỊNH\nHọ tên: Nguyen Van Test\nRăng 16 đã khám")[0]
+        is PageType.ORDER_FORM
+    )
+
+
+@pytest.mark.parametrize("text", ["GIẤY HẸN TÁI KHÁM", "Insurance Card Copy", "Consent Form"])
+def test_other(text):
+    assert classify_text(text)[0] is PageType.OTHER
+
+
 def test_diacritics_insensitive():
     assert classify_text("GIAY RA VIEN")[0] is PageType.DISCHARGE_SUMMARY
     assert classify_text("đơn thuốc")[0] is PageType.PRESCRIPTION

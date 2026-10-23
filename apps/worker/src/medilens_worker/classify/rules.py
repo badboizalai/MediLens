@@ -33,6 +33,7 @@ _RULES: dict[PageType, list[tuple[str, float]]] = {
     ],
     PageType.IMAGING_REPORT: [
         (r"chan doan hinh anh|imaging report|radiology", 3),
+        (r"phieu sieu am|ket qua sieu am", 3),
         (r"x-?\s?quang|x-ray|\bct\b|\bmri\b|sieu am|ultrasound", 1),
     ],
     PageType.DENTAL_RECORD: [
@@ -47,7 +48,12 @@ _RULES: dict[PageType, list[tuple[str, float]]] = {
     PageType.ORDER_FORM: [
         (r"phieu chi dinh|phieu yeu cau|order form|requisition|lab order", 3),
     ],
+    PageType.OTHER: [
+        (r"giay chung nhan|giay hen|appointment|the bao hiem|insurance|consent|cam ket", 3),
+    ],
 }
+_TITLE_LINES = 2  # a strong (weight >= 3) match in the first lines is the page title:
+_TITLE_BONUS = 2  # it outranks a stray mention further down (e.g. "xet nghiem mau: binh thuong")
 _COMPILED = {t: [(re.compile(p), w) for p, w in rs] for t, rs in _RULES.items()}
 
 
@@ -61,7 +67,15 @@ def normalize(text: str) -> str:
 def classify_text(text: str) -> tuple[PageType, float]:
     """Return (page type, confidence 0..1); (UNKNOWN, 0.0) when no rule fires."""
     norm = normalize(text)
-    scores = {t: sum(w for rx, w in rs if rx.search(norm)) for t, rs in _COMPILED.items()}
+    head = "\n".join([ln for ln in norm.splitlines() if ln.strip()][:_TITLE_LINES])
+    scores = {
+        t: sum(
+            w + (_TITLE_BONUS if w >= 3 and rx.search(head) else 0)
+            for rx, w in rs
+            if rx.search(norm)
+        )
+        for t, rs in _COMPILED.items()
+    }
     ranked = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)
     (best, top), (_, second) = ranked[0], ranked[1]
     if top == 0:

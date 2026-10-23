@@ -138,3 +138,15 @@ def test_golden_v1_clean_pages_pass_gate():
         page, reason = preprocess_page(1, f.read_bytes())
         assert reason is None, (f.name, m)
         assert page is not None
+
+
+def test_oversized_header_is_not_decoded():
+    import struct
+    import zlib
+
+    from medilens_worker.ocr.preprocess import decode
+
+    ihdr = struct.pack(">IIBBBBB", 100_000, 100_000, 8, 0, 0, 0, 0)
+    png = b"\x89PNG\r\n\x1a\n" + struct.pack(">I", 13) + b"IHDR" + ihdr
+    png += struct.pack(">I", zlib.crc32(b"IHDR" + ihdr))
+    assert decode(png) is None

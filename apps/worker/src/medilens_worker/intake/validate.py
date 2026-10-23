@@ -7,6 +7,7 @@ import os
 import re
 from collections.abc import Mapping
 
+from medilens_worker.intake.pixels import MAX_IMAGE_PIXELS, declared_pixels
 from medilens_worker.ocr.service import PageStore
 from medilens_worker.pipeline.state import NonRetryable, RetryLater
 
@@ -96,10 +97,14 @@ def _check_pdf(data: bytes) -> None:
 
 def _reencode_png(data: bytes) -> bytes:
     """Decode and re-encode so appended payloads (polyglots) and EXIF are dropped."""
+    px = declared_pixels(data)  # header check first: never decode a decompression bomb
+    if px is None:
+        raise Rejected("unsupported_type")
+    if px > MAX_IMAGE_PIXELS:
+        raise Rejected("image_too_large")
     import cv2  # noqa: PLC0415  (ocr extra; imported lazily to keep base installs light)
     import numpy as np  # noqa: PLC0415
 
-    # shortcut: no pixel cap before decode (decompression bomb); sandboxed decode is S6-T58-F4b
     img = cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
     if img is None:
         raise Rejected("unsupported_type")

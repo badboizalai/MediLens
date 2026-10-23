@@ -6,6 +6,7 @@ Requires the `ocr` extra (opencv-python-headless, numpy); imported lazily by the
 import cv2
 import numpy as np
 
+from medilens_worker.intake.pixels import within_pixel_cap
 from medilens_worker.ocr.gate import DEFAULT_GATE, GateConfig, decide, quality_score
 from medilens_worker.ocr.types import Metrics, PreprocessedPage, RetakeReason
 
@@ -21,6 +22,8 @@ CANNY_LO, CANNY_HI = 30, 90  # edge thresholds for pages with little contrast to
 
 
 def decode(data: bytes) -> np.ndarray | None:
+    if not within_pixel_cap(data):  # oversized or unreadable header: skip decode, gate says retake
+        return None
     return cv2.imdecode(np.frombuffer(data, np.uint8), cv2.IMREAD_COLOR)
 
 

@@ -177,3 +177,37 @@ def test_s3_promote_and_scan_tag(monkeypatch):
         c.put_object(Bucket="raw", Key=KEY, Body=PNG)
         with pytest.raises(ScanPending):
             validate_upload("d1", msg(), s, require_scan=True)
+
+
+def _png_declaring(w: int, h: int) -> bytes:  # tiny file whose header claims w x h pixels
+    ihdr = struct.pack(">IIBBBBB", w, h, 8, 0, 0, 0, 0)
+    return PNG[:8] + _chunk(b"IHDR", ihdr) + PNG[33:]
+
+
+def test_huge_declared_dimensions_rejected_before_decode(monkeypatch):
+    # no needs_cv2: must be rejected from the header alone, without importing cv2
+    monkeypatch.setitem(__import__("sys").modules, "cv2", None)
+    assert reason(msg(), mem(_png_declaring(100_000, 100_000))) == "image_too_large"
+
+
+def test_cap_boundary():
+    from medilens_worker.intake.pixels import MAX_IMAGE_PIXELS, within_pixel_cap
+
+    assert within_pixel_cap(_png_declaring(MAX_IMAGE_PIXELS, 1))
+    assert not within_pixel_cap(_png_declaring(MAX_IMAGE_PIXELS, 2))
+    assert not within_pixel_cap(b"\xff\xd8\xff\xd9")  # no SOF: fails closed
+
+
+def test_jpeg_header_dims():
+    from medilens_worker.intake.pixels import declared_pixels
+
+    sof = b"\xff\xc0" + struct.pack(">HBHHB", 11, 8, 30000, 40000, 1) + b"\x00" * 3
+    assert declared_pixels(b"\xff\xd8" + sof) == 1_200_000_000
+    assert declared_pixels(b"\xff\xd8\xff\xff" + sof) == 1_200_000_000  # fill byte before SOF
+
+
+@needs_cv2
+def test_normal_image_still_passes():
+    s = mem(PNG)
+    validate_upload("d1", msg(), s)
+    assert s.raw_pages("d1")

@@ -39,6 +39,10 @@ class PaddleVietOcrEngine:
         import numpy as np  # noqa: PLC0415
         from PIL import Image  # noqa: PLC0415
 
+        from medilens_worker.intake.pixels import within_pixel_cap  # noqa: PLC0415
+
+        if not within_pixel_cap(image):
+            raise ValueError("image_too_large")  # before Image.open/convert decodes pixels
         if self._det is None:
             self.load()
         img = Image.open(io.BytesIO(image)).convert("RGB")

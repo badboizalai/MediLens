@@ -14,7 +14,7 @@ const field = z.object({
 });
 export type Field = z.infer<typeof field>;
 
-/** 409 from confirm: ids of low-confidence fields still unconfirmed. */
+/** 422 from confirm: ids of low-confidence fields still unconfirmed. */
 export class UnconfirmedError extends Error {
   constructor(readonly fieldIds: string[]) {
     super('unconfirmed-fields');
@@ -22,7 +22,6 @@ export class UnconfirmedError extends Error {
 }
 
 const base = () => process.env.NEXT_PUBLIC_API_BASE_URL ?? '';
-const UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi;
 
 async function call(path: string, init: RequestInit = {}) {
   const res = await fetch(`${base()}/v1/documents/${path}`, {
@@ -30,10 +29,9 @@ async function call(path: string, init: RequestInit = {}) {
     credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
   });
-  if (res.status === 409) {
-    // Problem Details: only the field ids in the detail are used.
-    const p = (await res.json().catch(() => ({}))) as { detail?: string };
-    throw new UnconfirmedError(p.detail?.match(UUID) ?? []);
+  if (res.status === 422) {
+    const p = (await res.json().catch(() => ({}))) as { field_ids?: string[] };
+    throw new UnconfirmedError(p.field_ids ?? []);
   }
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res;

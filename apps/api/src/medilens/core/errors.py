@@ -23,6 +23,7 @@ class AppError(Exception):
         super().__init__(detail)
         self.detail = detail
         self.headers: dict[str, str] = {}
+        self.extensions: dict[str, object] = {}  # RFC 9457 extension members
 
 
 class NotFound(AppError):
@@ -62,6 +63,7 @@ def problem(
     detail: str = "",
     errors: list[dict[str, str]] | None = None,
     headers: dict[str, str] | None = None,
+    extensions: dict[str, object] | None = None,
 ) -> JSONResponse:
     rid = getattr(request.state, "request_id", "")
     body: dict[str, object] = {
@@ -71,6 +73,7 @@ def problem(
         "detail": detail,
         "instance": request.url.path,
         "traceId": rid,
+        **(extensions or {}),
     }
     if errors:
         body["errors"] = errors
@@ -86,6 +89,7 @@ async def app_error_handler(request: Request, exc: AppError) -> JSONResponse:
         title=exc.title,
         detail=exc.detail,
         headers=exc.headers,
+        extensions=exc.extensions,
     )
 
 

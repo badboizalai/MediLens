@@ -32,8 +32,8 @@ const server = setupServer(
     return HttpResponse.json({ ...f, user_value: body.user_value, confirmed_at: '2026-01-01T00:00:00Z' });
   }),
   http.post('*/v1/documents/:id/confirm', () =>
-    confirmStatus === 409
-      ? HttpResponse.json({ title: 'Unconfirmed fields remain', detail: `Confirm these low-confidence fields first: ${LOW}` }, { status: 409 })
+    confirmStatus === 422
+      ? HttpResponse.json({ title: 'Unconfirmed fields remain', field_ids: [LOW] }, { status: 422 })
       : new HttpResponse(null, { status: 204 }),
   ),
 );
@@ -92,10 +92,10 @@ describe('ReviewScreen', () => {
     expect(await screen.findByText(/You edited/)).toBeInTheDocument();
   });
 
-  it('lists the server ids on a 409', async () => {
+  it('lists the server ids on a 422', async () => {
     // all rows look confirmed locally, but the server disagrees
     fields = [row(LOW, 'finding.location', true, { confirmed_at: '2026-01-01T00:00:00Z' })];
-    confirmStatus = 409;
+    confirmStatus = 422;
     const { user } = setup();
     await screen.findByLabelText('finding.location');
     await user.click(confirmBtn());

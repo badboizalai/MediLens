@@ -20,7 +20,7 @@ _PROBLEMS = {
     400: {"description": "Validation failed"},
     401: {"description": "Unauthenticated"},
     404: {"description": "Not found"},
-    409: {"description": "Low-confidence fields still unconfirmed"},
+    422: {"description": "Low-confidence fields still unconfirmed (body has field_ids)"},
 }
 
 

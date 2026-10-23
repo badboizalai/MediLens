@@ -12,7 +12,9 @@ from medilens.core.errors import (
 from medilens.core.logging import configure_logging
 from medilens.core.middleware import RequestIdMiddleware
 from medilens.modules.document.api.router import router as document_router
+from medilens.modules.identity.api.dependencies import get_token_validator
 from medilens.modules.identity.api.router import router as identity_router
+from medilens.shared.auth import register_token_validator
 
 API_PREFIX = "/v1"  # every module router mounts under this prefix
 
@@ -29,6 +31,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         openapi_url="/openapi.json" if settings.docs_enabled else None,
         openapi_tags=[{"name": "ops", "description": "Liveness and readiness probes"}],
     )
+    register_token_validator(
+        get_token_validator
+    )  # composition root wires identity into shared auth
     app.add_exception_handler(AppError, app_error_handler)
     app.add_exception_handler(RequestValidationError, validation_error_handler)
     app.add_exception_handler(Exception, unhandled_error_handler)

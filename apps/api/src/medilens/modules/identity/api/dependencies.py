@@ -3,7 +3,6 @@ from functools import lru_cache
 from medilens.modules.identity.application.token_validator import TokenValidator, ValidatorConfig
 from medilens.modules.identity.infra.jwks import CachedJwks
 from medilens.modules.identity.infra.settings import get_identity_settings
-from medilens.shared.auth import register_token_validator
 
 
 @lru_cache
@@ -14,6 +13,3 @@ def get_token_validator() -> TokenValidator:
         issuer=s.issuer, audience=s.audience, algorithms=s.algorithms, roles_claims=s.roles_claims
     )
     return TokenValidator(cfg, jwks.get_key)
-
-
-register_token_validator(get_token_validator)

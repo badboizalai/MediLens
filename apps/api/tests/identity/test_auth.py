@@ -130,3 +130,9 @@ def test_me_is_mounted_and_requires_auth() -> None:
     res = TestClient(create_app()).get("/v1/me")
     assert res.status_code == 401
     assert res.headers["content-type"].startswith("application/problem+json")
+
+
+def test_unregistered_validator_fails_loudly(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(deps, "_factory", None)
+    with pytest.raises(RuntimeError, match="no token validator"):
+        deps.get_token_validator()

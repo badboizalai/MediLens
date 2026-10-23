@@ -3,9 +3,6 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 
-from medilens.modules.identity.api import (
-    dependencies,  # noqa: F401  (registers the token validator)
-)
 from medilens.shared.auth import Principal, get_current_user
 
 router = APIRouter(tags=["identity"])

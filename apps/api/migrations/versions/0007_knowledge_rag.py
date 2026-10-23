@@ -4,14 +4,14 @@ profile_id NULL = public article chunk (readable by all, writable only by the in
 role); otherwise the row is scoped by the same RLS predicate as the other clinical tables.
 
 Revision ID: 0007
-Revises: 0006
+Revises: 0006_admin
 Create Date: 2026-10-24
 """
 
 from alembic import op
 
 revision = "0007"
-down_revision = "0006"
+down_revision = "0006_admin"
 branch_labels = None
 depends_on = None
 

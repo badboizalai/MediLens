@@ -15,7 +15,8 @@ from medilens.core.errors import (
     validation_error_handler,
 )
 from medilens.core.logging import configure_logging
-from medilens.core.middleware import RequestIdMiddleware
+from medilens.core.middleware import RequestIdMiddleware, SecurityHeadersMiddleware
+from medilens.modules.admin.api.router import router as admin_router
 from medilens.modules.clinical.api.router import router as clinical_router
 from medilens.modules.clinical.application.service import ClinicalService
 from medilens.modules.clinical.infra.sql_repository import SqlClinicalRepository
@@ -67,6 +68,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         ],
         expose_headers=["X-Request-ID", "ETag"],
     )
+    app.add_middleware(SecurityHeadersMiddleware)  # wraps CORS so preflights get headers too
     app.add_middleware(RequestIdMiddleware)  # outermost: ids exist for every response
 
     @app.get("/healthz", tags=["ops"])
@@ -84,6 +86,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     v1.include_router(document_router)
     v1.include_router(extraction_api.router)
     v1.include_router(clinical_router)
+    v1.include_router(admin_router)
     v1.include_router(knowledge_router)
     # v1.include_router(patient_router)
     app.dependency_overrides[extraction_api.get_confirm_hook] = clinical_confirm_hook

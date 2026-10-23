@@ -58,6 +58,8 @@ def cmd_run(a):
     gold = {r["doc_id"]: r for r in load(a.gold)}
     preds = load(a.pred)
     pred = {r["doc_id"]: r for r in preds}
+    if not gold.keys() & pred.keys():
+        return no_predictions(a, len(gold))
     thresholds = json.loads(Path(a.thresholds).read_text(encoding="utf-8"))
     report = metrics.score(gold, pred, fuzzy=a.fuzzy)
     fails = metrics.check_gate(report, thresholds)
@@ -73,6 +75,21 @@ def cmd_run(a):
         )
         (out / "report.md").write_text(md, encoding="utf-8")
     return 1 if fails else 0
+
+
+def no_predictions(a, n_gold):
+    """Nothing to score for this gold set: say so, never invent an F1."""
+    msg = (
+        f"no predictions for {n_gold} gold docs in {a.gold}: F1 not computed (no model results yet)"
+    )
+    print(msg)
+    if a.out_dir:
+        out = Path(a.out_dir)
+        out.mkdir(parents=True, exist_ok=True)
+        report = {"status": "no_predictions", "gold_docs": n_gold}
+        (out / "report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+        (out / "report.md").write_text(f"# Extraction evaluation\n\n{msg}\n", encoding="utf-8")
+    return 0
 
 
 def cmd_gen_baseline(a):

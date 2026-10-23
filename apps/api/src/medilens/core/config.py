@@ -21,8 +21,8 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def _prod_is_strict(self) -> "Settings":
-        if self.env in ("staging", "prod") and "*" in self.cors_origins:
-            raise ValueError("wildcard CORS origin is not allowed in staging/prod")
+        if "*" in self.cors_origins:
+            raise ValueError("wildcard CORS origin is not allowed; list explicit origins")
         return self
 
     @property

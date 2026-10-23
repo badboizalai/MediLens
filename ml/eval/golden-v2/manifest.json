@@ -1,0 +1,25 @@
+{
+  "counts": {
+    "cardiology": 200,
+    "dental": 200,
+    "lang=en": 180,
+    "lang=vi": 420,
+    "layout=dental_record": 67,
+    "layout=discharge_summary": 200,
+    "layout=lab_result": 66,
+    "layout=outpatient_form": 200,
+    "layout=pathology_report": 67,
+    "noise=clean": 300,
+    "noise=heavy": 90,
+    "noise=light": 210,
+    "oncology": 200
+  },
+  "docs": 600,
+  "name": "golden-v2",
+  "seed": 20261024,
+  "sha256": {
+    "docs.jsonl": "f824cef9e3c58e354c1f586c85b3b8ac96b605fcafe10e41549fc2f502183eed",
+    "gold.jsonl": "5416345052be99141d59a6e06f138b95496d8a6d169ed6e9db65f9043a141260"
+  },
+  "version": "2.0.0"
+}

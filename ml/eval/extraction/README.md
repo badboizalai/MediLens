@@ -26,3 +26,7 @@ plus ~4% dropped/corrupted fields, wrong region codes and bad citations. It exis
 exercises scoring and the gate without any LLM call. Each record carries
 `_label: NOT_A_MODEL_RESULT...` and reports print the same banner. Do not quote its scores as
 extraction quality. Real model predictions replace it once the extraction pipeline emits them.
+
+## golden-v2 (600 docs, strata)
+
+`python3 -m extraction_eval run --gold ../golden-v2/gold.jsonl --pred <preds.jsonl>` adds F1 groups per stratum (`lang=`, `layout=`, `noise=`) and per stratum x Unit (`lang=vi@unit=oncology`). If no prediction matches the gold doc ids it prints "no predictions" and computes nothing (exit 0). There is no baseline for v2.

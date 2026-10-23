@@ -175,7 +175,9 @@ def score(gold, pred, fuzzy=0.9, max_errors=25):
         p = pred.get(doc_id, {"fields": {}})
         unit = g.get("unit", "?")
         gf, pf = flatten(g.get("fields", {})), flatten(p.get("fields", {}))
-        keys = ("ALL", f"unit={unit}", f"quality={g.get('quality', '?')}")
+        keys = ["ALL", f"unit={unit}", f"quality={g.get('quality', '?')}"]
+        for name, val in sorted(g.get("strata", {}).items()):  # golden-v2: lang/layout/noise
+            keys += [f"{name}={val}", f"{name}={val}@unit={unit}"]
         bumps = []  # (path, kind, fuzzy-close)
         for path, gv in gf.items():
             pv = pf.get(path)

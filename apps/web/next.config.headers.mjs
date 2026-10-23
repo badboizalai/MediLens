@@ -17,7 +17,7 @@ export function buildCsp({ prod, apiOrigin, storageOrigin }) {
     // 'unsafe-eval' is dev only (React refresh); production never gets it.
     `script-src 'self' 'unsafe-inline'${prod ? '' : " 'unsafe-eval'"}`,
     "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data: blob:", // GLB textures / image previews
+    ['img-src', "'self'", 'data:', 'blob:', origin(storageOrigin)].filter(Boolean).join(' '), // GLB textures; presigned page images
     "font-src 'self'",
     // API origin from env; storage origin for presigned PUTs; dev adds HMR websocket.
     ['connect-src', "'self'", origin(apiOrigin), origin(storageOrigin), prod ? '' : 'ws: http://localhost:*']

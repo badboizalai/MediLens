@@ -45,5 +45,30 @@
       "button": "Retake",
       "note": "This is normal and does not mean you did anything wrong."
     }
+  },
+  "review": {
+    "title": "Check your record",
+    "loading": "Loading fields…",
+    "loadError": "We couldn't load the fields. Please try again.",
+    "fields": "Extracted fields",
+    "aiNote": "Extracted by AI — please check.",
+    "empty": "We couldn't read any fields. Add them manually or upload again.",
+    "aiExtracted": "AI extracted",
+    "edited": "You edited",
+    "confirmed": "Confirmed",
+    "page": "Page {n}",
+    "needsCheck": "Needs check.",
+    "lowConfidence": "We're not sure about this one. Please check it.",
+    "required": "Please enter a value.",
+    "tooLong": "Keep it under {max} characters.",
+    "save": "Save change",
+    "confirmField": "Confirm this value",
+    "saveError": "Couldn't save. Your changes are kept; please try again.",
+    "remaining": "{n, plural, =0 {All items checked} one {# item left to check} other {# items left to check}}",
+    "confirmAll": "Confirm document",
+    "blocked": "These items still need your check:",
+    "done": "Confirmed.",
+    "source": "Original",
+    "sourcePlaceholder": "The original page preview is not available yet. Fields come from these pages:"
   }
 }

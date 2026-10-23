@@ -28,12 +28,12 @@ _INPUT_RULES: dict[str, str] = {
     ),
     "med_change": (
         r"(ngung|bo|doi|giam|tang|quen) (uong )?(thuoc|lieu)|nen (ngung|bo|doi|dung|uong) .{0,20}thuoc|"
-        r"(stop|quit|skip|halt|change|switch|increase|reduce|double) (taking |my |the )*"
-        r"(medic|meds|pill|tablet|dose|drug|prescription|insulin|statin)"
+        r"(stop|quit|skip|halt|change|switch|increase|reduce|double) ([\w']+ ){0,3}"
+        r"(medic|meds|pill|tablet|dose|drug|prescription|insulin|statin|blood thinner|anticoag)"
     ),
     "prognosis": (
-        r"song (duoc )?(bao lau|may nam|may thang)|con (bao lau|song)|tien luong|ty le song|"
-        r"song sot|(co|se) chet|bao lau nua .{0,15}(chet|mat)|"
+        r"song (duoc |them )?(bao lau|may nam|may thang)|con (bao lau|song)|tien luong|ty le song|"
+        r"song sot|(co|se|sap) chet|bao lau nua .{0,15}(chet|mat)|"
         r"how long (do i|will i|can i|does he|does she) (have|live|survive)|life expectancy|"
         r"survival (rate|time)|prognosis|will i die|am i dying|terminally|terminal (illness|cancer|stage)"
     ),
@@ -41,7 +41,7 @@ _INPUT_RULES: dict[str, str] = {
         r"toi (bi|mac) (benh )?(gi|sao)|chan doan (cho )?(toi|giup)|"
         r"co phai (toi |la |no |minh )*(bi |mac )?(ung thu|tieu duong|benh)|"
         r"toi co (bi|mac) .{0,30}khong|toi co phai (la )?(bi|mac|benh)|"
-        r"what (disease|illness|condition|is wrong)|do i have (?!to\b)|am i (sick|ill)|"
+        r"what (disease|illness|condition)|what('s| is) wrong|do i have (?!to\b)|am i (sick|ill)|"
         r"diagnose (me|my)|is (it|this) (cancer|serious|a tumou?r)"
     ),
 }

@@ -154,3 +154,82 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 10. Infra: `/tmp` is a 7.6 GB tmpfs — parallel worktrees + node_modules filled it to 92%; worktrees were moved/cleaned (17 GB of finished agent worktrees removed).
 
 **Run 2 PRs merged (29)**: #30–#58. Every PR reviewed with real GitHub comments; 4 sent back and fixed in round 2 (#47 plan job, #51 hand-rolled validator, #55 retake→DLQ bug, #58 API contract mismatch); integration commits by the orchestrator on #33 (router mount + relock) and #55 (relock).
+
+---
+# Run 3 — bug closure + S06/S07 (owner: "Tiếp tục. Chạy opus và chia task, sub task cho sonnet worker.")
+- Started: 2026-10-23 12:01 +07 · Deadline: 17:01 +07 (5 h) · AI merge under RULES A3 worked this run (`gh pr merge` allowed).
+- Merged at start (re-verified locally on merged heads): #62 BUG-01, #59 CHORE-01, #61 BUG-02 (rebased by Opus onto #62, imports → `medilens.shared.auth`), #60 BUG-03, #63 BUG-04 (Opus merge commit: resolved `worker/main.py` + README vs BUG-03; migration ref 0002→0003). Worker Postgres tests now run (57 pass).
+
+## Gaps found while planning (main @ after #63)
+- No outbox relay: `clinical.outbox` rows are never published → pipeline never starts (BUG-05a).
+- `S3PageStore.register_raw` is a per-process dict with no caller (BUG-05b replaces it with promotion to `raw/{document_id}/`).
+- Runner never enqueues the next step; worker status and extraction results never reach the API (`clinical.documents.status`, `extraction_runs/fields`) → ADR-0005 first, then implementation.
+- `storage/postgres.py` docstring says migration 0002 (is 0003) — fold into the next worker PR.
+
+## Task table
+| ID | Task | Owner skill | Paths | Base | Status | Branch | PR | Rounds |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| BUG-01 | 401/403 problem types, shared auth | backend | apps/api | main | **merged** | fix/BUG-01-auth-problem-shared-auth | #62 | 1 |
+| BUG-02 | GET document, unique sha index, pending cap | backend | apps/api | main | **merged** | feat/BUG-02-document-get-upload-race | #61 | 2 |
+| BUG-03 | worker extract wiring, finalize, service token | backend | apps/worker | main | **merged** | fix/BUG-03-worker-wiring-service-token | #60 | 1 |
+| BUG-04 | worker Postgres stores + S3 page store | backend | apps/worker, migration 0003 | main | **merged** | feat/BUG-04-worker-persistent-stores | #63 | 2 |
+| CHORE-01 | web env vars in README, worktrees off tmpfs | tech-writer | apps/web/README.md, autopilot.md | main | **merged** | chore/CHORE-01-env-claims-worktrees | #59 | 1 |
+| BUG-05a | Outbox relay → SQS `document.validate` with `storageKey` | backend | api shared/outbox_relay | main | **merged** | fix/BUG-05a-outbox-relay | #70 | 1 |
+| BUG-05b | Worker validate (size/magic/pages/active PDF/malware tag) + promote raw to `raw/{doc}/` | backend (+security) | worker intake/, registry validate, runner ctx, storage/s3 | main | **merged** | fix/BUG-05b-worker-validate-raw | #67 | 1 |
+| S6-T57 | Malicious upload file set API tests | qa | api tests/document, docs/qa | main | **merged** (Opus doc fix: polyglots NOT yet blocked) | test/S6-T57-malicious-uploads | #69 | 1 |
+| S7-T63 | Extraction review API (fields/edit/confirm, audit, IDOR tests) | backend | api modules/extraction | main | **merged** (Opus README merge) | feat/S7-T63-extraction-review-api | #72 | 1 |
+| S8-T72 | 2D body SVG front/back, region_code ids | 3d-medical-artist | packages/anatomy-assets/svg, tests/assets | main | **merged** (Opus: test moved into testpaths) | feat/S8-T72-body-svg | #66 | 1 |
+| S6-T53-ADR | ADR-0005 worker→API hand-off (Proposed) | solution-architect | docs/architecture/adr | main | **merged** | docs/S6-T53-adr-worker-handoff | #65 | 1 |
+| S6-T53a | Terraform api-events queue + DLQ alarm + extractions/* IAM | cloud-devops | infra/terraform/envs/staging, modules/sqs | main | **merged** (Opus: JOBS_QUEUE_URL→WORKER_QUEUE_URL) | feat/S6-T53a-tf-api-events | #68 | 1 |
+| S6-T53f | JSON Schema contracts + status mapping + check in `make governance` | backend | docs/architecture/contracts, tools/check_contracts.py | main | **merged** | docs/S6-T53f-event-contracts | #71 | 1 |
+| S6-T53b | Worker chaining + status events + scan-pending budget (RetryLater) | backend | worker pipeline/, queue/, main.py | main | **merged** | feat/S6-T53b-worker-chaining-events | #73 | 1 |
+| S6-T57b | API `rejected` status for rejected uploads | backend | api modules/document | main | **merged** | fix/S6-T57b-rejected-status | #78 | 1 |
+| S6-T54a | Rules page classifier (9 types) + golden eval (1.0 but only 2 types present → D54 still open) | ai-ml | worker classify/, ml/eval/classify | main | **merged** | feat/S6-T54a-page-classifier | #76 | 1 |
+| S6-T55 | Document edge/perspective: frame-quad reject + Canny with border-step check | ai-ml | worker ocr/preprocess.py | main | **merged** (round 2: full-frame scan regression fixed) | feat/S6-T55-doc-edge-perspective | #74 | 2 |
+| S7-T64 | Web review screen with confirm gate (BR-012) | frontend | apps/web features/review | main | **merged** | feat/S7-T64-review-screen | #75 | 1 |
+| S6-T58 | Upload security review vs SEC-AP-07 (PARTIAL; NO-GO for real data until F1–F4, F6) | security | docs/security/reviews | main | **merged** | docs/S6-T58-upload-security-review | #77 | 1 |
+| S6-T53c | Worker result export to S3 + `extraction.completed` (runId, pipelineVersion) | backend | worker extraction/, storage/results.py, main.py | main | **merged** (continued after rate limit) | feat/S6-T53c-worker-result-export | #82 | 1 |
+| S6-T53d | API api-events consumer: status applier (ingest = S6-T53d2) | backend | api document/, shared/api_events_consumer.py | main | **blocked** (draft; RLS access model decision) | feat/S6-T53d-api-events-consumer | #84 | 1 |
+| S6-T58-F2 | Staging storage wiring, least-privilege IAM, scan gate on (F1/F2/F8; F6 needs app code) | cloud-devops | infra/terraform/envs/staging | main | **merged** (continued after rate limit) | feat/S6-T58-F2-staging-storage | #81 | 1 |
+| S6-T58-F3F4 | Worker upload hardening: PDF name normalisation, uninspectable/malformed PDFs, image re-encode | security | worker intake/ | main | **merged** | fix/S6-T58-F3F4-upload-hardening | #79 | 1 |
+| S7-T66 | Anatomy mapping: FDI parser, location dictionary, laterality (group-node fallback → unmapped) | ai-ml | worker anatomy/, ml/eval/anatomy, data/terminology/location-synonyms.v1.yaml | main | **merged** (round 2: safety fix + pyyaml) | feat/S7-T66-anatomy-mapping | #83 | 2 |
+| S7-T68 | Hazard log v1 draft: HZ-017..019 new, 6 updated, all `draft-pending-CSO` | clinical-safety | safety/ | main | **merged** (draft, not a sign-off) | docs/S7-T68-hazard-log-v1 | #80 | 1 |
+| S6-T53e | Status API + SSE (<2 s) | backend | api document/api | after T53d | todo | | | |
+| S6-T54b | Classify inside `extract` via `unit_for` (decision: option 1, no state-machine change) | ai-ml | worker extraction/deps.py | after T53c | todo | | | |
+| S6-T54c | 9-type labelled synthetic set (30/type) + re-eval classifier | data-curator + ai-ml | ml/datasets/synth, ml/eval/classify | — | todo | | | |
+| S6-T55b | VietOCR for printed lines + CER re-run | ai-ml | worker ocr/ | — | todo | | | |
+| S7-T64b | Page image endpoint + bbox overlay on review screen | backend + frontend | api document/, web review | — | todo | | | |
+## Follow-ups from reviews
+- Shared ownership/audit port in `medilens.shared` (document + extraction infra both query `identity.*`/`audit.*` directly; precedent accepted) — #72.
+- PDF active-content regex is evadable; polyglot JPEG+ZIP and `%PDF`+HTML pass API and worker → sandboxed decode/re-encode in preprocess — #67, #69.
+- Staging: worker needs quarantine `GetObject`/`GetObjectTagging` + pages bucket; DLQ alarm actions unwired; relay needs a runtime (ECS task) — #68, #70.
+- Runner edge cases (#73): re-chained attempt-1 can race a running retry of the next step; terminal guard should include NEEDS_RETAKE.
+- 409 from confirm should carry structured `field_ids` (web parses `detail`, #75); web STAGE map lacks `rejected`.
+- Security review F5 closed by #73, F9 closed by #78; F7 (rate limit/daily quota), F10–F12 open.
+- Worker `S3PageStore._put` uses SSE-S3 (AES256); bucket policy `StringNotEqualsIfExists` lets it through → switch to `aws:kms` (#81). `kms_admin_role_arns` is a required apply input.
+- Upload hardening F4b: pixel cap before decode, sandboxed PDF rasterisation, worker image must install the `ocr` extra (cv2), HEIC re-encode (#79).
+- Hazard log: BR-012 says 422, API returns 409 (spec mismatch → BA/backend); make `test_hazard_risk_check.py` count-agnostic (#80).
+- Result store `latest()` by LastModified → use time-ordered runId (uuid7) (#82).
+- Region SVG: clinical-informaticist laterality review; `svg_id` in region tree — #66.
+
+## Human decisions (recorded, not resolved by AI)
+- Accept ADR-0005 (status Proposed, #65).
+- `apps/web/.env.example` writes blocked by the `.env.*` deny rule; vars documented in apps/web/README.md (#59).
+- `docs/research/consent-form.md` lines 6 and 27 (negated "không chẩn đoán" / "does not diagnose") fail claims lint; marking `claims-ok` was denied as disabling a check → regulatory owner decides.
+- Terraform apply needs AWS credentials, remote state and staging environment reviewers.
+- `MAX_PENDING_UPLOADS = 20` needs product confirmation (U-09 has no number).
+
+## Blockers (run 3)
+- **#84 S6-T53d**: the API events consumer cannot read/update `clinical.documents` under FORCE RLS without a profile scope. Options in the #84 review: BYPASSRLS role limited to UPDATE(status), SECURITY DEFINER `clinical.apply_document_status`, or a definer lookup + scoped update. A worker attempt to widen `app.profile_ids` in code was denied by the permission system and must not return. Decision: owner + medilens-security-engineer (ADR-0005 addendum). Untested ingest WIP saved at `.claude/worktrees/state-wip-ingest/` (gitignored).
+- Sonnet session rate limit hit ~12:45 → reset 16:30; four workers were continued by fresh workers in their existing worktrees (SendMessage not available to the orchestrator).
+
+## Handover (stopped 2026-10-23 ~16:40 +07, deadline 17:01)
+**Merged this run (25)**: #59–#63 (start), #65–#83 except #64 (state) and #84 (draft). Every PR got a real review with B4 checklist + verdict; Opus re-ran tests on each head merged with main. Sent back and fixed in round 2: #74 (full-frame scan cropped to table), #83 (bilateral → `organs` group node). Opus integration commits: #61 rebase, #63 merge, #66 test into testpaths, #68 env name, #69 QA doc accuracy, #72 README merge.
+**Final check on main @ cdc1928**: api + worker + assets/terminology pytest pass, lint-imports 12/0, ruff clean, `make governance` PASS.
+**Owner actions, in order**
+1. Decide the RLS access model for the api-events consumer (#84) with security; then S6-T53d continues (and S6-T53d2 ingest).
+2. Accept ADR-0005 (#65, Proposed). Decide BR-012 422 vs 409 for unconfirmed fields (BA/backend).
+3. CSO review/sign of hazard log v1 rows `draft-pending-CSO` (#80); G2-CS stays human.
+4. Terraform apply needs AWS credentials, remote state, staging reviewers, and `kms_admin_role_arns`.
+5. Earlier decisions still open: `apps/web/.env.example` (deny rule), consent-form claims lint lines 6/27, `MAX_PENDING_UPLOADS = 20`.
+**Next AI tasks**: S6-T53e SSE (after #84), S6-T54b classify in extract, S6-T54c 9-type set, S6-T55b VietOCR, S7-T64b page image + bbox, S7-T66b wire mapper, worker `_put` → SSE-KMS, F4b pixel cap + sandboxed PDF raster, F7 rate limit/quota, shared ownership/audit port, runner NEEDS_RETAKE terminal guard, 409 `field_ids`, web `rejected` stage. Session is long → `/compact` before the next run.

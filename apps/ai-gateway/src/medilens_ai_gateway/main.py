@@ -33,6 +33,8 @@ class CompleteBody(BaseModel):
     max_output_tokens: int = Field(default=400, ge=1, le=4096)
     tier: Literal["auto"] | None = None
     document_id: str | None = Field(default=None, max_length=128)
+    traffic: Literal["qa"] | None = None
+    locale: Literal["vi", "en"] = "vi"
 
 
 _STATUS = {
@@ -41,6 +43,7 @@ _STATUS = {
     "redaction_failed": 422,
     "provider_timeout": 504,
     "provider_error": 502,
+    "quota_exceeded": 429,
 }
 
 
@@ -81,5 +84,6 @@ def complete(
     try:
         r = get_gateway().complete(CompletionRequest(**body.model_dump()))
     except GatewayError as e:
-        raise HTTPException(_STATUS.get(e.code, 500), detail=e.code) from e
+        headers = {"Retry-After": str(e.retry_after_s)} if e.retry_after_s else None
+        raise HTTPException(_STATUS.get(e.code, 500), detail=e.code, headers=headers) from e
     return dict(r.__dict__)

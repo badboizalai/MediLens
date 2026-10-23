@@ -189,10 +189,10 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 | S7-T64 | Web review screen with confirm gate (BR-012) | frontend | apps/web features/review | main | **merged** | feat/S7-T64-review-screen | #75 | 1 |
 | S6-T58 | Upload security review vs SEC-AP-07 (PARTIAL; NO-GO for real data until F1–F4, F6) | security | docs/security/reviews | main | **merged** | docs/S6-T58-upload-security-review | #77 | 1 |
 | S6-T53c | Worker result export to S3 + `extraction.completed` (runId, pipelineVersion) | backend | worker extraction/, storage/results.py, main.py | main | **merged** (continued after rate limit) | feat/S6-T53c-worker-result-export | #82 | 1 |
-| S6-T53d | API api-events consumer: status apply (+ ingest if finished, else S6-T53d2) | backend | api document/, extraction/, shared/api_events_consumer.py | main | in-progress (continued after rate limit) | feat/S6-T53d-api-events-consumer | | |
+| S6-T53d | API api-events consumer: status applier (ingest = S6-T53d2) | backend | api document/, shared/api_events_consumer.py | main | **blocked** (draft; RLS access model decision) | feat/S6-T53d-api-events-consumer | #84 | 1 |
 | S6-T58-F2 | Staging storage wiring, least-privilege IAM, scan gate on (F1/F2/F8; F6 needs app code) | cloud-devops | infra/terraform/envs/staging | main | **merged** (continued after rate limit) | feat/S6-T58-F2-staging-storage | #81 | 1 |
 | S6-T58-F3F4 | Worker upload hardening: PDF name normalisation, uninspectable/malformed PDFs, image re-encode | security | worker intake/ | main | **merged** | fix/S6-T58-F3F4-upload-hardening | #79 | 1 |
-| S7-T66 | Anatomy mapping: FDI parser, location dictionary, laterality | ai-ml | worker anatomy/, ml/eval/anatomy | main | in-progress (continued after rate limit) | feat/S7-T66-anatomy-mapping | | |
+| S7-T66 | Anatomy mapping: FDI parser, location dictionary, laterality (group-node fallback → unmapped) | ai-ml | worker anatomy/, ml/eval/anatomy, data/terminology/location-synonyms.v1.yaml | main | **merged** (round 2: safety fix + pyyaml) | feat/S7-T66-anatomy-mapping | #83 | 2 |
 | S7-T68 | Hazard log v1 draft: HZ-017..019 new, 6 updated, all `draft-pending-CSO` | clinical-safety | safety/ | main | **merged** (draft, not a sign-off) | docs/S7-T68-hazard-log-v1 | #80 | 1 |
 | S6-T53e | Status API + SSE (<2 s) | backend | api document/api | after T53d | todo | | | |
 | S6-T54b | Classify inside `extract` via `unit_for` (decision: option 1, no state-machine change) | ai-ml | worker extraction/deps.py | after T53c | todo | | | |
@@ -218,3 +218,18 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 - `docs/research/consent-form.md` lines 6 and 27 (negated "không chẩn đoán" / "does not diagnose") fail claims lint; marking `claims-ok` was denied as disabling a check → regulatory owner decides.
 - Terraform apply needs AWS credentials, remote state and staging environment reviewers.
 - `MAX_PENDING_UPLOADS = 20` needs product confirmation (U-09 has no number).
+
+## Blockers (run 3)
+- **#84 S6-T53d**: the API events consumer cannot read/update `clinical.documents` under FORCE RLS without a profile scope. Options in the #84 review: BYPASSRLS role limited to UPDATE(status), SECURITY DEFINER `clinical.apply_document_status`, or a definer lookup + scoped update. A worker attempt to widen `app.profile_ids` in code was denied by the permission system and must not return. Decision: owner + medilens-security-engineer (ADR-0005 addendum). Untested ingest WIP saved at `.claude/worktrees/state-wip-ingest/` (gitignored).
+- Sonnet session rate limit hit ~12:45 → reset 16:30; four workers were continued by fresh workers in their existing worktrees (SendMessage not available to the orchestrator).
+
+## Handover (stopped 2026-10-23 ~16:40 +07, deadline 17:01)
+**Merged this run (25)**: #59–#63 (start), #65–#83 except #64 (state) and #84 (draft). Every PR got a real review with B4 checklist + verdict; Opus re-ran tests on each head merged with main. Sent back and fixed in round 2: #74 (full-frame scan cropped to table), #83 (bilateral → `organs` group node). Opus integration commits: #61 rebase, #63 merge, #66 test into testpaths, #68 env name, #69 QA doc accuracy, #72 README merge.
+**Final check on main @ cdc1928**: api + worker + assets/terminology pytest pass, lint-imports 12/0, ruff clean, `make governance` PASS.
+**Owner actions, in order**
+1. Decide the RLS access model for the api-events consumer (#84) with security; then S6-T53d continues (and S6-T53d2 ingest).
+2. Accept ADR-0005 (#65, Proposed). Decide BR-012 422 vs 409 for unconfirmed fields (BA/backend).
+3. CSO review/sign of hazard log v1 rows `draft-pending-CSO` (#80); G2-CS stays human.
+4. Terraform apply needs AWS credentials, remote state, staging reviewers, and `kms_admin_role_arns`.
+5. Earlier decisions still open: `apps/web/.env.example` (deny rule), consent-form claims lint lines 6/27, `MAX_PENDING_UPLOADS = 20`.
+**Next AI tasks**: S6-T53e SSE (after #84), S6-T54b classify in extract, S6-T54c 9-type set, S6-T55b VietOCR, S7-T64b page image + bbox, S7-T66b wire mapper, worker `_put` → SSE-KMS, F4b pixel cap + sandboxed PDF raster, F7 rate limit/quota, shared ownership/audit port, runner NEEDS_RETAKE terminal guard, 409 `field_ids`, web `rejected` stage. Session is long → `/compact` before the next run.

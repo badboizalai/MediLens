@@ -41,14 +41,14 @@ Severity scale: Critical/High/Medium/Low per the skill's triage (SLA 24 h / 7 d 
 
 | ID | Severity | Issue | Exploit / impact | SEC | Follow-up |
 |---|---|---|---|---|---|
-| F1 | High | Worker scan gate defaults off (`WORKER_REQUIRE_MALWARE_SCAN` unset) | Unscanned file promoted to `raw/` and parsed | SEC-AP-07 | S6-T58-F1 |
-| F2 | Medium (today: availability) | Staging IAM and env miss quarantine access for worker and API; storage module not wired | Upload cannot work in staging; the fix must stay least-privilege (no `s3:*`, no wildcard bucket) | SEC-AP-07, SEC-DP-05 | S6-T58-F2 |
+| F1 | High | Worker scan gate defaults off (`WORKER_REQUIRE_MALWARE_SCAN` unset) | Unscanned file promoted to `raw/` and parsed | SEC-AP-07 | S6-T58-F1 (infra: env set in staging, S6-T58-F2; app default pending) |
+| F2 | Medium (today: availability) | Staging IAM and env miss quarantine access for worker and API; storage module not wired | Upload cannot work in staging; the fix must stay least-privilege (no `s3:*`, no wildcard bucket) | SEC-AP-07, SEC-DP-05 | S6-T58-F2 (infra done in PR, not applied) |
 | F3 | Medium | Byte-regex PDF check evadable (hex-escaped names, object streams, missing `/OpenAction`, `/AA`, `/URI`, `/SubmitForm`, `/XFA`, `/RichMedia`); page cap bypass | Active PDF reaches OCR/rasteriser; page-count DoS | SEC-AP-07 | S6-T58-F3 |
 | F4 | High (before real data; Medium today) | No sandboxed parser; polyglot JPEG+ZIP and `%PDF`+HTML accepted; no decode/re-encode, EXIF not stripped (U-11), no decompression-bomb limit (`MAX_IMAGE_PIXELS` unset in worker) | Parser exploit in the worker task that holds PHI-capable credentials | SEC-AP-07, SEC-AR-09, U-05 | S6-T58-F4 |
 | F5 | Medium | Scan-pending uses the generic 3-attempt, 15 s retry | Clean files fail when GuardDuty is slower than 15 s | SEC-AP-07 | S6-T58-F5 |
-| F6 | Medium | No SEC-AP-07a: no VersionId/checksum pinning, no overwrite deny; presigned URL stays valid up to 5 min after `complete` | Object replaced after API sniff/hash (worker re-sniffs magic, so impact is limited to a content swap of the same type) | SEC-AP-07a, U-06 | S6-T58-F6 |
+| F6 | Medium | No SEC-AP-07a: no VersionId/checksum pinning, no overwrite deny; presigned URL stays valid up to 5 min after `complete` | Object replaced after API sniff/hash (worker re-sniffs magic, so impact is limited to a content swap of the same type) | SEC-AP-07a, U-06 | S6-T58-F6 (infra: versioning on, no S3 overwrite deny possible; VersionId+sha256 in app pending) |
 | F7 | Medium | Only a pending cap; no rate limit, daily quota or WAF rate rule evidence | Storage and scan cost abuse (AC-07) | SEC-AP-08, U-09 | S6-T58-F7 |
-| F8 | Low | Quarantine TTL 7 d vs 24 h; worker reject keeps the object; no age alarm | Rejected files linger (U-08) | U-08 | S6-T58-F8 |
+| F8 | Low | Quarantine TTL 7 d vs 24 h; worker reject keeps the object; no age alarm | Rejected files linger (U-08) | U-08 | S6-T58-F8 (TTL 1 d set in staging, S6-T58-F2; age alarm pending) |
 | F9 | Low | Rejected document stays `uploaded-pending` (strict xfail `test_rejected_document_status_is_rejected`) | Wrong state shown; counts toward the cap for up to 10 min | SEC-AP-08 | S6-T58-F9 |
 | F10 | Low | Worker trusts `storageKey` from the message (prefix check only) | Needs queue write access; defence in depth for U-10 | SEC-AZ-02 | S6-T58-F10 |
 | F11 | Low | No test for signed `content-length`/`content-type`; HEIC/sniff table duplicated in API and worker | Silent regression of SEC-DP-05; drift | SEC-DP-05 | S6-T58-F11 |

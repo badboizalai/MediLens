@@ -114,14 +114,14 @@ def test_prompt_embeds_schema_and_pages():
 
 
 def test_handler_wired_and_saves_run():
-    saved, reviewed = [], []
+    saved, events = [], []
     deps.configure(
         deps.ExtractDeps(
             lambda _id: PAGES,
             StubGateway(good()),
             saved.append,
             lambda _id: saved[0] if saved else None,
-            reviewed.append,
+            events.append,
             lambda _id: "dental",
         )
     )
@@ -134,14 +134,17 @@ def test_handler_wired_and_saves_run():
     finally:
         deps.configure(None)
     assert saved[0].document_id == "d1" and saved[0].unit == "dental"
-    assert reviewed == saved
+    assert events[0]["runId"] == saved[0].run_id
 
 
 def test_build_extract_deps_fails_fast_outside_local():
-    with pytest.raises(RuntimeError, match="AI_GATEWAY_URL.*AI_GATEWAY_SERVICE_SECRET"):
+    with pytest.raises(
+        RuntimeError, match="EXTRACTION_RESULTS_BUCKET.*AI_GATEWAY_URL.*AI_GATEWAY_SERVICE_SECRET"
+    ):
         build_extract_deps({})
     assert build_extract_deps({"ENV": "local"}).client is not None
     full = {
+        "EXTRACTION_RESULTS_BUCKET": "b",
         "AI_GATEWAY_URL": "http://gw",
         "AI_GATEWAY_SERVICE_SECRET": "s",
         "WORKER_TENANT_ID": "t",

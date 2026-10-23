@@ -2,6 +2,7 @@
 
 import json
 import re
+import uuid
 from dataclasses import dataclass, field
 from typing import Protocol
 from urllib import request as urlrequest
@@ -13,6 +14,7 @@ from .prompts import PROMPT_VERSION, UNITS, classify_prompt, extract_prompt, loa
 from .service_token import mint
 
 GATEWAY_AUDIENCE = "ai-gateway"  # apps/ai-gateway main.py AUDIENCE
+PIPELINE_VERSION = "worker-extract-1"  # bump when pipeline behaviour changes
 
 
 class ExtractionError(Exception):
@@ -81,6 +83,8 @@ class ExtractionRun:
     result: dict
     flags: list[dict] = field(default_factory=list)  # {path, reason}
     repaired: bool = False
+    run_id: str = field(default_factory=lambda: str(uuid.uuid4()))  # one per extraction run
+    pipeline_version: str = PIPELINE_VERSION
 
 
 def _parse(text: str) -> tuple[dict | None, list[str]]:

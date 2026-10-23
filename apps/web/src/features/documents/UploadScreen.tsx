@@ -222,7 +222,7 @@ export function UploadScreen({ profileId: override, pollMs = POLL_MS }: { profil
 function CaptureTips() {
   const t = useTranslations('upload.tips');
   return (
-    <details open className="ml-card self-start">
+    <details open id="capture-tips" className="ml-card self-start">
       <summary className="ml-card__title cursor-pointer">{t('title')}</summary>
       <ul className="grid list-disc gap-1 pl-5">
         {(['light', 'flat', 'frame', 'glare', 'privacy'] as const).map((k) => (

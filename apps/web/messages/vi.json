@@ -129,5 +129,43 @@
       "stomach": "Dạ dày",
       "thyroid": "Tuyến giáp"
     }
+  },
+  "progress": {
+    "title": "Đang đọc hồ sơ của bạn",
+    "loading": "Đang kiểm tra hồ sơ…",
+    "steps": "Các bước xử lý",
+    "stage": {
+      "queued": "Đang chờ bắt đầu",
+      "reading": "Đang đọc hồ sơ",
+      "extracting": "Đang tìm thông tin"
+    },
+    "leave": "Bạn có thể rời trang này; việc này mất khoảng 2 phút.",
+    "ready": {
+      "title": "Bản nháp của bạn đã sẵn sàng",
+      "body": "Hãy kiểm tra từng mục trước khi dựa vào nó.",
+      "action": "Kiểm tra hồ sơ"
+    },
+    "retake": {
+      "title": "Mình thử chụp lại nhé",
+      "note": "Điều này là bình thường, không phải lỗi của bạn.",
+      "action": "Chụp ảnh mới",
+      "guide": "Xem cách chụp ảnh rõ nét",
+      "reason": {
+        "blurry": "Ảnh hơi mờ. Hãy chụp lại nơi đủ sáng, giữ máy song song với tờ giấy.",
+        "too_dark": "Ảnh quá tối. Hãy chụp lại nơi sáng hơn, không dùng đèn flash trên giấy bóng.",
+        "not_a_document": "Chúng tôi chưa thấy trang giấy tờ. Hãy đặt cả trang vào khung hình rồi chụp lại.",
+        "generic": "Chúng tôi chưa đọc rõ ảnh này. Hãy chụp lại, đủ cả trang và đủ sáng."
+      }
+    },
+    "rejected": {
+      "title": "Chúng tôi chưa nhận được tệp này",
+      "why": "Tệp không đúng loại hỗ trợ (JPG, PNG, HEIC hoặc PDF), lớn hơn 20 MB, hoặc đã được tải lên trước đó.",
+      "action": "Tải lên lại"
+    },
+    "failed": {
+      "title": "Chúng tôi chưa đọc được hồ sơ này",
+      "body": "Đã có sự cố từ phía chúng tôi. Tệp của bạn vẫn an toàn; vui lòng thử lại.",
+      "action": "Tải lên lại"
+    }
   }
 }

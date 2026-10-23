@@ -1,0 +1,10 @@
+<example_document>
+[[page 1]]
+[L1] Benh vien Demo - Khoa Tim mach
+[L2] Benh nhan: Nguyen Van Test
+[L3] Chan doan: Tang huyet ap
+[L4] Sieu am tim: chua ghi nhan
+</example_document>
+Expected reply:
+{"encounter": {"department": {"value": "Khoa Tim mach", "confidence": 0.9, "source": {"page": 1, "quote": "Khoa Tim mach", "lines": [1]}}}, "diagnoses": [{"text": {"value": "Tang huyet ap", "confidence": 0.95, "source": {"page": 1, "quote": "Tang huyet ap", "lines": [3]}}, "severity": null}], "observations": [], "procedures": []}
+(Severity is null because none is written; nothing is inferred from "chua ghi nhan".)

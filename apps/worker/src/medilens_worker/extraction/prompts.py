@@ -3,7 +3,8 @@
 import json
 from pathlib import Path
 
-PROMPT_VERSION = "extract-v1"
+PROMPT_VERSION = "extract-v2"
+V1 = "extract-v1"  # kept for comparison: no line ids, no few-shots
 UNITS = ("dental", "cardiology", "oncology")
 
 
@@ -15,7 +16,7 @@ def _repo_root() -> Path:
 
 
 ROOT = _repo_root()
-PROMPT_DIR = ROOT / "ml" / "prompts" / PROMPT_VERSION
+PROMPTS = ROOT / "ml" / "prompts"
 SCHEMA_DIR = ROOT / "ml" / "schemas"
 
 
@@ -33,30 +34,42 @@ def neutralise(text: str) -> str:
     )
 
 
-def render_pages(pages: list[str]) -> str:
-    return "\n".join(f"[[page {i}]]\n{neutralise(t)}" for i, t in enumerate(pages, 1))
+def render_pages(pages: list[str], line_ids: bool = False) -> str:
+    """line_ids: prefix each line [L<n>] (1-based per page) so the model cites lines, not boxes."""
+
+    def body(t: str) -> str:
+        t = neutralise(t)
+        return "\n".join(f"[L{n}] {x}" for n, x in enumerate(t.split("\n"), 1)) if line_ids else t
+
+    return "\n".join(f"[[page {i}]]\n{body(t)}" for i, t in enumerate(pages, 1))
 
 
-def _t(name: str) -> str:
-    return (PROMPT_DIR / name).read_text("utf-8")
+def _t(name: str, version: str = PROMPT_VERSION) -> str:
+    return (PROMPTS / version / name).read_text("utf-8")
 
 
 def classify_prompt(pages: list[str]) -> str:
     user = _t("classify.user.txt").format(
-        units=json.dumps(list(UNITS)), document_text=render_pages(pages)[:1500]
+        units=json.dumps(list(UNITS)), document_text=render_pages(pages, line_ids=True)[:1500]
     )
     return f"{_t('system.txt')}\n\n{user}"
 
 
 def extract_prompt(
-    unit: str, schema: dict, pages: list[str], errors: list[str] | None = None
+    unit: str,
+    schema: dict,
+    pages: list[str],
+    errors: list[str] | None = None,
+    version: str = PROMPT_VERSION,
 ) -> str:
-    user = _t("extract.user.txt").format(
+    v2 = version != V1
+    user = _t("extract.user.txt", version).format(
         unit_code=unit,
         schema_json=json.dumps(schema, ensure_ascii=False),
-        document_text=render_pages(pages),
+        document_text=render_pages(pages, line_ids=v2),
+        examples=_t(f"examples/{unit}.txt", version) if v2 else "",
     )
-    prompt = f"{_t('system.txt')}\n\n{user}"
+    prompt = f"{_t('system.txt', version)}\n\n{user}"
     if errors:
-        prompt += "\n" + _t("repair.user.txt").format(errors="\n".join(errors[:10]))
+        prompt += "\n" + _t("repair.user.txt", version).format(errors="\n".join(errors[:10]))
     return prompt

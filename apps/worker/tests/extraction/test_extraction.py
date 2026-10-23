@@ -39,7 +39,7 @@ class StubGateway:
 def test_happy_path_record():
     gw = StubGateway(good())
     run = run_extraction("d1", PAGES, gw, unit="dental")
-    assert (run.model, run.prompt_version, run.cost_usd) == ("stub-model", "extract-v1", 0.01)
+    assert (run.model, run.prompt_version, run.cost_usd) == ("stub-model", "extract-v2", 0.01)
     assert run.confidence == 0.95 and run.flags == [] and not run.repaired
     assert len(gw.prompts) == 1
 

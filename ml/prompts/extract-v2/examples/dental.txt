@@ -1,0 +1,10 @@
+<example_document>
+[[page 1]]
+[L1] Phong kham Nha khoa Demo
+[L2] Benh nhan: Nguyen Van Test
+[L3] Rang 36 sau, mat nhai: sau rang
+[L4] Rang 11 vang
+</example_document>
+Expected reply:
+{"encounter": {"facility": {"value": "Phong kham Nha khoa Demo", "confidence": 0.95, "source": {"page": 1, "quote": "Phong kham Nha khoa Demo", "lines": [1]}}}, "teeth": [{"fdi": {"value": "36", "confidence": 0.95, "source": {"page": 1, "quote": "Rang 36 sau, mat nhai: sau rang", "lines": [3]}}, "surfaces": ["O"], "condition": "caries"}, {"fdi": {"value": "11", "confidence": 0.7, "source": {"page": 1, "quote": "Rang 11 vang", "lines": [4]}}, "condition": "other"}]}
+(Tooth 11 "vang" is ambiguous, so confidence is lower and the condition is not guessed. The patient name is not in the schema, so it is not extracted.)

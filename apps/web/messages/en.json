@@ -129,5 +129,43 @@
       "stomach": "Stomach",
       "thyroid": "Thyroid gland"
     }
+  },
+  "progress": {
+    "title": "Reading your record",
+    "loading": "Checking your record…",
+    "steps": "Processing steps",
+    "stage": {
+      "queued": "Waiting to start",
+      "reading": "Reading your record",
+      "extracting": "Finding the details"
+    },
+    "leave": "You can leave this page; this takes about 2 minutes.",
+    "ready": {
+      "title": "Your draft is ready",
+      "body": "Please check each field before you rely on it.",
+      "action": "Check your record"
+    },
+    "retake": {
+      "title": "Let's try another photo",
+      "note": "This is normal and does not mean you did anything wrong.",
+      "action": "Take a new photo",
+      "guide": "See how to take a clear photo",
+      "reason": {
+        "blurry": "The photo is a bit blurry. Retake it in good light, holding the phone parallel to the page.",
+        "too_dark": "The photo is too dark. Retake it in a brighter place, without the flash on glossy paper.",
+        "not_a_document": "We couldn't see a document page. Place the whole page in view and retake the photo.",
+        "generic": "We couldn't read this photo clearly. Retake it with the whole page in view and good light."
+      }
+    },
+    "rejected": {
+      "title": "We couldn't accept this file",
+      "why": "The file is not a supported type (JPG, PNG, HEIC or PDF), is larger than 20 MB, or was already uploaded.",
+      "action": "Upload again"
+    },
+    "failed": {
+      "title": "We couldn't read this record",
+      "body": "Something went wrong on our side. Your file is safe; please try again.",
+      "action": "Upload again"
+    }
   }
 }

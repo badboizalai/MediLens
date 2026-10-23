@@ -38,7 +38,7 @@ def test_glb_meshes_are_region_codes_with_lod_and_budget():
         assert len(names) == len(set(names)), f"duplicate mesh names in {fname}"
         base = {n.removesuffix("__lod1") for n in names}
         assert base <= codes, f"{fname}: unknown {base - codes}"
-        no_lod = sorted(b for b in base if b + "__lod1" not in names)
+        no_lod = sorted(b for b in base if b not in names or b + "__lod1" not in names)
         assert not no_lod, f"{fname}: missing LOD level {no_lod}"
         if fname == "heart.glb":
             assert HEART_REQUIRED <= base, f"missing {HEART_REQUIRED - base}"

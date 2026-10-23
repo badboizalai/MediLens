@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 460" role="img" aria-labelledby="aux_title">
+  <title id="aux_title">anatomy.body.front</title>
+  <!-- Original MediLens artwork (simple geometric shapes). Regions carry class="region"; the viewer sets colour via CSS. -->
+  <g id="aux_silhouette" class="aux-body" fill="none" stroke="currentColor" stroke-width="1.5">
+    <path d="M88,68 L112,68 L138,74 L144,100 L132,200 L138,252 L62,252 L68,200 L56,100 L62,74Z"/>
+    <path d="M148,76 L158,80 L168,160 L176,232 L166,236 L156,170 L144,110Z"/>
+    <path d="M52,76 L42,80 L32,160 L24,232 L34,236 L44,170 L56,110Z"/>
+    <path d="M102,248 L138,250 L134,340 L130,448 L108,448 L106,340Z"/>
+    <path d="M98,248 L62,250 L66,340 L70,448 L92,448 L94,340Z"/>
+    <path d="M78,32 a22,24 0 1,0 44,0 a22,24 0 1,0 -44,0Z"/>
+  </g>
+  <g id="aux_regions" stroke="currentColor" stroke-width="0.75">
+    <ellipse cx="100" cy="32" rx="20" ry="22" id="bone_skull" class="region"><title>anatomy.region.bone_skull</title></ellipse>
+    <path d="M58,90 L68,90 L70,165 L62,165Z" id="bone_ribs_r" class="region"><title>anatomy.region.bone_ribs_r</title></path>
+    <path d="M142,90 L132,90 L130,165 L138,165Z" id="bone_ribs_l" class="region"><title>anatomy.region.bone_ribs_l</title></path>
+    <path d="M66,208 L134,208 L128,252 L72,252Z" id="bone_pelvis" class="region"><title>anatomy.region.bone_pelvis</title></path>
+    <ellipse cx="84" cy="330" rx="6" ry="62" id="bone_femur_r" class="region"><title>anatomy.region.bone_femur_r</title></ellipse>
+    <ellipse cx="116" cy="330" rx="6" ry="62" id="bone_femur_l" class="region"><title>anatomy.region.bone_femur_l</title></ellipse>
+    <ellipse cx="100" cy="28" rx="14" ry="12" id="brain" class="region"><title>anatomy.region.brain</title></ellipse>
+    <ellipse cx="100" cy="66" rx="8" ry="4" id="thyroid" class="region"><title>anatomy.region.thyroid</title></ellipse>
+    <ellipse cx="78" cy="108" rx="16" ry="24" id="lung_r" class="region"><title>anatomy.region.lung_r</title></ellipse>
+    <ellipse cx="122" cy="108" rx="16" ry="24" id="lung_l" class="region"><title>anatomy.region.lung_l</title></ellipse>
+    <ellipse cx="106" cy="126" rx="10" ry="12" id="heart" class="region"><title>anatomy.region.heart</title></ellipse>
+    <ellipse cx="78" cy="150" rx="10" ry="10" id="breast_r" class="region"><title>anatomy.region.breast_r</title></ellipse>
+    <ellipse cx="122" cy="150" rx="10" ry="10" id="breast_l" class="region"><title>anatomy.region.breast_l</title></ellipse>
+    <ellipse cx="82" cy="172" rx="20" ry="11" id="liver" class="region"><title>anatomy.region.liver</title></ellipse>
+    <ellipse cx="116" cy="170" rx="12" ry="10" id="stomach" class="region"><title>anatomy.region.stomach</title></ellipse>
+    <ellipse cx="136" cy="164" rx="5" ry="9" id="spleen" class="region"><title>anatomy.region.spleen</title></ellipse>
+    <ellipse cx="100" cy="185" rx="20" ry="4" id="pancreas" class="region"><title>anatomy.region.pancreas</title></ellipse>
+    <path d="M74,194 h52 v38 h-52Z M84,204 v22 h32 v-22Z" id="colon" class="region"><title>anatomy.region.colon</title></path>
+    <ellipse cx="100" cy="230" rx="9" ry="6" id="bladder" class="region"><title>anatomy.region.bladder</title></ellipse>
+    <ellipse cx="100" cy="243" rx="4" ry="4" id="prostate" class="region"><title>anatomy.region.prostate</title></ellipse>
+    <ellipse cx="88" cy="214" rx="4" ry="3" id="ovary_r" class="region"><title>anatomy.region.ovary_r</title></ellipse>
+    <ellipse cx="112" cy="214" rx="4" ry="3" id="ovary_l" class="region"><title>anatomy.region.ovary_l</title></ellipse>
+    <ellipse cx="90" cy="60" rx="3" ry="3" id="ln_cervical_r" class="region"><title>anatomy.region.ln_cervical_r</title></ellipse>
+    <ellipse cx="110" cy="60" rx="3" ry="3" id="ln_cervical_l" class="region"><title>anatomy.region.ln_cervical_l</title></ellipse>
+    <ellipse cx="82" cy="76" rx="3" ry="3" id="ln_supraclavicular_r" class="region"><title>anatomy.region.ln_supraclavicular_r</title></ellipse>
+    <ellipse cx="118" cy="76" rx="3" ry="3" id="ln_supraclavicular_l" class="region"><title>anatomy.region.ln_supraclavicular_l</title></ellipse>
+    <ellipse cx="62" cy="100" rx="4" ry="4" id="ln_axillary_r" class="region"><title>anatomy.region.ln_axillary_r</title></ellipse>
+    <ellipse cx="138" cy="100" rx="4" ry="4" id="ln_axillary_l" class="region"><title>anatomy.region.ln_axillary_l</title></ellipse>
+    <ellipse cx="100" cy="100" rx="4" ry="4" id="ln_mediastinal" class="region"><title>anatomy.region.ln_mediastinal</title></ellipse>
+    <ellipse cx="91" cy="106" rx="3.5" ry="3.5" id="ln_hilar_r" class="region"><title>anatomy.region.ln_hilar_r</title></ellipse>
+    <ellipse cx="110" cy="104" rx="3.5" ry="3.5" id="ln_hilar_l" class="region"><title>anatomy.region.ln_hilar_l</title></ellipse>
+    <ellipse cx="100" cy="199" rx="3" ry="3" id="ln_paraaortic" class="region"><title>anatomy.region.ln_paraaortic</title></ellipse>
+    <ellipse cx="80" cy="222" rx="3.5" ry="3.5" id="ln_iliac_r" class="region"><title>anatomy.region.ln_iliac_r</title></ellipse>
+    <ellipse cx="120" cy="222" rx="3.5" ry="3.5" id="ln_iliac_l" class="region"><title>anatomy.region.ln_iliac_l</title></ellipse>
+    <ellipse cx="84" cy="250" rx="3.5" ry="3.5" id="ln_inguinal_r" class="region"><title>anatomy.region.ln_inguinal_r</title></ellipse>
+    <ellipse cx="116" cy="250" rx="3.5" ry="3.5" id="ln_inguinal_l" class="region"><title>anatomy.region.ln_inguinal_l</title></ellipse>
+  </g>
+</svg>

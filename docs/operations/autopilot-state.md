@@ -283,3 +283,59 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 2. Remove finished worktrees under `.claude/worktrees/` (removal was denied to the AI by the permission classifier), including `verify-run4` (local integration branch `verify/run4-all`, not pushed).
 3. Deployment: `GRANT api_events_consumer TO <consumer_login>`; Terraform apply (AWS credentials, remote state, `kms_admin_role_arns`, staging reviewers); point `var.worker_image` at the new worker image.
 4. Human gates/decisions, unchanged: G2-CS (CSO review of `draft-pending-CSO` hazard rows + dental term wording), G0/G0-R, G1-D (LIC-002 ICD-10 before any ICD code is loaded), consent-form lines 6/27 wording, `apps/web/.env.example` (deny rule).
+
+---
+# Run 5 — finish S06–S08, then S09–S11 (owner: "Tiếp tục làm tiếp cho hết sprint 11", 2026-10-23)
+- Started: 2026-10-23 23:49 +07 · AI merge under RULES A3 allowed (`gh pr merge` worked).
+- Merged at start (order per run-4 handover): #85, #84, #88, #87, #89 (Opus resolved the README conflict: kept #89 text + #87 SSE-KMS sentence; resolved 2 already-fixed review threads), #90, #86, #92, #94, #91, #95, #93, #96 (state).
+- Verified on main @ 2c7c11f (clean worktree): api/worker/ai-gateway/phi-service pytest exit 0; tests/assets + data/terminology pass; lint-imports 12 kept/0 broken; ruff check + format clean; `make governance` PASS; web lint ok, vitest web 32 + design-system 16 passed.
+- Known CI noise: the `security` workflow (Semgrep 2 blocking findings in extraction `sql_repository.py`, pnpm audit 3 high) fails on every PR since S7-T63 → BUG-09.
+
+## Backlog (≤ 1 day each; deps; owner skill)
+| ID | Task | Owner | Paths (main) | Depends | Status | Branch | PR | Rounds |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S6-T53d2 | ingest `extraction.completed` via definer fn (migration 0005) | backend+security | api migrations, shared/api_events_consumer.py, extraction/infra/ingest.py | — | in-progress | feat/S6-T53d2-extraction-ingest | | |
+| S6-T53e | status SSE `/v1/documents/{id}/events` | backend | api document/ | — | in-progress | feat/S6-T53e-status-sse | | |
+| S6-T56 | web progress screen + retake guidance + `rejected` stage | frontend | web features/documents | — | in-progress | feat/S6-T56-progress-screen | | |
+| BUG-09 | Semgrep blocking SQL text + pnpm audit high | security | api extraction sql_repository.py, package.json, lockfile | — | in-progress | fix/BUG-09-semgrep-pnpm-audit | | |
+| S7-T66b | mapper wired into extraction + `latest()` by uuid7 | ai-ml | worker extraction/, storage/results.py | — | in-progress | feat/S7-T66b-wire-anatomy-mapper | | |
+| S8-T75 | dental + cardiology Unit configs + LOINC subset (also S9-T85) | clinical-informaticist | packages/anatomy-assets/units, tests/assets | — | in-progress | feat/S8-T75-unit-configs-dental-cardio | | |
+| S6-T55b | VietOCR/offline OCR baseline + CER vs S02 (or documented blocker) | ai-ml | ml/eval/ocr_bakeoff, worker ocr/ | — | todo | | | |
+| S6-F7 | upload rate limit + daily quota (SEC-AP-07 F7) | backend+security | api document/ | S6-T53e | todo | | | |
+| S7-T61 | prompt v2 few-shot per Unit, citation+bbox+confidence | ai-ml | ml/prompts/extract-v2, worker extraction/prompts.py | S7-T66b | todo | | | |
+| S7-T62 | normaliser: abbreviations + LOINC (ICD gated LIC-002) | ai-ml+clin-inf | worker normalise/, data/terminology | — | todo | | | |
+| S7-T64b | page image endpoint (api) + bbox overlay (web) | backend, frontend | api document/, web review | S6-T53e | todo | | | |
+| S7-T67 | Playwright E2E upload→review→confirm (mocked API) | qa | tests/e2e | S6-T56 | todo | | | |
+| S7-T69 | pipeline metrics mart + dq checks | data-engineer | data/marts (SQL), tools | — | todo | | | |
+| S8-T71 | UX spec 2D viewer + odontogram states | ux-ui | docs/ux | — | todo | | | |
+| S8-T74b | odontogram viewer component (FDI surfaces) | frontend | web viewer/units/dental | — | todo | | | |
+| S8-T76 | dental prompt/rules + 200 synthetic golden docs | ai-ml+data-curator | ml/eval/golden-dental, ml/prompts | S7-T61 | todo | | | |
+| S8-T78 | 2D viewer visual regression + fdi tests | qa | tests/visual, tests/e2e | S8-T74b | todo | | | |
+| S8-CLIN | clinical projection: confirmed fields → conditions/body_findings/observations + `GET /v1/profiles/{id}/findings` | backend | api clinical/ | S6-T53d2 | todo | | | |
+| S9-T81 | R3F viewer spike (GLB load, OrbitControls) | frontend | web viewer/core3d | BUG-09 (lockfile) | todo | | | |
+| S9-T82 | body + heart GLB (open licence or procedural placeholder), mesh = region_code, LOD+Draco, check script | 3d-artist+data-curator | packages/anatomy-assets/glb, tools | — | todo | | | |
+| S9-T83 | raycast pick/highlight/focus/detail panel | frontend | web viewer/core3d | S9-T81 | todo | | | |
+| S9-T84 | perf budget + auto 2D fallback | frontend | web viewer | S9-T83 | todo | | | |
+| S9-T86 | cardiology extraction + 200 synthetic golden | ai-ml | ml/eval, worker extraction | S7-T61 | todo | | | |
+| S9-T88 | cross-browser/mobile matrix (NFR-17) | qa | tests/e2e config, docs/qa | — | todo | | | |
+| S9-T89 | CSP/security headers/CORS review + fixes | security | web next.config, api main CORS, docs/security | — | todo | | | |
+| S10-T91 | oncology content BRs (no prognosis, summary mode) | business-analyst | docs/brd | — | todo | | | |
+| S10-T92 | TNM/tumour/nodes/mets extraction + 200 synthetic golden | ai-ml | ml/eval, worker | S9-T86 | todo | | | |
+| S10-T93 | onco 3D overlay + summary mode default | frontend | web viewer/units/oncology | S9-T83 | todo | | | |
+| S10-T94 | 20 KnowledgeArticles VI/EN drafts (sources, review dates) | technical-writer+CSO | content/articles | — | todo | | | |
+| S10-T95 | RAG pgvector, profile_id filter in code | ai-ml+backend | api knowledge/, migration | S10-T94 | todo | | | |
+| S10-T96 | guardrails: dosing/prognosis/diagnosis block, emergency → 115 | ai-ml+safety | ai-gateway guardrails | — | todo | | | |
+| S10-T97 | semantic cache + per-user token quota (SEC-AI-07) | mlops | ai-gateway | S10-T96 | todo | | | |
+| S10-T98 | red-team set (100 Q + 50 injection images, synthetic) + pytest gate | qa+security | tests/redteam | S10-T96 | todo | | | |
+| S11-T101 | timeline compare two visits | frontend | web features/timeline | S8-CLIN | todo | | | |
+| S11-T102 | patient_reported text + NER → region (BR-040) | backend+ai-ml | api clinical/patient | S8-CLIN | todo | | | |
+| S11-T103 | time-limited sharing, Cedar policies + tests (SEC-AR-07) | backend+security | api sharing/, policies | S8-CLIN | todo | | | |
+| S11-T104 | share screen + clinician view watermark | frontend | web features/sharing | S11-T103 | todo | | | |
+| S11-T105 | admin without PHI + break-glass (SEC-AZ-05) | backend+security | api admin/ | — | todo | | | |
+| S11-T106 | DSR: export, consent withdrawal, deletion across stores | data-engineer+backend | api identity/patient dsr | S8-CLIN | todo | | | |
+| S11-T107 | full regression + authorisation matrix | qa | docs/qa, api tests | S11-T106 | todo | | | |
+| S11-T108 | eval report F1/Unit, ECE, region accuracy (synthetic 600) | ai-ml | ml/eval, docs/ai | S10-T92 | todo | | | |
+| S11-T109 | user guide draft + internal release notes | technical-writer | docs/user-guide | late | todo | | | |
+| S11-T110 | G2 evidence pack (sign-off human) | qc-release | docs/gates/G2.md | all | todo | | | |
+| PM-RPT | sprint reports 06–11 (no fabricated demos/usability results) | product-manager | docs/project/reports | per sprint | todo | | | |
+Human-only in scope: D79 CSO tooth/palette review, D87 usability test, D99 CSO article approval, G2/G2-CS sign-off, LIC-002.

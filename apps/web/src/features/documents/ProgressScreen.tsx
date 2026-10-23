@@ -26,7 +26,7 @@ function Progress({ documentId, pollMs = POLL_MS }: { documentId: string; pollMs
   const doc = useQuery({
     queryKey: ['document-status', documentId],
     queryFn: () => getDocument(documentId),
-    // Poll until a terminal status; transient errors keep polling. SSE replaces this in S6-T53d2.
+    // Poll until a terminal status; transient errors keep polling. SSE replaces this in S6-T53e.
     refetchInterval: (q) =>
       q.state.data && isTerminal(viewOf(q.state.data.status, q.state.data.retake_reason)) ? false : pollMs,
   });

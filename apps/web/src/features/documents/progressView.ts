@@ -19,7 +19,7 @@ const WORKING: Record<string, 0 | 1 | 2> = {
 };
 
 export function viewOf(status: string, retakeReason?: string | null): View {
-  if (status in WORKING) return { kind: 'working', step: WORKING[status]! };
+  if (Object.hasOwn(WORKING, status)) return { kind: 'working', step: WORKING[status]! };
   if (status === 'needs_review' || status === 'confirmed') return { kind: 'ready' };
   if (status === 'needs_retake') {
     return { kind: 'retake', reason: RETAKE_REASONS.find((r) => r === retakeReason) ?? null };

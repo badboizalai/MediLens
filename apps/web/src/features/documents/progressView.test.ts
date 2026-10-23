@@ -20,7 +20,8 @@ describe('viewOf', () => {
     expect(viewOf('needs_retake', 'weird')).toEqual({ kind: 'retake', reason: null });
   });
 
-  it('unknown status falls back to waiting and keeps polling', () => {
+  it('unknown status (incl. prototype keys) falls back to waiting and keeps polling', () => {
+    expect(viewOf('toString')).toEqual({ kind: 'working', step: 0 });
     const v = viewOf('something_new');
     expect(v).toEqual({ kind: 'working', step: 0 });
     expect(isTerminal(v)).toBe(false);

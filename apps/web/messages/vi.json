@@ -167,5 +167,29 @@
       "body": "Đã có sự cố từ phía chúng tôi. Tệp của bạn vẫn an toàn; vui lòng thử lại.",
       "action": "Tải lên lại"
     }
+  },
+  "dental": {
+    "title": "Sơ đồ răng",
+    "chartLabel": "Sơ đồ răng vĩnh viễn, đánh số FDI, góc nhìn của nha sĩ",
+    "listTitle": "Các răng có ghi nhận trong hồ sơ của bạn",
+    "empty": "Không có răng nào được ghi nhận trong hồ sơ của bạn.",
+    "tooth": "Răng {fdi}",
+    "item": "Răng {fdi}: {state}",
+    "itemSurfaces": "Răng {fdi}: {state}, mặt {surfaces}",
+    "details": "Đang chọn: {text}",
+    "note": "Sơ đồ minh họa những gì được ghi trong hồ sơ của bạn để bạn dễ hiểu hơn, không phải lời khuyên y tế.",
+    "state": {
+      "caries": "Ghi nhận sâu răng",
+      "filled": "Đã trám",
+      "missing": "Mất răng",
+      "implant": "Cấy ghép implant"
+    },
+    "surface": {
+      "M": "gần",
+      "D": "xa",
+      "O": "nhai",
+      "B": "má",
+      "L": "lưỡi"
+    }
   }
 }

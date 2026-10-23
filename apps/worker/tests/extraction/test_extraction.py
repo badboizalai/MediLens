@@ -1,10 +1,18 @@
 import json
+from pathlib import Path
 
 import pytest
-from medilens_worker.extraction import deps
+from medilens_worker.extraction import deps, service_token
 from medilens_worker.extraction.prompts import extract_prompt, load_schemas
-from medilens_worker.extraction.service import Completion, ExtractionError, run_extraction
+from medilens_worker.extraction.service import (
+    Completion,
+    ExtractionError,
+    HttpGatewayClient,
+    run_extraction,
+)
+from medilens_worker.extraction.service_token import Verifier, bearer
 from medilens_worker.jobs.registry import REGISTRY, JobContext
+from medilens_worker.main import build_extract_deps
 
 PAGES = ["Benh nhan kham rang.\nRang 36 sau o mat nhai.", "Ghi chu: hen tai kham sau 6 thang."]
 
@@ -106,15 +114,77 @@ def test_prompt_embeds_schema_and_pages():
 
 
 def test_handler_wired_and_saves_run():
-    saved = []
+    saved, reviewed = [], []
     deps.configure(
-        deps.ExtractDeps(lambda _id: PAGES, StubGateway(good()), saved.append, lambda _id: "dental")
+        deps.ExtractDeps(
+            lambda _id: PAGES,
+            StubGateway(good()),
+            saved.append,
+            lambda _id: saved[0] if saved else None,
+            reviewed.append,
+            lambda _id: "dental",
+        )
     )
+    ctx = JobContext("d1", 1, lambda s: None)
     try:
-        REGISTRY["document.extract"].handler(JobContext("d1", 1, lambda s: None))
+        with pytest.raises(LookupError):  # finalize before extract: retryable
+            REGISTRY["document.finalize"].handler(ctx)
+        REGISTRY["document.extract"].handler(ctx)
+        REGISTRY["document.finalize"].handler(ctx)
     finally:
         deps.configure(None)
     assert saved[0].document_id == "d1" and saved[0].unit == "dental"
+    assert reviewed == saved
+
+
+def test_build_extract_deps_fails_fast_outside_local():
+    with pytest.raises(RuntimeError, match="AI_GATEWAY_URL.*AI_GATEWAY_SERVICE_SECRET"):
+        build_extract_deps({})
+    assert build_extract_deps({"ENV": "local"}).client is not None
+    full = {
+        "AI_GATEWAY_URL": "http://gw",
+        "AI_GATEWAY_SERVICE_SECRET": "s",
+        "WORKER_TENANT_ID": "t",
+    }
+    assert build_extract_deps(full).client is not None
+
+
+def test_gateway_client_sends_valid_service_token(monkeypatch):
+    seen = {}
+
+    class Resp:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+
+        def read(self, *a):
+            return b'{"text": "{}", "model": "m", "cost_usd": 0.0}'
+
+    def fake_urlopen(req, timeout):
+        seen["auth"] = req.get_header("Authorization")
+        return Resp()
+
+    monkeypatch.setattr("medilens_worker.extraction.service.urlrequest.urlopen", fake_urlopen)
+    HttpGatewayClient("http://gw", "t1", "sekret").complete("hi")
+    claims = Verifier("sekret", "ai-gateway").verify(bearer(seen["auth"]))
+    assert (
+        claims["iss"] == "worker"
+        and claims["tenants"] == ["t1"]
+        and claims["profiles"] == ["extract"]
+    )
+
+
+def test_service_token_copy_identical_to_gateway():
+    here = Path(__file__).resolve()
+    gw = here.parents[3] / "ai-gateway/src/medilens_ai_gateway/service_token.py"
+    assert gw.read_bytes() == (Path(service_token.__file__)).read_bytes()
+
+
+def test_load_pages_raises_when_no_ocr_text():
+    with pytest.raises(LookupError, match="no_ocr_pages"):
+        build_extract_deps({"ENV": "local"}).load_pages("missing-doc")
 
 
 def test_out_of_range_confidence_rejected():

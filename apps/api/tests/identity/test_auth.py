@@ -9,10 +9,10 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from fastapi import Depends, FastAPI
 from fastapi.testclient import TestClient
 from medilens.core.errors import AppError, app_error_handler
-from medilens.modules.identity.api import dependencies as deps
 from medilens.modules.identity.api.router import router
 from medilens.modules.identity.application.token_validator import TokenValidator, ValidatorConfig
 from medilens.modules.identity.infra.jwks import CachedJwks
+from medilens.shared import auth as deps
 
 ISS, AUD = "https://idp.test/realms/medilens", "medilens-api"
 KEY = rsa.generate_private_key(public_exponent=65537, key_size=2048)
@@ -130,3 +130,9 @@ def test_me_is_mounted_and_requires_auth() -> None:
     res = TestClient(create_app()).get("/v1/me")
     assert res.status_code == 401
     assert res.headers["content-type"].startswith("application/problem+json")
+
+
+def test_unregistered_validator_fails_loudly(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(deps, "_factory", None)
+    with pytest.raises(RuntimeError, match="no token validator"):
+        deps.get_token_validator()

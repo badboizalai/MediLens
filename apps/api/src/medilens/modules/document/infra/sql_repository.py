@@ -4,10 +4,17 @@ from collections.abc import Sequence
 from uuid import UUID
 
 from sqlalchemy import text
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from medilens.core.db import scope_to_profiles
-from medilens.modules.document.domain.models import STATUS_PENDING, STATUS_UPLOADED, Document
+from medilens.modules.document.domain.models import (
+    PENDING_WINDOW_SECONDS,
+    STATUS_PENDING,
+    STATUS_UPLOADED,
+    Document,
+    DuplicateDocument,
+)
 
 
 class SqlProfileOwnership:
@@ -63,6 +70,16 @@ class SqlDocumentRepository:
         ).first()
         return Document(*row) if row else None
 
+    def count_pending(self) -> int:
+        return self._session.execute(
+            text(
+                "SELECT count(*) FROM clinical.documents "
+                "WHERE status = :pending AND deleted_at IS NULL "
+                "AND created_at > now() - make_interval(secs => :window)"
+            ),
+            {"pending": STATUS_PENDING, "window": PENDING_WINDOW_SECONDS},
+        ).scalar_one()
+
     def has_duplicate(self, profile_id: UUID, sha256: str, excluding: UUID) -> bool:
         return bool(
             self._session.execute(
@@ -75,7 +92,11 @@ class SqlDocumentRepository:
         )
 
     def mark_uploaded(self, document_id: UUID, sha256: str) -> None:
-        self._session.execute(
-            text("UPDATE clinical.documents SET status = :s, sha256 = :h WHERE id = :id"),
-            {"s": STATUS_UPLOADED, "h": sha256, "id": document_id},
-        )
+        try:
+            with self._session.begin_nested():
+                self._session.execute(
+                    text("UPDATE clinical.documents SET status = :s, sha256 = :h WHERE id = :id"),
+                    {"s": STATUS_UPLOADED, "h": sha256, "id": document_id},
+                )
+        except IntegrityError as e:  # ux_documents_profile_sha256: concurrent duplicate
+            raise DuplicateDocument("This file was already uploaded for this profile.") from e

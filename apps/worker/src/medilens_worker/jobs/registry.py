@@ -79,4 +79,11 @@ def extract(ctx: JobContext) -> None:
 
 @job("document.finalize", DocStatus.EXTRACTED, DocStatus.NEEDS_REVIEW)
 def finalize(ctx: JobContext) -> None:
-    """TODO(S5-T45): materialize results for user review."""
+    """Materialize the saved extraction run for user review; the runner then sets NEEDS_REVIEW."""
+    from medilens_worker.extraction.deps import get_deps
+
+    d = get_deps()
+    run = d.load_run(ctx.document_id)
+    if run is None:
+        raise LookupError("no_extraction_run")  # retryable: extract may not have committed yet
+    d.save_review(run)

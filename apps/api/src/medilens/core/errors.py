@@ -22,6 +22,7 @@ class AppError(Exception):
     def __init__(self, detail: str = "") -> None:
         super().__init__(detail)
         self.detail = detail
+        self.headers: dict[str, str] = {}
 
 
 class NotFound(AppError):
@@ -38,6 +39,20 @@ class Forbidden(AppError):
     title = "Forbidden"
 
 
+class Unauthorized(AppError):
+    status = 401
+    code = "MEDILENS-401"
+    slug = "unauthorized"
+    title = "Unauthorized"
+
+    def __init__(self, detail: str = "", *, invalid_token: bool = False) -> None:
+        super().__init__(detail)
+        # RFC 6750 s3: error="invalid_token" only when a credential was presented and rejected.
+        self.headers = {
+            "WWW-Authenticate": 'Bearer error="invalid_token"' if invalid_token else "Bearer"
+        }
+
+
 def problem(
     request: Request,
     *,
@@ -46,6 +61,7 @@ def problem(
     title: str,
     detail: str = "",
     errors: list[dict[str, str]] | None = None,
+    headers: dict[str, str] | None = None,
 ) -> JSONResponse:
     rid = getattr(request.state, "request_id", "")
     body: dict[str, object] = {
@@ -58,12 +74,19 @@ def problem(
     }
     if errors:
         body["errors"] = errors
-    headers = {"X-Request-ID": rid} if rid else None
-    return JSONResponse(body, status_code=status, media_type=PROBLEM_JSON, headers=headers)
+    out = {**(headers or {}), **({"X-Request-ID": rid} if rid else {})}
+    return JSONResponse(body, status_code=status, media_type=PROBLEM_JSON, headers=out or None)
 
 
 async def app_error_handler(request: Request, exc: AppError) -> JSONResponse:
-    return problem(request, status=exc.status, slug=exc.slug, title=exc.title, detail=exc.detail)
+    return problem(
+        request,
+        status=exc.status,
+        slug=exc.slug,
+        title=exc.title,
+        detail=exc.detail,
+        headers=exc.headers,
+    )
 
 
 async def validation_error_handler(request: Request, exc: RequestValidationError) -> JSONResponse:

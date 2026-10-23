@@ -47,6 +47,11 @@ class DocumentRepository(Protocol):
 
     def mark_rejected(self, document_id: UUID) -> None: ...
 
+    def lock(self, document_id: UUID) -> Document | None:
+        """Row-lock the document for a status change (no RLS scope: system caller)."""
+
+    def set_status(self, document_id: UUID, status: str) -> None: ...
+
 
 class EventOutbox(Protocol):
     def add(self, event_type: str, payload: dict[str, Any]) -> None: ...

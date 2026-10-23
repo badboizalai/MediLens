@@ -107,3 +107,19 @@ class SqlDocumentRepository:
             text("UPDATE clinical.documents SET status = :s WHERE id = :id"),
             {"s": STATUS_REJECTED, "id": document_id},
         )
+
+    def lock(self, document_id: UUID) -> Document | None:
+        row = self._session.execute(
+            text(
+                "SELECT id, profile_id, storage_key, mime, status, sha256 "
+                "FROM clinical.documents WHERE id = :id AND deleted_at IS NULL FOR UPDATE"
+            ),
+            {"id": document_id},
+        ).first()
+        return Document(*row) if row else None
+
+    def set_status(self, document_id: UUID, status: str) -> None:
+        self._session.execute(
+            text("UPDATE clinical.documents SET status = :s WHERE id = :id"),
+            {"s": status, "id": document_id},
+        )

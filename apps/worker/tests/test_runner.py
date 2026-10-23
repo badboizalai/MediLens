@@ -32,11 +32,12 @@ def test_guard_allows_and_rejects():
 
 def test_happy_path_and_idempotent_redelivery(env):
     q, st, store = env
+    reg = {"document.validate": JobSpec(lambda c: None, DocStatus.UPLOADED, DocStatus.VALIDATED)}
     q.send(body())
-    assert handle(q, q.receive(), st, store) == "done"
+    assert handle(q, q.receive(), st, store, registry=reg) == "done"
     assert st.get("d1") == DocStatus.VALIDATED
     q.send(body())  # same doc/step/attempt delivered again
-    assert handle(q, q.receive(), st, store) == "duplicate"
+    assert handle(q, q.receive(), st, store, registry=reg) == "duplicate"
     assert st.get("d1") == DocStatus.VALIDATED
 
 

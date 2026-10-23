@@ -10,6 +10,7 @@ How the autonomous loop runs. **All project-management, source-control and code-
 ## Parallelism and resources
 - Default: up to **6 workers in parallel**, only for tasks with disjoint `Paths:`. Spawn the whole batch in one message, each worker with `isolation: "worktree"`.
 - Check `free -g` before each batch: available < 6 GB → max 4 workers; < 3 GB → max 2; < 1.5 GB → 1, with no parallel builds.
+- Worktrees live on disk under `.claude/worktrees/` (gitignored), never under `/tmp`: on WSL `/tmp` is a 7.6 GB RAM-backed tmpfs and parallel worktrees with `node_modules` fill it. Remove a worker's worktree once its PR is merged.
 - Tasks sharing files run sequentially. Dependent tasks stack on the parent PR branch (RULES B1).
 
 ## Wake-up cycle

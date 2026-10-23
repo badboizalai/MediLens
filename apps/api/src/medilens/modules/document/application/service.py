@@ -112,3 +112,14 @@ class UploadService:
     def _reject(self, doc: Document) -> None:
         self._repo.mark_rejected(doc.id)  # sha256 stays '': outside the unique index
         self._storage.delete(doc.storage_key)  # U-08: no rejected leftovers in quarantine
+
+
+class StatusService:
+    """Applies worker status events (ADR-0005 decision 2). The caller commits."""
+
+    def __init__(self, repo: DocumentRepository) -> None:
+        self._repo = repo
+
+    def apply(self, document_id: UUID, status: str) -> str:
+        """Returns `applied`, `ignored` (regression/duplicate/final) or `unknown`."""
+        return self._repo.apply_status(document_id, status)

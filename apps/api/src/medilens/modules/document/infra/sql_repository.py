@@ -107,3 +107,10 @@ class SqlDocumentRepository:
             text("UPDATE clinical.documents SET status = :s WHERE id = :id"),
             {"s": STATUS_REJECTED, "id": document_id},
         )
+
+    def apply_status(self, document_id: UUID, status: str) -> str:
+        # SECURITY DEFINER function (migration 0004): the state machine lives in SQL.
+        return self._session.execute(
+            text("SELECT clinical.apply_document_status(:id, :s)"),
+            {"id": document_id, "s": status},
+        ).scalar_one()

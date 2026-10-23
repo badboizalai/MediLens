@@ -3,6 +3,7 @@
 import hashlib
 from functools import lru_cache
 from typing import Any
+from uuid import UUID
 
 import boto3
 from botocore.client import Config
@@ -20,6 +21,7 @@ class StorageSettings(BaseSettings):
     bucket: str = "medilens-quarantine"
     endpoint_url: str | None = None  # set for SeaweedFS/MinIO
     region: str = "ap-southeast-1"
+    pages_bucket: str = "medilens-phi"  # worker pages bucket (WORKER_PAGES_BUCKET), SSE-KMS
 
 
 @lru_cache
@@ -79,3 +81,29 @@ class S3Storage:
 
     def delete(self, key: str) -> None:
         self._client.delete_object(Bucket=self._bucket, Key=key)
+
+
+class S3PageImages:
+    """Processed page PNGs written by the worker at `pre/<document_id>/<page:04d>.png`."""
+
+    def __init__(self, settings: StorageSettings, client: Any | None = None) -> None:
+        self._bucket = settings.pages_bucket
+        self._client = client or boto3.client(
+            "s3",
+            endpoint_url=settings.endpoint_url,
+            region_name=settings.region,
+            config=Config(signature_version="s3v4"),
+        )
+
+    def presign_page(self, document_id: UUID, page_no: int, expires_in: int) -> str | None:
+        key = f"pre/{document_id}/{page_no:04d}.png"
+        try:
+            self._client.head_object(Bucket=self._bucket, Key=key)
+        except ClientError as e:
+            if e.response.get("Error", {}).get("Code") in {"404", "NoSuchKey", "NotFound"}:
+                return None
+            raise
+        url: str = self._client.generate_presigned_url(
+            "get_object", Params={"Bucket": self._bucket, "Key": key}, ExpiresIn=expires_in
+        )
+        return url

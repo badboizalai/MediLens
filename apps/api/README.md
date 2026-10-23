@@ -11,6 +11,9 @@ Other users' documents/fields return 404 (RLS + owner scope). Audit rows carry a
 ## Document status stream (D53)
 `GET /v1/documents/{id}/events` - Server-Sent Events (`text/event-stream`, `Cache-Control: no-cache`). Owner-only (404 otherwise, like `GET /documents/{id}`). Polls the status every 1 s; emits `event: status` / `data: {"status","updatedAt"}` immediately and on each change (`updatedAt` = when the API observed it), `: keep-alive` comments every 15 s. Closes on a terminal status (`rejected`, `needs_retake`, `failed`, `needs_review`, `confirmed`) or after 300 s; clients reconnect and get the current status first. Constants: `document/application/status_stream.py`. The stream is async (awaited sleep; only the DB poll uses a worker thread). Note: browser `EventSource` cannot send an `Authorization` header, so the web client must use fetch-streaming (e.g. `fetch` + `ReadableStream`) or cookie auth.
 
+## Source page image (S7-T64b)
+`GET /v1/documents/{id}/pages/{page_no}/image` - `{url, expiresIn}`: a 300 s presigned GET for the worker's processed page `pre/{id}/{page:04d}.png` in `MEDILENS_S3_PAGES_BUCKET` (= worker `WORKER_PAGES_BUCKET`, SSE-KMS). Owner-only; other user, unknown document or a page that does not exist (`page_no` < 1 or beyond the stored pages) is 404; 401 unauthenticated; `Cache-Control: no-store`.
+
 ## Admin without PHI + break-glass (S11-T105, SEC-AZ-05)
 Admin = token role/group `MEDILENS_ADMIN_ROLE` (default `medilens-admin`); others get 403, no token 401.
 - `GET /v1/admin/stats` - counts only (documents per status, users) via `audit.admin_stats()` (migration 0006, SECURITY DEFINER, owner `admin_definer`); no clinical row is ever readable by an admin.

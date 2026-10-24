@@ -39,6 +39,15 @@ class ShareOut(BaseModel):
     revoked_at: datetime | None
 
 
+class SharedShareOut(BaseModel):
+    """Grantee view: no profile or owner identifiers."""
+
+    share_id: UUID
+    scope: str
+    expires_at: datetime
+    status: str = "active"  # denied shares never reach here (403/404)
+
+
 class SharedFindingOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     region_code: str
@@ -99,6 +108,12 @@ def list_shares(profile_id: UUID, user: User, service: Service) -> list[ShareOut
 def revoke_share(share_id: UUID, user: User, service: Service) -> Response:
     service.revoke(user.sub, share_id)
     return Response(status_code=204)
+
+
+@router.get("/shared/{share_id}", response_model=SharedShareOut, responses=_PROBLEMS)
+def shared_share(share_id: UUID, user: User, service: Service) -> SharedShareOut:
+    g = service.get_share(user.sub, share_id)
+    return SharedShareOut(share_id=g.id, scope=g.scope, expires_at=g.expires_at)
 
 
 @router.get("/shared/{share_id}/findings", response_model=SharedFindingsPage, responses=_PROBLEMS)

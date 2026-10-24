@@ -5,7 +5,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useState, type FormEvent } from 'react';
 import { Alert, Button } from '@/components/ui';
 import { ApiError } from '@/lib/api/client';
-import { createShare, getMe, getSharedFindings, listShares, revokeShare } from '@/lib/api/shares';
+import { createShare, getMe, getSharedFindings, getSharedShare, listShares, revokeShare } from '@/lib/api/shares';
 import { newClient } from '../timeline/api';
 import { BodyViewer } from '../viewer/BodyViewer';
 import { EXPIRY_HOURS, shortId, statusOf, timeLeft, toRegions } from './logic';
@@ -14,11 +14,11 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const field = 'min-h-target rounded-md px-2 ring-1 ring-[var(--ml-color-brand-border)]';
 
 // No app-wide QueryClientProvider exists yet; these routes own one.
-export function SharingProviders(props: { mode: 'owner'; profileId: string } | { mode: 'shared'; shareId: string; expiresAt?: string }) {
+export function SharingProviders(props: { mode: 'owner'; profileId: string } | { mode: 'shared'; shareId: string }) {
   const [client] = useState(newClient);
   return (
     <QueryClientProvider client={client}>
-      {props.mode === 'owner' ? <ShareSettings profileId={props.profileId} /> : <SharedView shareId={props.shareId} expiresAt={props.expiresAt} />}
+      {props.mode === 'owner' ? <ShareSettings profileId={props.profileId} /> : <SharedView shareId={props.shareId} />}
     </QueryClientProvider>
   );
 }
@@ -145,23 +145,25 @@ export function Watermark({ text }: { text: string }) {
   );
 }
 
-export function SharedView({ shareId, expiresAt }: { shareId: string; expiresAt?: string }) {
+export function SharedView({ shareId }: { shareId: string }) {
   const t = useTranslations('sharing');
   const r = useTranslations('viewer');
   const locale = useLocale();
   const me = useQuery({ queryKey: ['me'], queryFn: getMe });
   const q = useQuery({ queryKey: ['shared', shareId], queryFn: () => getSharedFindings(shareId) });
-  if (q.isPending || me.isPending) return <p role="status">{t('loading')}</p>;
-  if (q.isError) {
-    const ended = q.error instanceof ApiError && (q.error.status === 403 || q.error.status === 404);
+  const meta = useQuery({ queryKey: ['shared-meta', shareId], queryFn: () => getSharedShare(shareId) });
+  if (q.isPending || me.isPending || meta.isPending) return <p role="status">{t('loading')}</p>;
+  const err = q.error ?? meta.error;
+  if (q.isError || meta.isError || !q.data || !meta.data) {
+    const ended = err instanceof ApiError && (err.status === 403 || err.status === 404);
     return ended ? (
       <section aria-labelledby="ended"><h2 id="ended" className="text-lg font-semibold">{t('endedTitle')}</h2><p>{t('endedBody')}</p></section>
     ) : (
       <Alert tone="danger">{t('error')}</Alert>
     );
   }
-  const until = expiresAt && !Number.isNaN(Date.parse(expiresAt)) ? new Date(expiresAt).toLocaleString(locale) : null;
-  const info = t('watermark', { id: me.data ? shortId(me.data.sub) : '?', share: shortId(shareId), until: until ?? t('untilUnknown') });
+  const until = new Date(meta.data.expires_at).toLocaleString(locale); // server-side expiry, not a URL hint
+  const info = t('watermark', { id: me.data ? shortId(me.data.sub) : '?', share: shortId(shareId), until });
   const region = (c: string) => (r.has(`regions.${c}`) ? r(`regions.${c}`) : c);
   return (
     <div className="grid gap-4">

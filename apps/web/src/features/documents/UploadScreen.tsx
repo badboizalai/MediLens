@@ -1,16 +1,13 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import { Alert, Button, Card, Dropzone } from '@/components/ui';
 import {
   completeDocument,
   createDocument,
-  getDocument,
-  stageOf,
   putToPresignedUrl,
-  type RetakeReason,
-  type Stage,
   type UploadTarget,
 } from '@/lib/api/client';
 import { useProfileId } from '@/lib/profile/useProfileId';
@@ -20,27 +17,21 @@ interface Page {
   id: number;
   file: File;
 }
-type Phase = 'select' | 'uploading' | 'processing';
-interface Outcome {
-  stage: Stage;
-  reason?: RetakeReason | null;
-}
+type Phase = 'select' | 'uploading';
 
-const POLL_MS = 2000;
-const STEPS = ['queued', 'reading', 'extracting'] as const;
 const mb = (bytes: number) => (bytes / 1_048_576).toFixed(1);
 
-export function UploadScreen({ profileId: override, pollMs = POLL_MS }: { profileId?: string; pollMs?: number }) {
+export function UploadScreen({ profileId: override }: { profileId?: string }) {
   const fromHook = useProfileId();
   const profileId = override ?? fromHook;
   const t = useTranslations('upload');
+  const router = useRouter();
+  const locale = useLocale();
   const [pages, setPages] = useState<Page[]>([]);
   const [problems, setProblems] = useState<string[]>([]);
   const [phase, setPhase] = useState<Phase>('select');
   const [done, setDone] = useState(0);
   const [networkError, setNetworkError] = useState(false);
-  const [status, setStatus] = useState<Outcome | null>(null);
-  const [documentIds, setDocumentIds] = useState<string[]>([]);
   const nextId = useRef(0);
   const created = useRef<UploadTarget[]>([]);
   const captureRef = useRef<HTMLInputElement>(null);
@@ -59,7 +50,6 @@ export function UploadScreen({ profileId: override, pollMs = POLL_MS }: { profil
       setPages([...pages, ...ok]);
     }
     setProblems(msgs);
-    setStatus(null);
   };
 
   const move = (i: number, by: -1 | 1) => {
@@ -84,8 +74,8 @@ export function UploadScreen({ profileId: override, pollMs = POLL_MS }: { profil
         await completeDocument(created.current[i]!.document_id);
         setDone(i + 1);
       }
-      setDocumentIds(created.current.map((c) => c.document_id));
-      setPhase('processing');
+      // Progress is its own route; with several pages it follows the first document.
+      router.push(`/${locale}/documents/${created.current[0]!.document_id}/progress`);
     } catch (e) {
       // fetch rejects with TypeError on network failure; keep the selection so Retry continues.
       if (e instanceof TypeError) setNetworkError(true);
@@ -93,40 +83,6 @@ export function UploadScreen({ profileId: override, pollMs = POLL_MS }: { profil
       setPhase('select');
     }
   };
-
-  const reset = () => {
-    created.current = [];
-    setPages([]);
-    setDone(0);
-    setStatus(null);
-    setDocumentIds([]);
-    setPhase('select');
-  };
-
-  useEffect(() => {
-    if (phase !== 'processing' || documentIds.length === 0) return;
-    let stop = false;
-    let timer: ReturnType<typeof setTimeout>;
-    const tick = async () => {
-      try {
-        const docs = await Promise.all(documentIds.map((id) => getDocument(id)));
-        if (stop) return;
-        const o = summarize(docs.map((d) => ({ stage: stageOf(d.status), reason: d.retake_reason })));
-        setStatus(o);
-        if (o.stage === 'ready' || o.stage === 'needs_retake' || o.stage === 'failed') return;
-      } catch {
-        // transient: keep polling
-      }
-      if (!stop) timer = setTimeout(tick, pollMs);
-    };
-    void tick();
-    return () => {
-      stop = true;
-      clearTimeout(timer);
-    };
-  }, [phase, documentIds, pollMs]);
-
-  if (phase === 'processing') return <Progress status={status} onRetake={reset} />;
 
   const uploading = phase === 'uploading';
   return (
@@ -230,55 +186,5 @@ function CaptureTips() {
         ))}
       </ul>
     </details>
-  );
-}
-
-/** Worst page wins: retake > failed > slowest stage; ready only when every page is ready. */
-function summarize(pages: Outcome[]): Outcome {
-  const retake = pages.find((p) => p.stage === 'needs_retake');
-  if (retake) return retake;
-  if (pages.some((p) => p.stage === 'failed')) return { stage: 'failed' };
-  const order: Stage[] = ['queued', 'reading', 'extracting', 'ready'];
-  return { stage: order[Math.min(...pages.map((p) => order.indexOf(p.stage)))]! };
-}
-
-function Progress({ status, onRetake }: { status: Outcome | null; onRetake: () => void }) {
-  const t = useTranslations('upload');
-  const s = status?.stage ?? 'queued';
-
-  if (s === 'needs_retake') {
-    const reason = status?.reason;
-    return (
-      <Alert tone="warning" title={t('retake.title')}>
-        <p>{reason ? t(`retake.${reason}`) : t('failed')}</p>
-        <p>{t('retake.note')}</p>
-        <Button onClick={onRetake}>{t('retake.button')}</Button>
-      </Alert>
-    );
-  }
-  if (s === 'failed') {
-    return (
-      <Alert tone="danger">
-        <p>{t('failed')}</p>
-        <Button onClick={onRetake}>{t('retryButton')}</Button>
-      </Alert>
-    );
-  }
-  if (s === 'ready') return <Alert tone="success">{t('ready')}</Alert>;
-
-  const current = STEPS.indexOf(s);
-  return (
-    <Card>
-      <p role="status">{t('processing')}</p>
-      <ol aria-label={t('steps.label')} className="mt-3 grid gap-1">
-        {STEPS.map((step, i) => (
-          <li key={step} aria-current={i === current ? 'step' : undefined}>
-            <span aria-hidden="true">{i < current ? '✓' : i === current ? '●' : '○'} </span>
-            {t(`steps.${step}`)}
-          </li>
-        ))}
-      </ol>
-      <p className="mt-3">{t('leave')}</p>
-    </Card>
   );
 }

@@ -2,10 +2,11 @@
 
 import { useTranslations } from 'next-intl';
 import { Component, useEffect, useState, type ReactNode } from 'react';
-import { BodyMap2D } from './core/BodyMap2D';
+import { BodyMap2DSwitch } from './core/BodyMap2DSwitch';
 import { decideViewer, detectCapabilities } from './core3d/budget';
 import { BodyViewer3DLazy } from './core3d/BodyViewer3DLazy';
 import type { Region3D } from './core3d/logic';
+import { SeverityLegend } from './SeverityLegend';
 
 export type BodyViewerProps = {
   regions: Region3D[];
@@ -53,12 +54,13 @@ export function BodyViewer({ regions, model, onSelect }: BodyViewerProps) {
           {state.reason === 'ok' ? '' : t(`reason.${state.reason}`)}
         </p>
       </div>
+      <SeverityLegend />
       {state.mode === '3d' ? (
         <Boundary onError={() => auto2d('error')}>
           <BodyViewer3DLazy regions={regions} model={model} onSelect={onSelect} onLowFps={state.manual ? undefined : () => auto2d('lowFps')} />
         </Boundary>
       ) : (
-        <BodyMap2D findings={regions} side="front" />
+        <BodyMap2DSwitch findings={regions} />
       )}
     </div>
   );

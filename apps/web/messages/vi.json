@@ -311,5 +311,31 @@
     "noFindings": "Chưa có mục nào được chia sẻ.",
     "endedTitle": "Quyền xem đã kết thúc",
     "endedBody": "Chia sẻ này đã hết hạn hoặc bị thu hồi. Hãy hỏi chủ hồ sơ nếu cần chia sẻ mới."
+  },
+  "viewerUi": {
+    "legend": {
+      "title": "Bảng màu",
+      "hint": "Mỗi mức đều có ký hiệu và chữ đi kèm, nên màu không phải dấu hiệu duy nhất."
+    },
+    "side": {
+      "label": "Mặt cơ thể",
+      "front": "Mặt trước",
+      "back": "Mặt sau"
+    },
+    "controls": {
+      "label": "Điều khiển góc nhìn",
+      "rotateLeft": "Xoay trái",
+      "rotateRight": "Xoay phải",
+      "zoomIn": "Phóng to",
+      "zoomOut": "Thu nhỏ",
+      "reset": "Đặt lại góc nhìn",
+      "keys": "Bàn phím: mũi tên trái/phải để xoay, phím cộng/trừ để thu phóng, R để đặt lại."
+    },
+    "dental": {
+      "title": "Sơ đồ răng",
+      "loading": "Đang tải sơ đồ răng...",
+      "error": "Chưa tải được sơ đồ răng. Vui lòng thử lại sau.",
+      "empty": "Hồ sơ của bạn chưa có ghi chú về răng."
+    }
   }
 }

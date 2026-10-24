@@ -311,5 +311,31 @@
     "noFindings": "No findings are shared.",
     "endedTitle": "Access has ended",
     "endedBody": "This share has expired or was revoked. Ask the owner if you need a new one."
+  },
+  "viewerUi": {
+    "legend": {
+      "title": "Colour key",
+      "hint": "Each level also has a symbol and a word, so colour is never the only cue."
+    },
+    "side": {
+      "label": "Body side",
+      "front": "Front",
+      "back": "Back"
+    },
+    "controls": {
+      "label": "View controls",
+      "rotateLeft": "Rotate left",
+      "rotateRight": "Rotate right",
+      "zoomIn": "Zoom in",
+      "zoomOut": "Zoom out",
+      "reset": "Reset view",
+      "keys": "Keyboard: left and right arrows rotate, plus and minus zoom, R resets."
+    },
+    "dental": {
+      "title": "Teeth chart",
+      "loading": "Loading your teeth chart...",
+      "error": "We could not load your teeth chart. Please try again later.",
+      "empty": "No tooth findings in your record yet."
+    }
   }
 }

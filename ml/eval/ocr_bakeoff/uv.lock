@@ -1203,6 +1203,9 @@ dependencies = [
 llm = [
     { name = "anthropic" },
 ]
+preprocess = [
+    { name = "opencv-python-headless" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -1214,6 +1217,7 @@ dev = [
 requires-dist = [
     { name = "anthropic", marker = "extra == 'llm'", specifier = ">=0.40" },
     { name = "numpy", specifier = "<2" },
+    { name = "opencv-python-headless", marker = "extra == 'preprocess'", specifier = ">=4.9" },
     { name = "paddleocr", specifier = "==2.8.1" },
     { name = "paddlepaddle", specifier = "==2.6.2" },
     { name = "pillow", specifier = ">=10" },
@@ -1223,7 +1227,7 @@ requires-dist = [
     { name = "torchvision" },
     { name = "vietocr", specifier = "==0.3.13" },
 ]
-provides-extras = ["llm"]
+provides-extras = ["llm", "preprocess"]
 
 [package.metadata.requires-dev]
 dev = [

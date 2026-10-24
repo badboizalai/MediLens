@@ -24,11 +24,18 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--report", type=Path, default=HERE / "REPORT.md")
     ap.add_argument("--commentary", type=Path, default=HERE / "reference" / "commentary.md")
     ap.add_argument("--limit", type=int, default=0, help="first N pages only (smoke test)")
+    ap.add_argument("--preprocess", action="store_true", help="worker crop+perspective+deskew")
     a = ap.parse_args(argv)
 
     pages = load_pages(a.golden, a.reference)
     if a.limit:
         pages = pages[: a.limit]
+    if a.preprocess:
+        import tempfile  # noqa: PLC0415
+
+        from bakeoff.preprocess import preprocess_pages  # noqa: PLC0415
+
+        pages = preprocess_pages(pages, Path(tempfile.mkdtemp(prefix="bakeoff-pre-")))
     results = []
     for name in a.engines.split(","):
         if name not in ENGINES:
@@ -41,6 +48,7 @@ def main(argv: list[str] | None = None) -> None:
     meta = {
         "golden": str(a.golden),
         "pages": len(pages),
+        "preprocess": a.preprocess,
         "python": platform.python_version(),
         "hardware": f"{platform.processor() or platform.machine()}, CPU only, {platform.platform()}",
     }

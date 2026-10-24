@@ -13,6 +13,16 @@ from sqlalchemy.orm import Session
 from medilens.modules.document.domain.ports import DsrStorage
 
 ORIGINAL_URL_TTL_SECONDS = 900
+_ERASE = {
+    "document_pages": (
+        text("DELETE FROM clinical.document_pages WHERE profile_id = :p"),
+        text("SELECT 1 FROM clinical.document_pages WHERE profile_id = ANY(:ids) LIMIT 1"),
+    ),
+    "documents": (
+        text("DELETE FROM clinical.documents WHERE profile_id = :p"),
+        text("SELECT 1 FROM clinical.documents WHERE profile_id = ANY(:ids) LIMIT 1"),
+    ),
+}
 _PER_DOC_PREFIXES = ("raw/{}/", "pre/{}/", "ocr/{}/", "extractions/{}/", "retake/{}")
 
 
@@ -49,11 +59,8 @@ class SqlDocumentDsr:
                 text("SELECT id FROM clinical.documents WHERE profile_id = :p"), {"p": profile_id}
             )
         ]
-        for table in ("document_pages", "documents"):
-            self._s.execute(
-                text(f"DELETE FROM clinical.{table} WHERE profile_id = :p"),  # noqa: S608
-                {"p": profile_id},
-            )
+        for delete, _ in _ERASE.values():
+            self._s.execute(delete, {"p": profile_id})
         self._s.execute(
             text("DELETE FROM worker.document_status WHERE document_id = ANY(:ids)"),
             {"ids": [str(i) for i in ids]},
@@ -67,11 +74,8 @@ class SqlDocumentDsr:
     def leftovers(self, profile_ids: list[UUID]) -> list[str]:
         out = [
             f"clinical.{t}"
-            for t in ("document_pages", "documents")
-            if self._s.execute(
-                text(f"SELECT 1 FROM clinical.{t} WHERE profile_id = ANY(:ids) LIMIT 1"),  # noqa: S608
-                {"ids": profile_ids},
-            ).first()
+            for t, (_, probe) in _ERASE.items()
+            if self._s.execute(probe, {"ids": profile_ids}).first()
         ]
         # prefixes erased in this request; an idempotent re-run has nothing left to list
         return out + [k for p in self._erased_prefixes for k in self._storage.list_prefix(p)]

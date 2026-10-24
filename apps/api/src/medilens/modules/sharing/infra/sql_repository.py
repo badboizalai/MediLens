@@ -14,8 +14,6 @@ from sqlalchemy.orm import Session
 from medilens.core.db import scope_to_profiles
 from medilens.modules.sharing.domain.models import Grant, SharedFinding
 
-_COLS = "id, profile_id, grantee_user_id, scope, expires_at, revoked_at"
-
 
 class SqlShareRepository:
     def __init__(self, session: Session) -> None:
@@ -61,8 +59,9 @@ class SqlShareRepository:
     def insert(self, profile_id: UUID, grantee: UUID, scope: str, expires_at: datetime) -> Grant:
         row = self._s.execute(
             text(
-                "INSERT INTO clinical.share_grants (profile_id, grantee_user_id, scope, expires_at) "  # noqa: S608
-                f"VALUES (:p, :g, :s, :e) RETURNING {_COLS}"
+                "INSERT INTO clinical.share_grants (profile_id, grantee_user_id, scope, expires_at) "
+                "VALUES (:p, :g, :s, :e) "
+                "RETURNING id, profile_id, grantee_user_id, scope, expires_at, revoked_at"
             ),
             {"p": profile_id, "g": grantee, "s": scope, "e": expires_at},
         ).one()
@@ -71,7 +70,8 @@ class SqlShareRepository:
     def list_for(self, profile_id: UUID) -> list[Grant]:
         rows = self._s.execute(
             text(
-                f"SELECT {_COLS} FROM clinical.share_grants "  # noqa: S608
+                "SELECT id, profile_id, grantee_user_id, scope, expires_at, revoked_at "
+                "FROM clinical.share_grants "
                 "WHERE profile_id = :p AND deleted_at IS NULL ORDER BY id DESC"
             ),
             {"p": profile_id},
@@ -97,7 +97,10 @@ class SqlShareRepository:
 
     def grant_for_grantee(self, share_id: UUID, user_id: UUID) -> Grant | None:
         row = self._s.execute(
-            text(f"SELECT {_COLS} FROM clinical.get_share_grant(:i, :u)"),  # noqa: S608
+            text(
+                "SELECT id, profile_id, grantee_user_id, scope, expires_at, revoked_at "
+                "FROM clinical.get_share_grant(:i, :u)"
+            ),
             {"i": share_id, "u": user_id},
         ).first()
         return Grant(*row) if row else None

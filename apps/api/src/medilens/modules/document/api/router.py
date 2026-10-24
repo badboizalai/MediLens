@@ -19,8 +19,13 @@ from medilens.modules.document.domain.models import (
     FileTooLarge,
     UnsupportedFileType,
 )
-from medilens.modules.document.domain.ports import ObjectStorage, PageImages
-from medilens.modules.document.infra.s3_storage import S3PageImages, S3Storage, get_storage_settings
+from medilens.modules.document.domain.ports import DsrStorage, ObjectStorage, PageImages
+from medilens.modules.document.infra.s3_storage import (
+    S3DsrStorage,
+    S3PageImages,
+    S3Storage,
+    get_storage_settings,
+)
 from medilens.modules.document.infra.sql_repository import (
     SqlDocumentRepository,
     SqlProfileOwnership,
@@ -89,6 +94,11 @@ def get_storage() -> ObjectStorage:
 @lru_cache
 def get_page_images() -> PageImages:
     return S3PageImages(get_storage_settings())
+
+
+@lru_cache
+def get_dsr_storage() -> DsrStorage:
+    return S3DsrStorage(get_storage_settings())
 
 
 def get_service(

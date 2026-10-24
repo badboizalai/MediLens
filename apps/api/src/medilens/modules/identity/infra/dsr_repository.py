@@ -68,29 +68,32 @@ class SqlDsrRepository:
 
     def leftovers(self, user_id: UUID, profile_ids: list[UUID]) -> list[str]:
         checks = {
-            "identity.users": ("SELECT 1 FROM identity.users WHERE id = :u", {}),
+            "identity.users": (text("SELECT 1 FROM identity.users WHERE id = :u LIMIT 1"), {}),
             "identity.patient_profiles": (
-                "SELECT 1 FROM identity.patient_profiles WHERE owner_user_id = :u",
+                text("SELECT 1 FROM identity.patient_profiles WHERE owner_user_id = :u LIMIT 1"),
                 {},
             ),
-            "identity.consents": ("SELECT 1 FROM identity.consents WHERE user_id = :u", {}),
+            "identity.consents": (
+                text("SELECT 1 FROM identity.consents WHERE user_id = :u LIMIT 1"),
+                {},
+            ),
             "clinical.share_grants (grantee)": (
-                "SELECT 1 FROM clinical.share_grants WHERE grantee_user_id = :u",
+                text("SELECT 1 FROM clinical.share_grants WHERE grantee_user_id = :u LIMIT 1"),
                 {},
             ),
             "audit.break_glass_grants": (
-                "SELECT 1 FROM audit.break_glass_grants WHERE profile_id = ANY(:ids)",
+                text("SELECT 1 FROM audit.break_glass_grants WHERE profile_id = ANY(:ids) LIMIT 1"),
                 {"ids": profile_ids},
             ),
             "audit.audit_events (unpseudonymised actor)": (
-                "SELECT 1 FROM audit.audit_events WHERE actor_id = :u",
+                text("SELECT 1 FROM audit.audit_events WHERE actor_id = :u LIMIT 1"),
                 {},
             ),
         }
         out = [
             name
-            for name, (sql, extra) in checks.items()
-            if self._s.execute(text(sql + " LIMIT 1"), {"u": user_id, **extra}).first()
+            for name, (stmt, extra) in checks.items()
+            if self._s.execute(stmt, {"u": user_id, **extra}).first()
         ]
         # clinical.outbox has no profile column; its payload carries profile_id
         if self._s.execute(

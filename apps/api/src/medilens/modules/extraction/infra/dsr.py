@@ -6,7 +6,17 @@ from uuid import UUID
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-_ERASE = ("extraction_fields", "extraction_runs")  # fields reference runs
+# fields reference runs, so they go first
+_ERASE = {
+    "extraction_fields": (
+        text("DELETE FROM clinical.extraction_fields WHERE profile_id = :p"),
+        text("SELECT 1 FROM clinical.extraction_fields WHERE profile_id = ANY(:ids) LIMIT 1"),
+    ),
+    "extraction_runs": (
+        text("DELETE FROM clinical.extraction_runs WHERE profile_id = :p"),
+        text("SELECT 1 FROM clinical.extraction_runs WHERE profile_id = ANY(:ids) LIMIT 1"),
+    ),
+}
 
 
 class SqlExtractionDsr:
@@ -37,18 +47,12 @@ class SqlExtractionDsr:
         }
 
     def erase_profile(self, profile_id: UUID) -> None:
-        for t in _ERASE:
-            self._s.execute(
-                text(f"DELETE FROM clinical.{t} WHERE profile_id = :p"),  # noqa: S608
-                {"p": profile_id},
-            )
+        for delete, _ in _ERASE.values():
+            self._s.execute(delete, {"p": profile_id})
 
     def leftovers(self, profile_ids: list[UUID]) -> list[str]:
         return [
             f"clinical.{t}"
-            for t in _ERASE
-            if self._s.execute(
-                text(f"SELECT 1 FROM clinical.{t} WHERE profile_id = ANY(:ids) LIMIT 1"),  # noqa: S608
-                {"ids": profile_ids},
-            ).first()
+            for t, (_, probe) in _ERASE.items()
+            if self._s.execute(probe, {"ids": profile_ids}).first()
         ]

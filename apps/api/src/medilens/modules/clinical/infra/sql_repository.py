@@ -10,8 +10,6 @@ from sqlalchemy.orm import Session
 from medilens.core.db import scope_to_profiles
 from medilens.modules.clinical.domain.models import FindingView, ObservationView, Projection
 
-_BF_OF_RUN = "condition_id IN (SELECT id FROM clinical.conditions WHERE source_run_id = :r)"
-
 
 class SqlClinicalRepository:
     def __init__(self, session: Session) -> None:
@@ -65,10 +63,36 @@ class SqlClinicalRepository:
 
     def _clear(self, run_id: UUID) -> None:
         p = {"r": run_id}
-        sql = "UPDATE clinical.{} SET deleted_at = now() WHERE {} AND deleted_at IS NULL"
-        self._s.execute(text(sql.format("body_findings", _BF_OF_RUN)), p)  # noqa: S608
-        for t in ("conditions", "observations", "encounters"):
-            self._s.execute(text(sql.format(t, "source_run_id = :r")), p)  # noqa: S608
+        self._s.execute(
+            text(
+                "UPDATE clinical.body_findings SET deleted_at = now() "
+                "WHERE condition_id IN "
+                "(SELECT id FROM clinical.conditions WHERE source_run_id = :r) "
+                "AND deleted_at IS NULL"
+            ),
+            p,
+        )
+        self._s.execute(
+            text(
+                "UPDATE clinical.conditions SET deleted_at = now() "
+                "WHERE source_run_id = :r AND deleted_at IS NULL"
+            ),
+            p,
+        )
+        self._s.execute(
+            text(
+                "UPDATE clinical.observations SET deleted_at = now() "
+                "WHERE source_run_id = :r AND deleted_at IS NULL"
+            ),
+            p,
+        )
+        self._s.execute(
+            text(
+                "UPDATE clinical.encounters SET deleted_at = now() "
+                "WHERE source_run_id = :r AND deleted_at IS NULL"
+            ),
+            p,
+        )
 
     def replace(self, run_id: UUID, profile_id: UUID, pr: Projection) -> None:
         self._clear(run_id)

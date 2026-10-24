@@ -17,7 +17,9 @@ Status: draft. Strategy: `test-strategy.md`.
 ## Initial automation backlog
 | Id | Item | Level | Status |
 | --- | --- | --- | --- |
-| E2E-SMOKE | Public home loads and shows disclaimer | E2E | skeleton in `tests/e2e` |
+| E2E-SMOKE | Public home loads and shows disclaimer | E2E | done (passes on chromium, firefox, Pixel 7) |
+| E2E-UPLOAD-REVIEW | Upload, progress, review, confirm (422 block, ownership not-found, rejected upload), API mocked | E2E | done; 3 TCs pass on chromium, firefox, Pixel 7 |
+| E2E-COMPAT | NFR-17 browser/device matrix, see `compat-matrix.md` | E2E | partial: WebKit and iPhone 14 not run yet (host libs); CI wiring pending |
 | AUTHZ-ALL | Authz test per endpoint | API | planned |
 | AI-GATE | Golden-set CER/F1 gate in CI | ML eval | planned |
 | A11Y-HOME | axe on home and review screen | E2E | planned |

@@ -40,6 +40,8 @@ export const toRegions = (findings: FindingDto[]) =>
     region_code: f.region_code,
     severity: (f.severity && SEVERITIES.has(f.severity) ? f.severity : 'reference') as SeverityKey,
     label: f.label ?? f.region_code,
+    source: f.source,
+    is_metastasis: f.is_metastasis,
   }));
 
 /** Side-by-side lab rows aligned on name + unit; a missing side is null. */

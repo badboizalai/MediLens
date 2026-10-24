@@ -253,6 +253,23 @@
     "obsUnit": "Unit",
     "notListed": "Not listed"
   },
+  "viewerNotes": {
+    "patientReported": "you described",
+    "unmapped": "Not placed on the body",
+    "unmappedHint": "These notes could not be matched to a place on the body map.",
+    "statedInRecord": "stated in your record"
+  },
+  "oncology": {
+    "title": "Oncology summary",
+    "summaryNote": "Summary view: the main site noted in your record. Details are hidden until you choose to see them.",
+    "showDetails": "Show details",
+    "hideDetails": "Hide details",
+    "detailsTitle": "Details noted in your record",
+    "tnmTitle": "Staging as written in your record",
+    "tnmLetters": "In general: T describes tumour extent, N describes lymph nodes, M describes distant spread.",
+    "tnmNote": "These letters explain the notation only, not what the value means for you.",
+    "askCareTeam": "Ask your care team what these details mean for you."
+  },
   "sharing": {
     "title": "Share with a clinician",
     "sharedTitle": "Shared record (view only)",

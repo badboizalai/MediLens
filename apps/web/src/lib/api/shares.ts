@@ -20,6 +20,7 @@ const sharedFinding = z.object({
   label: z.string().nullable(),
 });
 const findingsPage = z.object({ findings: z.array(sharedFinding), next_cursor: z.string().nullable() });
+const sharedShare = z.object({ share_id: z.string().uuid(), scope: z.string(), expires_at: z.string(), status: z.string() });
 const me = z.object({ sub: z.string() });
 export type ShareDto = z.infer<typeof share>;
 export type SharedFindingDto = z.infer<typeof sharedFinding>;
@@ -52,3 +53,4 @@ export const revokeShare = async (shareId: string) => void (await call(`/shares/
 export const getSharedFindings = async (shareId: string, cursor?: string) =>
   findingsPage.parse(await call(`/shared/${id(shareId)}/findings${cursor ? `?cursor=${id(cursor)}` : ''}`));
 export const getMe = async () => me.parse(await call('/me'));
+export const getSharedShare = async (shareId: string) => sharedShare.parse(await call(`/shared/${id(shareId)}`));

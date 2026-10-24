@@ -17,5 +17,6 @@ An evidence pack is a **draft for human sign-off**. AI agents never sign a gate,
 | --- | --- | --- | --- |
 | G0 Discovery Go/No-Go | [G0.md](G0.md) | PM + QC | Not yet ready |
 | G0-R Regulatory | [G0-R.md](G0-R.md) | REG | Not yet ready (human REG verification pending) |
+| G2 Feature complete | [G2.md](G2.md) | PM + QC (G2-CS: CSO) | Not ready (2 open S2, model metrics n/m, human sign-offs pending) |
 
 Note: the orchestrator handoff table lists steering as G0-R approver, the plan sheet lists REG. Both packs record REG as approver per the plan sheet; PM to confirm whether steering also countersigns.

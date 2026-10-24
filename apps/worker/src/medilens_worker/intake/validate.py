@@ -15,10 +15,15 @@ MAX_BYTES = 20 * 1024 * 1024  # same limit as the API (BR-010)
 MAX_PDF_PAGES = 50  # assumption: no documented limit; a record longer than this is out of scope
 _HEIC_BRANDS = {b"heic", b"heix", b"heim", b"heis", b"mif1", b"msf1"}  # copied from the API sniff
 _ACTIVE = re.compile(
-    rb"/(JavaScript|JS|Launch|EmbeddedFile|OpenAction|AA|SubmitForm|XFA|RichMedia)(?![A-Za-z])"
+    rb"/\s*(JavaScript|JS|Launch|EmbeddedFile|OpenAction|AA|SubmitForm|XFA|RichMedia)(?![A-Za-z])"
 )
+# bytes allowed after the last %%EOF (EOL/padding); more is appended data
+PDF_TRAILING_TOLERANCE = 16
+# Polyglot markers anywhere in the raw bytes. Trade-off: a legit PDF whose compressed stream
+# happens to contain one of these (4-byte `PK\x03\x04` ~ 2^-32 per offset) is rejected; accepted.
+_POLYGLOT = re.compile(rb"PK\x03\x04|<html|<script|<!doctype\s+html", re.I)
 _NAME_HEX = re.compile(rb"#([0-9A-Fa-f]{2})")
-_UNINSPECTABLE = re.compile(rb"/(ObjStm|Encrypt)(?![A-Za-z])")
+_UNINSPECTABLE = re.compile(rb"/\s*(ObjStm|Encrypt)(?![A-Za-z])")
 # shortcut: byte-level count misses pages inside compressed object streams; use a PDF parser then
 _PAGE = re.compile(rb"/Type\s*/Page(?![A-Za-z])")
 
@@ -87,6 +92,10 @@ def _check_pdf(data: bytes) -> None:
         raise Rejected("pdf_malformed")  # e.g. a `%PDF-` header on an HTML body
     # shortcut: object streams and encryption hide objects from a byte scan, so reject them;
     # upgrade: parse in a sandbox (S6-T58-F4b) and allow them
+    if len(data) - (data.rfind(b"%%EOF") + 5) > PDF_TRAILING_TOLERANCE:
+        raise Rejected("trailing_data")
+    if _POLYGLOT.search(data):
+        raise Rejected("pdf_polyglot")
     if _UNINSPECTABLE.search(text):
         raise Rejected("pdf_uninspectable")
     if _ACTIVE.search(text):

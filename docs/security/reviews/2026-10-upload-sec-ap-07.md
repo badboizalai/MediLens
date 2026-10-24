@@ -34,7 +34,8 @@ Severity scale: Critical/High/Medium/Low per the skill's triage (SLA 24 h / 7 d 
 ## Probes (not committed)
 
 - `/S /J#61vaScript` (hex-escaped name): `_ACTIVE` returns no match. `/OpenAction`, `/AA`: not in the pattern. An `/ObjStm` stream hides names and `/Type /Page` objects from `_PAGE` (count 0), so the 50-page cap (`validate.py:14`) is bypassable. Confirms the known "evadable" item.
-- Polyglots: JPEG+ZIP and `%PDF-`+HTML pass API and worker (documented, `test_content_level_payloads_pass_api_and_are_left_to_worker`). They stay valid until a sandboxed decode/re-encode exists.
+- Status BUG-14: PDF names normalised (`#xx`, whitespace), `trailing_data` and `pdf_polyglot` rejections added, image polyglots covered by re-encode tests; sandboxed parser (F4b) still open.
+- Polyglots (original finding): JPEG+ZIP and `%PDF-`+HTML pass API and worker (documented, `test_content_level_payloads_pass_api_and_are_left_to_worker`). They stay valid until a sandboxed decode/re-encode exists.
 - Scan-pending budget: `RetryPolicy` is 3 attempts, delays 5 s then 10 s (`pipeline/runner.py:16-22`). `ScanPending` is a plain exception, so after about 15 s the job goes to DLQ and the document to `FAILED`. A scan slower than that rejects a clean file (safe, but an availability bug). Not tested against real GuardDuty timing.
 
 ## Findings

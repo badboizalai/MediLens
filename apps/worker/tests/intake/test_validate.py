@@ -82,6 +82,15 @@ PDF = "application/pdf"
         (pdf(extra=b"/Launch"), msg(PDF), "pdf_active_content"),
         (pdf(extra=b"/Java#53cript (x)"), msg(PDF), "pdf_active_content"),
         (pdf(extra=b"/Open#41ction 1 0 R"), msg(PDF), "pdf_active_content"),
+        (pdf(extra=b"/J#61vaScript (x)"), msg(PDF), "pdf_active_content"),
+        (pdf(extra=b"/ JavaScript (x)"), msg(PDF), "pdf_active_content"),
+        (pdf() + b"PK\x03\x04" + b"0" * 30, msg(PDF), "trailing_data"),
+        (pdf() + b"<html>" + b"x" * 30, msg(PDF), "trailing_data"),
+        (pdf(extra=b"PK\x03\x04"), msg(PDF), "pdf_polyglot"),
+        (pdf(extra=b"<HTML>"), msg(PDF), "pdf_polyglot"),
+        (pdf(extra=b"<ScRiPt>"), msg(PDF), "pdf_polyglot"),
+        (pdf(extra=b"<!DOCTYPE html>"), msg(PDF), "pdf_polyglot"),
+        (b"junk" + pdf(), msg(PDF), "unsupported_type"),
         (pdf(extra=b"/AA << /O 1 0 R >>"), msg(PDF), "pdf_active_content"),
         (pdf(extra=b"/Type /ObjStm"), msg(PDF), "pdf_uninspectable"),
         (pdf(extra=b"/Type /Obj#53tm"), msg(PDF), "pdf_uninspectable"),
@@ -117,6 +126,17 @@ def test_png_with_appended_zip_is_stripped():
     s = mem(PNG + ZIP_TAIL)
     validate_upload("d1", msg(), s)
     assert b"PK\x03\x04" not in s.raw_pages("d1")[0]
+
+
+@needs_cv2
+def test_image_with_trailing_html_is_stripped():
+    s = mem(PNG + b"<html><script>alert(1)</script></html>")
+    validate_upload("d1", msg(), s)
+    assert b"<script" not in s.raw_pages("d1")[0]
+
+
+def test_pdf_trailing_eol_tolerated():
+    validate_upload("d1", msg(PDF), mem(pdf() + b"\r\n"))
 
 
 def test_heic_passes_through_unchanged():

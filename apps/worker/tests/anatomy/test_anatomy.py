@@ -82,3 +82,31 @@ def test_all_codes_exist_in_tree():
     for r in rows:
         for k in ("code", "right", "left"):
             assert r.get(k, "body") in tree(), r
+
+
+@pytest.mark.parametrize(
+    ("text", "code"),
+    [
+        ("Thất trái", "heart_lv"),
+        ("Tụy", "pancreas"),
+        ("Xương sống", "bone_spine"),
+        ("Spine bone", "bone_spine"),
+        ("Pelvic bone", "bone_pelvis"),
+        ("Para-aortic", "ln_paraaortic"),
+        ("Mediastinal", "ln_mediastinal"),
+        ("Cervical right", "ln_cervical_r"),
+        ("Hilar left", "ln_hilar_l"),
+        ("Axillary right", "ln_axillary_r"),
+        ("Iliac left", "ln_iliac_l"),
+        ("hạch bẹn trái", "ln_inguinal_l"),
+        # no laterality guessed from a group term or an unsided station (BUG-12)
+        ("Thất", None),
+        ("hạch cổ", None),
+        ("Cervical nodes bilateral", None),
+        ("hạch ổ bụng", None),
+        # bare adjectives must not hijack other organs
+        ("cervical cancer", None),
+    ],
+)
+def test_oncology_location_synonyms(text, code):
+    assert map_region(text, "oncology")[0] == code

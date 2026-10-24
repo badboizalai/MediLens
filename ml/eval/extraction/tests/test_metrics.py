@@ -128,3 +128,53 @@ def test_baseline_passes_gate_and_is_labelled():
     t = json.loads((ROOT / "thresholds.json").read_text())
     assert metrics.check_gate(r, t) == []
     assert r["overall"]["f1"] < 1.0  # noise really is injected
+
+
+def test_strata_groups_and_no_predictions(tmp_path, capsys):
+    g = rec("d1", [tooth("14", "caries", "tooth_14")])
+    g["strata"] = {"lang": "vi", "noise": "heavy"}
+    r = run([g], [g])
+    assert r["groups"]["lang=vi"]["f1"] == 1.0
+    assert "noise=heavy@unit=dental" in r["groups"]
+    gold = tmp_path / "gold.jsonl"
+    gold.write_text(json.dumps(g) + "\n", encoding="utf-8")
+    pred = tmp_path / "pred.jsonl"
+    pred.write_text(json.dumps(rec("other", [])) + "\n", encoding="utf-8")
+    assert cli.main(["run", "--gold", str(gold), "--pred", str(pred)]) == 0
+    assert "no predictions" in capsys.readouterr().out
+
+
+def conf_tooth(fdi, cond, code, c, quote="Răng 14"):
+    t = tooth(fdi, cond, code, quote)
+    t["fdi"]["confidence"] = t["region"]["confidence"] = c
+    return t
+
+
+def test_calibration_ece_hand_computed():
+    # 4 pairs at 0.9 (3 right): gap 0.15 each; 2 pairs at 0.3 (0 right): gap 0.3 each
+    pairs = [(0.9, True)] * 3 + [(0.9, False)] + [(0.3, False)] * 2
+    c = metrics.calibration(pairs)
+    assert abs(c["ece"] - (4 * 0.15 + 2 * 0.3) / 6) < 1e-9
+    assert c["n_conf_ge_0.7"] == 4 and c["error_rate_conf_ge_0.7"] == 0.25
+    assert metrics.calibration([(1.0, True)])["bins"][9]["n"] == 1  # conf 1.0 -> last bin
+    assert metrics.calibration([])["ece"] is None
+
+
+def test_score_ece_overconfident_wrong_fields():
+    g = [rec("d1", [tooth("14", "caries", "tooth_14")])]
+    p = [rec("d1", [conf_tooth("14", "filling", "tooth_14", 1.0)])]
+    p[0]["fields"]["teeth"][0]["condition"] = {"value": "filling", "confidence": 1.0}
+    cal = run(g, p)["calibration"]
+    # fdi + region_code right, condition wrong, all at conf 1.0 -> acc 2/3 -> ECE 1/3
+    assert cal["ALL"]["n"] == 3 and abs(cal["ALL"]["ece"] - 1 / 3) < 1e-9
+    assert "unit=dental" in cal
+
+
+def test_region_accuracy_by_unit_and_ece_gate():
+    g = [rec("d1", [tooth("14", "c", "tooth_14")])]
+    p = [rec("d1", [conf_tooth("14", "c", "tooth_15", 1.0)])]
+    r = run(g, p)
+    assert r["region_accuracy_by_unit"]["dental"] == {"value": 0.0, "correct": 0, "total": 1}
+    t = json.loads((ROOT / "thresholds.json").read_text())
+    assert any("ECE" in f for f in metrics.check_gate(r, t))
+    assert not any("ECE" in f for f in metrics.check_gate(run(g, []), t))  # no confidences: skip

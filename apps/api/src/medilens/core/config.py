@@ -17,11 +17,16 @@ class Settings(BaseSettings):
     oidc_issuer: str = ""
     oidc_audience: str = "medilens-api"
     cors_origins: list[str] = ["http://localhost:3000"]
+    knowledge_allow_drafts: bool = False  # BR-024/BR-051: only CSO-reviewed articles in prod
+
+    upload_requests_per_minute: int = 10  # SEC-AP-08 / F7: per authenticated user
+    upload_daily_quota: int = 50
+    sse_max_streams_per_user: int = 3
 
     @model_validator(mode="after")
     def _prod_is_strict(self) -> "Settings":
-        if self.env in ("staging", "prod") and "*" in self.cors_origins:
-            raise ValueError("wildcard CORS origin is not allowed in staging/prod")
+        if "*" in self.cors_origins:
+            raise ValueError("wildcard CORS origin is not allowed; list explicit origins")
         return self
 
     @property

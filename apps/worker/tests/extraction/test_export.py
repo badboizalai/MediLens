@@ -40,9 +40,10 @@ def s3_store():
 
 
 def test_s3_roundtrip_key_sse_and_latest(s3_store):
-    first, second = make_run(), make_run()
+    first = make_run()
     s3_store.save(first)
-    time.sleep(1.1)  # S3 LastModified has 1 s resolution
+    time.sleep(1.1)  # uuid7 is ms-ordered
+    second = make_run()
     s3_store.save(second)
     c = boto3.client("s3")
     key = f"extractions/{DOC}/{second.run_id}.json"
@@ -73,3 +74,11 @@ def test_results_bucket_required_outside_local():
     base = {"AI_GATEWAY_URL": "u", "AI_GATEWAY_SERVICE_SECRET": "s", "WORKER_TENANT_ID": "t"}
     with pytest.raises(RuntimeError, match="EXTRACTION_RESULTS_BUCKET"):
         build_extract_deps(base)
+
+
+def test_latest_picks_greatest_run_id_not_last_modified(s3_store):
+    older, newer = sorted([make_run(), make_run()], key=lambda r: r.run_id)
+    s3_store.save(newer)  # written first, so `older` has the later LastModified
+    time.sleep(1.1)
+    s3_store.save(older)
+    assert s3_store.latest(DOC) == newer

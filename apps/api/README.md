@@ -8,9 +8,56 @@ Hexagonal modules under `src/medilens/modules/<name>/{api,application,domain,inf
 
 Other users' documents/fields return 404 (RLS + owner scope). Audit rows carry actor/action/ids only.
 
+## Document status stream (D53)
+`GET /v1/documents/{id}/events` - Server-Sent Events (`text/event-stream`, `Cache-Control: no-cache`). Owner-only (404 otherwise, like `GET /documents/{id}`). Polls the status every 1 s; emits `event: status` / `data: {"status","updatedAt"}` immediately and on each change (`updatedAt` = when the API observed it), `: keep-alive` comments every 15 s. Closes on a terminal status (`rejected`, `needs_retake`, `failed`, `needs_review`, `confirmed`) or after 300 s; clients reconnect and get the current status first. Constants: `document/application/status_stream.py`. The stream is async (awaited sleep; only the DB poll uses a worker thread). Note: browser `EventSource` cannot send an `Authorization` header, so the web client must use fetch-streaming (e.g. `fetch` + `ReadableStream`) or cookie auth.
+
+## Source page image (S7-T64b)
+`GET /v1/documents/{id}/pages/{page_no}/image` - `{url, expiresIn}`: a 300 s presigned GET for the worker's processed page `pre/{id}/{page:04d}.png` in `MEDILENS_S3_PAGES_BUCKET` (= worker `WORKER_PAGES_BUCKET`, SSE-KMS). Owner-only; other user, unknown document or a page that does not exist (`page_no` < 1 or beyond the stored pages) is 404; 401 unauthenticated; `Cache-Control: no-store`.
+
+## Admin without PHI + break-glass (S11-T105, SEC-AZ-05)
+Admin = token role/group `MEDILENS_ADMIN_ROLE` (default `medilens-admin`); others get 403, no token 401.
+- `GET /v1/admin/stats` - counts only (documents per status, users) via `audit.admin_stats()` (migration 0006, SECURITY DEFINER, owner `admin_definer`); no clinical row is ever readable by an admin.
+- `POST /v1/admin/break-glass` `{profile_id, reason (>=10 chars), ticket?}` - 201 grant valid 1 h (`BREAK_GLASS_TTL`), bound to the admin's `sub`; writes audit `break_glass.opened` and fires the `AlertSink` (default: structured WARNING `break_glass.opened`, ids only, never the reason; a failing sink rolls the grant back).
+- `GET /v1/admin/break-glass/{grant_id}/documents` - `[{id, status}]` of that one profile via `audit.break_glass_documents()`, which re-checks owner/expiry/revocation with `now()`; expired, revoked, foreign or unknown grant -> 403. Each read audits `break_glass.read_documents`.
+
+No BYPASSRLS and `app.profile_ids` is never widened (ADR-0006 definer pattern). Grants are insert-only for `app_rw`; revocation is an operator action (`revoked_at`), no endpoint yet.
+
 ## Outbox relay
 `DocumentService.complete` writes `DocumentUploaded` to `clinical.outbox`; the relay publishes it to the worker queue (at-least-once, the worker dedups). Run: `DATABASE_URL=... WORKER_QUEUE_URL=... [AWS_ENDPOINT_URL=...] python -m medilens.shared.outbox_relay` (polls every `POLL_INTERVAL_SECONDS`).
 Message: `{"type":"document.validate","documentId":"<uuid>","storageKey":"quarantine/<profile_id>/<document_id>","mime":"<mime>","attempt":1}`. Unknown event types stay unpublished (logged by type only).
 
 ## api-events consumer
 `python -m medilens.shared.api_events_consumer` (env `DATABASE_URL`, `API_EVENTS_QUEUE_URL`, optional `AWS_ENDPOINT_URL`) applies worker `document.status_changed` via `clinical.apply_document_status()` (migration 0004, SECURITY DEFINER, forward-only). Its DB login must be a member of the NOLOGIN role `api_events_consumer` (EXECUTE on that function only, no table access): `GRANT api_events_consumer TO <consumer_login>`. The function runs as `doc_status_definer`, let through FORCE RLS by one policy for that role alone.
+It also ingests `extraction.completed` (S6-T53d2): env `RESULTS_BUCKET` names the PHI bucket; the consumer validates the message and the S3 result object (`extractions/{documentId}/{runId}.json`) against the contracts, then calls `clinical.ingest_extraction()` (migration 0005, owner `extraction_ingest_definer`, INSERT-only column grants, EXECUTE for `api_events_consumer` only). `profile_id` comes from the document row, never the message; the run id is the idempotency key (re-delivery inserts nothing); an unknown document is a permanent error (left for the DLQ).
+
+## Clinical projection (S8-CLIN)
+- `POST /v1/documents/{id}/confirm` also projects the confirmed run into `clinical.encounters / conditions / body_findings / observations` in the same transaction (wired in `main.py` via the extraction `get_confirm_hook`; modules never import each other). User edits (`user_value`) win over model values. No `region_code` -> a condition without a body finding. `is_metastasis` only for oncology `metastases[]` not stated as `suspected`. `icd10_code` is never written (LIC-002). Idempotent: rows carry `source_run_id` (migration 0006); re-confirming soft-deletes and re-creates that run's rows.
+- `GET /v1/profiles/{profile_id}/findings?limit=&cursor=` - `{findings[], observations[], next_cursor}`; owner-only (404 otherwise, 401 unauthenticated). The cursor pages findings (newest first, max 100); observations are returned on the first page only.
+
+## Knowledge RAG (S10-T95)
+- `POST /v1/profiles/{profile_id}/knowledge/search` `{query, k<=10}` -> `{chunks[{content, article_id, language, title, citations[{title,url}], scope: article|profile, distance}]}`. Owner-only (404 otherwise, 401 unauthenticated). Returns public article chunks plus chunks of the caller's own profile; the `profile_id` filter is in the query AND in RLS on `clinical.knowledge_chunks` (migration 0007, needs the pgvector extension: dev/test use `pgvector/pgvector:pg16`). A cross-user query returns 0 profile chunks.
+- Ingest articles (as migrator/superuser; app_rw cannot write public rows): `DATABASE_URL=... python -m medilens.modules.knowledge.ingest content/articles`. Chunks <= 800 chars by language section/paragraph, with article id, language and source citations.
+- Only articles with a `cso_review_date` are retrievable unless `KNOWLEDGE_ALLOW_DRAFTS=true` (BR-024/BR-051; default false).
+- Embeddings sit behind the `Embedder` port; `HashingEmbedder` (256-d, lexical) is a dev stand-in to replace with Bedrock Titan/Cohere via ai-gateway. `KnowledgeService.index_profile_text(profile_id, text, source_ref)` indexes per-profile text (trusted internal callers; no ownership check).
+
+## Time-limited sharing (S11-T103, SEC-AR-07)
+- Owner: `POST /v1/profiles/{id}/shares` `{grantee_user_id, expires_in_hours 1..168}` (scope fixed to `findings:read`), `GET /v1/profiles/{id}/shares`, `DELETE /v1/shares/{id}` (revoke, idempotent). Non-owner: 404. Grantee: `GET /v1/shared/{share_id}/findings` (read-only; no document ids, observations or write verbs). Wrong grantee/unknown id: 404; expired, revoked or out-of-scope: 403; unauthenticated: 401.
+- Decision: `modules/sharing/policies/share.cedar` (default deny; permit read iff principal is the grantee, scope matches, not revoked, `now < expires_at`), evaluated by `cedarpy` (Apache-2.0, bindings to AWS `cedar-policy`, v4.12; wheels exist for py3.10). The clock is injected (`get_clock`). Policies live inside the module (one owner, ships with the wheel); no schema file yet (entity shapes are fixed in `infra/cedar.py`).
+- RLS: the grantee has no scope on the owner's profile, so the grant is read through `clinical.get_share_grant()` (migration 0008, ADR-0006 definer pattern, returns only the caller's own grants, expired/revoked included so Cedar decides). Only after a Cedar permit is that request's transaction scoped to the ONE granted profile. RLS is never widened globally.
+- Audit (`audit.audit_events`, ids only): `share.create`, `share.use`, `share.use_denied`, `share.revoke`.
+
+## Patient-reported findings (S11-T102, BR-040/041)
+- `POST /v1/profiles/{profile_id}/reported-findings` `{text (<=500, not blank), observed_at?}`, owner-only (401/404).
+- Emergency signs (copy of the ai-gateway keyword list, `domain/models.py`) -> `200 {emergency: true, message_key: "emergency_115"}` and **nothing is stored**; the web shows 115 before any other content.
+- Otherwise `201 {emergency: false, label_key: "you_described", condition_id, region_code?, laterality?}`. A dictionary NER (`infra/location_ner.py`, reads `data/terminology/location-synonyms.v1.yaml`, dir via `MEDILENS_TERMINOLOGY_DIR`) maps the text to a `region_code`; side words trai/phai/left/right; several regions, group nodes or an unknown side on a paired organ -> unmapped (condition kept, no body finding, never guessed).
+- Stored as `clinical.conditions.source = 'patient_reported'` (migration 0007), `icd10_code` and `severity` NULL. `GET .../findings` returns `source` (`record` | `patient_reported`) so the web labels "you described". Text is never logged.
+
+## Upload rate limit and SSE cap (S6-F7, SEC-AP-08)
+
+Per authenticated subject: `UPLOAD_REQUESTS_PER_MINUTE` (10) and `UPLOAD_DAILY_QUOTA` (50) on `POST .../uploads`; `SSE_MAX_STREAMS_PER_USER` (3) concurrent `GET /v1/documents/{id}/events`. Over a limit: `429` problem+json with `Retry-After`; the SSE slot is freed when the stream ends or the client disconnects. State is in-process (`document/application/rate_limit.py`); behind N tasks the effective limit is N x, so move to Redis INCR+EXPIRE when scaled out.
+
+## Data subject rights (S11-T106; Law 91/2025/QH15, Decree 356/2025)
+- `GET /v1/me/export`: JSON bundle (profiles incl. soft-deleted, document metadata, confirmed fields, conditions/findings/observations incl. patient-reported, shares, consents) plus 15-minute presigned URLs for original files.
+- `POST /v1/me/consents/{type}/withdraw`: sets `consents.withdrawn_at`. Processing stops because every consent check only counts rows with `withdrawn_at IS NULL`; already-stored data stays until `DELETE /v1/me`.
+- `DELETE /v1/me` `{"confirmation": "DELETE MY ACCOUNT"}`: hard-deletes clinical rows per profile, S3 objects (quarantine/raw/pre/ocr/extractions prefixes), knowledge chunks, shares and identity rows in ONE transaction; audit actor ids are pseudonymised (legal retention). `verify_erased` runs before commit; leftovers roll everything back. Idempotent: a repeat returns the original receipt id. Wrong phrase: 400.
+- Owner-only (caller's own account): 401 unauthenticated, 404 unknown account. Modules plug in through `ProfileStore` adapters wired in `main.py:dsr_stores`. Inventory: `docs/data/dsr-store-inventory.md`.

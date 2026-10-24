@@ -22,8 +22,27 @@ class ObjectStorage(Protocol):
     def delete(self, key: str) -> None: ...
 
 
+class PageImages(Protocol):
+    def presign_page(self, document_id: UUID, page_no: int, expires_in: int) -> str | None:
+        """Short-lived GET URL for a processed page image, or None when that page is absent."""
+
+
+class DsrStorage(Protocol):
+    """Every object of a document, in every bucket (quarantine and pages), for DSR (T106)."""
+
+    def presign_original(self, profile_id: UUID, document_id: UUID, expires_in: int) -> str | None:
+        """Short-lived GET URL for the original upload, or None when no object remains."""
+
+    def list_prefix(self, prefix: str) -> list[str]: ...
+
+    def delete_prefix(self, prefix: str) -> None: ...
+
+
 class ProfileOwnership(Protocol):
     def owned_profile_ids(self, subject: str) -> Sequence[UUID]: ...
+
+    def processing_allowed(self, subject: str) -> bool:
+        """False once the user withdrew the health-data processing consent (T106)."""
 
 
 class DocumentRepository(Protocol):

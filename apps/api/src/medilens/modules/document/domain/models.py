@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from uuid import UUID
 
-from medilens.core.errors import AppError, NotFound
+from medilens.core.errors import AppError, Forbidden, NotFound
 
 MAX_BYTES = 20 * 1024 * 1024  # BR-010
 PRESIGN_TTL_SECONDS = 300  # SEC-DP-05, U-04
@@ -60,6 +60,14 @@ class DocumentNotFound(NotFound):
 
     def __init__(self) -> None:
         super().__init__("Resource not found.")
+
+
+CONSENT_PROCESSING = "health_data_processing"  # withdrawing it stops new uploads (T106)
+
+
+class ConsentWithdrawn(Forbidden):
+    slug = "consent-withdrawn"
+    title = "Consent withdrawn"
 
 
 class FileTooLarge(AppError):

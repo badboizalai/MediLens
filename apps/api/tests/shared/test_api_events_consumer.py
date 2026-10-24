@@ -169,7 +169,7 @@ def test_function_changes_only_status(admin: Engine, engine: Engine) -> None:
     [
         ("not json", "bad_json"),
         ("[]", "bad_json"),
-        (json.dumps({"event": "extraction.completed"}), "unsupported_event"),
+        (json.dumps({"event": "other.thing"}), "unsupported_event"),
         (event(uuid4(), "rejected"), "schema_violation"),  # API-only status
         (event("not-a-uuid", "validated"), "schema_violation"),
         (event(uuid4(), "validated", reason="Blurry photo"), "schema_violation"),

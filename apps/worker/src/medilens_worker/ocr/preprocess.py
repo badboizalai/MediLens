@@ -18,6 +18,10 @@ QUAD_EPS = 0.02  # approxPolyDP epsilon as a share of the contour perimeter
 MIN_EDGE_STEP = 12  # min grey step across the border; less is an inner box, not a desk
 RING_PX = 12  # width of the strips compared on each side of the border
 GAP_PX = 8  # skipped next to the border so a drawn line does not count
+FLUSH_PX = 3  # a quad edge this close to the frame border lies on the border
+MAX_FLUSH_SIDES = (
+    2  # a page on a desk is flush with at most two sides; three is a slice of the frame
+)
 CANNY_LO, CANNY_HI = 30, 90  # edge thresholds for pages with little contrast to the desk
 
 
@@ -82,6 +86,12 @@ def _has_step(gray: np.ndarray, quad: np.ndarray) -> bool:
     return abs(float(np.median(gray[inner])) - float(np.median(gray[outer]))) >= MIN_EDGE_STEP
 
 
+def _flush_sides(quad: np.ndarray, h: int, w: int) -> int:
+    """Count frame sides (L, R, T, B) that the quad covers along both ends of an edge."""
+    x, y = quad[:, 0], quad[:, 1]
+    return sum(int((near < FLUSH_PX).sum() >= 2) for near in (x, w - 1 - x, y, h - 1 - y))
+
+
 def crop_document(img: np.ndarray) -> np.ndarray:
     """Warp the largest page-like quadrilateral to a rectangle; return img if none found."""
     h, w = img.shape[:2]
@@ -96,6 +106,8 @@ def crop_document(img: np.ndarray) -> np.ndarray:
             quad = cv2.approxPolyDP(c, QUAD_EPS * cv2.arcLength(c, True), True)
             if len(quad) != 4:
                 continue
+            if _flush_sides(quad.reshape(4, 2), h, w) > MAX_FLUSH_SIDES:
+                continue  # shadow or table half of the frame, not a page (BUG-13)
             if not _has_step(gray, quad.reshape(4, 2)):
                 continue
             src = _order(quad.reshape(4, 2).astype("float32"))

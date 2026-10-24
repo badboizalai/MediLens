@@ -69,7 +69,14 @@
     "blocked": "Các mục sau vẫn cần bạn kiểm tra:",
     "done": "Đã xác nhận.",
     "source": "Bản gốc",
-    "sourcePlaceholder": "Chưa xem được ảnh trang gốc. Các mục lấy từ những trang sau:"
+    "sourcePlaceholder": "Chưa xem được ảnh trang gốc. Các mục lấy từ những trang sau:",
+    "showOnPage": "Xem trên trang",
+    "sourceSelect": "Chọn “Xem trên trang” ở một mục để thấy nó nằm ở đâu.",
+    "sourceLoading": "Đang tải trang…",
+    "sourceAlt": "Trang {n} của hồ sơ gốc",
+    "boxNote": "Khung được tô sáng đánh dấu nơi giá trị này được đọc.",
+    "noBox": "Chúng tôi chưa đánh dấu được vị trí chính xác trên trang này.",
+    "imageMissing": "Hiện chưa xem được ảnh trang."
   },
   "viewer": {
     "front": "Mặt trước cơ thể",
@@ -128,6 +135,207 @@
       "spleen": "Lách",
       "stomach": "Dạ dày",
       "thyroid": "Tuyến giáp"
+    }
+  },
+  "progress": {
+    "title": "Đang đọc hồ sơ của bạn",
+    "loading": "Đang kiểm tra hồ sơ…",
+    "steps": "Các bước xử lý",
+    "stage": {
+      "queued": "Đang chờ bắt đầu",
+      "reading": "Đang đọc hồ sơ",
+      "extracting": "Đang tìm thông tin"
+    },
+    "leave": "Bạn có thể rời trang này; việc này mất khoảng 2 phút.",
+    "ready": {
+      "title": "Bản nháp của bạn đã sẵn sàng",
+      "body": "Hãy kiểm tra từng mục trước khi dựa vào nó.",
+      "action": "Kiểm tra hồ sơ"
+    },
+    "retake": {
+      "title": "Mình thử chụp lại nhé",
+      "note": "Điều này là bình thường, không phải lỗi của bạn.",
+      "action": "Chụp ảnh mới",
+      "guide": "Xem cách chụp ảnh rõ nét",
+      "reason": {
+        "blurry": "Ảnh hơi mờ. Hãy chụp lại nơi đủ sáng, giữ máy song song với tờ giấy.",
+        "too_dark": "Ảnh quá tối. Hãy chụp lại nơi sáng hơn, không dùng đèn flash trên giấy bóng.",
+        "not_a_document": "Chúng tôi chưa thấy trang giấy tờ. Hãy đặt cả trang vào khung hình rồi chụp lại.",
+        "generic": "Chúng tôi chưa đọc rõ ảnh này. Hãy chụp lại, đủ cả trang và đủ sáng."
+      }
+    },
+    "rejected": {
+      "title": "Chúng tôi chưa nhận được tệp này",
+      "why": "Tệp không đúng loại hỗ trợ (JPG, PNG, HEIC hoặc PDF), lớn hơn 20 MB, hoặc đã được tải lên trước đó.",
+      "action": "Tải lên lại"
+    },
+    "failed": {
+      "title": "Chúng tôi chưa đọc được hồ sơ này",
+      "body": "Đã có sự cố từ phía chúng tôi. Tệp của bạn vẫn an toàn; vui lòng thử lại.",
+      "action": "Tải lên lại"
+    }
+  },
+  "dental": {
+    "title": "Sơ đồ răng",
+    "chartLabel": "Sơ đồ răng vĩnh viễn, đánh số FDI, góc nhìn của nha sĩ",
+    "listTitle": "Các răng có ghi nhận trong hồ sơ của bạn",
+    "empty": "Không có răng nào được ghi nhận trong hồ sơ của bạn.",
+    "tooth": "Răng {fdi}",
+    "item": "Răng {fdi}: {state}",
+    "itemSurfaces": "Răng {fdi}: {state}, mặt {surfaces}",
+    "details": "Đang chọn: {text}",
+    "note": "Sơ đồ minh họa những gì được ghi trong hồ sơ của bạn để bạn dễ hiểu hơn, không phải lời khuyên y tế.",
+    "state": {
+      "caries": "Ghi nhận sâu răng",
+      "filled": "Đã trám",
+      "missing": "Mất răng",
+      "implant": "Cấy ghép implant"
+    },
+    "surface": {
+      "M": "gần",
+      "D": "xa",
+      "O": "nhai",
+      "B": "má",
+      "L": "lưỡi"
+    }
+  },
+  "viewer3d": {
+    "title": "Mô hình 3D cơ thể",
+    "canvas": {
+      "body": "Mô hình 3D của cơ thể. Dùng danh sách bên dưới để chọn vùng.",
+      "heart": "Mô hình 3D của tim. Dùng danh sách bên dưới để chọn vùng."
+    },
+    "hint": "Kéo để xoay, cuộn để phóng to, nhấp vào vùng có màu để chọn. Nhấn Escape để đặt lại.",
+    "detail": "Vùng đã chọn",
+    "none": "Chưa chọn vùng nào.",
+    "clear": "Bỏ chọn",
+    "listTitle": "Các vùng có ghi nhận",
+    "empty": "Không có vùng nào có ghi nhận.",
+    "loading": "Đang tải trình xem 3D...",
+    "note": "Màu sắc cho biết điều đã được ghi nhận trong hồ sơ của bạn. Đây chỉ là hình minh họa giúp bạn hiểu, không phải lời khuyên y tế.",
+    "reason": {
+      "noWebgl": "Đang hiển thị bản đồ 2D vì thiết bị này không hỗ trợ 3D.",
+      "saveData": "Đang hiển thị bản đồ 2D vì chế độ tiết kiệm dữ liệu đang bật.",
+      "lowCores": "Đang hiển thị bản đồ 2D vì thiết bị này có thể quá chậm cho 3D.",
+      "lowMemory": "Đang hiển thị bản đồ 2D vì thiết bị này có thể quá chậm cho 3D.",
+      "lowFps": "Đã chuyển sang bản đồ 2D vì chế độ xem 3D chạy chậm.",
+      "error": "Đã chuyển sang bản đồ 2D vì không tải được chế độ xem 3D.",
+      "manual2d": "Đang hiển thị bản đồ 2D.",
+      "manual3d": "Đang hiển thị chế độ xem 3D."
+    },
+    "switchTo2d": "Chuyển sang bản đồ 2D",
+    "switchTo3d": "Chuyển sang chế độ xem 3D"
+  },
+  "timeline": {
+    "title": "So sánh hai lần khám",
+    "bodyTitle": "Hình cơ thể",
+    "loading": "Đang tải hồ sơ của bạn...",
+    "loadError": "Không thể tải hồ sơ của bạn. Vui lòng thử lại.",
+    "empty": "Chưa có kết quả nào được xác nhận. Hãy tải lên và xác nhận một hồ sơ để xem tại đây.",
+    "oneVisit": "Chỉ có một lần khám nên chưa có gì để so sánh. Dưới đây là lần khám đó.",
+    "latestVisit": "Đang hiển thị lần khám ngày {date}.",
+    "undated": "Không ghi ngày",
+    "pickBefore": "Lần khám thứ nhất",
+    "pickAfter": "Lần khám thứ hai",
+    "before": "Lần khám thứ nhất",
+    "after": "Lần khám thứ hai",
+    "diffTitle": "Khác biệt giữa hai lần khám",
+    "diffNote": "Phần này chỉ liệt kê những gì mỗi hồ sơ có nhắc đến, không cho biết điều gì tốt hơn hay xấu hơn. Hãy hỏi bác sĩ về ý nghĩa của chúng.",
+    "diff": {
+      "added": "Chỉ có trong lần khám thứ hai",
+      "removed": "Chỉ có trong lần khám thứ nhất",
+      "both": "Có trong cả hai lần khám"
+    },
+    "none": "Không có",
+    "obsTitle": "Chỉ số",
+    "obsCaption": "Chỉ số của hai lần khám đặt cạnh nhau",
+    "obsName": "Tên",
+    "obsUnit": "Đơn vị",
+    "notListed": "Không ghi"
+  },
+  "viewerNotes": {
+    "patientReported": "bạn mô tả",
+    "unmapped": "Chưa đặt lên cơ thể",
+    "unmappedHint": "Những ghi chú này chưa khớp được với vị trí nào trên sơ đồ cơ thể.",
+    "statedInRecord": "được ghi trong hồ sơ của bạn"
+  },
+  "oncology": {
+    "title": "Tóm tắt ung bướu",
+    "summaryNote": "Chế độ tóm tắt: vị trí chính được ghi trong hồ sơ của bạn. Chi tiết được ẩn cho đến khi bạn chọn xem.",
+    "showDetails": "Xem chi tiết",
+    "hideDetails": "Ẩn chi tiết",
+    "detailsTitle": "Chi tiết được ghi trong hồ sơ của bạn",
+    "tnmTitle": "Phân giai đoạn như ghi trong hồ sơ của bạn",
+    "tnmLetters": "Nói chung: T mô tả mức độ khối u, N mô tả hạch bạch huyết, M mô tả sự lan xa.",
+    "tnmNote": "Các chữ cái này chỉ giải thích cách ghi, không cho biết giá trị có ý nghĩa gì với bạn.",
+    "askCareTeam": "Hãy hỏi đội ngũ chăm sóc của bạn những chi tiết này có ý nghĩa gì với bạn."
+  },
+  "sharing": {
+    "title": "Chia sẻ với bác sĩ",
+    "sharedTitle": "Hồ sơ được chia sẻ (chỉ xem)",
+    "newShare": "Chia sẻ mới",
+    "grantee": "Mã người nhận",
+    "granteeHelp": "Người nhận cần có tài khoản MediLens và đăng nhập để xem.",
+    "invalid": "Hãy nhập mã người dùng hợp lệ (UUID).",
+    "scope": "Nội dung chia sẻ",
+    "scopeValue": "Các mục đã xác nhận, chỉ xem",
+    "expiry": "Thời hạn",
+    "hours": "{n} giờ",
+    "days": "{n} ngày",
+    "autoEnd": "Quyền xem tự động hết khi hết thời hạn. Bạn cũng có thể thu hồi bất cứ lúc nào.",
+    "create": "Tạo chia sẻ",
+    "creating": "Đang tạo...",
+    "created": "Đã tạo chia sẻ.",
+    "needAccount": "Không tìm thấy người nhận. Họ cần có tài khoản MediLens.",
+    "error": "Chưa thực hiện được. Hãy thử lại.",
+    "listTitle": "Các chia sẻ của bạn",
+    "loading": "Đang tải...",
+    "empty": "Bạn chưa chia sẻ hồ sơ nào.",
+    "recipient": "Người nhận {id}",
+    "status": {
+      "active": "Đang hiệu lực",
+      "expired": "Đã hết hạn",
+      "revoked": "Đã thu hồi"
+    },
+    "hoursLeft": "Còn {n} giờ",
+    "daysLeft": "Còn {n} ngày",
+    "revoke": "Thu hồi",
+    "revokeConfirm": "Thu hồi quyền xem của {id} ngay bây giờ?",
+    "revokeYes": "Có, thu hồi",
+    "cancel": "Hủy",
+    "watermark": "Người xem {id} · chia sẻ {share} · đến {until}",
+    "untilUnknown": "không hiển thị hạn",
+    "banner": "Bạn đang xem hồ sơ được chia sẻ. Chỉ xem. {info}",
+    "findingsTitle": "Các mục trong hồ sơ",
+    "readOnlyNote": "Danh sách chỉ nêu những gì hồ sơ ghi. Không thể chỉnh sửa hoặc tải xuống tại đây.",
+    "noFindings": "Chưa có mục nào được chia sẻ.",
+    "endedTitle": "Quyền xem đã kết thúc",
+    "endedBody": "Chia sẻ này đã hết hạn hoặc bị thu hồi. Hãy hỏi chủ hồ sơ nếu cần chia sẻ mới."
+  },
+  "viewerUi": {
+    "legend": {
+      "title": "Bảng màu",
+      "hint": "Mỗi mức đều có ký hiệu và chữ đi kèm, nên màu không phải dấu hiệu duy nhất."
+    },
+    "side": {
+      "label": "Mặt cơ thể",
+      "front": "Mặt trước",
+      "back": "Mặt sau"
+    },
+    "controls": {
+      "label": "Điều khiển góc nhìn",
+      "rotateLeft": "Xoay trái",
+      "rotateRight": "Xoay phải",
+      "zoomIn": "Phóng to",
+      "zoomOut": "Thu nhỏ",
+      "reset": "Đặt lại góc nhìn",
+      "keys": "Bàn phím: mũi tên trái/phải để xoay, phím cộng/trừ để thu phóng, R để đặt lại."
+    },
+    "dental": {
+      "title": "Sơ đồ răng",
+      "loading": "Đang tải sơ đồ răng...",
+      "error": "Chưa tải được sơ đồ răng. Vui lòng thử lại sau.",
+      "empty": "Hồ sơ của bạn chưa có ghi chú về răng."
     }
   }
 }

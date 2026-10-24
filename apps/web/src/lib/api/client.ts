@@ -28,23 +28,6 @@ const documentOut = z.object({
 export type DocumentOut = z.infer<typeof documentOut>;
 export type UploadTarget = z.infer<typeof createResponse>;
 
-/** Coarse UI stage derived from the backend/worker document status. */
-export type Stage = 'queued' | 'reading' | 'extracting' | 'ready' | 'needs_retake' | 'failed';
-const STAGE: Record<string, Stage> = {
-  'uploaded-pending': 'queued',
-  uploaded: 'queued',
-  validated: 'reading',
-  preprocessed: 'reading',
-  classified: 'reading',
-  ocr_done: 'extracting',
-  extracted: 'extracting',
-  needs_review: 'ready',
-  confirmed: 'ready',
-  needs_retake: 'needs_retake',
-  failed: 'failed',
-};
-export const stageOf = (status: string): Stage => STAGE[status] ?? 'queued';
-
 export class ApiError extends Error {
   constructor(
     readonly status: number,

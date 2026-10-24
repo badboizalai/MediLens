@@ -5,18 +5,20 @@ import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { NextIntlClientProvider } from 'next-intl';
 import { axe } from 'vitest-axe';
-import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import en from '../../../messages/en.json';
-import vi from '../../../messages/vi.json';
+import vi_ from '../../../messages/vi.json';
 import { UploadScreen } from './UploadScreen';
+
+const push = vi.hoisted(() => vi.fn());
+vi.mock('next/navigation', () => ({ useRouter: () => ({ push }) }));
 
 const PUT_URL = 'https://uploads.test/';
 const PROFILE = '11111111-1111-4111-8111-111111111111';
 const calls: string[] = [];
-let statuses: Record<string, object[]> = {};
 let n = 0;
 const uuid = (i: number) => `00000000-0000-4000-8000-${String(i).padStart(12, '0')}`;
-const out = (id: string, status: string, extra = {}) => ({ id, profile_id: PROFILE, status, ...extra });
+const out = (id: string, status: string) => ({ id, profile_id: PROFILE, status });
 
 const server = setupServer(
   http.post('*/v1/profiles/:pid/documents', async ({ request, params }) => {
@@ -38,18 +40,12 @@ const server = setupServer(
     calls.push(`complete:${String(params.id).slice(-1)}`);
     return HttpResponse.json(out(String(params.id), 'uploaded'));
   }),
-  http.get('*/v1/documents/:id', ({ params }) => {
-    const id = String(params.id);
-    const queue = statuses[id] ?? [];
-    // the last scripted status sticks, like a settled document
-    return HttpResponse.json((queue.length > 1 ? queue.shift() : queue[0]) ?? out(id, 'uploaded'));
-  }),
 );
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => {
   server.resetHandlers();
   calls.length = 0;
-  statuses = {};
+  push.mockClear();
   n = 0;
 });
 afterAll(() => server.close());
@@ -60,7 +56,7 @@ function setup(messages = en) {
   const user = userEvent.setup({ applyAccept: false });
   const view = render(
     <NextIntlClientProvider locale="en" messages={messages}>
-      <UploadScreen profileId={PROFILE} pollMs={10} />
+      <UploadScreen profileId={PROFILE} />
     </NextIntlClientProvider>,
   );
   const input = view.container.querySelector<HTMLInputElement>('input[type=file]:not([capture])')!;
@@ -77,7 +73,7 @@ describe('UploadScreen', () => {
   });
 
   it('shows the capture tips and the Vietnamese copy', () => {
-    setup(vi as typeof en);
+    setup(vi_ as typeof en);
     expect(screen.getByText('Mẹo để ảnh rõ nét')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Chụp ảnh' })).toBeInTheDocument();
   });
@@ -101,24 +97,9 @@ describe('UploadScreen', () => {
     expect(items[1]).toContain('a.png');
 
     await user.click(screen.getByRole('button', { name: 'Upload' }));
-    await screen.findByText(/Reading your record/);
+    await waitFor(() => expect(push).toHaveBeenCalledTimes(1));
     expect(calls).toEqual(['create:1', 'put:1', 'complete:1', 'create:2', 'put:2', 'complete:2']);
-    expect(screen.getByText(/You can leave this page/)).toBeInTheDocument();
-  });
-
-  it.each([
-    ['blurry', /a bit blurry/],
-    ['too_dark', /too dark/],
-    ['not_a_document', /couldn't see a document page/],
-  ])('explains the retake reason %s and lets the user retake', async (reason, text) => {
-    statuses = { [uuid(1)]: [out(uuid(1), 'needs_retake', { retake_reason: reason })] };
-    const { user, input, view } = setup();
-    await user.upload(input, png('a.png'));
-    await user.click(await screen.findByRole('button', { name: 'Upload' }));
-    expect(await screen.findByText(text)).toBeInTheDocument();
-    expect(await axe(view.container)).toHaveNoViolations();
-    await user.click(screen.getByRole('button', { name: 'Retake' }));
-    expect(screen.getByRole('button', { name: 'Take photo' })).toBeInTheDocument();
+    expect(push).toHaveBeenCalledWith(`/en/documents/${uuid(1)}/progress`);
   });
 
   it('keeps the selection and continues after a network error', async () => {
@@ -138,13 +119,5 @@ describe('UploadScreen', () => {
     await user.click(screen.getByRole('button', { name: 'Retry' }));
     await waitFor(() => expect(calls).toContain('complete:1'));
     expect(calls.filter((c) => c.startsWith('create'))).toHaveLength(1);
-  });
-
-  it('shows ready only when every page has reached review', async () => {
-    statuses = { [uuid(1)]: [out(uuid(1), 'needs_review')], [uuid(2)]: [out(uuid(2), 'ocr_done'), out(uuid(2), 'needs_review')] };
-    const { user, input } = setup();
-    await user.upload(input, [png('a.png'), png('b.png')]);
-    await user.click(await screen.findByRole('button', { name: 'Upload' }));
-    expect(await screen.findByText(/draft is ready/)).toBeInTheDocument();
   });
 });

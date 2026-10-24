@@ -1,0 +1,11 @@
+<example_document>
+[[page 1]]
+[L1] Giai phau benh - mau mo Demo
+[L2] Benh nhan: Nguyen Van Test
+[L3] U vu trai, kich thuoc 22 mm
+[L4] Carcinoma tuyen xam nhap, do II
+[L5] Hach nach: khong thay di can
+</example_document>
+Expected reply:
+{"encounter": {}, "primary": {"site": {"value": "vu trai", "confidence": 0.9, "source": {"page": 1, "quote": "U vu trai, kich thuoc 22 mm", "lines": [3]}}, "laterality": "left", "histology": {"value": "Carcinoma tuyen xam nhap", "confidence": 0.9, "source": {"page": 1, "quote": "Carcinoma tuyen xam nhap, do II", "lines": [4]}}, "size_mm": {"value": 22, "confidence": 0.95, "source": {"page": 1, "quote": "kich thuoc 22 mm", "lines": [3]}}}, "metastases": [], "treatments": []}
+(No metastasis is listed because none is stated; "khong thay di can" is a negative finding, never a metastasis. No stage is computed.)

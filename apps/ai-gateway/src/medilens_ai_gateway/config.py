@@ -14,6 +14,9 @@ DEFAULT_PATH = Path(__file__).resolve().parents[2] / "config" / "gateway.toml"
 
 
 DEFAULT_ESCALATION_THRESHOLD = 0.7  # BR-012: fields below 0.7 need user confirmation
+DEFAULT_DAILY_TOKEN_QUOTA = (
+    50_000  # SEC-AI-07: input+output tokens per user per UTC day (assumption)
+)
 
 
 @dataclass(frozen=True)
@@ -34,6 +37,7 @@ class GatewayConfig:
     tier_s_model: str = ""
     tier_m_model: str = ""
     escalation_threshold: float = DEFAULT_ESCALATION_THRESHOLD
+    daily_token_quota: int = DEFAULT_DAILY_TOKEN_QUOTA
 
 
 def load_config(path: Path | str = DEFAULT_PATH) -> GatewayConfig:
@@ -53,6 +57,10 @@ def load_config(path: Path | str = DEFAULT_PATH) -> GatewayConfig:
         escalation_threshold=float(
             os.environ.get("AI_GATEWAY_ESCALATION_THRESHOLD")
             or raw.get("escalation_threshold", DEFAULT_ESCALATION_THRESHOLD)
+        ),
+        daily_token_quota=int(
+            os.environ.get("AI_GATEWAY_DAILY_TOKEN_QUOTA")
+            or raw.get("daily_token_quota", DEFAULT_DAILY_TOKEN_QUOTA)
         ),
     )
     if cfg.default_model not in cfg.allowlist:

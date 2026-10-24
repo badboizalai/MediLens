@@ -8,8 +8,8 @@
 - {terms: [răng hàm mặt, dental], code: sys_dental}
 - {terms: [hệ tuần hoàn, hệ tim mạch, circulatory, cardiovascular], code: sys_cardiovascular}
 - {terms: [tim, heart, cardiac], code: heart}
-- {terms: [tâm nhĩ, atrium, atrial], right: heart_ra, left: heart_la}
-- {terms: [tâm thất, ventricle, ventricular], right: heart_rv, left: heart_lv}
+- {terms: [tâm nhĩ, nhĩ trái, nhĩ phải, atrium, atrial], right: heart_ra, left: heart_la}
+- {terms: [tâm thất, thất trái, thất phải, ventricle, ventricular], right: heart_rv, left: heart_lv}
 - {terms: [vách liên nhĩ, interatrial septum], code: heart_septum_ias}
 - {terms: [vách liên thất, interventricular septum], code: heart_septum_ivs}
 - {terms: [van động mạch chủ, aortic valve], code: valve_aortic}
@@ -33,7 +33,7 @@
 - {terms: [thận, kidney, renal], right: kidney_r, left: kidney_l}
 - {terms: [vú, tuyến vú, breast], right: breast_r, left: breast_l}
 - {terms: [dạ dày, stomach, gastric], code: stomach}
-- {terms: [tuyến tụy, pancreas, pancreatic], code: pancreas}
+- {terms: [tuyến tụy, tụy, pancreas, pancreatic], code: pancreas}
 - {terms: [đại tràng, colon], code: colon}
 - {terms: [tuyến giáp, thyroid], code: thyroid}
 - {terms: [tuyến tiền liệt, tiền liệt tuyến, prostate], code: prostate}
@@ -41,17 +41,17 @@
 - {terms: [buồng trứng, ovary], right: ovary_r, left: ovary_l}
 - {terms: [lách, spleen], code: spleen}
 - {terms: [xương, bone], code: bone_sites}
-- {terms: [cột sống, spine], code: bone_spine}
-- {terms: [xương chậu, pelvis], code: bone_pelvis}
+- {terms: [cột sống, xương sống, spine bone, spine, spinal], code: bone_spine}
+- {terms: [xương chậu, pelvic bone, pelvis], code: bone_pelvis}
 - {terms: [xương sườn, rib, ribs], right: bone_ribs_r, left: bone_ribs_l}
 - {terms: [xương đùi, femur], right: bone_femur_r, left: bone_femur_l}
 - {terms: [xương sọ, skull], code: bone_skull}
 - {terms: [hạch bạch huyết, lymph node, lymph nodes], code: lymph_nodes}
-- {terms: [hạch cổ, cervical node, cervical nodes], right: ln_cervical_r, left: ln_cervical_l}
-- {terms: [hạch thượng đòn, supraclavicular node, supraclavicular nodes], right: ln_supraclavicular_r, left: ln_supraclavicular_l}
-- {terms: [hạch nách, axillary node, axillary nodes], right: ln_axillary_r, left: ln_axillary_l}
-- {terms: [hạch trung thất, mediastinal node, mediastinal nodes], code: ln_mediastinal}
-- {terms: [hạch rốn phổi, hilar node, hilar nodes], right: ln_hilar_r, left: ln_hilar_l}
-- {terms: [hạch cạnh động mạch chủ, para-aortic node, para-aortic nodes], code: ln_paraaortic}
-- {terms: [hạch chậu, iliac node, iliac nodes], right: ln_iliac_r, left: ln_iliac_l}
-- {terms: [hạch bẹn, inguinal node, inguinal nodes], right: ln_inguinal_r, left: ln_inguinal_l}
+- {terms: [hạch cổ, cervical node, cervical nodes, cervical right, cervical left], right: ln_cervical_r, left: ln_cervical_l}
+- {terms: [hạch thượng đòn, supraclavicular node, supraclavicular nodes, supraclavicular right, supraclavicular left], right: ln_supraclavicular_r, left: ln_supraclavicular_l}
+- {terms: [hạch nách, axillary node, axillary nodes, axillary right, axillary left], right: ln_axillary_r, left: ln_axillary_l}
+- {terms: [hạch trung thất, mediastinal node, mediastinal nodes, mediastinal], code: ln_mediastinal}
+- {terms: [hạch rốn phổi, hilar node, hilar nodes, hilar right, hilar left], right: ln_hilar_r, left: ln_hilar_l}
+- {terms: [hạch cạnh động mạch chủ, para-aortic node, para-aortic nodes, para-aortic, paraaortic], code: ln_paraaortic}
+- {terms: [hạch chậu, iliac node, iliac nodes, iliac right, iliac left], right: ln_iliac_r, left: ln_iliac_l}
+- {terms: [hạch bẹn, inguinal node, inguinal nodes, inguinal right, inguinal left], right: ln_inguinal_r, left: ln_inguinal_l}

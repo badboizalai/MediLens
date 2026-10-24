@@ -23,3 +23,6 @@ Images are rejected before any decode when the header declares more than `MAX_IM
 
 ## Chaining and status events (S6-T53b, ADR-0005)
 After a step succeeds the runner sends `{"type": <next job>, "documentId", "attempt": 1}` to the jobs queue, where next is the registry job whose `src` equals this step's `dst` (ids only; `storageKey`/`mime` are never copied). A duplicate delivery whose document is already at `dst` re-sends the next step and the event (the next step's dedup key makes that safe). After every status write (including `needs_retake`/`failed` with reason codes) the runner sends `document.status_changed` to an `EventSink`: `SqsEventSink` when `API_EVENTS_QUEUE_URL` is set, otherwise an in-memory sink. Both message shapes are tested against `docs/architecture/contracts`. A `RetryLater` exception (e.g. `ScanPending`) carries its own budget (30 s x 20 attempts) instead of the normal 3 attempts.
+
+## Region mapping (S7-T66b)
+Extraction adds `region: {region_code, confidence}` to each located item (dental `teeth[]`, cardiology `diagnoses[]`, oncology `primary`/`metastases[]`) via `anatomy.map_region`. Unmapped items keep `region_code: null` and get a `region_unmapped` flag; none are dropped. Illustration only (BR-042). `runId` is uuid7; `latest()` picks the greatest runId.

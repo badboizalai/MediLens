@@ -20,6 +20,8 @@ def load(path):
 
 def to_markdown(report, fails, thresholds, banner):
     o, ra, cv = report["overall"], report["region_accuracy"], report["citation_validity"]
+    cal = report["calibration"]["ALL"]
+    ece = "n/a (no confidences)" if cal["ece"] is None else f"{cal['ece']:.3f} (n={cal['n']})"
     lines = ["# Extraction evaluation", ""]
     if banner:
         lines += [f"> **{banner}**", ""]
@@ -32,6 +34,7 @@ def to_markdown(report, fails, thresholds, banner):
         f"| Field F1 (overall) | {o['f1']:.3f} | >= {thresholds['field_f1_overall']} |",
         f"| Region accuracy | {ra['value']:.3f} ({ra['correct']}/{ra['total']}) | "
         f">= {thresholds['region_accuracy']} |",
+        f"| ECE (10 bins) | {ece} | <= {thresholds.get('ece_max', 'n/a')} |",
         f"| Citation validity | {cv['value']:.3f} ({cv['valid']}/{cv['total']}) | "
         f">= {thresholds['citation_validity']} |",
         "",
@@ -44,6 +47,9 @@ def to_markdown(report, fails, thresholds, banner):
             f"| {grp} | {s['precision']:.3f} | {s['recall']:.3f} | {s['f1']:.3f} | "
             f"{s['f1_fuzzy']:.3f} |"
         )
+    lines += ["", "| Region accuracy by unit | Value | n |", "| --- | --- | --- |"]
+    for u, r in report["region_accuracy_by_unit"].items():
+        lines.append(f"| {u} | {r['value']:.3f} | {r['total']} |")
     lines += ["", "## Weakest field paths (F1, by unit)", "", "| unit | path | F1 | tp | fp | fn |"]
     lines.append("| --- | --- | --- | --- | --- | --- |")
     rows = [(u, p, s) for u, ps in report["per_field_path"].items() for p, s in ps.items()]
@@ -58,6 +64,8 @@ def cmd_run(a):
     gold = {r["doc_id"]: r for r in load(a.gold)}
     preds = load(a.pred)
     pred = {r["doc_id"]: r for r in preds}
+    if not gold.keys() & pred.keys():
+        return no_predictions(a, len(gold))
     thresholds = json.loads(Path(a.thresholds).read_text(encoding="utf-8"))
     report = metrics.score(gold, pred, fuzzy=a.fuzzy)
     fails = metrics.check_gate(report, thresholds)
@@ -73,6 +81,21 @@ def cmd_run(a):
         )
         (out / "report.md").write_text(md, encoding="utf-8")
     return 1 if fails else 0
+
+
+def no_predictions(a, n_gold):
+    """Nothing to score for this gold set: say so, never invent an F1."""
+    msg = (
+        f"no predictions for {n_gold} gold docs in {a.gold}: F1 not computed (no model results yet)"
+    )
+    print(msg)
+    if a.out_dir:
+        out = Path(a.out_dir)
+        out.mkdir(parents=True, exist_ok=True)
+        report = {"status": "no_predictions", "gold_docs": n_gold}
+        (out / "report.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+        (out / "report.md").write_text(f"# Extraction evaluation\n\n{msg}\n", encoding="utf-8")
+    return 0
 
 
 def cmd_gen_baseline(a):

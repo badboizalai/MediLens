@@ -1,0 +1,44 @@
+# General clinical abbreviations VI/EN -> full terms (S7-T62). Own-authored; no licensed text. Owner: clinical-informaticist.
+# Expansion explains vocabulary only; it does not label a condition for the reader (BR-042).
+# More than one `expansions` entry = ambiguous abbreviation: the normaliser returns all candidates, never picks one.
+# Dental shorthand lives in dental-terms.v1.yaml (`abbrev`) and is merged at load time.
+- {abbr: HA, expansions: [{vi: huyết áp, en: blood pressure}]}
+- {abbr: BP, expansions: [{vi: huyết áp, en: blood pressure}]}
+- {abbr: THA, expansions: [{vi: tăng huyết áp, en: hypertension}, {vi: thay khớp háng toàn phần, en: total hip arthroplasty}]}
+- {abbr: HTN, expansions: [{vi: tăng huyết áp, en: hypertension}]}
+- {abbr: ĐTĐ, expansions: [{vi: đái tháo đường, en: diabetes mellitus}]}
+- {abbr: DM, expansions: [{vi: đái tháo đường, en: diabetes mellitus}]}
+- {abbr: NMCT, expansions: [{vi: nhồi máu cơ tim, en: myocardial infarction}]}
+- {abbr: MI, expansions: [{vi: nhồi máu cơ tim, en: myocardial infarction}, {vi: hở van hai lá, en: mitral insufficiency}]}
+- {abbr: CHF, expansions: [{vi: suy tim sung huyết, en: congestive heart failure}]}
+- {abbr: AF, expansions: [{vi: rung nhĩ, en: atrial fibrillation}]}
+- {abbr: CAD, expansions: [{vi: bệnh động mạch vành, en: coronary artery disease}]}
+- {abbr: CKD, expansions: [{vi: bệnh thận mạn, en: chronic kidney disease}]}
+- {abbr: COPD, expansions: [{vi: bệnh phổi tắc nghẽn mạn tính, en: chronic obstructive pulmonary disease}]}
+- {abbr: HR, expansions: [{vi: nhịp tim, en: heart rate}, {vi: tỷ số nguy cơ, en: hazard ratio}]}
+- {abbr: RA, expansions: [{vi: viêm khớp dạng thấp, en: rheumatoid arthritis}, {vi: nhĩ phải, en: right atrium}, {vi: khí trời, en: room air}]}
+- {abbr: CA, expansions: [{vi: ung thư, en: cancer}, {vi: canxi, en: calcium}]}
+- {abbr: SA, expansions: [{vi: siêu âm, en: ultrasound}, {vi: nút xoang nhĩ, en: sinoatrial node}]}
+- {abbr: EF, expansions: [{vi: phân suất tống máu, en: ejection fraction}]}
+- {abbr: LVEF, expansions: [{vi: phân suất tống máu thất trái, en: left ventricular ejection fraction}]}
+- {abbr: ECG, expansions: [{vi: điện tâm đồ, en: electrocardiogram}]}
+- {abbr: EKG, expansions: [{vi: điện tâm đồ, en: electrocardiogram}]}
+- {abbr: CT, expansions: [{vi: chụp cắt lớp vi tính, en: computed tomography}]}
+- {abbr: MRI, expansions: [{vi: chụp cộng hưởng từ, en: magnetic resonance imaging}]}
+- {abbr: XQ, expansions: [{vi: X-quang, en: X-ray}]}
+- {abbr: BN, expansions: [{vi: bệnh nhân, en: patient}]}
+- {abbr: BV, expansions: [{vi: bệnh viện, en: hospital}]}
+- {abbr: TD, expansions: [{vi: theo dõi, en: follow-up monitoring}]}
+- {abbr: HbA1c, expansions: [{vi: huyết sắc tố glycat hóa, en: glycated hemoglobin}]}
+- {abbr: Hb, expansions: [{vi: huyết sắc tố, en: hemoglobin}]}
+- {abbr: WBC, expansions: [{vi: bạch cầu, en: white blood cells}]}
+- {abbr: PLT, expansions: [{vi: tiểu cầu, en: platelets}]}
+- {abbr: ALT, expansions: [{vi: men gan ALT (alanine aminotransferase), en: alanine aminotransferase}]}
+- {abbr: AST, expansions: [{vi: men gan AST (aspartate aminotransferase), en: aspartate aminotransferase}]}
+- {abbr: LDL, expansions: [{vi: cholesterol LDL, en: low-density lipoprotein cholesterol}]}
+- {abbr: HDL, expansions: [{vi: cholesterol HDL, en: high-density lipoprotein cholesterol}]}
+- {abbr: TG, expansions: [{vi: triglyceride, en: triglycerides}]}
+- {abbr: BNP, expansions: [{vi: peptide lợi niệu típ B, en: B-type natriuretic peptide}]}
+- {abbr: SpO2, expansions: [{vi: độ bão hòa oxy máu, en: peripheral oxygen saturation}]}
+- {abbr: Cr, expansions: [{vi: creatinin, en: creatinine}]}
+- {abbr: TB, expansions: [{vi: lao, en: tuberculosis}, {vi: trung bình, en: average}]}

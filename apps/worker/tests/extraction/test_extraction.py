@@ -39,7 +39,7 @@ class StubGateway:
 def test_happy_path_record():
     gw = StubGateway(good())
     run = run_extraction("d1", PAGES, gw, unit="dental")
-    assert (run.model, run.prompt_version, run.cost_usd) == ("stub-model", "extract-v1", 0.01)
+    assert (run.model, run.prompt_version, run.cost_usd) == ("stub-model", "extract-v2", 0.01)
     assert run.confidence == 0.95 and run.flags == [] and not run.repaired
     assert len(gw.prompts) == 1
 
@@ -227,3 +227,26 @@ def test_out_of_range_confidence_rejected():
     with pytest.raises(ExtractionError, match="1.7"):
         run_extraction("d1", PAGES, gw, unit="dental")
     assert "maximum" in gw.prompts[1] or "1.7" in gw.prompts[1]
+
+
+def test_uuid7_is_time_ordered():
+    import time
+    import uuid
+
+    from medilens_worker.extraction.service import uuid7
+
+    a = uuid7()
+    time.sleep(0.003)
+    assert uuid.UUID(a).version == 7 and a < uuid7()
+
+
+def test_regions_mapped_and_unmapped_flagged():
+    from medilens_worker.extraction.service import map_regions
+
+    r = {"primary": {"site": {"value": "phổi phải"}}, "metastases": [{"site": {"value": "???"}}]}
+    flags = map_regions(r, "oncology")
+    assert r["primary"]["region"]["region_code"] and r["primary"]["region"]["confidence"] > 0
+    assert r["metastases"][0]["region"] == {"region_code": None, "confidence": 0.0}
+    assert flags == [{"path": "$.metastases[0].region", "reason": "region_unmapped"}]
+    t = {"teeth": [{"fdi": {"value": "36"}, "condition": "caries"}]}
+    assert map_regions(t, "dental") == [] and t["teeth"][0]["region"]["region_code"] == "tooth_36"

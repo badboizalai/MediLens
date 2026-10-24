@@ -1,0 +1,37 @@
+loinc_num,long_common_name,ucum_unit,aliases
+2345-7,Glucose in serum or plasma (mass/volume),mg/dL,glucose|glucose mau|blood glucose|glu|fbg|fasting glucose|duong huyet|duong mau|duong huyet luc doi
+15074-8,Glucose in blood (moles/volume),mmol/L,glucose|glucose mau|blood glucose|glu|fbg|fasting glucose|duong huyet|duong mau|duong huyet luc doi
+4548-4,Hemoglobin A1c in blood (percent of total),%,hba1c|a1c|hb a1c|glycated hemoglobin|glycohemoglobin|hemoglobin a1c
+2160-0,Creatinine in serum or plasma (mass/volume),mg/dL,creatinine|creatinin|creat|cr|scr|serum creatinine|creatinin mau
+14682-9,Creatinine in serum or plasma (moles/volume),umol/L,creatinine|creatinin|creat|cr|scr|serum creatinine|creatinin mau
+1742-6,Alanine aminotransferase (ALT) in serum or plasma,U/L,alt|sgpt|gpt|alanine aminotransferase|alanine transaminase
+1920-8,Aspartate aminotransferase (AST) in serum or plasma,U/L,ast|sgot|got|aspartate aminotransferase|aspartate transaminase
+718-7,Hemoglobin in blood (mass/volume),g/dL,hemoglobin|haemoglobin|hb|hgb|huyet sac to|hemoglobin mau
+6690-2,Leukocytes (white blood cells) count in blood,10*3/uL,wbc|white blood cell|white blood cell count|leukocytes|bach cau|so luong bach cau
+777-3,Platelets count in blood,10*3/uL,platelets|platelet count|plt|tieu cau|so luong tieu cau
+2093-3,Cholesterol total in serum or plasma (mass/volume),mg/dL,cholesterol|total cholesterol|cholesterol toan phan|cholesterol tp|chol|tc
+14647-2,Cholesterol total in serum or plasma (moles/volume),mmol/L,cholesterol|total cholesterol|cholesterol toan phan|cholesterol tp|chol|tc
+2085-9,HDL cholesterol in serum or plasma (mass/volume),mg/dL,hdl|hdl c|hdl cholesterol|cholesterol hdl
+14646-4,HDL cholesterol in serum or plasma (moles/volume),mmol/L,hdl|hdl c|hdl cholesterol|cholesterol hdl
+13457-7,LDL cholesterol calculated in serum or plasma (mass/volume),mg/dL,ldl|ldl c|ldl cholesterol|cholesterol ldl
+22748-8,LDL cholesterol in serum or plasma (moles/volume),mmol/L,ldl|ldl c|ldl cholesterol|cholesterol ldl
+2571-8,Triglyceride in serum or plasma (mass/volume),mg/dL,triglycerides|triglyceride|tg|trig
+14927-8,Triglyceride in serum or plasma (moles/volume),mmol/L,triglycerides|triglyceride|tg|trig
+10839-9,Troponin I cardiac in serum or plasma,ng/mL,troponin i|ctni|cardiac troponin i|troponin i tim
+89579-7,Troponin I cardiac high sensitivity,ng/L,hs troponin i|hs tni|troponin i hs|hs ctni
+67151-1,Troponin T cardiac high sensitivity,ng/L,troponin t|hs troponin t|hs tnt|troponin t hs
+30934-4,Natriuretic peptide B (BNP) in serum or plasma,pg/mL,bnp|b type natriuretic peptide|brain natriuretic peptide
+33762-6,NT-proBNP in serum or plasma,pg/mL,nt probnp|ntprobnp|nt pro bnp|n terminal pro bnp
+10230-1,Left ventricular ejection fraction,%,lvef|ef|ejection fraction|phan suat tong mau|phan suat tong mau that trai
+8480-6,Systolic blood pressure,mm[Hg],systolic blood pressure|systolic bp|sbp|bp systolic|huyet ap tam thu|ha tam thu
+8462-4,Diastolic blood pressure,mm[Hg],diastolic blood pressure|diastolic bp|dbp|bp diastolic|huyet ap tam truong|ha tam truong
+8867-4,Heart rate,/min,heart rate|hr|pulse|mach|nhip tim|nhip mach|tan so tim
+59408-5,Oxygen saturation by pulse oximetry,%,spo2|oxygen saturation|pulse oximetry|o2 sat|bao hoa oxy|do bao hoa oxy
+9279-1,Respiratory rate,/min,respiratory rate|rr|nhip tho|tan so tho
+8310-5,Body temperature,Cel,body temperature|temperature|temp|nhiet do|than nhiet
+29463-7,Body weight,kg,body weight|weight|wt|can nang
+8302-2,Body height,cm,body height|height|chieu cao
+3094-0,Urea nitrogen (BUN) in serum or plasma,mg/dL,bun|blood urea nitrogen|urea nitrogen
+2823-3,Potassium in serum or plasma,mmol/L,potassium|k|kali
+2951-2,Sodium in serum or plasma,mmol/L,sodium|na|natri
+62238-1,Glomerular filtration rate estimated,mL/min/{1.73_m2},egfr|gfr|estimated gfr|do loc cau than uoc tinh

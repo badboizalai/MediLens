@@ -1,4 +1,4 @@
-# MediLens Business Rules Catalog (BR-001 … BR-045)
+# MediLens Business Rules Catalog (BR-001 … BR-051)
 
 Source of truth: `docs/plan/project-plan.en.md` (§4.1–4.4 for BR-001…035, §26.5 for BR-040…045). Rule text is condensed from the plan; wording changes go through a change request. Owner = role accountable for enforcing the rule. Test idea = one line, to be expanded into TC-xxx by QA. Synthetic data only.
 
@@ -55,6 +55,25 @@ Release column: **MVP** = v1.0 (Dental, Cardiology, Oncology), **v2** = text/dig
 | BR-043 | DICOM de-identified before any processing step; only the user can re-download the original. | Medical Imaging Engineer | §26.5 | Synthetic DICOM with PHI tags → none remain downstream; other user cannot fetch original. | v2 |
 | BR-044 | Conflicting sources: `record` > `image_derived` > `patient_reported`, with a mismatch warning. | Clinical Informaticist | §26.5 | Record says right kidney, patient text says left → record wins, mismatch warning shown. | v2 |
 | BR-045 | Text-layer digital records extracted directly without OCR; valid FHIR mapped without the LLM. | AI/ML Engineer | §26.5 | Text-layer PDF → no OCR job; valid FHIR Bundle → zero LLM calls. | v2 |
+
+## 4xx Oncology content (draft — pending CSO (D99), task S10-T91)
+Drafts proposed by the BA for Clinical Safety Officer agreement. **Not approved**; do not implement as final until the CSO signs off (D99). Extends BR-020, BR-021, BR-023, BR-024, BR-041, BR-042. Source column "R16" = plan risk R16; "§FE" = plan frontend/sensitive-content notes (FE-VW-05, calm summary + "Show details").
+
+| ID | Rule | Owner role | Source | Test idea | Release |
+| --- | --- | --- | --- | --- | --- |
+| BR-046 | Oncology records open in summary mode by default (calm summary, no metastasis layer, no per-region detail). Detail, including the metastasis layer, appears only after an explicit tap on "Show details"; the choice is not remembered silently across records. | UX/UI Designer | R16, §FE | Open synthetic oncology record → summary only, no `is_metastasis` marker rendered; tap "Show details" → detail panel. | MVP |
+| BR-047 | MediLens never shows or generates survival, prognosis or stage-to-outcome statements (no percentages, years, "good/poor outlook"). A question asking for them gets a refusal that points to the care team. Extends BR-023, BR-042. | Clinical Safety Officer | R16, BR-023, BR-042 | Red-team prompts ("5-year survival of stage III?") refused in VI and EN; golden-set output scan finds no outcome figures. | MVP |
+| BR-048 | TNM (and stage/grade) is shown verbatim as written in the record. Next to it, a plain-language note explains what each letter means in general (T = tumour extent, N = lymph nodes, M = distant spread) — never what the value means for this patient. | Clinical Informaticist | R16, BR-021 | Record "T2N0M0" → shown as "T2N0M0" with letter explanations; no sentence interpreting the value for the user. | MVP |
+| BR-049 | Metastasis lines and markers use a neutral style: no alarm colour, flashing or animation; always paired with a text label naming the site and "stated in your record". They follow BR-021 (only when the record states it) and BR-020 (never colour alone). | UX/UI Designer | R16, BR-020, BR-021, FE-VW-05 | Render M1 synthetic record → marker has a text label and no animation; record without M → no marker. | MVP |
+| BR-050 | Oncology wording is calm and non-alarmist, offers "ask your care team" prompts with each detail section, and shows support/mental-health links. Emergency signs described in text or questions show 115 first (BR-023, BR-041). | Clinical Safety Officer | R16, BR-023, BR-041 | Oncology detail panel contains a care-team prompt and support link; text "ho ra máu nhiều" → 115 banner before other content. | MVP |
+| BR-051 | Every oncology KnowledgeArticle needs a CSO review date in addition to BR-024 (sources, reviewer, 12-month re-review); an article without a CSO review date is not retrievable by RAG. | Clinical Safety Officer | BR-024, R16 | Ingest oncology article without CSO review date → rejected; with date → retrievable; date older than 12 months → flagged. | MVP |
+
+### Open questions for CSO (not guessed)
+1. Exact wording of the VI/EN reassurance and refusal copy (examples in `docs/requirements/stories/oncology.feature.md` are illustrative).
+2. Is general stage definition text ("stage III") allowed, or only TNM letters? Draft allows only letters.
+3. Should "Show details" be re-confirmed per session or per record? Draft: per record.
+4. Which support/mental-health links are approved for Vietnam?
+5. Does CSO review of oncology KnowledgeArticles use the same 12-month cycle as BR-024?
 
 ## Gaps (TBD ids)
 The plan defines no rule for these ids. They are listed so numbering gaps are explicit; do not implement until a change request adds them.

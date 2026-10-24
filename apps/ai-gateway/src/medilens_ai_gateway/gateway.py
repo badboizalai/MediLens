@@ -8,17 +8,21 @@ from concurrent.futures import ThreadPoolExecutor
 from concurrent.futures import TimeoutError as FutureTimeout
 from dataclasses import dataclass, field, replace
 
+from .cache import SemanticCache
 from .config import GatewayConfig
+from .guardrails import check_input, check_output
 from .providers import Provider, ProviderResult
+from .quota import QuotaExceeded, TokenQuota
 from .redaction import redact as default_redact
 
 log = logging.getLogger("medilens.ai_gateway")
 
 
 class GatewayError(Exception):
-    def __init__(self, code: str, message: str = "") -> None:
+    def __init__(self, code: str, message: str = "", retry_after_s: int | None = None) -> None:
         super().__init__(message or code)
         self.code = code
+        self.retry_after_s = retry_after_s
 
 
 @dataclass(frozen=True)
@@ -30,6 +34,8 @@ class CompletionRequest:
     max_output_tokens: int = 400
     tier: str | None = None  # None = single call (v0); "auto" = cascade S -> M
     document_id: str | None = None  # opaque id, metering only
+    traffic: str | None = None  # "qa" = explanation/Q&A: safety guardrails apply (BR-023/041/042)
+    locale: str = "vi"  # language of guardrail copy
 
 
 @dataclass(frozen=True)
@@ -44,6 +50,7 @@ class CompletionResponse:
     tier: str | None = None
     escalated: bool = False
     needs_review: bool = False
+    guardrail: dict[str, str] | None = None  # {category, action} when a guardrail fired
 
 
 @dataclass
@@ -61,12 +68,17 @@ class Gateway:
         provider: Provider,
         redactor: Callable[[str], str] = default_redact,
         clock: Callable[[], float] = time.monotonic,
+        wall_clock: Callable[[], float] = time.time,
     ) -> None:
         self.config = config
         self.provider = provider
         self.redactor = redactor
         self.clock = clock
         self._cache: dict[str, tuple[float, CompletionResponse]] = {}
+        self.qa_cache: SemanticCache[CompletionResponse] = SemanticCache(
+            clock, ttl_s=config.cache_ttl_s
+        )
+        self.quota = TokenQuota(config.daily_token_quota, wall_clock)
         self.total_cost_usd = 0.0
         self.total_tokens = 0
         self._docs: dict[str, DocumentUsage] = {}
@@ -74,7 +86,14 @@ class Gateway:
 
     def cache_key(self, req: CompletionRequest, model: str, redacted: str) -> str:
         """Scoped by tenant + profile + prompt version + model (O-02, A-09); only a hash is kept."""
-        parts = [req.tenant_id, req.profile_id, self.config.prompt_version, model, redacted]
+        parts = [
+            req.tenant_id,
+            req.profile_id,
+            req.locale,
+            self.config.prompt_version,
+            model,
+            redacted,
+        ]
         return hashlib.sha256("\x1f".join(parts).encode()).hexdigest()
 
     def _redact(self, text: str, what: str) -> str:
@@ -90,9 +109,44 @@ class Gateway:
     def document_usage(self, document_id: str) -> DocumentUsage | None:
         return self._docs.get(document_id)
 
+    def _guarded(self, category: str, action: str, text: str) -> CompletionResponse:
+        log.info("guardrail category=%s action=%s", category, action)  # never the prompt
+        return CompletionResponse(
+            text, "guardrail", 0, 0, 0.0, cached=False,
+            guardrail={"category": category, "action": action},
+        )  # fmt: skip
+
     def complete(self, req: CompletionRequest) -> CompletionResponse:
         if not req.tenant_id or not req.profile_id:
             raise GatewayError("scope_required", "tenant_id and profile_id are required")
+        qa = req.traffic == "qa"
+        if qa and (hit := check_input(req.prompt, req.locale)):  # no redaction/provider call
+            return self._guarded(hit.category, hit.action, hit.text)
+        scope = (req.tenant_id, req.profile_id, req.locale, self.config.prompt_version)
+        question = ""
+        if qa:  # key on the REDACTED question; a hit consumes no quota
+            question = self._redact(req.prompt, "request")
+            if (cached := self.qa_cache.get(scope, question)) is not None:
+                return replace(cached, cached=True, cost_usd=0.0)
+        user = (req.tenant_id, req.profile_id)
+        if qa:  # quota guards user-initiated Q&A only; extraction is never blocked or charged
+            try:
+                self.quota.check(user)
+            except QuotaExceeded as e:
+                raise GatewayError("quota_exceeded", str(e), e.retry_after_s) from e
+        resp = self._route(req)
+        if qa and not resp.cached:  # exact-cache hits are free too
+            self.quota.charge(user, resp.input_tokens + resp.output_tokens)
+        if not qa:
+            return resp
+        if hit := check_output(resp.text, req.locale):  # refusals are never cached
+            return replace(self._guarded(hit.category, hit.action, hit.text), model=resp.model,
+                           input_tokens=resp.input_tokens, output_tokens=resp.output_tokens,
+                           cost_usd=resp.cost_usd, tier=resp.tier)  # fmt: skip
+        self.qa_cache.put(scope, question, resp)
+        return resp
+
+    def _route(self, req: CompletionRequest) -> CompletionResponse:
         if req.tier is None:
             model = req.model or self.config.default_model
             self._check_allowed(model)

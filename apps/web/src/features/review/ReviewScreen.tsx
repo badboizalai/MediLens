@@ -1,11 +1,12 @@
 'use client';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { useForm, type Resolver } from 'react-hook-form';
 import { z } from 'zod';
 import { Alert, Button, Card } from '@/components/ui';
-import { confirmDocument, editField, listFields, UnconfirmedError, type Field } from './api';
+import { confirmDocument, editField, listFields, pageImageUrl, parseBox, UnconfirmedError, type Field } from './api';
 import { canConfirm, pending, shown } from './logic';
 
 const MAX_LEN = 2000; // matches the API's EditRequest
@@ -25,6 +26,7 @@ export function ReviewScreen({ documentId }: { documentId: string }) {
   const key = ['review-fields', documentId];
   const fields = useQuery({ queryKey: key, queryFn: () => listFields(documentId) });
   const confirm = useMutation({ mutationFn: () => confirmDocument(documentId) });
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const left = fields.data ? pending(fields.data) : [];
 
   if (fields.isPending) return <p role="status">{t('loading')}</p>;
@@ -34,7 +36,7 @@ export function ReviewScreen({ documentId }: { documentId: string }) {
 
   return (
     <div className="grid gap-6 md:grid-cols-2">
-      <SourcePanel pages={[...new Set(data.map((f) => f.source_page).filter((p) => p != null))]} />
+      <SourcePanel documentId={documentId} field={data.find((f) => f.id === selectedId) ?? null} />
       <section aria-labelledby="review-fields" className="grid content-start gap-4">
         <h2 id="review-fields" className="text-lg font-semibold">
           {t('fields')}
@@ -47,6 +49,8 @@ export function ReviewScreen({ documentId }: { documentId: string }) {
               key={f.id}
               field={f}
               documentId={documentId}
+              selected={f.id === selectedId}
+              onSelect={() => setSelectedId(f.id)}
               onSaved={(saved) =>
                 qc.setQueryData<Field[]>(key, (old) => old?.map((x) => (x.id === saved.id ? saved : x)))
               }
@@ -79,7 +83,19 @@ export function ReviewScreen({ documentId }: { documentId: string }) {
   );
 }
 
-function FieldRow({ field, documentId, onSaved }: { field: Field; documentId: string; onSaved: (f: Field) => void }) {
+function FieldRow({
+  field,
+  documentId,
+  selected,
+  onSelect,
+  onSaved,
+}: {
+  field: Field;
+  documentId: string;
+  selected: boolean;
+  onSelect: () => void;
+  onSaved: (f: Field) => void;
+}) {
   const t = useTranslations('review');
   const form = useForm<Form>({ resolver, defaultValues: { value: shown(field) } });
   const save = useMutation({
@@ -122,7 +138,12 @@ function FieldRow({ field, documentId, onSaved }: { field: Field; documentId: st
             </p>
           )}
           {save.isError && <p role="alert">{t('saveError')}</p>}
-          <div>
+          <div className="flex flex-wrap gap-2">
+            {field.source_page != null && (
+              <Button type="button" variant="secondary" aria-pressed={selected} onClick={onSelect}>
+                {t('showOnPage')}
+              </Button>
+            )}
             <Button type="submit" variant={low ? 'primary' : 'secondary'} disabled={save.isPending}>
               {low ? t('confirmField') : t('save')}
             </Button>
@@ -133,17 +154,51 @@ function FieldRow({ field, documentId, onSaved }: { field: Field; documentId: st
   );
 }
 
-/** shortcut: no page-image endpoint yet, so only the source pages are listed; image + bbox is S7-T64b. */
-function SourcePanel({ pages }: { pages: (number | null)[] }) {
+function SourcePanel({ documentId, field }: { documentId: string; field: Field | null }) {
   const t = useTranslations('review');
+  const page = field?.source_page ?? null;
+  const box = field ? parseBox(field.source_box) : null;
+  const [broken, setBroken] = useState<string | null>(null);
+  const img = useQuery({
+    queryKey: ['review-page-image', documentId, page],
+    queryFn: () => pageImageUrl(documentId, page!),
+    enabled: page != null,
+    staleTime: 240_000, // presigned URL lives 300 s
+    retry: false,
+  });
+  const url = img.data;
+  const failed = page != null && (img.isError || (url != null && broken === url));
   return (
     <section aria-labelledby="review-source" className="self-start">
       <Card>
         <h2 id="review-source" className="ml-card__title">
           {t('source')}
         </h2>
-        <p>{t('sourcePlaceholder')}</p>
-        {pages.length > 0 && <p>{pages.map((p) => t('page', { n: p ?? 0 })).join(', ')}</p>}
+        {page == null && <p>{t('sourceSelect')}</p>}
+        {page != null && img.isPending && <p role="status">{t('sourceLoading')}</p>}
+        {failed && <Alert tone="info">{t('imageMissing')}</Alert>}
+        {page != null && url != null && !failed && (
+          <>
+            <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element -- presigned URL, not optimisable */}
+              <img src={url} alt={t('sourceAlt', { n: page })} className="block w-full" onError={() => setBroken(url)} />
+              {box && (
+                <div
+                  data-testid="bbox"
+                  aria-hidden="true"
+                  className="pointer-events-none absolute border-2 border-amber-600 bg-amber-300/30"
+                  style={{
+                    left: `${box[0] * 100}%`,
+                    top: `${box[1] * 100}%`,
+                    width: `${(box[2] - box[0]) * 100}%`,
+                    height: `${(box[3] - box[1]) * 100}%`,
+                  }}
+                />
+              )}
+            </div>
+            <p className="text-sm">{box ? t('boxNote') : t('noBox')}</p>
+          </>
+        )}
       </Card>
     </section>
   );

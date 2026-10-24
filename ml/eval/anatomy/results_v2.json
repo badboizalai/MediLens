@@ -1,0 +1,102 @@
+{
+  "gold": "ml/eval/golden-v2/gold.jsonl",
+  "target": 0.85,
+  "groups": {
+    "ALL": {
+      "accuracy": 1.0,
+      "correct": 1705,
+      "total": 1705
+    },
+    "kind=cardiology/diagnoses": {
+      "accuracy": 1.0,
+      "correct": 380,
+      "total": 380
+    },
+    "kind=dental/teeth": {
+      "accuracy": 1.0,
+      "correct": 785,
+      "total": 785
+    },
+    "kind=oncology/metastases": {
+      "accuracy": 1.0,
+      "correct": 159,
+      "total": 159
+    },
+    "kind=oncology/nodes": {
+      "accuracy": 1.0,
+      "correct": 181,
+      "total": 181
+    },
+    "kind=oncology/primary": {
+      "accuracy": 1.0,
+      "correct": 200,
+      "total": 200
+    },
+    "lang=en": {
+      "accuracy": 1.0,
+      "correct": 515,
+      "total": 515
+    },
+    "lang=vi": {
+      "accuracy": 1.0,
+      "correct": 1190,
+      "total": 1190
+    },
+    "layout=dental_record": {
+      "accuracy": 1.0,
+      "correct": 255,
+      "total": 255
+    },
+    "layout=discharge_summary": {
+      "accuracy": 1.0,
+      "correct": 575,
+      "total": 575
+    },
+    "layout=lab_result": {
+      "accuracy": 1.0,
+      "correct": 124,
+      "total": 124
+    },
+    "layout=outpatient_form": {
+      "accuracy": 1.0,
+      "correct": 584,
+      "total": 584
+    },
+    "layout=pathology_report": {
+      "accuracy": 1.0,
+      "correct": 167,
+      "total": 167
+    },
+    "noise=clean": {
+      "accuracy": 1.0,
+      "correct": 833,
+      "total": 833
+    },
+    "noise=heavy": {
+      "accuracy": 1.0,
+      "correct": 237,
+      "total": 237
+    },
+    "noise=light": {
+      "accuracy": 1.0,
+      "correct": 635,
+      "total": 635
+    },
+    "unit=cardiology": {
+      "accuracy": 1.0,
+      "correct": 380,
+      "total": 380
+    },
+    "unit=dental": {
+      "accuracy": 1.0,
+      "correct": 785,
+      "total": 785
+    },
+    "unit=oncology": {
+      "accuracy": 1.0,
+      "correct": 540,
+      "total": 540
+    }
+  },
+  "errors": []
+}

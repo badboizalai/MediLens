@@ -283,3 +283,86 @@ Open for owner: `apps/web/.env.example` writes are denied by the session file ru
 2. Remove finished worktrees under `.claude/worktrees/` (removal was denied to the AI by the permission classifier), including `verify-run4` (local integration branch `verify/run4-all`, not pushed).
 3. Deployment: `GRANT api_events_consumer TO <consumer_login>`; Terraform apply (AWS credentials, remote state, `kms_admin_role_arns`, staging reviewers); point `var.worker_image` at the new worker image.
 4. Human gates/decisions, unchanged: G2-CS (CSO review of `draft-pending-CSO` hazard rows + dental term wording), G0/G0-R, G1-D (LIC-002 ICD-10 before any ICD code is loaded), consent-form lines 6/27 wording, `apps/web/.env.example` (deny rule).
+
+---
+# Run 5 — finish S06–S08, then S09–S11 (owner: "Tiếp tục làm tiếp cho hết sprint 11", 2026-10-23)
+- Started: 2026-10-23 23:49 +07 · AI merge under RULES A3 allowed (`gh pr merge` worked).
+- Merged at start (order per run-4 handover): #85, #84, #88, #87, #89 (Opus resolved the README conflict: kept #89 text + #87 SSE-KMS sentence; resolved 2 already-fixed review threads), #90, #86, #92, #94, #91, #95, #93, #96 (state).
+- Verified on main @ 2c7c11f (clean worktree): api/worker/ai-gateway/phi-service pytest exit 0; tests/assets + data/terminology pass; lint-imports 12 kept/0 broken; ruff check + format clean; `make governance` PASS; web lint ok, vitest web 32 + design-system 16 passed.
+- Known CI noise: the `security` workflow (Semgrep 2 blocking findings in extraction `sql_repository.py`, pnpm audit 3 high) fails on every PR since S7-T63 → BUG-09.
+
+## Backlog (≤ 1 day each; deps; owner skill)
+| ID | Task | Owner | Paths (main) | Depends | Status | Branch | PR | Rounds |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| S6-T53d2 | ingest `extraction.completed` via definer fn (migration 0005) | backend+security | api migrations, shared/api_events_consumer.py, extraction/infra/ingest.py | — | **merged** | feat/S6-T53d2-extraction-ingest | #106 | 1 |
+| S6-T53e | status SSE `/v1/documents/{id}/events` | backend | api document/ | — | **merged** (round 2: async stream, no thread per idle stream) | feat/S6-T53e-status-sse | #102 | 2 |
+| S6-T56 | web progress screen + retake guidance + `rejected` stage | frontend | web features/documents | — | **merged** (Opus: prototype-key fix, racy test fixed) | feat/S6-T56-progress-screen | #99 | 1 |
+| BUG-09 | Semgrep blocking SQL text + pnpm audit high | security | api extraction sql_repository.py, package.json, lockfile | — | **merged** (Opus: postcss override bounded ^8.5.18) | fix/BUG-09-semgrep-pnpm-audit | #103 | 1 |
+| S7-T66b | mapper wired into extraction + `latest()` by uuid7 | ai-ml | worker extraction/, storage/results.py | — | **merged** | feat/S7-T66b-wire-anatomy-mapper | #98 | 1 |
+| S8-T75 | dental + cardiology Unit configs + LOINC subset (also S9-T85) | clinical-informaticist | packages/anatomy-assets/units, tests/assets | — | **merged** | feat/S8-T75-unit-configs-dental-cardio | #100 | 1 |
+| S6-T55b | VietOCR/offline OCR baseline + CER vs S02 (or documented blocker) | ai-ml | ml/eval/ocr_bakeoff, worker ocr/ | — | todo | | | |
+| S6-F7 | upload rate limit + daily quota (SEC-AP-07 F7) | backend+security | api document/ | S6-T53e | todo | | | |
+| S7-T61 | prompt v2 few-shot per Unit, citation+bbox+confidence | ai-ml | ml/prompts/extract-v2, worker extraction/prompts.py | S7-T66b | todo | | | |
+| S7-T62 | normaliser: abbreviations + LOINC (ICD gated LIC-002) | ai-ml+clin-inf | worker normalise/, data/terminology | — | todo | | | |
+| S7-T64b | page image endpoint (api) + bbox overlay (web) | backend, frontend | api document/, web review | S6-T53e | todo | | | |
+| S7-T67 | Playwright E2E upload→review→confirm (mocked API) | qa | tests/e2e | S6-T56 | todo | | | |
+| S7-T69 | pipeline metrics mart + dq checks | data-engineer | data/marts (SQL), tools | — | todo | | | |
+| S8-T71 | UX spec 2D viewer + odontogram states | ux-ui | docs/ux | — | todo | | | |
+| S8-T74b | odontogram viewer component (FDI surfaces) | frontend | web viewer/units/dental | — | todo | | | |
+| S8-T76 | dental prompt/rules + 200 synthetic golden docs | ai-ml+data-curator | ml/eval/golden-dental, ml/prompts | S7-T61 | todo | | | |
+| S8-T78 | 2D viewer visual regression + fdi tests | qa | tests/visual, tests/e2e | S8-T74b | todo | | | |
+| S8-CLIN | clinical projection: confirmed fields → conditions/body_findings/observations + `GET /v1/profiles/{id}/findings` | backend | api clinical/ | S6-T53d2 | todo | | | |
+| S9-T81 | R3F viewer spike (GLB load, OrbitControls) | frontend | web viewer/core3d | BUG-09 (lockfile) | todo | | | |
+| S9-T82 | body + heart GLB (open licence or procedural placeholder), mesh = region_code, LOD+Draco, check script | 3d-artist+data-curator | packages/anatomy-assets/glb, tools | — | todo | | | |
+| S9-T83 | raycast pick/highlight/focus/detail panel | frontend | web viewer/core3d | S9-T81 | todo | | | |
+| S9-T84 | perf budget + auto 2D fallback | frontend | web viewer | S9-T83 | todo | | | |
+| S9-T86 | cardiology extraction + 200 synthetic golden | ai-ml | ml/eval, worker extraction | S7-T61 | todo | | | |
+| S9-T88 | cross-browser/mobile matrix (NFR-17) | qa | tests/e2e config, docs/qa | — | todo | | | |
+| S9-T89 | CSP/security headers/CORS review + fixes | security | web next.config, api main CORS, docs/security | — | todo | | | |
+| S10-T91 | oncology content BRs (no prognosis, summary mode) | business-analyst | docs/brd | — | todo | | | |
+| S10-T92 | TNM/tumour/nodes/mets extraction + 200 synthetic golden | ai-ml | ml/eval, worker | S9-T86 | todo | | | |
+| S10-T93 | onco 3D overlay + summary mode default | frontend | web viewer/units/oncology | S9-T83 | todo | | | |
+| S10-T94 | 20 KnowledgeArticles VI/EN drafts (sources, review dates) | technical-writer+CSO | content/articles | — | todo | | | |
+| S10-T95 | RAG pgvector, profile_id filter in code | ai-ml+backend | api knowledge/, migration | S10-T94 | todo | | | |
+| S10-T96 | guardrails: dosing/prognosis/diagnosis block, emergency → 115 | ai-ml+safety | ai-gateway guardrails | — | todo | | | |
+| S10-T97 | semantic cache + per-user token quota (SEC-AI-07) | mlops | ai-gateway | S10-T96 | todo | | | |
+| S10-T98 | red-team set (100 Q + 50 injection images, synthetic) + pytest gate | qa+security | tests/redteam | S10-T96 | todo | | | |
+| S11-T101 | timeline compare two visits | frontend | web features/timeline | S8-CLIN | todo | | | |
+| S11-T102 | patient_reported text + NER → region (BR-040) | backend+ai-ml | api clinical/patient | S8-CLIN | todo | | | |
+| S11-T103 | time-limited sharing, Cedar policies + tests (SEC-AR-07) | backend+security | api sharing/, policies | S8-CLIN | todo | | | |
+| S11-T104 | share screen + clinician view watermark | frontend | web features/sharing | S11-T103 | todo | | | |
+| S11-T105 | admin without PHI + break-glass (SEC-AZ-05) | backend+security | api admin/ | — | todo | | | |
+| S11-T106 | DSR: export, consent withdrawal, deletion across stores | data-engineer+backend | api identity/patient dsr | S8-CLIN | todo | | | |
+| S11-T107 | full regression + authorisation matrix | qa | docs/qa, api tests | S11-T106 | todo | | | |
+| S11-T108 | eval report F1/Unit, ECE, region accuracy (synthetic 600) | ai-ml | ml/eval, docs/ai | S10-T92 | todo | | | |
+| S11-T109 | user guide draft + internal release notes | technical-writer | docs/user-guide | late | todo | | | |
+| S11-T110 | G2 evidence pack (sign-off human) | qc-release | docs/gates/G2.md | all | todo | | | |
+| PM-RPT | sprint reports 06–11 (no fabricated demos/usability results) | product-manager | docs/project/reports | per sprint | todo | | | |
+Human-only in scope: D79 CSO tooth/palette review, D87 usability test, D99 CSO article approval, G2/G2-CS sign-off, LIC-002.
+
+### Run 5 progress (2026-10-24 ~02:35)
+Extra rows: S10-T96 guardrails **merged** #101 (Opus: narrowed diagnosis regex false-blocks); S8-T74b odontogram viewer **merged** #105; S9-T82 GLB **merged** #104 (stylised procedural placeholder, real anatomy pending licence review; no Draco needed at ~120–150 KB); S10-T91 oncology BRs BR-046..051 READY #107 (draft, pending CSO D99).
+In progress (batch 3): S8-CLIN (feat/S8-CLIN-clinical-projection), S9-T81/T83 3D viewer (feat/S9-T81-viewer-3d), S7-T61 prompt v2, S9-T89 headers/CORS, S10-T94 20 KnowledgeArticles (draft-pending-CSO), S10-T97 semantic cache + quota + HTTP traffic/locale.
+Follow-ups noted: wire UploadScreen → /documents/[id]/progress and drop old STAGE map; web SSE needs fetch-streaming (EventSource can't send Authorization); per-user SSE stream cap with F7; pre-commit ruff older than CI ruff (formatting disagreement on multi-line asserts) → CHORE; deployment: RESULTS_BUCKET + consumer s3:GetObject extractions/*.
+
+### Run 5 progress (2026-10-24 ~05:30)
+Merged since last note (all reviewed with B4 + verdict, re-tested on head merged with main): #107 S10-T91 oncology BRs (draft pending CSO), #108 S10-T97 semantic cache + qa-only quota (round 2: cache hit needs equal numbers/negation), #109 S9-T81/T83 3D viewer, #110 S7-T61 prompt v2 (Opus: model bbox dropped), #111 S10-T94 20 KnowledgeArticles (draft-pending-CSO, sources unverified), #112 S8-CLIN clinical projection + findings API (migration 0006), #113 S9-T89 CSP/headers/CORS, #114 S9-T84 2D fallback, #115 S7-T62 normaliser (top-1 0.908 synthetic, OOV 3/16), #116 S11-T105 admin + break-glass (0006_admin), #117 S11-T101 timeline compare, #118 S8-T76/S9-T86/S10-T92 golden-v2 600 synthetic docs (no F1: no model predictions), #119 S10-T98 red-team gate, #120 S10-T95 RAG pgvector (0007), #121 BUG-10 red-team misses (100/100), #122 S7-T64b page image + bbox, #123 BUG-11, #124 S11-T103 sharing + Cedar (0008).
+Ready: #125 S11-T102 patient-reported (Opus: migration → 0009, pyyaml declared).
+Incident: #120 was merged with a red `python` check (gh merge does not require it) → main red ~20 min; fixed by BUG-11 #123. Merges are now gated on green python+web explicitly.
+In progress: S11-T106 DSR, S11-T104 share UI, S7-T67/S9-T88 E2E + compat, S6-F7 rate limit.
+Ops follow-ups for owner: pgvector extension on RDS (rds_superuser); API needs s3:GetObject+kms on pre/* and MEDILENS_S3_PAGES_BUCKET; NEXT_PUBLIC_STORAGE_ORIGIN must include the pages bucket origin; API and worker images must ship data/terminology; RESULTS_BUCKET + consumer s3:GetObject extractions/*; CI ruff (0.17.2) newer than pre-commit ruff → pin both (workflow/pre-commit change).
+
+### Run 5 progress (2026-10-24 ~12:45, after 2nd and 3rd rate-limit resets)
+Merged: #125 S11-T102 patient-reported (0009), #126 S7-T69 metrics mart (deployment needs an ADR-0006 definer for the cross-profile aggregate read → S7-T69b), #127 S8-T71 viewer state spec + D79 CSO kit (14 spec-vs-code gaps listed), #128 S11-T104 share UI (expiry shown from URL param → S11-T104b).
+Resumed in existing worktrees after the limit: S11-T106 DSR (agent-a9ef02722f985e9db), S10-T93 onco summary + viewer gaps 1/2/13 (agent-af25171343116019a), S6-F7 (agent-a54427ede95cb61da), S7-T67/S9-T88 E2E (agent-a5ad2abc8652d590e). New: S11-T109 user guide + release notes, S11-T104b share expiry API.
+Remaining after these: S11-T107 regression + authz matrix, S11-T108 eval report, S11-T110 G2 evidence pack, sprint reports 06–11, S6-T55b VietOCR (likely blocked: model download), S8-T78 visual regression, viewer gaps 4–12.
+
+### Run 5 progress (2026-10-24 afternoon)
+Merged: #129 S10-T93 oncology summary mode + patient_reported/unmapped labels, #130 S11-T109 user guide + internal release notes, #131 S6-F7 rate limit/quota/SSE cap, #132 S8-T78 viewer snapshots (Opus updated one snapshot after #129), #133 S11-T104b server-side share expiry, #134 S11-T108 eval report v1 (ECE + region accuracy; field F1 needs model predictions), #135 S7-T67/S9-T88 E2E + compat matrix (chromium/firefox/pixel7 4/4; webkit/iPhone not run: host libs), #136 BUG-12 oncology synonyms (region accuracy 1.000 on synthetic = upper bound), #137 S11-T106 DSR (export, consent withdrawal, erasure + verify; Opus resolved conflict with #131), #138 S8-GAPS viewer UX (Opus safety fix: no default caries).
+In progress: S11-T107 regression + authz matrix, PM-RPT sprint reports 06–11, S6-T55b VietOCR (or blocker). Then S11-T110 G2 evidence pack and final verification.
+
+## Run 5 handover (2026-10-24 ~19:00 +07) — S06–S11 AI-doable scope complete
+Merged this run (squash, each with a B4 review + verdict, re-tested on head merged with main, merged only on green python+web CI except the #120 incident): run-4 backlog #84–#96 (13), then #98–#144 except #97 (this state PR) = 46 PRs.
+Final verification on main @ 3700d2d (clean worktree): api / worker / ai-gateway / phi-service pytest exit 0 (0 failures), root `uv run pytest` exit 0; lint-imports 12 kept / 0 broken; single alembic head 0010; ruff check clean; ruff format clean with repo ruff and CI ruff 0.17.2; `make governance` PASS; web lint clean, typecheck 0, vitest web 108 + design-system 16 passed, `next build` compiled; main CI success.
+Honest gaps (not claimed done): field F1 / ECE / end-to-end region accuracy need model predictions (Bedrock credentials); region accuracy 1.000 and VietOCR CER 4.18% are synthetic-only; GLBs are stylised placeholders; WebKit/iPhone e2e not run (host libs); semantic cache, quota and rate limits are per-process; regex guardrails (RT-006 open).
+Owner actions (in order): 1) merge this state PR #97; 2) human gates: G2 sign-off (docs/gates/G2.md), G2-CS (9 hazard rows draft-pending-CSO, oncology BR-046..051, 20 KnowledgeArticles, D79 kit), D87 usability test, LIC-002/LIC-003; 3) deployment: Terraform apply (staging reviewers, kms_admin_role_arns), pgvector on RDS, `GRANT api_events_consumer`, RESULTS_BUCKET + consumer s3:GetObject extractions/*, API s3:GetObject+kms on pre/* + MEDILENS_S3_PAGES_BUCKET, NEXT_PUBLIC_STORAGE_ORIGIN incl. pages bucket, ship data/terminology in API + worker images, analytics_job definer role (S7-T69b); 4) workflow PRs (human): e2e job with `playwright install --with-deps`, pin ruff in CI and pre-commit to one version, worker image build + Trivy; 5) Bedrock access → run golden-v2 predictions and `extraction_eval run` for G2 F1/ECE; 6) remove finished worktrees under .claude/worktrees (denied to AI). Session is long → /compact before the next run.

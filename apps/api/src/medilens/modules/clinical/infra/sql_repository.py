@@ -1,5 +1,6 @@
 """PostgreSQL adapter. Run as app_rw; RLS (`app.profile_ids`) is bound per transaction."""
 
+from datetime import datetime
 from typing import Any
 from uuid import UUID
 
@@ -142,11 +143,38 @@ class SqlClinicalRepository:
                 },
             )
 
+    def add_reported(
+        self,
+        profile_id: UUID,
+        label: str,
+        region_code: str | None,
+        laterality: str | None,
+        observed_at: datetime | None,
+    ) -> UUID:
+        """icd10_code and severity stay NULL (BR-040)."""
+        cid = self._s.execute(
+            text(
+                "INSERT INTO clinical.conditions (profile_id, label, source) "
+                "VALUES (:p, :l, 'patient_reported') RETURNING id"
+            ),
+            {"p": profile_id, "l": label},
+        ).scalar_one()
+        if region_code:
+            self._s.execute(
+                text(
+                    "INSERT INTO clinical.body_findings "
+                    "(profile_id, condition_id, region_code, laterality, observed_at) "
+                    "VALUES (:p, :c, :rc, :lat, COALESCE(:d, now()))"
+                ),
+                {"p": profile_id, "c": cid, "rc": region_code, "lat": laterality, "d": observed_at},
+            )
+        return cid  # type: ignore[no-any-return]
+
     def findings(self, profile_id: UUID, after: UUID | None, limit: int) -> list[FindingView]:
         rows = self._s.execute(
             text(
                 "SELECT bf.id, bf.region_code, bf.laterality, bf.severity, c.unit_code, "
-                "bf.is_metastasis, bf.observed_at, r.document_id, c.label "
+                "bf.is_metastasis, bf.observed_at, r.document_id, c.label, c.source "
                 "FROM clinical.body_findings bf "
                 "JOIN clinical.conditions c ON c.id = bf.condition_id AND c.deleted_at IS NULL "
                 "LEFT JOIN clinical.extraction_runs r ON r.id = c.source_run_id "

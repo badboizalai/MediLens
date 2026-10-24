@@ -145,3 +145,6 @@ Re-run results matched the committed reports (the reports were not rewritten).
 3. Fix mapper synonym gaps listed in 4, re-run `run_eval_v2.py`, target oncology >= 0.85.
 4. Add real-OCR text (golden-v1 images or bake-off output) as a second prediction run to quantify
    the OCR-noise gap, and a human-checked slice before any claim leaves the repo.
+
+## Update after BUG-12 (location synonyms)
+Re-run of `ml/eval/anatomy/run_eval_v2.py` after adding oncology and lymph-node synonyms: region accuracy on golden-v2 gold locations 1.000 for every Unit (dental 785/785, cardiology 380/380, oncology 540/540). Caveat: the synonyms were added to cover the generator's own template strings, so this is an upper bound on synthetic text with perfect OCR, not evidence for real records; an independent location set is still needed before G2.

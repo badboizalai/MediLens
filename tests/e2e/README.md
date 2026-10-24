@@ -7,7 +7,7 @@ Critical cross-app flows only (RULES C4). Synthetic data only. Strategy: `docs/q
 2. Install a browser once (nothing is committed): `npx --yes playwright install chromium`
 3. Run: `E2E_BASE_URL=http://localhost:3000 npx --yes playwright test -c tests/e2e`
 
-`make e2e` currently calls `pnpm --filter @medilens/web e2e`, which does not exist yet. Wiring it (add `@playwright/test` to devDependencies and an `e2e` script pointing at this config) is a follow-up.
+`make e2e` runs all projects (NFR-17 matrix) and starts the web dev server itself; the API is mocked. Pick one with `pnpm --filter @medilens/web e2e --project=chromium`. Results: `docs/qa/compat-matrix.md`.
 
 ## Conventions
 - Test names start with the TC id from `docs/requirements/traceability.csv`.

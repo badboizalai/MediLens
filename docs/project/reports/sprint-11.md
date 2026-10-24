@@ -15,11 +15,11 @@ Feature complete for G2: timeline, patient-reported text, sharing, admin without
 | D105 S11-T105 | Admin without PHI and audited break-glass | #116 | merged |
 | D106 S11-T106 | Data subject rights: export, consent withdrawal, deletion | #137 | merged |
 | D108 S11-T108 | Evaluation report v1 with ECE and region accuracy on golden-v2 | #134 | merged (most metrics not measurable) |
-| D107 S11-T107 | Full regression run and route-level authorisation matrix (23 routes x 6 actors) | #142 | open, not merged (review pending) |
+| D107 S11-T107 | Full regression run and route-level authorisation matrix (23 routes x 6 actors) | #142 | merged |
 | D109 S11-T109 | Draft user guide VI/EN and internal release notes | #130 | merged (draft) |
 
 ## Not delivered / carried over
-- D107 full regression and authorisation matrix: delivered in PR #142, which is still open (not merged). Its run reports open S1 0 and open S2 2 (polyglot upload hardening, BUG-14 in progress; staging deploy gaps); chromium e2e did not run on that host.
+- D107 full regression and authorisation matrix: delivered in PR #142 (merged). Its run reported open S1 0 and open S2 2; BUG-14 polyglot hardening was then fixed in #143, leaving 1 S2 (staging deploy gaps, human); chromium e2e did not run on that host.
 - D108: field F1 overall, per Unit and per stratum, ECE value, end-to-end region accuracy, citation validity, FDI accuracy are n/m: no model was run, no predictions exist. Measured: mapper-only region accuracy 0.910 (oncology 0.769, FAIL vs 0.85) when the report was written, 1.000 (1705/1705) after BUG-12 #136 (perfect OCR, synthetic; end to end still n/m), rules classifier macro-F1 1.000 (clean synthetic), LOINC top-1 0.908, red team 100/100.
 - D110 `gates/G2.md`: evidence pack written (S11-T110), sign-off block empty; the gate cannot be claimed.
 - Compat gaps: WebKit and iPhone 14 not run; OCR VietOCR not wired (printed CER on golden-v0 after preprocessing and BUG-13 #141: vietocr 4.18%, paddle 15.70%); ICD-10 not loaded (LIC-002).
@@ -41,9 +41,9 @@ Feature complete for G2: timeline, patient-reported text, sharing, admin without
 ## Metrics
 | Metric | This sprint | Previous | Target |
 | --- | --- | --- | --- |
-| Committed vs done (say/do) | 8 of 9 build rows (D101-D109) have a merged PR; D107 in open PR #142; D108 and D109 partial or draft | 7 of 9 (S10) | n/a |
+| Committed vs done (say/do) | 9 of 9 build rows (D101-D109) have a merged PR; D108 and D109 partial or draft | 7 of 9 (S10) | n/a |
 | Velocity (rolling 3) | n/a | n/a | n/a |
-| Open S1/S2 bugs | S1 0, S2 2 (per #142 regression run, unmerged) | n/a | 0 |
+| Open S1/S2 bugs | S1 0, S2 1 (staging deploy gaps; BUG-14 fixed in #143) | n/a | 0 |
 | Cloud + LLM cost (USD) | n/a (no LLM called) | n/a | n/a |
 | Region accuracy, mapper only | 1.000 after #136 (0.910 before; n=1705, synthetic) | n/a | >= 0.85 |
 

@@ -253,6 +253,23 @@
     "obsUnit": "Đơn vị",
     "notListed": "Không ghi"
   },
+  "viewerNotes": {
+    "patientReported": "bạn mô tả",
+    "unmapped": "Chưa đặt lên cơ thể",
+    "unmappedHint": "Những ghi chú này chưa khớp được với vị trí nào trên sơ đồ cơ thể.",
+    "statedInRecord": "được ghi trong hồ sơ của bạn"
+  },
+  "oncology": {
+    "title": "Tóm tắt ung bướu",
+    "summaryNote": "Chế độ tóm tắt: vị trí chính được ghi trong hồ sơ của bạn. Chi tiết được ẩn cho đến khi bạn chọn xem.",
+    "showDetails": "Xem chi tiết",
+    "hideDetails": "Ẩn chi tiết",
+    "detailsTitle": "Chi tiết được ghi trong hồ sơ của bạn",
+    "tnmTitle": "Phân giai đoạn như ghi trong hồ sơ của bạn",
+    "tnmLetters": "Nói chung: T mô tả mức độ khối u, N mô tả hạch bạch huyết, M mô tả sự lan xa.",
+    "tnmNote": "Các chữ cái này chỉ giải thích cách ghi, không cho biết giá trị có ý nghĩa gì với bạn.",
+    "askCareTeam": "Hãy hỏi đội ngũ chăm sóc của bạn những chi tiết này có ý nghĩa gì với bạn."
+  },
   "sharing": {
     "title": "Chia sẻ với bác sĩ",
     "sharedTitle": "Hồ sơ được chia sẻ (chỉ xem)",

@@ -7,9 +7,11 @@ import pytest
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from fastapi.testclient import TestClient
+from medilens.core.config import get_settings
 from medilens.core.db import make_engine, make_session_factory
 from medilens.core.errors import AppError, app_error_handler, validation_error_handler
 from medilens.modules.document.api import router as doc_router
+from medilens.modules.document.application.rate_limit import InMemoryLimiter
 from medilens.modules.document.domain.models import Presigned
 from medilens.shared.auth import Principal, get_current_user
 from sqlalchemy import event, text
@@ -56,6 +58,7 @@ class FakeStorage:
 @dataclass
 class Env:
     client: TestClient
+    limiter: InMemoryLimiter
     storage: FakeStorage
     url: str
     current: dict[str, str]
@@ -79,7 +82,7 @@ PDF = b"%PDF-1.7\n%synthetic"
 
 
 @pytest.fixture
-def env(migrated_url: str) -> Iterator[Env]:  # noqa: F811
+def env(migrated_url: str, monkeypatch: pytest.MonkeyPatch) -> Iterator[Env]:  # noqa: F811
     engine = make_engine(migrated_url)
     with engine.begin() as c:
         ids: list[UUID] = []
@@ -105,12 +108,15 @@ def env(migrated_url: str) -> Iterator[Env]:  # noqa: F811
     factory = make_session_factory(engine)
     storage = FakeStorage()
     current = {"sub": "alice"}
+    limiter = InMemoryLimiter()
+    monkeypatch.setattr(get_settings(), "upload_requests_per_minute", 1000)  # F7 tests lower it
     app = FastAPI()
     app.add_exception_handler(AppError, app_error_handler)
     app.add_exception_handler(RequestValidationError, validation_error_handler)
     app.include_router(doc_router.router, prefix="/v1")
     app.dependency_overrides[doc_router.get_session_factory] = lambda: factory
+    app.dependency_overrides[doc_router.get_limiter] = lambda: limiter
     app.dependency_overrides[doc_router.get_storage] = lambda: storage
     app.dependency_overrides[get_current_user] = lambda: Principal(sub=current["sub"])
-    yield Env(TestClient(app), storage, migrated_url, current, ids[0], ids[1])
+    yield Env(TestClient(app), limiter, storage, migrated_url, current, ids[0], ids[1])
     engine.dispose()

@@ -36,6 +36,7 @@ const server = setupServer(
     shares = (shares as ReturnType<typeof mk>[]).map((s) => ({ ...s, revoked_at: new Date().toISOString() }));
     return new HttpResponse(null, { status: 204 });
   }),
+  http.get('*/v1/shared/:id', () => HttpResponse.json({ share_id: S, scope: 'findings:read', expires_at: '2031-03-04T05:06:00Z', status: 'active' })),
   http.get('*/v1/me', () => HttpResponse.json({ sub: 'abcdef12-0000-4000-8000-000000000000' })),
 );
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
@@ -92,12 +93,15 @@ describe('SharedView', () => {
       findings: [{ region_code: 'heart', laterality: null, severity: 'mild', unit_code: null, is_metastasis: false, observed_at: null, label: null }],
       next_cursor: null,
     })));
-    const { container } = mount(<SharedView shareId={S} expiresAt={future} />);
+    const { container } = mount(<SharedView shareId={S} />);
     const wm = await screen.findByTestId('watermark');
     expect(wm).toHaveAttribute('aria-hidden', 'true');
     expect(wm.className).toContain('pointer-events-none');
     expect(wm.textContent).toContain('abcdef12');
     expect(wm.textContent).toContain('33333333');
+    const until = new Date('2031-03-04T05:06:00Z').toLocaleString('en');
+    expect(wm.textContent).toContain(until);
+    expect(screen.getByRole('status')).toHaveTextContent(until);
     expect(screen.getByRole('status')).toHaveTextContent(/View only.*abcdef12/);
     expect(screen.getByTestId('viewer')).toBeInTheDocument();
     expect(screen.getByRole('list')).toHaveTextContent('Heart');
@@ -105,7 +109,10 @@ describe('SharedView', () => {
   });
 
   it('shows the access-ended page when expired or revoked', async () => {
-    server.use(http.get('*/v1/shared/:id/findings', () => HttpResponse.json({ title: 'Forbidden' }, { status: 403 })));
+    server.use(
+      http.get('*/v1/shared/:id/findings', () => HttpResponse.json({ title: 'Forbidden' }, { status: 403 })),
+      http.get('*/v1/shared/:id', () => HttpResponse.json({ title: 'Forbidden' }, { status: 403 })),
+    );
     mount(<SharedView shareId={S} />);
     expect(await screen.findByText('Access has ended')).toBeInTheDocument();
     expect(screen.queryByTestId('watermark')).not.toBeInTheDocument();

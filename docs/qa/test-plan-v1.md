@@ -23,4 +23,5 @@ Status: draft. Strategy: `test-strategy.md`.
 | AUTHZ-ALL | Authz test per endpoint | API | planned |
 | AI-GATE | Golden-set CER/F1 gate in CI | ML eval | planned |
 | A11Y-HOME | axe on home and review screen | E2E | planned |
+| VIS-VIEWER | jsdom SVG-markup snapshots of BodyMap2D (front/back) and Odontogram + FDI csv/worker/svg parity (`apps/web/src/features/viewer/__visual__`, `tests/assets/test_fdi_svg_parity.py`); Playwright pixel tests: follow-up | visual | done |
 | LOAD-API | k6 beyond `/healthz` smoke | load | planned |

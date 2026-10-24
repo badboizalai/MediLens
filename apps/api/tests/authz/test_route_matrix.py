@@ -123,12 +123,9 @@ def test_every_route_is_classified() -> None:
     """(c) A new route without a classification fails here; a stale entry fails too."""
     classified = set(PUBLIC) | set(ROUTES)
     live = enumerate_routes(create_app())
-    assert (
-        not live - classified
-    ), f"unclassified routes (add to PUBLIC or ROUTES): {live - classified}"
-    assert (
-        not classified - live
-    ), f"classification for routes that no longer exist: {classified - live}"
+    unclassified, stale = live - classified, classified - live
+    assert not unclassified, f"unclassified routes (add to PUBLIC or ROUTES): {unclassified}"
+    assert not stale, f"classification for routes that no longer exist: {stale}"
     assert not set(PUBLIC) & set(ROUTES)
     assert all(reason for reason in PUBLIC.values())
 

@@ -351,3 +351,8 @@ Ready: #125 S11-T102 patient-reported (Opus: migration → 0009, pyyaml declared
 Incident: #120 was merged with a red `python` check (gh merge does not require it) → main red ~20 min; fixed by BUG-11 #123. Merges are now gated on green python+web explicitly.
 In progress: S11-T106 DSR, S11-T104 share UI, S7-T67/S9-T88 E2E + compat, S6-F7 rate limit.
 Ops follow-ups for owner: pgvector extension on RDS (rds_superuser); API needs s3:GetObject+kms on pre/* and MEDILENS_S3_PAGES_BUCKET; NEXT_PUBLIC_STORAGE_ORIGIN must include the pages bucket origin; API and worker images must ship data/terminology; RESULTS_BUCKET + consumer s3:GetObject extractions/*; CI ruff (0.17.2) newer than pre-commit ruff → pin both (workflow/pre-commit change).
+
+### Run 5 progress (2026-10-24 ~12:45, after 2nd and 3rd rate-limit resets)
+Merged: #125 S11-T102 patient-reported (0009), #126 S7-T69 metrics mart (deployment needs an ADR-0006 definer for the cross-profile aggregate read → S7-T69b), #127 S8-T71 viewer state spec + D79 CSO kit (14 spec-vs-code gaps listed), #128 S11-T104 share UI (expiry shown from URL param → S11-T104b).
+Resumed in existing worktrees after the limit: S11-T106 DSR (agent-a9ef02722f985e9db), S10-T93 onco summary + viewer gaps 1/2/13 (agent-af25171343116019a), S6-F7 (agent-a54427ede95cb61da), S7-T67/S9-T88 E2E (agent-a5ad2abc8652d590e). New: S11-T109 user guide + release notes, S11-T104b share expiry API.
+Remaining after these: S11-T107 regression + authz matrix, S11-T108 eval report, S11-T110 G2 evidence pack, sprint reports 06–11, S6-T55b VietOCR (likely blocked: model download), S8-T78 visual regression, viewer gaps 4–12.

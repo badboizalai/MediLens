@@ -12,29 +12,29 @@
    "status": "ok",
    "pages": 85,
    "cer": {
-    "overall": 0.06286207321582644,
+    "overall": 0.04175397510168865,
     "by_lang": {
      "en": 0.02430716829230531,
-     "vi": 0.07244258069480244
+     "vi": 0.04608933174316162
     },
     "by_quality": {
      "good": 0.026881228856176283,
      "medium": 0.04760393525864805,
-     "poor": 0.17291666666666666
+     "poor": 0.05399305555555556
     },
     "by_variant": {
      "clean": 0.028473925562546656,
-     "degraded": 0.14510942848252256,
+     "degraded": 0.07405870760294575,
      "handwriting": 0.031166039763567976,
      "perspective": 0.022313296903460837
     }
    },
    "latency_s": {
-    "mean": 2.153444588423506,
-    "p50": 1.863394223999876,
-    "p95": 2.7741167509998377
+    "mean": 1.9943102563882242,
+    "p50": 1.9604240300000129,
+    "p95": 2.745344054999805
    },
-   "usd_per_doc": 5.981790523398627e-05,
+   "usd_per_doc": 5.5397507121895114e-05,
    "cost_basis": "cpu time at 0.1 USD/h (assumed)",
    "rows": [
     {
@@ -45,7 +45,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.030303030303030304,
-     "latency_s": 1.35,
+     "latency_s": 1.45,
      "edits": 8,
      "chars": 264
     },
@@ -57,7 +57,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.10227272727272728,
-     "latency_s": 1.497,
+     "latency_s": 1.413,
      "edits": 27,
      "chars": 264
     },
@@ -69,7 +69,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.023166023166023165,
-     "latency_s": 1.319,
+     "latency_s": 1.309,
      "edits": 6,
      "chars": 259
     },
@@ -81,7 +81,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.07335907335907337,
-     "latency_s": 1.215,
+     "latency_s": 1.252,
      "edits": 19,
      "chars": 259
     },
@@ -93,7 +93,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.09386281588447654,
-     "latency_s": 1.659,
+     "latency_s": 1.406,
      "edits": 26,
      "chars": 277
     },
@@ -105,7 +105,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.06859205776173286,
-     "latency_s": 1.157,
+     "latency_s": 1.306,
      "edits": 19,
      "chars": 277
     },
@@ -117,7 +117,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.0650887573964497,
-     "latency_s": 1.801,
+     "latency_s": 1.843,
      "edits": 22,
      "chars": 338
     },
@@ -129,7 +129,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.20118343195266272,
-     "latency_s": 1.88,
+     "latency_s": 2.384,
      "edits": 68,
      "chars": 338
     },
@@ -141,7 +141,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.016713091922005572,
-     "latency_s": 1.767,
+     "latency_s": 1.779,
      "edits": 6,
      "chars": 359
     },
@@ -153,7 +153,7 @@
      "variant": "handwriting",
      "engine": "vietocr",
      "cer": 0.025069637883008356,
-     "latency_s": 1.709,
+     "latency_s": 1.836,
      "edits": 9,
      "chars": 359
     },
@@ -165,7 +165,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.022304832713754646,
-     "latency_s": 1.37,
+     "latency_s": 1.34,
      "edits": 6,
      "chars": 269
     },
@@ -177,7 +177,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.024390243902439025,
-     "latency_s": 1.564,
+     "latency_s": 1.249,
      "edits": 6,
      "chars": 246
     },
@@ -189,7 +189,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.05531914893617021,
-     "latency_s": 1.165,
+     "latency_s": 1.521,
      "edits": 13,
      "chars": 235
     },
@@ -201,7 +201,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.08936170212765958,
-     "latency_s": 1.121,
+     "latency_s": 1.089,
      "edits": 21,
      "chars": 235
     },
@@ -213,7 +213,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.022900763358778626,
-     "latency_s": 1.367,
+     "latency_s": 1.355,
      "edits": 6,
      "chars": 262
     },
@@ -224,9 +224,9 @@
      "quality": "poor",
      "variant": "degraded",
      "engine": "vietocr",
-     "cer": 0.9198473282442748,
-     "latency_s": 0.181,
-     "edits": 241,
+     "cer": 0.04198473282442748,
+     "latency_s": 1.334,
+     "edits": 11,
      "chars": 262
     },
     {
@@ -237,7 +237,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.010309278350515464,
-     "latency_s": 1.458,
+     "latency_s": 1.43,
      "edits": 3,
      "chars": 291
     },
@@ -249,7 +249,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.021660649819494584,
-     "latency_s": 1.369,
+     "latency_s": 1.603,
      "edits": 6,
      "chars": 277
     },
@@ -261,7 +261,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.020905923344947737,
-     "latency_s": 1.422,
+     "latency_s": 1.471,
      "edits": 6,
      "chars": 287
     },
@@ -273,7 +273,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.02666666666666667,
-     "latency_s": 1.508,
+     "latency_s": 1.549,
      "edits": 8,
      "chars": 300
     },
@@ -285,7 +285,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.05333333333333334,
-     "latency_s": 1.4,
+     "latency_s": 1.58,
      "edits": 16,
      "chars": 300
     },
@@ -297,7 +297,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.047021943573667714,
-     "latency_s": 1.683,
+     "latency_s": 1.947,
      "edits": 15,
      "chars": 319
     },
@@ -309,7 +309,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.0,
-     "latency_s": 1.631,
+     "latency_s": 1.586,
      "edits": 0,
      "chars": 319
     },
@@ -321,7 +321,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.028011204481792718,
-     "latency_s": 1.863,
+     "latency_s": 1.811,
      "edits": 10,
      "chars": 357
     },
@@ -333,7 +333,7 @@
      "variant": "handwriting",
      "engine": "vietocr",
      "cer": 0.0392156862745098,
-     "latency_s": 1.745,
+     "latency_s": 2.09,
      "edits": 14,
      "chars": 357
     },
@@ -345,7 +345,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.023346303501945526,
-     "latency_s": 1.293,
+     "latency_s": 1.398,
      "edits": 6,
      "chars": 257
     },
@@ -357,7 +357,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.07392996108949416,
-     "latency_s": 1.125,
+     "latency_s": 1.238,
      "edits": 19,
      "chars": 257
     },
@@ -369,7 +369,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.026058631921824105,
-     "latency_s": 1.571,
+     "latency_s": 1.776,
      "edits": 8,
      "chars": 307
     },
@@ -381,7 +381,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.0749185667752443,
-     "latency_s": 1.534,
+     "latency_s": 1.607,
      "edits": 23,
      "chars": 307
     },
@@ -393,7 +393,7 @@
      "variant": "handwriting",
      "engine": "vietocr",
      "cer": 0.03908794788273615,
-     "latency_s": 1.613,
+     "latency_s": 1.595,
      "edits": 12,
      "chars": 307
     },
@@ -405,7 +405,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.021505376344086023,
-     "latency_s": 2.754,
+     "latency_s": 2.362,
      "edits": 10,
      "chars": 465
     },
@@ -417,7 +417,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.05103969754253308,
-     "latency_s": 2.692,
+     "latency_s": 2.627,
      "edits": 27,
      "chars": 529
     },
@@ -428,9 +428,9 @@
      "quality": "poor",
      "variant": "degraded",
      "engine": "vietocr",
-     "cer": 0.8771266540642723,
-     "latency_s": 0.362,
-     "edits": 464,
+     "cer": 0.017013232514177693,
+     "latency_s": 2.655,
+     "edits": 9,
      "chars": 529
     },
     {
@@ -441,7 +441,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.03571428571428571,
-     "latency_s": 2.657,
+     "latency_s": 2.581,
      "edits": 18,
      "chars": 504
     },
@@ -453,7 +453,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.06944444444444445,
-     "latency_s": 2.186,
+     "latency_s": 2.291,
      "edits": 35,
      "chars": 504
     },
@@ -465,7 +465,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.018691588785046728,
-     "latency_s": 2.168,
+     "latency_s": 2.533,
      "edits": 8,
      "chars": 428
     },
@@ -477,7 +477,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.026168224299065422,
-     "latency_s": 2.614,
+     "latency_s": 2.83,
      "edits": 14,
      "chars": 535
     },
@@ -489,7 +489,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.07850467289719626,
-     "latency_s": 2.241,
+     "latency_s": 2.289,
      "edits": 42,
      "chars": 535
     },
@@ -501,7 +501,7 @@
      "variant": "perspective",
      "engine": "vietocr",
      "cer": 0.011214953271028037,
-     "latency_s": 23.36,
+     "latency_s": 2.782,
      "edits": 6,
      "chars": 535
     },
@@ -513,7 +513,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.021739130434782608,
-     "latency_s": 3.429,
+     "latency_s": 2.954,
      "edits": 11,
      "chars": 506
     },
@@ -525,7 +525,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.03543307086614173,
-     "latency_s": 2.985,
+     "latency_s": 2.583,
      "edits": 18,
      "chars": 508
     },
@@ -537,7 +537,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.031496062992125984,
-     "latency_s": 2.941,
+     "latency_s": 2.409,
      "edits": 16,
      "chars": 508
     },
@@ -549,7 +549,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.009259259259259259,
-     "latency_s": 2.49,
+     "latency_s": 2.105,
      "edits": 4,
      "chars": 432
     },
@@ -561,7 +561,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.009259259259259259,
-     "latency_s": 2.135,
+     "latency_s": 2.59,
      "edits": 4,
      "chars": 432
     },
@@ -585,7 +585,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.02493765586034913,
-     "latency_s": 2.368,
+     "latency_s": 1.915,
      "edits": 10,
      "chars": 401
     },
@@ -597,7 +597,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.018975332068311195,
-     "latency_s": 2.614,
+     "latency_s": 3.013,
      "edits": 10,
      "chars": 527
     },
@@ -609,7 +609,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.25806451612903225,
-     "latency_s": 2.265,
+     "latency_s": 2.298,
      "edits": 136,
      "chars": 527
     },
@@ -621,7 +621,7 @@
      "variant": "perspective",
      "engine": "vietocr",
      "cer": 0.003795066413662239,
-     "latency_s": 2.774,
+     "latency_s": 2.668,
      "edits": 2,
      "chars": 527
     },
@@ -633,7 +633,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.021321961620469083,
-     "latency_s": 2.658,
+     "latency_s": 2.307,
      "edits": 10,
      "chars": 469
     },
@@ -645,7 +645,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.023454157782515993,
-     "latency_s": 2.096,
+     "latency_s": 2.411,
      "edits": 11,
      "chars": 469
     },
@@ -669,7 +669,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.07493540051679587,
-     "latency_s": 2.296,
+     "latency_s": 1.944,
      "edits": 29,
      "chars": 387
     },
@@ -681,7 +681,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.011741682974559686,
-     "latency_s": 2.455,
+     "latency_s": 2.529,
      "edits": 6,
      "chars": 511
     },
@@ -693,7 +693,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.0136986301369863,
-     "latency_s": 2.357,
+     "latency_s": 2.653,
      "edits": 7,
      "chars": 511
     },
@@ -705,7 +705,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.025540275049115914,
-     "latency_s": 2.512,
+     "latency_s": 2.562,
      "edits": 13,
      "chars": 509
     },
@@ -717,7 +717,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.11591355599214145,
-     "latency_s": 2.48,
+     "latency_s": 2.145,
      "edits": 59,
      "chars": 509
     },
@@ -729,7 +729,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.03076923076923077,
-     "latency_s": 2.71,
+     "latency_s": 2.745,
      "edits": 16,
      "chars": 520
     },
@@ -741,7 +741,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.030162412993039442,
-     "latency_s": 2.369,
+     "latency_s": 2.549,
      "edits": 13,
      "chars": 431
     },
@@ -753,7 +753,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.018518518518518517,
-     "latency_s": 2.221,
+     "latency_s": 2.177,
      "edits": 8,
      "chars": 432
     },
@@ -765,7 +765,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.006944444444444444,
-     "latency_s": 2.203,
+     "latency_s": 2.142,
      "edits": 3,
      "chars": 432
     },
@@ -777,7 +777,7 @@
      "variant": "handwriting",
      "engine": "vietocr",
      "cer": 0.032407407407407406,
-     "latency_s": 2.057,
+     "latency_s": 2.098,
      "edits": 14,
      "chars": 432
     },
@@ -789,7 +789,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.019444444444444445,
-     "latency_s": 1.819,
+     "latency_s": 2.094,
      "edits": 7,
      "chars": 360
     },
@@ -801,7 +801,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.050314465408805034,
-     "latency_s": 1.781,
+     "latency_s": 1.659,
      "edits": 16,
      "chars": 318
     },
@@ -813,7 +813,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.07232704402515723,
-     "latency_s": 1.506,
+     "latency_s": 1.553,
      "edits": 23,
      "chars": 318
     },
@@ -825,7 +825,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.02997275204359673,
-     "latency_s": 1.829,
+     "latency_s": 1.96,
      "edits": 11,
      "chars": 367
     },
@@ -837,7 +837,7 @@
      "variant": "perspective",
      "engine": "vietocr",
      "cer": 0.08719346049046321,
-     "latency_s": 2.069,
+     "latency_s": 2.173,
      "edits": 32,
      "chars": 367
     },
@@ -849,7 +849,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.02476780185758514,
-     "latency_s": 1.574,
+     "latency_s": 1.772,
      "edits": 8,
      "chars": 323
     },
@@ -861,7 +861,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.01804123711340206,
-     "latency_s": 1.872,
+     "latency_s": 2.356,
      "edits": 7,
      "chars": 388
     },
@@ -873,7 +873,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.19845360824742267,
-     "latency_s": 1.794,
+     "latency_s": 1.936,
      "edits": 77,
      "chars": 388
     },
@@ -885,7 +885,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.06666666666666667,
-     "latency_s": 1.786,
+     "latency_s": 1.678,
      "edits": 22,
      "chars": 330
     },
@@ -897,7 +897,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.03608247422680412,
-     "latency_s": 1.916,
+     "latency_s": 2.046,
      "edits": 14,
      "chars": 388
     },
@@ -909,7 +909,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.05154639175257732,
-     "latency_s": 1.63,
+     "latency_s": 1.973,
      "edits": 20,
      "chars": 388
     },
@@ -921,7 +921,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.017241379310344827,
-     "latency_s": 1.984,
+     "latency_s": 2.196,
      "edits": 7,
      "chars": 406
     },
@@ -933,7 +933,7 @@
      "variant": "handwriting",
      "engine": "vietocr",
      "cer": 0.022167487684729065,
-     "latency_s": 1.864,
+     "latency_s": 2.183,
      "edits": 9,
      "chars": 406
     },
@@ -945,7 +945,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.027777777777777776,
-     "latency_s": 1.924,
+     "latency_s": 1.93,
      "edits": 10,
      "chars": 360
     },
@@ -957,7 +957,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.020671834625323,
-     "latency_s": 1.935,
+     "latency_s": 2.214,
      "edits": 8,
      "chars": 387
     },
@@ -969,7 +969,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.014577259475218658,
-     "latency_s": 1.716,
+     "latency_s": 1.743,
      "edits": 5,
      "chars": 343
     },
@@ -981,7 +981,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.04189944134078212,
-     "latency_s": 1.874,
+     "latency_s": 2.018,
      "edits": 15,
      "chars": 358
     },
@@ -993,7 +993,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.023316062176165803,
-     "latency_s": 1.86,
+     "latency_s": 2.162,
      "edits": 9,
      "chars": 386
     },
@@ -1005,7 +1005,7 @@
      "variant": "degraded",
      "engine": "vietocr",
      "cer": 0.05181347150259067,
-     "latency_s": 2.075,
+     "latency_s": 1.952,
      "edits": 20,
      "chars": 386
     },
@@ -1017,7 +1017,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.029850746268656716,
-     "latency_s": 1.812,
+     "latency_s": 1.88,
      "edits": 10,
      "chars": 335
     },
@@ -1029,7 +1029,7 @@
      "variant": "perspective",
      "engine": "vietocr",
      "cer": 0.005970149253731343,
-     "latency_s": 1.778,
+     "latency_s": 1.776,
      "edits": 2,
      "chars": 335
     },
@@ -1041,7 +1041,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.04242424242424243,
-     "latency_s": 1.659,
+     "latency_s": 1.814,
      "edits": 14,
      "chars": 330
     },
@@ -1053,7 +1053,7 @@
      "variant": "clean",
      "engine": "vietocr",
      "cer": 0.0,
-     "latency_s": 2.077,
+     "latency_s": 2.034,
      "edits": 0,
      "chars": 377
     }

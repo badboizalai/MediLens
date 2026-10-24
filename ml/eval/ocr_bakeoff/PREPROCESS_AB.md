@@ -16,3 +16,7 @@ Round-2 finding: r1 cropped a full-frame scan to its inner bordered table (error
 Reading: the existing Otsu quad already handles high-contrast pages (no change, no regression). When Otsu returns the whole frame, the new step rejects frame-sized quads (`MAX_DOC_AREA`) and finds the page from Canny edges instead. The golden-v0 CER by variant stays as in `REPORT.md` (perspective: paddle 13.21%, vietocr 4.64%) because those images take the unchanged path.
 
 Not done: VietOCR for printed lines is S6-T55b (heavy model). Re-run the engine bake-off on a harder perspective set (real desk photos, redacted) before claiming a CER gain.
+
+## BUG-13 follow-up
+
+On two shadowed golden-v0 `poor` degraded pages the Otsu quad was the dark lower half of the frame (flush with the left, right and bottom borders, step check passed), so the crop returned a 1000x610 strip. `crop_document` now skips a quad flush with more than two frame sides. Perspective variants (n=5) are unchanged; CER numbers are in `REPORT.md`.

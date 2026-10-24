@@ -69,22 +69,22 @@ Same 85 golden-v0 pages, same engines and pins as above, with `crop_document` (O
 | Engine | Variant (n) | Before | After |
 |---|---|---|---|
 | paddle | clean (50) | 12.35% | 12.35% |
-| paddle | degraded (25) | 22.63% | 27.98% |
+| paddle | degraded (25) | 22.63% | 22.59% |
 | paddle | handwriting (5) | 15.31% | 15.31% |
 | paddle | perspective (5) | 13.21% | 14.34% |
-| paddle | all (85) | 15.63% | 17.30% |
+| paddle | all (85) | 15.63% | 15.70% |
 | vietocr | clean (50) | 2.85% | 2.85% |
-| vietocr | degraded (25) | 7.61% | 14.51% |
+| vietocr | degraded (25) | 7.61% | 7.41% |
 | vietocr | handwriting (5) | 3.12% | 3.12% |
 | vietocr | perspective (5) | 4.64% | 2.23% |
-| vietocr | all (85) | 4.40% | 6.29% |
+| vietocr | all (85) | 4.40% | 4.18% |
 
-Mean latency per page (preprocessing excluded): paddle 0.40 -> 0.38 s, vietocr 2.51 -> 2.15 s.
+Mean latency per page (preprocessing excluded): paddle 0.40 -> 0.36 s, vietocr 2.51 -> 1.99 s.
 
 Reading (honest, n is small):
 - Clean and handwriting pages are unchanged (the crop is a no-op on full-frame pages).
 - Perspective (n=5): vietocr improves 4.64% -> 2.23%; paddle gets slightly worse (13.21% -> 14.34%), so the gain is engine-dependent and not established.
-- Degraded (n=25) gets worse overall. For vietocr the whole regression comes from 2 `poor` pages (`gv0-009-dental-vi`, `gv0-019-cardiology-vi`, per-page CER +0.88 and +0.86): `crop_document` returns a ~1000x610 strip of a 1000x1300 page (an inner region, probably the shadow edge), dropping most text. The other 23 degraded pages are within 0.001 of before. This is a defect in the S6-T55 crop (shadowed pages), outside this task's paths; it needs its own fix and a regression image, then a re-run of this table.
+- Degraded (n=25): no longer worse. BUG-13: `crop_document` used to return a ~1000x610 strip of a 1000x1300 page for 2 `poor` pages (`gv0-009-dental-vi`, `gv0-019-cardiology-vi`), because the shadowed lower half of the frame was taken for a page. Fixed by rejecting a quad flush with three frame sides (`MAX_FLUSH_SIDES`). Those pages: vietocr CER 0.920 -> 0.042 and 0.877 -> 0.017; paddle 0.931 -> 0.260 and 0.900 -> 0.250. All other rows, including perspective, are unchanged (within 0.001). The "After" column above is the post-fix run; the pre-fix values were vietocr degraded 14.51% / all 6.29% and paddle degraded 27.98% / all 17.30%.
 - Not claimed: any real-photo gain. These images are synthetic; the perspective set is a flat 4-point warp.
 
 Reproduce (needs the `preprocess` extra for OpenCV; run once per engine `paddle` / `vietocr`, with and without `--preprocess`):

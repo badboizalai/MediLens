@@ -12,29 +12,29 @@
    "status": "ok",
    "pages": 85,
    "cer": {
-    "overall": 0.1729939603106126,
+    "overall": 0.15697029458893136,
     "by_lang": {
      "en": 0.05109150023223409,
-     "vi": 0.20328549994229217
+     "vi": 0.18328011387681298
     },
     "by_quality": {
      "good": 0.12005120234067843,
      "medium": 0.1631228181529673,
-     "poor": 0.30052083333333335
+     "poor": 0.21024305555555556
     },
     "by_variant": {
      "clean": 0.1234936546870001,
-     "degraded": 0.27984648895342806,
+     "degraded": 0.2259101752930194,
      "handwriting": 0.15314347125201505,
      "perspective": 0.14344262295081966
     }
    },
    "latency_s": {
-    "mean": 0.3815305187176658,
-    "p50": 0.3607782869999028,
-    "p95": 0.5270813430001908
+    "mean": 0.3641181171058901,
+    "p50": 0.34497561599982873,
+    "p95": 0.47211596600027406
    },
-   "usd_per_doc": 1.0598069964379606e-05,
+   "usd_per_doc": 1.011439214183028e-05,
    "cost_basis": "cpu time at 0.1 USD/h (assumed)",
    "rows": [
     {
@@ -45,7 +45,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16666666666666666,
-     "latency_s": 0.273,
+     "latency_s": 0.268,
      "edits": 44,
      "chars": 264
     },
@@ -57,7 +57,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.24621212121212122,
-     "latency_s": 0.368,
+     "latency_s": 0.282,
      "edits": 65,
      "chars": 264
     },
@@ -69,7 +69,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.1583011583011583,
-     "latency_s": 0.648,
+     "latency_s": 0.496,
      "edits": 41,
      "chars": 259
     },
@@ -81,7 +81,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.2972972972972973,
-     "latency_s": 0.418,
+     "latency_s": 0.289,
      "edits": 77,
      "chars": 259
     },
@@ -93,7 +93,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.17689530685920576,
-     "latency_s": 0.794,
+     "latency_s": 0.551,
      "edits": 49,
      "chars": 277
     },
@@ -105,7 +105,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.2563176895306859,
-     "latency_s": 0.303,
+     "latency_s": 0.284,
      "edits": 71,
      "chars": 277
     },
@@ -117,7 +117,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16272189349112426,
-     "latency_s": 0.309,
+     "latency_s": 0.305,
      "edits": 55,
      "chars": 338
     },
@@ -129,7 +129,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.2781065088757396,
-     "latency_s": 0.315,
+     "latency_s": 0.284,
      "edits": 94,
      "chars": 338
     },
@@ -141,7 +141,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.025069637883008356,
-     "latency_s": 0.527,
+     "latency_s": 0.336,
      "edits": 9,
      "chars": 359
     },
@@ -153,7 +153,7 @@
      "variant": "handwriting",
      "engine": "paddle",
      "cer": 0.07242339832869081,
-     "latency_s": 0.408,
+     "latency_s": 0.314,
      "edits": 26,
      "chars": 359
     },
@@ -165,7 +165,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16356877323420074,
-     "latency_s": 0.443,
+     "latency_s": 0.308,
      "edits": 44,
      "chars": 269
     },
@@ -177,7 +177,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.17886178861788618,
-     "latency_s": 0.403,
+     "latency_s": 0.296,
      "edits": 44,
      "chars": 246
     },
@@ -189,7 +189,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.17872340425531916,
-     "latency_s": 0.348,
+     "latency_s": 0.345,
      "edits": 42,
      "chars": 235
     },
@@ -201,7 +201,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.2978723404255319,
-     "latency_s": 0.273,
+     "latency_s": 0.247,
      "edits": 70,
      "chars": 235
     },
@@ -213,7 +213,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.1717557251908397,
-     "latency_s": 0.302,
+     "latency_s": 0.294,
      "edits": 45,
      "chars": 262
     },
@@ -224,9 +224,9 @@
      "quality": "poor",
      "variant": "degraded",
      "engine": "paddle",
-     "cer": 0.9312977099236641,
-     "latency_s": 0.123,
-     "edits": 244,
+     "cer": 0.2595419847328244,
+     "latency_s": 0.279,
+     "edits": 68,
      "chars": 262
     },
     {
@@ -237,7 +237,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.030927835051546393,
-     "latency_s": 0.571,
+     "latency_s": 0.529,
      "edits": 9,
      "chars": 291
     },
@@ -249,7 +249,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.1552346570397112,
-     "latency_s": 0.343,
+     "latency_s": 0.332,
      "edits": 43,
      "chars": 277
     },
@@ -261,7 +261,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.156794425087108,
-     "latency_s": 0.302,
+     "latency_s": 0.294,
      "edits": 45,
      "chars": 287
     },
@@ -273,7 +273,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.17,
-     "latency_s": 0.282,
+     "latency_s": 0.271,
      "edits": 51,
      "chars": 300
     },
@@ -285,7 +285,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.25,
-     "latency_s": 0.282,
+     "latency_s": 0.277,
      "edits": 75,
      "chars": 300
     },
@@ -297,7 +297,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.1536050156739812,
-     "latency_s": 0.335,
+     "latency_s": 0.327,
      "edits": 49,
      "chars": 319
     },
@@ -309,7 +309,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.16927899686520376,
-     "latency_s": 0.328,
+     "latency_s": 0.324,
      "edits": 54,
      "chars": 319
     },
@@ -321,7 +321,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.0392156862745098,
-     "latency_s": 0.344,
+     "latency_s": 0.341,
      "edits": 14,
      "chars": 357
     },
@@ -333,7 +333,7 @@
      "variant": "handwriting",
      "engine": "paddle",
      "cer": 0.06442577030812324,
-     "latency_s": 0.309,
+     "latency_s": 0.32,
      "edits": 23,
      "chars": 357
     },
@@ -345,7 +345,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.17120622568093385,
-     "latency_s": 0.312,
+     "latency_s": 0.318,
      "edits": 44,
      "chars": 257
     },
@@ -357,7 +357,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.2840466926070039,
-     "latency_s": 0.341,
+     "latency_s": 0.298,
      "edits": 73,
      "chars": 257
     },
@@ -369,7 +369,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16612377850162866,
-     "latency_s": 0.349,
+     "latency_s": 0.318,
      "edits": 51,
      "chars": 307
     },
@@ -381,7 +381,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.22149837133550487,
-     "latency_s": 0.299,
+     "latency_s": 0.39,
      "edits": 68,
      "chars": 307
     },
@@ -393,7 +393,7 @@
      "variant": "handwriting",
      "engine": "paddle",
      "cer": 0.2182410423452769,
-     "latency_s": 0.299,
+     "latency_s": 0.316,
      "edits": 67,
      "chars": 307
     },
@@ -405,7 +405,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.12903225806451613,
-     "latency_s": 0.387,
+     "latency_s": 0.386,
      "edits": 60,
      "chars": 465
     },
@@ -417,7 +417,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.14933837429111532,
-     "latency_s": 0.512,
+     "latency_s": 0.472,
      "edits": 79,
      "chars": 529
     },
@@ -428,9 +428,9 @@
      "quality": "poor",
      "variant": "degraded",
      "engine": "paddle",
-     "cer": 0.8998109640831758,
-     "latency_s": 0.146,
-     "edits": 476,
+     "cer": 0.2495274102079395,
+     "latency_s": 0.392,
+     "edits": 132,
      "chars": 529
     },
     {
@@ -441,7 +441,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.025793650793650792,
-     "latency_s": 0.493,
+     "latency_s": 0.438,
      "edits": 13,
      "chars": 504
     },
@@ -453,7 +453,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.09523809523809523,
-     "latency_s": 0.457,
+     "latency_s": 0.412,
      "edits": 48,
      "chars": 504
     },
@@ -465,7 +465,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.14018691588785046,
-     "latency_s": 0.435,
+     "latency_s": 0.366,
      "edits": 60,
      "chars": 428
     },
@@ -477,7 +477,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.13271028037383178,
-     "latency_s": 0.435,
+     "latency_s": 0.432,
      "edits": 71,
      "chars": 535
     },
@@ -489,7 +489,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.16448598130841122,
-     "latency_s": 0.434,
+     "latency_s": 0.404,
      "edits": 88,
      "chars": 535
     },
@@ -501,7 +501,7 @@
      "variant": "perspective",
      "engine": "paddle",
      "cer": 0.15140186915887852,
-     "latency_s": 0.469,
+     "latency_s": 0.447,
      "edits": 81,
      "chars": 535
     },
@@ -513,7 +513,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.13043478260869565,
-     "latency_s": 0.425,
+     "latency_s": 0.421,
      "edits": 66,
      "chars": 506
     },
@@ -525,7 +525,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.12992125984251968,
-     "latency_s": 0.425,
+     "latency_s": 0.413,
      "edits": 66,
      "chars": 508
     },
@@ -537,7 +537,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.23818897637795275,
-     "latency_s": 0.399,
+     "latency_s": 0.389,
      "edits": 121,
      "chars": 508
     },
@@ -561,7 +561,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.1388888888888889,
-     "latency_s": 0.409,
+     "latency_s": 0.369,
      "edits": 60,
      "chars": 432
     },
@@ -573,7 +573,7 @@
      "variant": "perspective",
      "engine": "paddle",
      "cer": 0.06944444444444445,
-     "latency_s": 0.752,
+     "latency_s": 0.735,
      "edits": 30,
      "chars": 432
     },
@@ -585,7 +585,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.13466334164588528,
-     "latency_s": 0.394,
+     "latency_s": 0.362,
      "edits": 54,
      "chars": 401
     },
@@ -597,7 +597,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.1252371916508539,
-     "latency_s": 0.469,
+     "latency_s": 0.441,
      "edits": 66,
      "chars": 527
     },
@@ -609,7 +609,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.24667931688804554,
-     "latency_s": 0.404,
+     "latency_s": 0.398,
      "edits": 130,
      "chars": 527
     },
@@ -621,7 +621,7 @@
      "variant": "perspective",
      "engine": "paddle",
      "cer": 0.15749525616698293,
-     "latency_s": 0.444,
+     "latency_s": 0.436,
      "edits": 83,
      "chars": 527
     },
@@ -633,7 +633,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.13219616204690832,
-     "latency_s": 0.442,
+     "latency_s": 0.43,
      "edits": 62,
      "chars": 469
     },
@@ -645,7 +645,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.24946695095948826,
-     "latency_s": 0.382,
+     "latency_s": 0.384,
      "edits": 117,
      "chars": 469
     },
@@ -657,7 +657,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.12144702842377261,
-     "latency_s": 0.361,
+     "latency_s": 0.353,
      "edits": 47,
      "chars": 387
     },
@@ -681,7 +681,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.0273972602739726,
-     "latency_s": 0.45,
+     "latency_s": 0.449,
      "edits": 14,
      "chars": 511
     },
@@ -693,7 +693,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.09197651663405088,
-     "latency_s": 0.49,
+     "latency_s": 0.388,
      "edits": 47,
      "chars": 511
     },
@@ -705,7 +705,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.12770137524557956,
-     "latency_s": 0.437,
+     "latency_s": 0.422,
      "edits": 65,
      "chars": 509
     },
@@ -717,7 +717,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.21021611001964635,
-     "latency_s": 0.382,
+     "latency_s": 0.418,
      "edits": 107,
      "chars": 509
     },
@@ -729,7 +729,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.13076923076923078,
-     "latency_s": 0.451,
+     "latency_s": 0.456,
      "edits": 68,
      "chars": 520
     },
@@ -741,7 +741,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.12993039443155452,
-     "latency_s": 0.383,
+     "latency_s": 0.382,
      "edits": 56,
      "chars": 431
     },
@@ -753,7 +753,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.12268518518518519,
-     "latency_s": 0.402,
+     "latency_s": 0.388,
      "edits": 53,
      "chars": 432
     },
@@ -765,7 +765,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.20601851851851852,
-     "latency_s": 0.361,
+     "latency_s": 0.357,
      "edits": 89,
      "chars": 432
     },
@@ -777,7 +777,7 @@
      "variant": "handwriting",
      "engine": "paddle",
      "cer": 0.19444444444444445,
-     "latency_s": 0.363,
+     "latency_s": 0.358,
      "edits": 84,
      "chars": 432
     },
@@ -789,7 +789,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.019444444444444445,
-     "latency_s": 0.343,
+     "latency_s": 0.333,
      "edits": 7,
      "chars": 360
     },
@@ -801,7 +801,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16666666666666666,
-     "latency_s": 0.347,
+     "latency_s": 0.339,
      "edits": 53,
      "chars": 318
     },
@@ -813,7 +813,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.2830188679245283,
-     "latency_s": 0.326,
+     "latency_s": 0.319,
      "edits": 90,
      "chars": 318
     },
@@ -825,7 +825,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.1553133514986376,
-     "latency_s": 0.361,
+     "latency_s": 0.357,
      "edits": 57,
      "chars": 367
     },
@@ -837,7 +837,7 @@
      "variant": "perspective",
      "engine": "paddle",
      "cer": 0.1880108991825613,
-     "latency_s": 0.339,
+     "latency_s": 0.34,
      "edits": 69,
      "chars": 367
     },
@@ -861,7 +861,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16237113402061856,
-     "latency_s": 0.347,
+     "latency_s": 0.339,
      "edits": 63,
      "chars": 388
     },
@@ -873,7 +873,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.33762886597938147,
-     "latency_s": 0.411,
+     "latency_s": 0.311,
      "edits": 131,
      "chars": 388
     },
@@ -885,7 +885,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.02727272727272727,
-     "latency_s": 0.357,
+     "latency_s": 0.348,
      "edits": 9,
      "chars": 330
     },
@@ -897,7 +897,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16752577319587628,
-     "latency_s": 0.349,
+     "latency_s": 0.345,
      "edits": 65,
      "chars": 388
     },
@@ -909,7 +909,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.2551546391752577,
-     "latency_s": 0.32,
+     "latency_s": 0.313,
      "edits": 99,
      "chars": 388
     },
@@ -921,7 +921,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.15763546798029557,
-     "latency_s": 0.365,
+     "latency_s": 0.361,
      "edits": 64,
      "chars": 406
     },
@@ -933,7 +933,7 @@
      "variant": "handwriting",
      "engine": "paddle",
      "cer": 0.20935960591133004,
-     "latency_s": 0.305,
+     "latency_s": 0.309,
      "edits": 85,
      "chars": 406
     },
@@ -945,7 +945,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.15833333333333333,
-     "latency_s": 0.325,
+     "latency_s": 0.327,
      "edits": 57,
      "chars": 360
     },
@@ -957,7 +957,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16795865633074936,
-     "latency_s": 0.346,
+     "latency_s": 0.351,
      "edits": 65,
      "chars": 387
     },
@@ -969,7 +969,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.014577259475218658,
-     "latency_s": 0.368,
+     "latency_s": 0.359,
      "edits": 5,
      "chars": 343
     },
@@ -981,7 +981,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.15083798882681565,
-     "latency_s": 0.307,
+     "latency_s": 0.306,
      "edits": 54,
      "chars": 358
     },
@@ -993,7 +993,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.15544041450777202,
-     "latency_s": 0.333,
+     "latency_s": 0.342,
      "edits": 60,
      "chars": 386
     },
@@ -1005,7 +1005,7 @@
      "variant": "degraded",
      "engine": "paddle",
      "cer": 0.30569948186528495,
-     "latency_s": 0.324,
+     "latency_s": 0.326,
      "edits": 118,
      "chars": 386
     },
@@ -1017,7 +1017,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16119402985074627,
-     "latency_s": 0.328,
+     "latency_s": 0.412,
      "edits": 54,
      "chars": 335
     },
@@ -1029,7 +1029,7 @@
      "variant": "perspective",
      "engine": "paddle",
      "cer": 0.15522388059701492,
-     "latency_s": 0.438,
+     "latency_s": 0.434,
      "edits": 52,
      "chars": 335
     },
@@ -1041,7 +1041,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.16666666666666666,
-     "latency_s": 0.337,
+     "latency_s": 0.343,
      "edits": 55,
      "chars": 330
     },
@@ -1053,7 +1053,7 @@
      "variant": "clean",
      "engine": "paddle",
      "cer": 0.015915119363395226,
-     "latency_s": 0.344,
+     "latency_s": 0.341,
      "edits": 6,
      "chars": 377
     }

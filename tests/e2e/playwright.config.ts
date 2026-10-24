@@ -22,7 +22,14 @@ export default defineConfig({
         url: 'http://localhost:3000/en',
         reuseExistingServer: !process.env.CI,
         timeout: 180_000,
-        env: { AUTH_SECRET, NEXT_PUBLIC_API_BASE_URL: '' },
+        // Dummy OIDC values: Auth.js asserts a provider config; the e2e session is a minted JWT (no IdP call).
+        env: {
+          AUTH_SECRET,
+          NEXT_PUBLIC_API_BASE_URL: '',
+          AUTH_OIDC_ISSUER: 'http://127.0.0.1:9/e2e',
+          AUTH_OIDC_CLIENT_ID: 'e2e',
+          AUTH_OIDC_CLIENT_SECRET: 'e2e',
+        },
       },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },

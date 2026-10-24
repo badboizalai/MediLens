@@ -21,6 +21,19 @@ export function dedupeRegions(regions: Region3D[]): Region3D[] {
   return [...m.values()];
 }
 
+/** Camera actions behind the on-screen buttons and keyboard shortcuts (WCAG 2.5.7). */
+export type CameraApi = { rotate: (dir: -1 | 1) => void; zoom: (dir: -1 | 1) => void; reset: () => void };
+
+/** Key to camera action; null for keys we do not handle. */
+export function keyAction(key: string): { type: 'rotate' | 'zoom'; dir: -1 | 1 } | { type: 'reset' } | null {
+  if (key === 'ArrowLeft') return { type: 'rotate', dir: -1 };
+  if (key === 'ArrowRight') return { type: 'rotate', dir: 1 };
+  if (key === '+' || key === '=') return { type: 'zoom', dir: 1 };
+  if (key === '-') return { type: 'zoom', dir: -1 };
+  if (key === 'r' || key === 'R') return { type: 'reset' };
+  return null;
+}
+
 /** Picking an unlisted region (or nothing) clears the selection. */
 export const nextSelection = (picked: string | null, listed: ReadonlySet<string>) =>
   picked && listed.has(picked) ? picked : null;

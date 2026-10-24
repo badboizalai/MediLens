@@ -2,10 +2,10 @@
 
 import { Canvas, useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import { OrbitControls, useGLTF } from '@react-three/drei';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, type MutableRefObject } from 'react';
 import { Box3, Color, MeshStandardMaterial, Vector3, type Mesh } from 'three';
 import { FPS_WARMUP_S, FPS_WINDOW_S, MAX_DPR, MIN_FPS } from './budget';
-import { NEUTRAL_COLOR, isLod1, regionOf, severityColor, type Region3D } from './logic';
+import { NEUTRAL_COLOR, isLod1, regionOf, severityColor, type CameraApi, type Region3D } from './logic';
 
 // Bundler resolves these to hashed static assets served from 'self' (CSP connect-src).
 const URLS = {
@@ -20,6 +20,8 @@ export type Scene3DProps = {
   onPick: (code: string | null) => void;
   /** Called once if average FPS stays below MIN_FPS after warm-up. */
   onLowFps?: () => void;
+  /** Filled with the camera actions once the controls exist. */
+  cameraRef?: MutableRefObject<CameraApi | null>;
 };
 
 type Pose = { pos: Vector3; target: Vector3 };
@@ -116,6 +118,41 @@ function Focus({ model, selected }: { model: string; selected: string | null }) 
   return null;
 }
 
+const ROTATE_STEP = Math.PI / 12;
+const ZOOM_STEP = 1.25;
+
+/** Exposes rotate / zoom / reset on a ref; OrbitControls clamps distance via min/maxDistance. */
+function CameraBridge({ cameraRef }: { cameraRef: MutableRefObject<CameraApi | null> }) {
+  const camera = useThree((s) => s.camera);
+  const controls = useThree((s) => s.controls) as unknown as
+    | (Orbit & { getAzimuthalAngle: () => number; setAzimuthalAngle: (a: number) => void })
+    | null;
+  useEffect(() => {
+    if (!controls) return;
+    const home = { pos: camera.position.clone(), target: controls.target.clone() };
+    cameraRef.current = {
+      rotate: (dir) => {
+        controls.setAzimuthalAngle(controls.getAzimuthalAngle() + dir * ROTATE_STEP);
+        controls.update();
+      },
+      zoom: (dir) => {
+        const off = camera.position.clone().sub(controls.target).multiplyScalar(dir > 0 ? 1 / ZOOM_STEP : ZOOM_STEP);
+        camera.position.copy(controls.target).add(off);
+        controls.update();
+      },
+      reset: () => {
+        camera.position.copy(home.pos);
+        controls.target.copy(home.target);
+        controls.update();
+      },
+    };
+    return () => {
+      cameraRef.current = null;
+    };
+  }, [controls, camera, cameraRef]);
+  return null;
+}
+
 /** Counts frames after warm-up; fires onLow once if the average is under MIN_FPS. */
 function FpsGuard({ onLow }: { onLow: () => void }) {
   const s = useRef({ t: 0, frames: 0, done: false });
@@ -134,14 +171,15 @@ function FpsGuard({ onLow }: { onLow: () => void }) {
   return null;
 }
 
-export default function Scene3D({ onLowFps, ...props }: Scene3DProps) {
+export default function Scene3D({ onLowFps, cameraRef, ...props }: Scene3DProps) {
   return (
     <Canvas camera={{ position: [0, 0.3, props.model === 'body' ? 4 : 2.2], fov: 40 }} dpr={[1, MAX_DPR]}>
       {onLowFps && <FpsGuard onLow={onLowFps} />}
       <ambientLight intensity={0.8} />
       <directionalLight position={[3, 4, 5]} intensity={1.4} />
       <Model {...props} />
-      <OrbitControls makeDefault enablePan={false} />
+      <OrbitControls makeDefault enablePan={false} minDistance={0.6} maxDistance={12} />
+      {cameraRef && <CameraBridge cameraRef={cameraRef} />}
       <Focus model={props.model} selected={props.selected} />
     </Canvas>
   );

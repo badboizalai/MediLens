@@ -63,9 +63,7 @@ class SharingService:
         self._repo.audit(user, "share.revoke", share_id)
         self._repo.commit()
 
-    def read_findings(
-        self, subject: str, share_id: UUID, cursor: UUID | None, limit: int
-    ) -> tuple[list[SharedFinding], UUID | None]:
+    def _permitted_grant(self, subject: str, share_id: UUID) -> tuple[UUID, Grant]:
         user = self._repo.resolve_user(subject)
         grant = self._repo.grant_for_grantee(share_id, user) if user else None
         if user is None or grant is None:
@@ -74,6 +72,15 @@ class SharingService:
             self._repo.audit(user, "share.use_denied", share_id)
             self._repo.commit()
             raise ShareDenied
+        return user, grant
+
+    def get_share(self, subject: str, share_id: UUID) -> Grant:
+        return self._permitted_grant(subject, share_id)[1]
+
+    def read_findings(
+        self, subject: str, share_id: UUID, cursor: UUID | None, limit: int
+    ) -> tuple[list[SharedFinding], UUID | None]:
+        user, grant = self._permitted_grant(subject, share_id)
         self._repo.scope_to(grant.profile_id)  # this request, this one profile
         self._repo.audit(user, "share.use", share_id)
         limit = max(1, min(limit, MAX_LIMIT))

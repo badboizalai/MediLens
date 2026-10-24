@@ -42,8 +42,18 @@ def unwrap(v):
     return v
 
 
-def flatten(obj, prefix=""):
-    """Flatten nested fields into {path: normalised value}; lists of objects are keyed."""
+def flatten(obj, prefix="", conf=None):
+    """Flatten nested fields into {path: normalised value}; lists of objects are keyed.
+
+    If `conf` is a dict it is filled with {path: confidence} for wrapped leaf values.
+    """
+    if conf is not None and prefix and isinstance(obj, dict):
+        c = obj.get("confidence")
+        if isinstance(c, (int, float)) and not isinstance(c, bool):
+            if "value" in obj:
+                conf[prefix] = float(c)
+            elif "region_code" in obj:  # region object: confidence belongs to its code
+                conf[f"{prefix}.region_code"] = float(c)
     obj = unwrap(obj)
     out = {}
     if isinstance(obj, dict):
@@ -55,13 +65,13 @@ def flatten(obj, prefix=""):
                 key = LIST_KEYS[k]
                 for item in v:
                     kv = norm(unwrap(item.get(key))) if isinstance(item, dict) else norm(item)
-                    out.update(flatten(item, f"{path}[{kv}]"))
+                    out.update(flatten(item, f"{path}[{kv}]", conf))
             elif isinstance(v, list):
                 vals = sorted(n for n in (norm(unwrap(x)) for x in v) if n is not None)
                 if vals:
                     out[path] = "|".join(vals)
             else:
-                out.update(flatten(v, path))
+                out.update(flatten(v, path, conf))
     else:
         n = norm(obj)
         if n is not None and prefix:
@@ -164,6 +174,39 @@ def citation_valid(cite, gold_quotes):
     return any(p == page and q in gq for p, gq in gold_quotes)
 
 
+def calibration(pairs, n_bins=10):
+    """Expected calibration error. pairs: [(confidence in [0,1], correct bool)].
+
+    Equal-width bins; ECE = sum(n_b/n * |acc_b - conf_b|). Also the error rate among conf >= 0.7
+    (plan section 10.1). Returns None-valued ECE when there are no pairs (never invents one).
+    """
+    n = len(pairs)
+    bins = [[0, 0.0, 0] for _ in range(n_bins)]  # n, sum conf, n correct
+    for c, ok in pairs:
+        b = bins[min(int(max(c, 0.0) * n_bins), n_bins - 1)]
+        b[0] += 1
+        b[1] += c
+        b[2] += ok
+    ece = sum(abs(b[2] - b[1]) for b in bins) / n if n else None
+    hi = [ok for c, ok in pairs if c >= 0.7]
+    return {
+        "ece": ece,
+        "n": n,
+        "error_rate_conf_ge_0.7": (1 - sum(hi) / len(hi)) if hi else None,
+        "n_conf_ge_0.7": len(hi),
+        "bins": [
+            {
+                "lo": i / n_bins,
+                "hi": (i + 1) / n_bins,
+                "n": b[0],
+                "mean_conf": b[1] / b[0] if b[0] else None,
+                "accuracy": b[2] / b[0] if b[0] else None,
+            }
+            for i, b in enumerate(bins)
+        ],
+    }
+
+
 def score(gold, pred, fuzzy=0.9, max_errors=25):
     """gold/pred: {doc_id: record}. Returns a JSON-serialisable report dict."""
     groups = defaultdict(_Counts)
@@ -171,10 +214,18 @@ def score(gold, pred, fuzzy=0.9, max_errors=25):
     region_ok = region_total = 0
     cite_ok = cite_total = 0
     errors = []
+    cal_pairs = {"ALL": []}
+    region_by_unit = defaultdict(lambda: [0, 0])  # unit -> [correct, total]
     for doc_id, g in gold.items():
         p = pred.get(doc_id, {"fields": {}})
         unit = g.get("unit", "?")
-        gf, pf = flatten(g.get("fields", {})), flatten(p.get("fields", {}))
+        pconf = {}
+        gf, pf = flatten(g.get("fields", {})), flatten(p.get("fields", {}), conf=pconf)
+        for path, c in pconf.items():  # every predicted field with a stated confidence
+            if path in pf:
+                pair = (min(max(c, 0.0), 1.0), pf[path] == gf.get(path))
+                cal_pairs["ALL"].append(pair)
+                cal_pairs.setdefault(f"unit={unit}", []).append(pair)
         keys = ["ALL", f"unit={unit}", f"quality={g.get('quality', '?')}"]
         for name, val in sorted(g.get("strata", {}).items()):  # golden-v2: lang/layout/noise
             keys += [f"{name}={val}", f"{name}={val}@unit={unit}"]
@@ -210,6 +261,8 @@ def score(gold, pred, fuzzy=0.9, max_errors=25):
         for path, code in gr.items():
             region_total += 1
             region_ok += pr.get(path) == code
+            region_by_unit[unit][1] += 1
+            region_by_unit[unit][0] += pr.get(path) == code
 
         gold_quotes = [
             (c.get("page"), norm(c.get("quote")) or "") for c in citations(g.get("fields", {}))
@@ -233,6 +286,11 @@ def score(gold, pred, fuzzy=0.9, max_errors=25):
             "correct": region_ok,
             "total": region_total,
         },
+        "region_accuracy_by_unit": {
+            u: {"value": ok / t, "correct": ok, "total": t}
+            for u, (ok, t) in sorted(region_by_unit.items())
+        },
+        "calibration": {k: calibration(v) for k, v in sorted(cal_pairs.items())},
         "citation_validity": {
             "value": cite_ok / cite_total if cite_total else 0.0,
             "valid": cite_ok,
@@ -258,6 +316,9 @@ def check_gate(report, thresholds):
             need(f"field F1 ({grp})", s["f1"], thresholds["field_f1_per_unit"])
     need("region accuracy", report["region_accuracy"]["value"], thresholds["region_accuracy"])
     need("citation validity", report["citation_validity"]["value"], thresholds["citation_validity"])
+    ece = report["calibration"]["ALL"]["ece"]
+    if ece is not None and "ece_max" in thresholds and ece > thresholds["ece_max"]:
+        fails.append(f"ECE = {ece:.3f} > {thresholds['ece_max']:.3f}")
     if report["gold_docs"] < thresholds.get("min_gold_docs", 0):
         fails.append(f"gold docs = {report['gold_docs']} < {thresholds['min_gold_docs']}")
     if report["missing_pred_docs"]:

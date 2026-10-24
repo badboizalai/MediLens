@@ -20,6 +20,8 @@ def load(path):
 
 def to_markdown(report, fails, thresholds, banner):
     o, ra, cv = report["overall"], report["region_accuracy"], report["citation_validity"]
+    cal = report["calibration"]["ALL"]
+    ece = "n/a (no confidences)" if cal["ece"] is None else f"{cal['ece']:.3f} (n={cal['n']})"
     lines = ["# Extraction evaluation", ""]
     if banner:
         lines += [f"> **{banner}**", ""]
@@ -32,6 +34,7 @@ def to_markdown(report, fails, thresholds, banner):
         f"| Field F1 (overall) | {o['f1']:.3f} | >= {thresholds['field_f1_overall']} |",
         f"| Region accuracy | {ra['value']:.3f} ({ra['correct']}/{ra['total']}) | "
         f">= {thresholds['region_accuracy']} |",
+        f"| ECE (10 bins) | {ece} | <= {thresholds.get('ece_max', 'n/a')} |",
         f"| Citation validity | {cv['value']:.3f} ({cv['valid']}/{cv['total']}) | "
         f">= {thresholds['citation_validity']} |",
         "",
@@ -44,6 +47,9 @@ def to_markdown(report, fails, thresholds, banner):
             f"| {grp} | {s['precision']:.3f} | {s['recall']:.3f} | {s['f1']:.3f} | "
             f"{s['f1_fuzzy']:.3f} |"
         )
+    lines += ["", "| Region accuracy by unit | Value | n |", "| --- | --- | --- |"]
+    for u, r in report["region_accuracy_by_unit"].items():
+        lines.append(f"| {u} | {r['value']:.3f} | {r['total']} |")
     lines += ["", "## Weakest field paths (F1, by unit)", "", "| unit | path | F1 | tp | fp | fn |"]
     lines.append("| --- | --- | --- | --- | --- | --- |")
     rows = [(u, p, s) for u, ps in report["per_field_path"].items() for p, s in ps.items()]

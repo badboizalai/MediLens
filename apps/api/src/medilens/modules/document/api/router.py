@@ -10,7 +10,14 @@ from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.orm import Session, sessionmaker
 
+from medilens.core.config import get_settings
 from medilens.core.db import make_engine, make_session_factory
+from medilens.modules.document.application.rate_limit import (
+    InMemoryLimiter,
+    TooManyRequests,
+    UsageLimiter,
+    check_upload_allowed,
+)
 from medilens.modules.document.application.service import UploadService
 from medilens.modules.document.application.status_stream import Clock, watch_status
 from medilens.modules.document.domain.models import (
@@ -40,7 +47,7 @@ _PROBLEMS = {
     401: {"description": "Unauthenticated"},
     404: {"description": "Not found"},
     409: {"description": "Duplicate or missing upload"},
-    429: {"description": "Too many pending uploads"},
+    429: {"description": "Pending cap, rate limit, daily quota or stream cap (Retry-After)"},
     413: {"description": "File too large"},
     415: {"description": "Unsupported file type"},
 }
@@ -101,6 +108,11 @@ def get_dsr_storage() -> DsrStorage:
     return S3DsrStorage(get_storage_settings())
 
 
+@lru_cache
+def get_limiter() -> UsageLimiter:
+    return InMemoryLimiter()
+
+
 def get_service(
     session: Annotated[Session, Depends(get_session)],
     storage: Annotated[ObjectStorage, Depends(get_storage)],
@@ -122,7 +134,10 @@ def request_upload(
     user: Annotated[Principal, Depends(get_current_user)],
     service: Annotated[UploadService, Depends(get_service)],
     session: Annotated[Session, Depends(get_session)],
+    limiter: Annotated[UsageLimiter, Depends(get_limiter)],
 ) -> UploadResponse:
+    cfg = get_settings()
+    check_upload_allowed(limiter, user.sub, cfg.upload_requests_per_minute, cfg.upload_daily_quota)
     doc, presigned = service.request_upload(
         user.sub, profile_id, body.content_type, body.size_bytes
     )
@@ -204,6 +219,7 @@ def document_events(
     factory: Annotated[sessionmaker[Session], Depends(get_session_factory)],
     storage: Annotated[ObjectStorage, Depends(get_storage)],
     clock: Annotated[Clock, Depends(get_clock)],
+    limiter: Annotated[UsageLimiter, Depends(get_limiter)],
 ) -> StreamingResponse:
     def poll() -> str | None:
         with factory() as session:  # short transaction per poll: no connection held while idle
@@ -221,13 +237,20 @@ def document_events(
     if poll() is None:  # 404 as a normal Problem Details response, before the stream starts
         raise DocumentNotFound
 
+    slot = f"sse:{user.sub}"
+    if not limiter.acquire(slot, get_settings().sse_max_streams_per_user):
+        raise TooManyRequests("Too many open status streams.", 5)
+
     async def frames() -> AsyncIterator[str]:
-        async for status in watch_status(poll, clock):
-            if status is None:
-                yield ": keep-alive\n\n"
-                continue
-            data = {"status": status, "updatedAt": datetime.now(timezone.utc).isoformat()}
-            yield f"event: status\ndata: {json.dumps(data)}\n\n"
+        try:
+            async for status in watch_status(poll, clock):
+                if status is None:
+                    yield ": keep-alive\n\n"
+                    continue
+                data = {"status": status, "updatedAt": datetime.now(timezone.utc).isoformat()}
+                yield f"event: status\ndata: {json.dumps(data)}\n\n"
+        finally:
+            limiter.release(slot)  # also runs when the client disconnects
 
     return StreamingResponse(
         frames(), media_type="text/event-stream", headers={"Cache-Control": "no-cache"}

@@ -10,6 +10,7 @@ const finding = z.object({
   observed_at: z.string().nullable(),
   document_id: z.string().nullable(),
   label: z.string().nullable(),
+  source: z.string().nullish(),
 });
 const observation = z.object({
   name: z.string(),

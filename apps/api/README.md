@@ -52,6 +52,10 @@ It also ingests `extraction.completed` (S6-T53d2): env `RESULTS_BUCKET` names th
 - Otherwise `201 {emergency: false, label_key: "you_described", condition_id, region_code?, laterality?}`. A dictionary NER (`infra/location_ner.py`, reads `data/terminology/location-synonyms.v1.yaml`, dir via `MEDILENS_TERMINOLOGY_DIR`) maps the text to a `region_code`; side words trai/phai/left/right; several regions, group nodes or an unknown side on a paired organ -> unmapped (condition kept, no body finding, never guessed).
 - Stored as `clinical.conditions.source = 'patient_reported'` (migration 0007), `icd10_code` and `severity` NULL. `GET .../findings` returns `source` (`record` | `patient_reported`) so the web labels "you described". Text is never logged.
 
+## Upload rate limit and SSE cap (S6-F7, SEC-AP-08)
+
+Per authenticated subject: `UPLOAD_REQUESTS_PER_MINUTE` (10) and `UPLOAD_DAILY_QUOTA` (50) on `POST .../uploads`; `SSE_MAX_STREAMS_PER_USER` (3) concurrent `GET /v1/documents/{id}/events`. Over a limit: `429` problem+json with `Retry-After`; the SSE slot is freed when the stream ends or the client disconnects. State is in-process (`document/application/rate_limit.py`); behind N tasks the effective limit is N x, so move to Redis INCR+EXPIRE when scaled out.
+
 ## Data subject rights (S11-T106; Law 91/2025/QH15, Decree 356/2025)
 - `GET /v1/me/export`: JSON bundle (profiles incl. soft-deleted, document metadata, confirmed fields, conditions/findings/observations incl. patient-reported, shares, consents) plus 15-minute presigned URLs for original files.
 - `POST /v1/me/consents/{type}/withdraw`: sets `consents.withdrawn_at`. Processing stops because every consent check only counts rows with `withdrawn_at IS NULL`; already-stored data stays until `DELETE /v1/me`.

@@ -3,6 +3,7 @@
   "field_f1_overall": 0.80,
   "field_f1_per_unit": 0.80,
   "region_accuracy": 0.85,
+  "ece_max": 0.10,
   "citation_validity": 0.95,
   "min_gold_docs": 150
 }

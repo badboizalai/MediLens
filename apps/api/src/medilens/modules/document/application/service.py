@@ -9,6 +9,7 @@ from medilens.modules.document.domain.models import (
     SNIFF_BYTES,
     STATUS_PENDING,
     STATUS_UPLOADED,
+    ConsentWithdrawn,
     Document,
     DocumentNotFound,
     DuplicateDocument,
@@ -50,6 +51,8 @@ class UploadService:
     ) -> tuple[Document, Presigned]:
         if profile_id not in self._scope(subject):
             raise DocumentNotFound
+        if not self._owners.processing_allowed(subject):
+            raise ConsentWithdrawn("Processing consent was withdrawn; uploads are disabled.")
         if content_type not in ALLOWED_TYPES:
             raise UnsupportedFileType("Accepted formats: JPEG, PNG, HEIC, PDF.")
         if size_bytes > MAX_BYTES:

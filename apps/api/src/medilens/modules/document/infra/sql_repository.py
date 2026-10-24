@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from medilens.core.db import scope_to_profiles
 from medilens.modules.document.domain.models import (
+    CONSENT_PROCESSING,
     PENDING_WINDOW_SECONDS,
     STATUS_PENDING,
     STATUS_REJECTED,
@@ -34,6 +35,20 @@ class SqlProfileOwnership:
             {"sub": subject},
         )
         return [r[0] for r in rows]
+
+    def processing_allowed(self, subject: str) -> bool:
+        # No consent row at all (legacy accounts) is allowed; any withdrawn-and-not-regiven blocks.
+        return not self._session.execute(
+            text(
+                "SELECT EXISTS (SELECT 1 FROM identity.consents c "
+                "JOIN identity.users u ON u.id = c.user_id "
+                "WHERE u.external_sub = :sub AND c.type = :t AND c.deleted_at IS NULL "
+                "AND c.withdrawn_at IS NOT NULL "
+                "AND NOT EXISTS (SELECT 1 FROM identity.consents a WHERE a.user_id = c.user_id "
+                "AND a.type = c.type AND a.withdrawn_at IS NULL AND a.deleted_at IS NULL))"
+            ),
+            {"sub": subject, "t": CONSENT_PROCESSING},
+        ).scalar_one()
 
 
 class SqlDocumentRepository:

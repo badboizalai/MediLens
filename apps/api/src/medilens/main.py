@@ -1,4 +1,4 @@
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from typing import Annotated
 from uuid import UUID
 
@@ -19,13 +19,22 @@ from medilens.core.middleware import RequestIdMiddleware, SecurityHeadersMiddlew
 from medilens.modules.admin.api.router import router as admin_router
 from medilens.modules.clinical.api.router import router as clinical_router
 from medilens.modules.clinical.application.service import ClinicalService
+from medilens.modules.clinical.infra.dsr import SqlClinicalDsr
 from medilens.modules.clinical.infra.sql_repository import SqlClinicalRepository
+from medilens.modules.document.api import router as document_api
 from medilens.modules.document.api.router import router as document_router
+from medilens.modules.document.domain.ports import DsrStorage
+from medilens.modules.document.infra.dsr import SqlDocumentDsr
 from medilens.modules.extraction.api import router as extraction_api
+from medilens.modules.extraction.infra.dsr import SqlExtractionDsr
+from medilens.modules.identity.api import router as identity_api
 from medilens.modules.identity.api.dependencies import get_token_validator
 from medilens.modules.identity.api.router import router as identity_router
+from medilens.modules.identity.domain.dsr import ProfileStore
 from medilens.modules.knowledge.api.router import router as knowledge_router
+from medilens.modules.knowledge.infra.dsr import SqlKnowledgeDsr
 from medilens.modules.sharing.api.router import router as sharing_router
+from medilens.modules.sharing.infra.dsr import SqlSharingDsr
 from medilens.shared.auth import register_token_validator
 
 API_PREFIX = "/v1"  # every module router mounts under this prefix
@@ -36,6 +45,20 @@ def clinical_confirm_hook(
 ) -> Callable[[UUID], None]:
     """Confirming an extraction projects it into clinical findings, in the same transaction."""
     return ClinicalService(SqlClinicalRepository(session)).project_run
+
+
+def dsr_stores(
+    session: Annotated[Session, Depends(identity_api.get_session)],
+    storage: Annotated[DsrStorage, Depends(document_api.get_dsr_storage)],
+) -> Sequence[ProfileStore]:
+    """Every store of personal data, one transaction. Erasure order: dependants first."""
+    return [
+        SqlClinicalDsr(session),
+        SqlExtractionDsr(session),
+        SqlDocumentDsr(session, storage),
+        SqlKnowledgeDsr(session),
+        SqlSharingDsr(session),
+    ]
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -92,6 +115,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     v1.include_router(sharing_router)
     # v1.include_router(patient_router)
     app.dependency_overrides[extraction_api.get_confirm_hook] = clinical_confirm_hook
+    app.dependency_overrides[identity_api.get_dsr_stores] = dsr_stores
     app.include_router(v1)
     return app
 

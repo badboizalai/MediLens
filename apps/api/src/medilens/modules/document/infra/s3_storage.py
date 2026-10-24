@@ -10,7 +10,7 @@ from botocore.client import Config
 from botocore.exceptions import ClientError
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from medilens.modules.document.domain.models import Presigned
+from medilens.modules.document.domain.models import Presigned, quarantine_key
 
 _CHUNK = 1024 * 1024
 
@@ -107,3 +107,45 @@ class S3PageImages:
             "get_object", Params={"Bucket": self._bucket, "Key": key}, ExpiresIn=expires_in
         )
         return url
+
+
+class S3DsrStorage:
+    """Export and erase across the quarantine bucket and the worker pages bucket."""
+
+    def __init__(self, settings: StorageSettings, client: Any | None = None) -> None:
+        self._buckets = (settings.bucket, settings.pages_bucket)
+        self._client = client or boto3.client(
+            "s3",
+            endpoint_url=settings.endpoint_url,
+            region_name=settings.region,
+            config=Config(signature_version="s3v4"),
+        )
+
+    def _keys(self, bucket: str, prefix: str) -> list[str]:
+        pages = self._client.get_paginator("list_objects_v2").paginate(Bucket=bucket, Prefix=prefix)
+        return [o["Key"] for p in pages for o in p.get("Contents", [])]
+
+    def presign_original(self, profile_id: UUID, document_id: UUID, expires_in: int) -> str | None:
+        # raw/ is the worker's durable copy; quarantine/ exists until the worker has copied it
+        for bucket, prefix in (
+            (self._buckets[1], f"raw/{document_id}/"),
+            (self._buckets[0], quarantine_key(profile_id, document_id)),
+        ):
+            keys = self._keys(bucket, prefix)
+            if keys:
+                url: str = self._client.generate_presigned_url(
+                    "get_object", Params={"Bucket": bucket, "Key": keys[0]}, ExpiresIn=expires_in
+                )
+                return url
+        return None
+
+    def list_prefix(self, prefix: str) -> list[str]:
+        return [k for b in self._buckets for k in self._keys(b, prefix)]
+
+    def delete_prefix(self, prefix: str) -> None:
+        for b in self._buckets:
+            keys = self._keys(b, prefix)
+            for i in range(0, len(keys), 1000):  # DeleteObjects limit
+                self._client.delete_objects(
+                    Bucket=b, Delete={"Objects": [{"Key": k} for k in keys[i : i + 1000]]}
+                )

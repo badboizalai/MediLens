@@ -55,3 +55,9 @@ It also ingests `extraction.completed` (S6-T53d2): env `RESULTS_BUCKET` names th
 ## Upload rate limit and SSE cap (S6-F7, SEC-AP-08)
 
 Per authenticated subject: `UPLOAD_REQUESTS_PER_MINUTE` (10) and `UPLOAD_DAILY_QUOTA` (50) on `POST .../uploads`; `SSE_MAX_STREAMS_PER_USER` (3) concurrent `GET /v1/documents/{id}/events`. Over a limit: `429` problem+json with `Retry-After`; the SSE slot is freed when the stream ends or the client disconnects. State is in-process (`document/application/rate_limit.py`); behind N tasks the effective limit is N x, so move to Redis INCR+EXPIRE when scaled out.
+
+## Data subject rights (S11-T106; Law 91/2025/QH15, Decree 356/2025)
+- `GET /v1/me/export`: JSON bundle (profiles incl. soft-deleted, document metadata, confirmed fields, conditions/findings/observations incl. patient-reported, shares, consents) plus 15-minute presigned URLs for original files.
+- `POST /v1/me/consents/{type}/withdraw`: sets `consents.withdrawn_at`. Processing stops because every consent check only counts rows with `withdrawn_at IS NULL`; already-stored data stays until `DELETE /v1/me`.
+- `DELETE /v1/me` `{"confirmation": "DELETE MY ACCOUNT"}`: hard-deletes clinical rows per profile, S3 objects (quarantine/raw/pre/ocr/extractions prefixes), knowledge chunks, shares and identity rows in ONE transaction; audit actor ids are pseudonymised (legal retention). `verify_erased` runs before commit; leftovers roll everything back. Idempotent: a repeat returns the original receipt id. Wrong phrase: 400.
+- Owner-only (caller's own account): 401 unauthenticated, 404 unknown account. Modules plug in through `ProfileStore` adapters wired in `main.py:dsr_stores`. Inventory: `docs/data/dsr-store-inventory.md`.

@@ -6,7 +6,7 @@ Run `python3 tools/build_skill_index.py` to refresh.
 | --- | --- |
 | `medilens-3d-medical-artist` | 3D Medical Artist for the MediLens healthcare app - owner of the anatomical 3D models and 2D body/organ SVGs. |
 | `medilens-ai-ml-engineer` | AI Solution / ML Engineer for the MediLens healthcare app (OCR, computer vision, LLM). |
-| `medilens-backend-engineer` | Backend Engineer for the MediLens healthcare app (Python 3.12, FastAPI modular monolith, SQLAlchemy 2, Alembic, PostgreSQL with RLS, SQS worker jobs, transactional outbox). |
+| `medilens-backend-engineer` | Backend Engineer for the MediLens healthcare app (Python 3.10, FastAPI modular monolith, SQLAlchemy 2, Alembic, PostgreSQL with RLS, SQS worker jobs, transactional outbox). |
 | `medilens-business-analyst` | Business Analyst for the MediLens healthcare app. |
 | `medilens-clinical-informaticist` | Clinical Informaticist for the MediLens healthcare app - owner of health-data standards and meaning. |
 | `medilens-clinical-safety-officer` | Clinical Safety Officer (clinical advisor role) for the MediLens healthcare app. |

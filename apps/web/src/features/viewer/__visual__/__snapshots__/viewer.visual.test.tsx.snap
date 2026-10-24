@@ -1,0 +1,1315 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BodyMap2D snapshots > back: empty 1`] = `
+"<figure class="relative m-0 max-w-xs">
+<svg viewBox="0 0 200 460" role="group" aria-label="Back view of the body" class="h-auto w-full text-[var(--ml-color-brand-textMuted)]">
+<g fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+<path d="M88,68 L112,68 L138,74 L144,100 L132,200 L138,252 L62,252 L68,200 L56,100 L62,74Z">
+</path>
+<path d="M148,76 L158,80 L168,160 L176,232 L166,236 L156,170 L144,110Z">
+</path>
+<path d="M52,76 L42,80 L32,160 L24,232 L34,236 L44,170 L56,110Z">
+</path>
+<path d="M102,248 L138,250 L134,340 L130,448 L108,448 L106,340Z">
+</path>
+<path d="M98,248 L62,250 L66,340 L70,448 L92,448 L94,340Z">
+</path>
+<path d="M78,32 a22,24 0 1,0 44,0 a22,24 0 1,0 -44,0Z">
+</path>
+</g>
+<g stroke="currentColor" stroke-width="0.75">
+<ellipse cx="100" cy="32" rx="20" ry="22" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M58,90 L68,90 L70,165 L62,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M142,90 L132,90 L130,165 L138,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M66,208 L134,208 L128,252 L72,252Z" fill="none" aria-hidden="true">
+</path>
+<ellipse cx="84" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M97,70 h6 v178 h-6Z" fill="none" aria-hidden="true">
+</path>
+<ellipse cx="78" cy="108" rx="16" ry="24" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="122" cy="108" rx="16" ry="24" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="78" cy="160" rx="5" ry="9" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="87" cy="170" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="113" cy="170" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="84" cy="188" rx="6" ry="11" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="188" rx="6" ry="11" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="90" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="110" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="62" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="138" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+</g>
+</svg>
+<figcaption>
+<h3 class="mt-3 text-base font-semibold">Regions with findings</h3>
+<p class="text-sm">No regions with findings on this side.</p>
+<p class="mt-2 text-xs text-[var(--ml-color-brand-textMuted)]">Colours show what was noted in your record. They are an illustration to help you understand, not medical advice.</p>
+</figcaption>
+</figure>"
+`;
+
+exports[`BodyMap2D snapshots > back: one finding per severity 1`] = `
+"<figure class="relative m-0 max-w-xs">
+<svg viewBox="0 0 200 460" role="group" aria-label="Back view of the body" class="h-auto w-full text-[var(--ml-color-brand-textMuted)]">
+<g fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+<path d="M88,68 L112,68 L138,74 L144,100 L132,200 L138,252 L62,252 L68,200 L56,100 L62,74Z">
+</path>
+<path d="M148,76 L158,80 L168,160 L176,232 L166,236 L156,170 L144,110Z">
+</path>
+<path d="M52,76 L42,80 L32,160 L24,232 L34,236 L44,170 L56,110Z">
+</path>
+<path d="M102,248 L138,250 L134,340 L130,448 L108,448 L106,340Z">
+</path>
+<path d="M98,248 L62,250 L66,340 L70,448 L92,448 L94,340Z">
+</path>
+<path d="M78,32 a22,24 0 1,0 44,0 a22,24 0 1,0 -44,0Z">
+</path>
+</g>
+<g stroke="currentColor" stroke-width="0.75">
+<ellipse cx="100" cy="32" rx="20" ry="22" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M58,90 L68,90 L70,165 L62,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M142,90 L132,90 L130,165 L138,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M66,208 L134,208 L128,252 L72,252Z" fill="none" aria-hidden="true">
+</path>
+<ellipse cx="84" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M97,70 h6 v178 h-6Z" data-region="bone_spine" data-severity="spread" tabindex="0" role="img" aria-label="Spine: Metastasis / spread" style="fill: var(--ml-color-severity-spread); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2; stroke-dasharray: 6 3;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</path>
+<ellipse cx="78" cy="108" rx="16" ry="24" data-region="lung_l" data-severity="moderate" tabindex="0" role="img" aria-label="Left lung: Moderate" style="fill: var(--ml-color-severity-moderate); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="122" cy="108" rx="16" ry="24" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="78" cy="160" rx="5" ry="9" data-region="spleen" data-severity="reference" tabindex="0" role="img" aria-label="Spleen: Reference" style="fill: var(--ml-color-severity-reference); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2; stroke-dasharray: 2 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="87" cy="170" rx="4" ry="4" data-region="adrenal_l" data-severity="severe" tabindex="0" role="img" aria-label="Left adrenal gland: Severe" style="fill: var(--ml-color-severity-severe); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="113" cy="170" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="84" cy="188" rx="6" ry="11" data-region="kidney_l" data-severity="monitor" tabindex="0" role="img" aria-label="Left kidney: Monitor" style="fill: var(--ml-color-severity-monitor); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="116" cy="188" rx="6" ry="11" data-region="kidney_r" data-severity="mild" tabindex="0" role="img" aria-label="Right kidney: Mild" style="fill: var(--ml-color-severity-mild); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="90" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="110" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="62" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="138" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+</g>
+</svg>
+<figcaption>
+<h3 class="mt-3 text-base font-semibold">Regions with findings</h3>
+<ul class="list-disc pl-5 text-sm">
+<li>Spleen: Reference</li>
+<li>Left kidney: Monitor</li>
+<li>Right kidney: Mild</li>
+<li>Left lung: Moderate</li>
+<li>Left adrenal gland: Severe</li>
+<li>Spine: Metastasis / spread</li>
+</ul>
+<p class="mt-2 text-xs text-[var(--ml-color-brand-textMuted)]">Colours show what was noted in your record. They are an illustration to help you understand, not medical advice.</p>
+</figcaption>
+</figure>"
+`;
+
+exports[`BodyMap2D snapshots > front: empty 1`] = `
+"<figure class="relative m-0 max-w-xs">
+<svg viewBox="0 0 200 460" role="group" aria-label="Front view of the body" class="h-auto w-full text-[var(--ml-color-brand-textMuted)]">
+<g fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+<path d="M88,68 L112,68 L138,74 L144,100 L132,200 L138,252 L62,252 L68,200 L56,100 L62,74Z">
+</path>
+<path d="M148,76 L158,80 L168,160 L176,232 L166,236 L156,170 L144,110Z">
+</path>
+<path d="M52,76 L42,80 L32,160 L24,232 L34,236 L44,170 L56,110Z">
+</path>
+<path d="M102,248 L138,250 L134,340 L130,448 L108,448 L106,340Z">
+</path>
+<path d="M98,248 L62,250 L66,340 L70,448 L92,448 L94,340Z">
+</path>
+<path d="M78,32 a22,24 0 1,0 44,0 a22,24 0 1,0 -44,0Z">
+</path>
+</g>
+<g stroke="currentColor" stroke-width="0.75">
+<ellipse cx="100" cy="32" rx="20" ry="22" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M58,90 L68,90 L70,165 L62,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M142,90 L132,90 L130,165 L138,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M66,208 L134,208 L128,252 L72,252Z" fill="none" aria-hidden="true">
+</path>
+<ellipse cx="84" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="28" rx="14" ry="12" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="66" rx="8" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="78" cy="108" rx="16" ry="24" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="122" cy="108" rx="16" ry="24" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="106" cy="126" rx="10" ry="12" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="78" cy="150" rx="10" ry="10" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="122" cy="150" rx="10" ry="10" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="82" cy="172" rx="20" ry="11" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="170" rx="12" ry="10" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="136" cy="164" rx="5" ry="9" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="185" rx="20" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M74,194 h52 v38 h-52Z M84,204 v22 h32 v-22Z" fill="none" aria-hidden="true">
+</path>
+<ellipse cx="100" cy="230" rx="9" ry="6" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="243" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="88" cy="214" rx="4" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="112" cy="214" rx="4" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="90" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="110" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="82" cy="76" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="118" cy="76" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="62" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="138" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="91" cy="106" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="110" cy="104" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="199" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="80" cy="222" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="120" cy="222" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="84" cy="250" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="250" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+</g>
+</svg>
+<figcaption>
+<h3 class="mt-3 text-base font-semibold">Regions with findings</h3>
+<p class="text-sm">No regions with findings on this side.</p>
+<p class="mt-2 text-xs text-[var(--ml-color-brand-textMuted)]">Colours show what was noted in your record. They are an illustration to help you understand, not medical advice.</p>
+</figcaption>
+</figure>"
+`;
+
+exports[`BodyMap2D snapshots > front: one finding per severity 1`] = `
+"<figure class="relative m-0 max-w-xs">
+<svg viewBox="0 0 200 460" role="group" aria-label="Front view of the body" class="h-auto w-full text-[var(--ml-color-brand-textMuted)]">
+<g fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+<path d="M88,68 L112,68 L138,74 L144,100 L132,200 L138,252 L62,252 L68,200 L56,100 L62,74Z">
+</path>
+<path d="M148,76 L158,80 L168,160 L176,232 L166,236 L156,170 L144,110Z">
+</path>
+<path d="M52,76 L42,80 L32,160 L24,232 L34,236 L44,170 L56,110Z">
+</path>
+<path d="M102,248 L138,250 L134,340 L130,448 L108,448 L106,340Z">
+</path>
+<path d="M98,248 L62,250 L66,340 L70,448 L92,448 L94,340Z">
+</path>
+<path d="M78,32 a22,24 0 1,0 44,0 a22,24 0 1,0 -44,0Z">
+</path>
+</g>
+<g stroke="currentColor" stroke-width="0.75">
+<ellipse cx="100" cy="32" rx="20" ry="22" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M58,90 L68,90 L70,165 L62,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M142,90 L132,90 L130,165 L138,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M66,208 L134,208 L128,252 L72,252Z" fill="none" aria-hidden="true">
+</path>
+<ellipse cx="84" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="28" rx="14" ry="12" data-region="brain" data-severity="spread" tabindex="0" role="img" aria-label="Brain: Metastasis / spread" style="fill: var(--ml-color-severity-spread); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2; stroke-dasharray: 6 3;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="100" cy="66" rx="8" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="78" cy="108" rx="16" ry="24" data-region="lung_r" data-severity="severe" tabindex="0" role="img" aria-label="Right lung: Severe" style="fill: var(--ml-color-severity-severe); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="122" cy="108" rx="16" ry="24" data-region="lung_l" data-severity="moderate" tabindex="0" role="img" aria-label="Left lung: Moderate" style="fill: var(--ml-color-severity-moderate); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="106" cy="126" rx="10" ry="12" data-region="heart" data-severity="reference" tabindex="0" role="img" aria-label="Heart: Reference" style="fill: var(--ml-color-severity-reference); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2; stroke-dasharray: 2 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="78" cy="150" rx="10" ry="10" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="122" cy="150" rx="10" ry="10" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="82" cy="172" rx="20" ry="11" data-region="liver" data-severity="monitor" tabindex="0" role="img" aria-label="Liver: Monitor" style="fill: var(--ml-color-severity-monitor); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="116" cy="170" rx="12" ry="10" data-region="stomach" data-severity="mild" tabindex="0" role="img" aria-label="Stomach: Mild" style="fill: var(--ml-color-severity-mild); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="136" cy="164" rx="5" ry="9" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="185" rx="20" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M74,194 h52 v38 h-52Z M84,204 v22 h32 v-22Z" fill="none" aria-hidden="true">
+</path>
+<ellipse cx="100" cy="230" rx="9" ry="6" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="243" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="88" cy="214" rx="4" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="112" cy="214" rx="4" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="90" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="110" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="82" cy="76" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="118" cy="76" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="62" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="138" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="91" cy="106" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="110" cy="104" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="199" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="80" cy="222" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="120" cy="222" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="84" cy="250" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="250" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+</g>
+</svg>
+<figcaption>
+<h3 class="mt-3 text-base font-semibold">Regions with findings</h3>
+<ul class="list-disc pl-5 text-sm">
+<li>Heart: Reference</li>
+<li>Liver: Monitor</li>
+<li>Stomach: Mild</li>
+<li>Left lung: Moderate</li>
+<li>Right lung: Severe</li>
+<li>Brain: Metastasis / spread</li>
+</ul>
+<p class="mt-2 text-xs text-[var(--ml-color-brand-textMuted)]">Colours show what was noted in your record. They are an illustration to help you understand, not medical advice.</p>
+</figcaption>
+</figure>"
+`;
+
+exports[`BodyMap2D snapshots > unmapped codes are dropped, not drawn 1`] = `
+"<figure class="relative m-0 max-w-xs">
+<svg viewBox="0 0 200 460" role="group" aria-label="Front view of the body" class="h-auto w-full text-[var(--ml-color-brand-textMuted)]">
+<g fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+<path d="M88,68 L112,68 L138,74 L144,100 L132,200 L138,252 L62,252 L68,200 L56,100 L62,74Z">
+</path>
+<path d="M148,76 L158,80 L168,160 L176,232 L166,236 L156,170 L144,110Z">
+</path>
+<path d="M52,76 L42,80 L32,160 L24,232 L34,236 L44,170 L56,110Z">
+</path>
+<path d="M102,248 L138,250 L134,340 L130,448 L108,448 L106,340Z">
+</path>
+<path d="M98,248 L62,250 L66,340 L70,448 L92,448 L94,340Z">
+</path>
+<path d="M78,32 a22,24 0 1,0 44,0 a22,24 0 1,0 -44,0Z">
+</path>
+</g>
+<g stroke="currentColor" stroke-width="0.75">
+<ellipse cx="100" cy="32" rx="20" ry="22" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M58,90 L68,90 L70,165 L62,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M142,90 L132,90 L130,165 L138,165Z" fill="none" aria-hidden="true">
+</path>
+<path d="M66,208 L134,208 L128,252 L72,252Z" fill="none" aria-hidden="true">
+</path>
+<ellipse cx="84" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="330" rx="6" ry="62" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="28" rx="14" ry="12" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="66" rx="8" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="78" cy="108" rx="16" ry="24" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="122" cy="108" rx="16" ry="24" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="106" cy="126" rx="10" ry="12" data-region="heart" data-severity="reference" tabindex="0" role="img" aria-label="Heart: Reference" style="fill: var(--ml-color-severity-reference); fill-opacity: 0.75; stroke: currentColor; stroke-width: 2; stroke-dasharray: 2 2;" class="outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]">
+</ellipse>
+<ellipse cx="78" cy="150" rx="10" ry="10" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="122" cy="150" rx="10" ry="10" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="82" cy="172" rx="20" ry="11" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="170" rx="12" ry="10" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="136" cy="164" rx="5" ry="9" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="185" rx="20" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<path d="M74,194 h52 v38 h-52Z M84,204 v22 h32 v-22Z" fill="none" aria-hidden="true">
+</path>
+<ellipse cx="100" cy="230" rx="9" ry="6" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="243" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="88" cy="214" rx="4" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="112" cy="214" rx="4" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="90" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="110" cy="60" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="82" cy="76" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="118" cy="76" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="62" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="138" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="100" rx="4" ry="4" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="91" cy="106" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="110" cy="104" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="100" cy="199" rx="3" ry="3" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="80" cy="222" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="120" cy="222" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="84" cy="250" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+<ellipse cx="116" cy="250" rx="3.5" ry="3.5" fill="none" aria-hidden="true">
+</ellipse>
+</g>
+</svg>
+<figcaption>
+<h3 class="mt-3 text-base font-semibold">Regions with findings</h3>
+<ul class="list-disc pl-5 text-sm">
+<li>Heart: Reference</li>
+</ul>
+<p class="mt-2 text-xs text-[var(--ml-color-brand-textMuted)]">Colours show what was noted in your record. They are an illustration to help you understand, not medical advice.</p>
+</figcaption>
+</figure>"
+`;
+
+exports[`Odontogram snapshots > each state and surface incl. I->O, P->L 1`] = `
+"<figure class="m-0 max-w-3xl">
+<svg viewBox="0 0 490 150" role="group" aria-label="Permanent teeth chart, FDI numbering, dentist's view" class="h-auto w-full text-[var(--ml-color-brand-textMuted)]">
+<g id="tooth_18" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(5 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_18__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_18__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_18__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_18__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_18__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">18</text>
+</g>
+<g id="tooth_17" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(35 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_17__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_17__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_17__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_17__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_17__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">17</text>
+</g>
+<g id="tooth_16" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(65 15)" data-state="caries" tabindex="0" role="button" aria-pressed="false" aria-label="Tooth 16: Caries noted, surfaces occlusal, mesial">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_16__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_16__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_16__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_16__M" class="surface surface-M" data-state="caries" fill="var(--ml-color-severity-moderate)" fill-opacity="0.75" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_16__O" class="surface surface-O" data-state="caries" fill="var(--ml-color-severity-moderate)" fill-opacity="0.75" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">16</text>
+</g>
+<g id="tooth_15" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(95 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_15__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_15__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_15__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_15__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_15__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">15</text>
+</g>
+<g id="tooth_14" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(125 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_14__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_14__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_14__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_14__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_14__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">14</text>
+</g>
+<g id="tooth_13" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(155 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_13__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_13__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_13__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_13__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_13__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">13</text>
+</g>
+<g id="tooth_12" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(185 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_12__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_12__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_12__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_12__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_12__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">12</text>
+</g>
+<g id="tooth_11" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(215 15)" data-state="filled" tabindex="0" role="button" aria-pressed="false" aria-label="Tooth 11: Filled, surfaces occlusal, lingual">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_11__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_11__L" class="surface surface-L" data-state="filled" fill="var(--ml-color-severity-reference)" fill-opacity="0.75" stroke="currentColor" stroke-width="1" stroke-dasharray="1 1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_11__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_11__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_11__O" class="surface surface-O" data-state="filled" fill="var(--ml-color-severity-reference)" fill-opacity="0.75" stroke="currentColor" stroke-width="1" stroke-dasharray="1 1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">11</text>
+</g>
+<g id="tooth_21" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(255 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_21__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_21__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_21__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_21__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_21__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">21</text>
+</g>
+<g id="tooth_22" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(285 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_22__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_22__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_22__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_22__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_22__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">22</text>
+</g>
+<g id="tooth_23" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(315 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_23__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_23__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_23__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_23__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_23__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">23</text>
+</g>
+<g id="tooth_24" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(345 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_24__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_24__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_24__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_24__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_24__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">24</text>
+</g>
+<g id="tooth_25" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(375 15)" data-state="filled" tabindex="0" role="button" aria-pressed="false" aria-label="Tooth 25: Filled, surfaces distal">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_25__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_25__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_25__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_25__D" class="surface surface-D" data-state="filled" fill="var(--ml-color-severity-reference)" fill-opacity="0.75" stroke="currentColor" stroke-width="1" stroke-dasharray="1 1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_25__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">25</text>
+</g>
+<g id="tooth_26" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(405 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_26__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_26__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_26__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_26__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_26__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">26</text>
+</g>
+<g id="tooth_27" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(435 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_27__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_27__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_27__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_27__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_27__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">27</text>
+</g>
+<g id="tooth_28" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(465 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_28__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_28__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_28__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_28__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_28__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">28</text>
+</g>
+<g id="tooth_48" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(5 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_48__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_48__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_48__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_48__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_48__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">48</text>
+</g>
+<g id="tooth_47" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(35 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_47__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_47__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_47__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_47__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_47__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">47</text>
+</g>
+<g id="tooth_46" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(65 95)" data-state="implant" tabindex="0" role="button" aria-pressed="false" aria-label="Tooth 46: Implant">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_46__B" class="surface surface-B" data-state="implant" fill="var(--ml-color-severity-monitor)" fill-opacity="0.75" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_46__L" class="surface surface-L" data-state="implant" fill="var(--ml-color-severity-monitor)" fill-opacity="0.75" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_46__D" class="surface surface-D" data-state="implant" fill="var(--ml-color-severity-monitor)" fill-opacity="0.75" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_46__M" class="surface surface-M" data-state="implant" fill="var(--ml-color-severity-monitor)" fill-opacity="0.75" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_46__O" class="surface surface-O" data-state="implant" fill="var(--ml-color-severity-monitor)" fill-opacity="0.75" stroke="currentColor" stroke-width="1">
+</rect>
+<circle cx="14" cy="14" r="13" fill="none" stroke="currentColor" stroke-width="2">
+</circle>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">46</text>
+</g>
+<g id="tooth_45" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(95 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_45__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_45__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_45__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_45__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_45__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">45</text>
+</g>
+<g id="tooth_44" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(125 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_44__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_44__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_44__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_44__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_44__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">44</text>
+</g>
+<g id="tooth_43" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(155 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_43__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_43__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_43__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_43__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_43__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">43</text>
+</g>
+<g id="tooth_42" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(185 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_42__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_42__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_42__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_42__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_42__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">42</text>
+</g>
+<g id="tooth_41" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(215 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_41__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_41__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_41__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_41__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_41__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">41</text>
+</g>
+<g id="tooth_31" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(255 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_31__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_31__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_31__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_31__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_31__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">31</text>
+</g>
+<g id="tooth_32" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(285 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_32__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_32__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_32__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_32__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_32__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">32</text>
+</g>
+<g id="tooth_33" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(315 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_33__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_33__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_33__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_33__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_33__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">33</text>
+</g>
+<g id="tooth_34" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(345 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_34__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_34__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_34__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_34__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_34__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">34</text>
+</g>
+<g id="tooth_35" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(375 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_35__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_35__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_35__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_35__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_35__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">35</text>
+</g>
+<g id="tooth_36" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(405 95)" data-state="missing" tabindex="0" role="button" aria-pressed="false" aria-label="Tooth 36: Missing">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_36__B" class="surface surface-B" data-state="missing" fill="none" fill-opacity="0.75" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_36__L" class="surface surface-L" data-state="missing" fill="none" fill-opacity="0.75" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_36__M" class="surface surface-M" data-state="missing" fill="none" fill-opacity="0.75" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_36__D" class="surface surface-D" data-state="missing" fill="none" fill-opacity="0.75" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_36__O" class="surface surface-O" data-state="missing" fill="none" fill-opacity="0.75" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2">
+</rect>
+<path d="M0,0 L28,28 M28,0 L0,28" stroke="currentColor" stroke-width="1.5" fill="none">
+</path>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">36</text>
+</g>
+<g id="tooth_37" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(435 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_37__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_37__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_37__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_37__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_37__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">37</text>
+</g>
+<g id="tooth_38" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(465 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_38__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_38__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_38__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_38__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_38__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">38</text>
+</g>
+</svg>
+<figcaption>
+<h3 class="mt-3 text-base font-semibold">Teeth with notes in your record</h3>
+<ul class="list-disc pl-5 text-sm">
+<li>Tooth 16: Caries noted, surfaces occlusal, mesial</li>
+<li>Tooth 25: Filled, surfaces distal</li>
+<li>Tooth 36: Missing</li>
+<li>Tooth 46: Implant</li>
+<li>Tooth 11: Filled, surfaces occlusal, lingual</li>
+</ul>
+<p role="status" class="mt-2 text-sm font-medium">
+</p>
+<p class="mt-2 text-xs text-[var(--ml-color-brand-textMuted)]">This chart illustrates what was noted in your record to help you understand it. It is not medical advice.</p>
+</figcaption>
+</figure>"
+`;
+
+exports[`Odontogram snapshots > empty 1`] = `
+"<figure class="m-0 max-w-3xl">
+<svg viewBox="0 0 490 150" role="group" aria-label="Permanent teeth chart, FDI numbering, dentist's view" class="h-auto w-full text-[var(--ml-color-brand-textMuted)]">
+<g id="tooth_18" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(5 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_18__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_18__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_18__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_18__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_18__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">18</text>
+</g>
+<g id="tooth_17" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(35 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_17__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_17__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_17__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_17__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_17__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">17</text>
+</g>
+<g id="tooth_16" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(65 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_16__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_16__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_16__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_16__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_16__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">16</text>
+</g>
+<g id="tooth_15" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(95 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_15__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_15__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_15__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_15__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_15__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">15</text>
+</g>
+<g id="tooth_14" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(125 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_14__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_14__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_14__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_14__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_14__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">14</text>
+</g>
+<g id="tooth_13" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(155 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_13__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_13__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_13__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_13__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_13__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">13</text>
+</g>
+<g id="tooth_12" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(185 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_12__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_12__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_12__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_12__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_12__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">12</text>
+</g>
+<g id="tooth_11" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(215 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_11__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_11__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_11__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_11__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_11__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">11</text>
+</g>
+<g id="tooth_21" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(255 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_21__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_21__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_21__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_21__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_21__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">21</text>
+</g>
+<g id="tooth_22" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(285 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_22__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_22__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_22__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_22__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_22__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">22</text>
+</g>
+<g id="tooth_23" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(315 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_23__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_23__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_23__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_23__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_23__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">23</text>
+</g>
+<g id="tooth_24" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(345 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_24__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_24__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_24__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_24__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_24__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">24</text>
+</g>
+<g id="tooth_25" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(375 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_25__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_25__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_25__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_25__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_25__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">25</text>
+</g>
+<g id="tooth_26" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(405 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_26__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_26__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_26__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_26__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_26__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">26</text>
+</g>
+<g id="tooth_27" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(435 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_27__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_27__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_27__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_27__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_27__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">27</text>
+</g>
+<g id="tooth_28" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(465 15)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_28__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_28__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_28__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_28__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_28__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">28</text>
+</g>
+<g id="tooth_48" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(5 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_48__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_48__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_48__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_48__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_48__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">48</text>
+</g>
+<g id="tooth_47" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(35 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_47__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_47__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_47__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_47__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_47__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">47</text>
+</g>
+<g id="tooth_46" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(65 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_46__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_46__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_46__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_46__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_46__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">46</text>
+</g>
+<g id="tooth_45" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(95 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_45__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_45__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_45__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_45__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_45__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">45</text>
+</g>
+<g id="tooth_44" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(125 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_44__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_44__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_44__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_44__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_44__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">44</text>
+</g>
+<g id="tooth_43" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(155 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_43__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_43__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_43__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_43__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_43__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">43</text>
+</g>
+<g id="tooth_42" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(185 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_42__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_42__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_42__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_42__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_42__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">42</text>
+</g>
+<g id="tooth_41" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(215 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_41__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_41__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_41__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_41__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_41__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">41</text>
+</g>
+<g id="tooth_31" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(255 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_31__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_31__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_31__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_31__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_31__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">31</text>
+</g>
+<g id="tooth_32" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(285 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_32__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_32__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_32__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_32__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_32__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">32</text>
+</g>
+<g id="tooth_33" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(315 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_33__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_33__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_33__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_33__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_33__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">33</text>
+</g>
+<g id="tooth_34" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(345 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_34__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_34__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_34__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_34__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_34__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">34</text>
+</g>
+<g id="tooth_35" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(375 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_35__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_35__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_35__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_35__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_35__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">35</text>
+</g>
+<g id="tooth_36" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(405 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_36__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_36__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_36__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_36__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_36__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">36</text>
+</g>
+<g id="tooth_37" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(435 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_37__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_37__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_37__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_37__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_37__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">37</text>
+</g>
+<g id="tooth_38" class="tooth outline-offset-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--ml-color-brand-primary)]" transform="translate(465 95)" aria-hidden="true">
+<polygon points="0,0 28,0 19,9 9,9" id="tooth_38__B" class="surface surface-B" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="9,19 19,19 28,28 0,28" id="tooth_38__L" class="surface surface-L" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="0,0 9,9 9,19 0,28" id="tooth_38__M" class="surface surface-M" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<polygon points="28,0 28,28 19,19 19,9" id="tooth_38__D" class="surface surface-D" fill="none" stroke="currentColor" stroke-width="1">
+</polygon>
+<rect x="9" y="9" width="10" height="10" id="tooth_38__O" class="surface surface-O" fill="none" stroke="currentColor" stroke-width="1">
+</rect>
+<text x="14" y="-3" font-size="9" text-anchor="middle" fill="currentColor">38</text>
+</g>
+</svg>
+<figcaption>
+<h3 class="mt-3 text-base font-semibold">Teeth with notes in your record</h3>
+<p class="text-sm">No teeth with notes in your record.</p>
+<p role="status" class="mt-2 text-sm font-medium">
+</p>
+<p class="mt-2 text-xs text-[var(--ml-color-brand-textMuted)]">This chart illustrates what was noted in your record to help you understand it. It is not medical advice.</p>
+</figcaption>
+</figure>"
+`;

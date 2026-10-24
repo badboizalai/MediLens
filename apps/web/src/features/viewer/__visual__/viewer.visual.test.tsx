@@ -40,7 +40,7 @@ describe('BodyMap2D snapshots', () => {
     it(`${side}: one finding per severity`, () =>
       expect(html(<BodyMap2D side={side} findings={perSeverity[side]} />)).toMatchSnapshot());
   }
-  it('unmapped codes are dropped, not drawn', () =>
+  it('unmapped codes are not drawn but listed as not placed (HZ-002)', () =>
     expect(
       html(<BodyMap2D side="front" findings={[{ region_code: 'nope', severity: 'mild' }, ...perSeverity.front.slice(0, 1)]} />),
     ).toMatchSnapshot());

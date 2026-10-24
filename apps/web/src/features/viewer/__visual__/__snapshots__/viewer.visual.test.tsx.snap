@@ -342,7 +342,7 @@ exports[`BodyMap2D snapshots > front: one finding per severity 1`] = `
 </figure>"
 `;
 
-exports[`BodyMap2D snapshots > unmapped codes are dropped, not drawn 1`] = `
+exports[`BodyMap2D snapshots > unmapped codes are not drawn but listed as not placed (HZ-002) 1`] = `
 "<figure class="relative m-0 max-w-xs">
 <svg viewBox="0 0 200 460" role="group" aria-label="Front view of the body" class="h-auto w-full text-[var(--ml-color-brand-textMuted)]">
 <g fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
@@ -439,6 +439,13 @@ exports[`BodyMap2D snapshots > unmapped codes are dropped, not drawn 1`] = `
 <ul class="list-disc pl-5 text-sm">
 <li>Heart: Reference</li>
 </ul>
+<section aria-labelledby="unmapped-title">
+<h3 id="unmapped-title" class="mt-3 text-base font-semibold">Not placed on the body</h3>
+<p class="text-xs text-[var(--ml-color-brand-textMuted)]">These notes could not be matched to a place on the body map.</p>
+<ul class="list-disc pl-5 text-sm">
+<li>nope</li>
+</ul>
+</section>
 <p class="mt-2 text-xs text-[var(--ml-color-brand-textMuted)]">Colours show what was noted in your record. They are an illustration to help you understand, not medical advice.</p>
 </figcaption>
 </figure>"

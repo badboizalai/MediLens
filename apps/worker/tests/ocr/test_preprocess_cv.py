@@ -150,3 +150,22 @@ def test_oversized_header_is_not_decoded():
     png = b"\x89PNG\r\n\x1a\n" + struct.pack(">I", 13) + b"IHDR" + ihdr
     png += struct.pack(">I", zlib.crc32(b"IHDR" + ihdr))
     assert decode(png) is None
+
+
+def _golden_v0(name):
+    return cv2.imread(str(GOLDEN.parent.parent / "golden-v0" / "images" / name))
+
+
+@pytest.mark.parametrize("name", ["gv0-009-dental-vi", "gv0-019-cardiology-vi"])
+def test_crop_keeps_full_page_with_shadowed_half(name):
+    # BUG-13: the shadowed lower half used to be returned as a ~1000x610 strip.
+    img = _golden_v0(f"{name}_degraded.jpg")
+    if img is None:
+        pytest.skip("golden-v0 images not present")
+    assert crop_document(img).shape[0] >= 0.9 * img.shape[0]
+
+
+def test_crop_rejects_dark_slice_flush_with_three_sides():
+    img = _text_page(1000, 1300)
+    img[650:] = (img[650:] * 0.55).astype(np.uint8)  # shadow over the lower half
+    assert crop_document(img).shape == img.shape
